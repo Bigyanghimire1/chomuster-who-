@@ -1,0 +1,2056 @@
+{
+  "music": [
+    {
+      "word": "Guitar",
+      "subtle": [
+        {
+          "hint": "Capo",
+          "rationale": "Clamp bar clamped across frets raising overall pitch."
+        },
+        {
+          "hint": "Pegs",
+          "rationale": "Geared machine heads on headstock tuning string tension."
+        },
+        {
+          "hint": "Rosette",
+          "rationale": "Decorative inlaid circle encircling acoustic soundhole."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Frets",
+          "rationale": "Thin metal ridges embedded along rosewood fingerboard."
+        },
+        {
+          "hint": "Strum",
+          "rationale": "Sweeping thumb or plectrum across multiple strings."
+        },
+        {
+          "hint": "Pick",
+          "rationale": "Small triangular celluloid plectrum held between fingers."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Strings",
+          "rationale": "Six steel or nylon strands tuned EADGBE."
+        },
+        {
+          "hint": "Chords",
+          "rationale": "Harmonic combination of fretted notes strummed together."
+        },
+        {
+          "hint": "Acoustic",
+          "rationale": "Wooden hollow chamber resonating sound naturally."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Six-stringed wooden instrument strummed with picks and frets."
+      }
+    },
+    {
+      "word": "Piano",
+      "subtle": [
+        {
+          "hint": "Damper",
+          "rationale": "Felt pads lifting off strings when keys are pressed."
+        },
+        {
+          "hint": "Bench",
+          "rationale": "Long wooden stool seated upon while playing keyboard."
+        },
+        {
+          "hint": "Castiron",
+          "rationale": "Heavy internal harp frame bearing immense string tension."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Keys",
+          "rationale": "Eighty-eight black and white levers played by fingers."
+        },
+        {
+          "hint": "Hammers",
+          "rationale": "Felt-covered wooden heads striking tuned strings."
+        },
+        {
+          "hint": "Pedals",
+          "rationale": "Foot levers sustaining or muting vibrating tones."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Keyboard",
+          "rationale": "Row of black ebony and white ivory keys."
+        },
+        {
+          "hint": "Classical",
+          "rationale": "Acoustic orchestral and recital music genre."
+        },
+        {
+          "hint": "Chopin",
+          "rationale": "Romantic Polish composer who mastered the instrument."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Acoustic keyboard instrument with 88 keys and felt hammers."
+      }
+    },
+    {
+      "word": "Drums",
+      "subtle": [
+        {
+          "hint": "Lugs",
+          "rationale": "Threaded metal screw casings tensioning the perimeter rim."
+        },
+        {
+          "hint": "Snare",
+          "rationale": "Coiled metal wires buzzing beneath bottom drumhead."
+        },
+        {
+          "hint": "Rimshot",
+          "rationale": "Simultaneous strike hitting both head and metal rim."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Sticks",
+          "rationale": "Hickory wooden rods swung to strike skins and cymbals."
+        },
+        {
+          "hint": "Cymbals",
+          "rationale": "Brass or bronze discs crashed with sticks."
+        },
+        {
+          "hint": "Pedal",
+          "rationale": "Foot mechanism kicking heavy beater against bass head."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Beat",
+          "rationale": "Rhythmic pulse driving band forward."
+        },
+        {
+          "hint": "Rhythm",
+          "rationale": "Timing backbone of songs."
+        },
+        {
+          "hint": "Skins",
+          "rationale": "Stretched plastic mylar membranes beaten with sticks."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Percussion set keeping the rhythm with sticks and cymbals."
+      }
+    },
+    {
+      "word": "Violin",
+      "subtle": [
+        {
+          "hint": "Rosin",
+          "rationale": "Hard amber pine tree sap rubbed on bow horsehair."
+        },
+        {
+          "hint": "Purfling",
+          "rationale": "Decorative inlaid wooden border protecting carved plate."
+        },
+        {
+          "hint": "Stradivarius",
+          "rationale": "Legendary Cremona master craftsman violins."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bow",
+          "rationale": "Pernambuco wooden stick strung with white horsehair."
+        },
+        {
+          "hint": "Chinrest",
+          "rationale": "Curved wooden cup resting against performer jaw."
+        },
+        {
+          "hint": "Strings",
+          "rationale": "Four gut or steel strands tuned in perfect fifths."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Orchestra",
+          "rationale": "Symphony section seated in front rows."
+        },
+        {
+          "hint": "Classical",
+          "rationale": "Solemn concert and chamber music genre."
+        },
+        {
+          "hint": "Fiddle",
+          "rationale": "Folk music colloquial nickname for instrument."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Four-stringed wooden instrument played under chin with a bow."
+      }
+    },
+    {
+      "word": "Microphone",
+      "subtle": [
+        {
+          "hint": "Diaphragm",
+          "rationale": "Ultrathin membrane vibrating in response to sound waves."
+        },
+        {
+          "hint": "Phantom",
+          "rationale": "Forty-eight volt DC power sent down XLR cable."
+        },
+        {
+          "hint": "XLR",
+          "rationale": "Three-pin balanced audio cable clicking into base."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Stand",
+          "rationale": "Adjustable metal boom pole holding capsule at mouth."
+        },
+        {
+          "hint": "Vocals",
+          "rationale": "Human singing voice amplified for arena audiences."
+        },
+        {
+          "hint": "Feedback",
+          "rationale": "High-pitched screech when positioned too near speaker."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Sing",
+          "rationale": "Vocal performance captured for recording or concert."
+        },
+        {
+          "hint": "Voice",
+          "rationale": "Spoken words amplified over PA system."
+        },
+        {
+          "hint": "Audio",
+          "rationale": "Sound waves converted into electrical signals."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Acoustic transducer converting vocals into electrical audio signals."
+      }
+    },
+    {
+      "word": "Saxophone",
+      "subtle": [
+        {
+          "hint": "Ligature",
+          "rationale": "Metal clamp tightening wooden cane reed to mouthpiece."
+        },
+        {
+          "hint": "Pads",
+          "rationale": "Leather cushions sealing circular tone holes."
+        },
+        {
+          "hint": "Adolphe",
+          "rationale": "Belgian inventor Sax who patented horn in 1846."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Reed",
+          "rationale": "Thin shaved bamboo cane vibrating on mouthpiece."
+        },
+        {
+          "hint": "Brass",
+          "rationale": "Golden metal alloy forming curved flared body."
+        },
+        {
+          "hint": "Jazz",
+          "rationale": "Musical genre celebrated for smoky horn solos."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Horn",
+          "rationale": "Curved wind instrument with upturned bell."
+        },
+        {
+          "hint": "Keys",
+          "rationale": "Mother-of-pearl buttons pressed by fingers."
+        },
+        {
+          "hint": "Solo",
+          "rationale": "Expressive improvised melodic performance."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Curved brass woodwind instrument famed in jazz clubs."
+      }
+    },
+    {
+      "word": "Acoustic Guitar",
+      "subtle": [
+        {
+          "hint": "Bracing",
+          "rationale": "Internal wooden X-struts supporting thin spruce top."
+        },
+        {
+          "hint": "Dreadnought",
+          "rationale": "Large deep-bodied classic Martin body shape."
+        },
+        {
+          "hint": "Bridgepins",
+          "rationale": "Small plastic pegs locking ball ends into bridge."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Soundhole",
+          "rationale": "Round circular opening projecting resonant tones."
+        },
+        {
+          "hint": "Wood",
+          "rationale": "Solid spruce top and mahogany back and sides."
+        },
+        {
+          "hint": "Fingerpicking",
+          "rationale": "Plucking individual strings with bare fingertips."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Campfire",
+          "rationale": "Outdoor gathering singing songs around flames."
+        },
+        {
+          "hint": "Strum",
+          "rationale": "Sweeping chord strokes across strings."
+        },
+        {
+          "hint": "Folk",
+          "rationale": "Traditional roots acoustic singer-songwriter genre."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Hollow wooden six-string instrument resonating unplugged."
+      }
+    },
+    {
+      "word": "Grand Piano",
+      "subtle": [
+        {
+          "hint": "Sostenuto",
+          "rationale": "Middle foot pedal sustaining only currently held notes."
+        },
+        {
+          "hint": "Lid",
+          "rationale": "Heavy polished wing propped open with wooden stick."
+        },
+        {
+          "hint": "Concert",
+          "rationale": "Full nine-foot instrument commanding recital hall stage."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Horizontal",
+          "rationale": "Harp and strings arrayed flat parallel to floor."
+        },
+        {
+          "hint": "Pedals",
+          "rationale": "Three brass foot levers modifying acoustic resonance."
+        },
+        {
+          "hint": "Recital",
+          "rationale": "Formal solo classical performance in auditorium."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Eightyeight",
+          "rationale": "Standard number of black and white keys."
+        },
+        {
+          "hint": "Wing",
+          "rationale": "Curved elegant profile of horizontal wooden case."
+        },
+        {
+          "hint": "Black",
+          "rationale": "High-gloss polished ebony lacquer finish."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Horizontal concert keyboard instrument with raised propped lid."
+      }
+    },
+    {
+      "word": "Drum Kit",
+      "subtle": [
+        {
+          "hint": "Hihat",
+          "rationale": "Pair of cymbals clashed together via foot pedal."
+        },
+        {
+          "hint": "Tomtoms",
+          "rationale": "Cylindrical rack drums tuned to distinct pitches."
+        },
+        {
+          "hint": "Throne",
+          "rationale": "Padded circular swivel stool drummer perches on."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bassdrum",
+          "rationale": "Large horizontal kick drum sounded with foot pedal."
+        },
+        {
+          "hint": "Sticks",
+          "rationale": "Wooden batons held in matched or traditional grip."
+        },
+        {
+          "hint": "Snare",
+          "rationale": "Crisp center drum with bottom metal coiled wires."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Beat",
+          "rationale": "Steady driving pulse anchoring rock band."
+        },
+        {
+          "hint": "Cymbals",
+          "rationale": "Metallic bronze ride and crash discs."
+        },
+        {
+          "hint": "Rhythm",
+          "rationale": "Percussive foundation of music."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Assembled percussion setup of snare, kick, toms, and cymbals."
+      }
+    },
+    {
+      "word": "Electric Bass",
+      "subtle": [
+        {
+          "hint": "Fretless",
+          "rationale": "Smooth rosewood fingerboard allowing sliding microtones."
+        },
+        {
+          "hint": "Slap",
+          "rationale": "Funk technique popping thick strings with thumb and index."
+        },
+        {
+          "hint": "Groove",
+          "rationale": "Syncopated pocket locked in tight with kick drum."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Four",
+          "rationale": "Standard number of heavy gauge steel strings."
+        },
+        {
+          "hint": "Pickups",
+          "rationale": "Magnetic coils capturing string vibrations for amp."
+        },
+        {
+          "hint": "Low",
+          "rationale": "Deep rumbling bass pitch anchoring harmony."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Guitar",
+          "rationale": "Body shape resembling larger, longer-necked cousin."
+        },
+        {
+          "hint": "Strings",
+          "rationale": "Thick wound steel cables tuned EADG."
+        },
+        {
+          "hint": "Amplifier",
+          "rationale": "Speaker cabinet pushing deep low frequencies."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Four-stringed solid-body instrument providing low-end groove."
+      }
+    },
+    {
+      "word": "Trumpet",
+      "subtle": [
+        {
+          "hint": "Mute",
+          "rationale": "Conical device inserted into bell softening tone."
+        },
+        {
+          "hint": "Spitvalve",
+          "rationale": "Small lever draining accumulated moisture from tubing."
+        },
+        {
+          "hint": "Embouchure",
+          "rationale": "Lip tension and facial muscle shaping against mouthpiece."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Valves",
+          "rationale": "Three piston finger buttons redirecting air columns."
+        },
+        {
+          "hint": "Brass",
+          "rationale": "Bright golden metallic alloy body tube."
+        },
+        {
+          "hint": "Bell",
+          "rationale": "Flared circular horn opening projecting sound."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Horn",
+          "rationale": "High-pitched piercing wind instrument."
+        },
+        {
+          "hint": "Blow",
+          "rationale": "Buzzing lips into metal cup mouthpiece."
+        },
+        {
+          "hint": "Fanfare",
+          "rationale": "Ceremonial triumphant royal announcement melody."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Three-valved brass wind instrument playing bold fanfares."
+      }
+    },
+    {
+      "word": "Harmonica",
+      "subtle": [
+        {
+          "hint": "Crossharp",
+          "rationale": "Blues playing technique using second position key."
+        },
+        {
+          "hint": "Comb",
+          "rationale": "Internal slotted block separating air chambers."
+        },
+        {
+          "hint": "Bending",
+          "rationale": "Tongue embouchure shifting pitch downwards a semitone."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Reeds",
+          "rationale": "Miniature brass vibrating strips inside slots."
+        },
+        {
+          "hint": "Blues",
+          "rationale": "American roots genre defined by crying harp solos."
+        },
+        {
+          "hint": "Pocket",
+          "rationale": "Small handheld size slipped easily into jacket."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Breathe",
+          "rationale": "Alternating inhaling and exhaling across holes."
+        },
+        {
+          "hint": "Mouth",
+          "rationale": "Organ held directly between lips."
+        },
+        {
+          "hint": "Harp",
+          "rationale": "Common folklore blues moniker for mouth organ."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Handheld mouth organ played by breathing through reed slots."
+      }
+    },
+    {
+      "word": "Cello",
+      "subtle": [
+        {
+          "hint": "Endpin",
+          "rationale": "Retractable steel spike resting instrument on floor."
+        },
+        {
+          "hint": "Bassclef",
+          "rationale": "Musical staff notation reading lower musical registers."
+        },
+        {
+          "hint": "Spruce",
+          "rationale": "Carved tonewood plate resonating rich baritone tones."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bow",
+          "rationale": "Horsehair wand drawn across four thick strings."
+        },
+        {
+          "hint": "Seated",
+          "rationale": "Musician playing seated holding body between knees."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Deep resonant baritone acoustic timbre."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Strings",
+          "rationale": "Four heavy strings tuned CGDA."
+        },
+        {
+          "hint": "Orchestra",
+          "rationale": "Classical ensemble section seated to conductor right."
+        },
+        {
+          "hint": "Wood",
+          "rationale": "Polished carved maple and spruce hollow body."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Large wooden orchestral string instrument held between knees."
+      }
+    },
+    {
+      "word": "Vinyl Record",
+      "subtle": [
+        {
+          "hint": "Rpm",
+          "rationale": "Rotational speeds of 33, 45, or 78 per minute."
+        },
+        {
+          "hint": "Groove",
+          "rationale": "Continuous spiral microscopic audio waveform trench."
+        },
+        {
+          "hint": "Crate",
+          "rationale": "Wooden storage box browsed by record collectors."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Needle",
+          "rationale": "Diamond stylus tracing microscopic analog grooves."
+        },
+        {
+          "hint": "Turntable",
+          "rationale": "Spinning motorized platter playing analog discs."
+        },
+        {
+          "hint": "Album",
+          "rationale": "Cardboard sleeve enclosing twelve-inch black disc."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Spin",
+          "rationale": "Rotation on center spindle while playing."
+        },
+        {
+          "hint": "Analog",
+          "rationale": "Pure physical sound wave replication format."
+        },
+        {
+          "hint": "Music",
+          "rationale": "Audio songs stamped into black plastic disc."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Analog black grooved disc spun on turntables."
+      }
+    },
+    {
+      "word": "Synthesizer",
+      "subtle": [
+        {
+          "hint": "LFO",
+          "rationale": "Low-frequency oscillator modulating pitch or filter."
+        },
+        {
+          "hint": "Moog",
+          "rationale": "Pioneering modular synth brand created by Bob Moog."
+        },
+        {
+          "hint": "Attack",
+          "rationale": "First phase of ADSR envelope generator curve."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Oscillator",
+          "rationale": "Electronic circuit generating sawtooth or square waves."
+        },
+        {
+          "hint": "Filter",
+          "rationale": "Knob sweeping frequency cutoff to shape sound."
+        },
+        {
+          "hint": "Patch",
+          "rationale": "Saved sound preset crafted by wiring parameters."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Keyboard",
+          "rationale": "Piano-style keys triggering electronic sounds."
+        },
+        {
+          "hint": "Electronic",
+          "rationale": "Pure circuitry-generated audio waveforms."
+        },
+        {
+          "hint": "Knobs",
+          "rationale": "Rotary dials shaping resonance and timbre."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Electronic keyboard instrument synthesizing sounds with knobs."
+      }
+    },
+    {
+      "word": "Flute",
+      "subtle": [
+        {
+          "hint": "Boehm",
+          "rationale": "Complex mechanical fingering system of padded keys."
+        },
+        {
+          "hint": "Embouchure",
+          "rationale": "Blowing across open lip plate hole at precise angle."
+        },
+        {
+          "hint": "Silver",
+          "rationale": "Precious metal commonly used to cast modern tubes."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Transverse",
+          "rationale": "Side-blown horizontal posture holding instrument."
+        },
+        {
+          "hint": "Woodwind",
+          "rationale": "Acoustic orchestral wind instrument family."
+        },
+        {
+          "hint": "Highpitched",
+          "rationale": "Sweet airy high soprano musical register."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Blow",
+          "rationale": "Directing air stream across open mouth hole."
+        },
+        {
+          "hint": "Keys",
+          "rationale": "Padded circular cups covering tone holes."
+        },
+        {
+          "hint": "Metal",
+          "rationale": "Polished nickel or brass cylinder held horizontally."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Horizontal side-blown silver wind instrument with sweet tone."
+      }
+    },
+    {
+      "word": "Tambourine",
+      "subtle": [
+        {
+          "hint": "Thumbroll",
+          "rationale": "Friction technique rubbing wet thumb across calfskin."
+        },
+        {
+          "hint": "Zils",
+          "rationale": "Middle Eastern brass finger bells related to jingles."
+        },
+        {
+          "hint": "Gospel",
+          "rationale": "Church choir music featuring energetic hand rhythm."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Jingles",
+          "rationale": "Pairs of metal discs chiming in frame slots."
+        },
+        {
+          "hint": "Shake",
+          "rationale": "Wrist motion rattling metallic pairs in rhythm."
+        },
+        {
+          "hint": "Percussion",
+          "rationale": "Handheld unpitched rhythmic instrument."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Slap",
+          "rationale": "Striking round rim against palm or hip."
+        },
+        {
+          "hint": "Ring",
+          "rationale": "Circular wooden frame holding rattling pairs."
+        },
+        {
+          "hint": "Rhythm",
+          "rationale": "Keeping upbeat tempo in folk or pop bands."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Circular handheld percussion frame with rattling metal jingles."
+      }
+    },
+    {
+      "word": "Ukulele",
+      "subtle": [
+        {
+          "hint": "Flea",
+          "rationale": "Hawaiian literal translation meaning jumping flea."
+        },
+        {
+          "hint": "Koa",
+          "rationale": "Native Hawaiian acacia hardwood carved for bodies."
+        },
+        {
+          "hint": "GCEA",
+          "rationale": "Standard re-entrant re-entrant tuning of four strings."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Hawaii",
+          "rationale": "Polynesian island home where instrument flourished."
+        },
+        {
+          "hint": "Four",
+          "rationale": "Exact number of nylon strings tuned to chords."
+        },
+        {
+          "hint": "Strum",
+          "rationale": "Light finger sweeps across tiny fingerboard."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Small",
+          "rationale": "Miniature guitar-like acoustic proportions."
+        },
+        {
+          "hint": "Strings",
+          "rationale": "Nylon cords strummed on tropical beaches."
+        },
+        {
+          "hint": "Island",
+          "rationale": "Tropical Hawaiian music culture."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Four-stringed miniature Hawaiian acoustic instrument."
+      }
+    },
+    {
+      "word": "Accordion",
+      "subtle": [
+        {
+          "hint": "Treble",
+          "rationale": "Right-hand keyboard playing melodic lines."
+        },
+        {
+          "hint": "Polka",
+          "rationale": "Brisk central European folk dance accompanied by squeezebox."
+        },
+        {
+          "hint": "Straps",
+          "rationale": "Leather shoulder harness securing heavy box to chest."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bellows",
+          "rationale": "Pleated folding chamber pumped in and out for airflow."
+        },
+        {
+          "hint": "Buttons",
+          "rationale": "Left-hand bass chord array pressed with thumb."
+        },
+        {
+          "hint": "Squeeze",
+          "rationale": "Pushing and pulling chest-mounted wind instrument."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Keys",
+          "rationale": "Piano-style keyboard mounted on right side."
+        },
+        {
+          "hint": "Folk",
+          "rationale": "Traditional street and cafe music worldwide."
+        },
+        {
+          "hint": "Air",
+          "rationale": "Atmospheric pressure pumped across internal reeds."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Squeezebox instrument pumping air through pleated bellows."
+      }
+    },
+    {
+      "word": "Harp",
+      "subtle": [
+        {
+          "hint": "Pillar",
+          "rationale": "Vertical wooden column supporting top curved neck."
+        },
+        {
+          "hint": "Soundboard",
+          "rationale": "Sloping hollow wooden wedge resonating plucked tones."
+        },
+        {
+          "hint": "Celtic",
+          "rationale": "Folk tradition and Irish national gold emblem."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Pluck",
+          "rationale": "Fingertip pulling strings to produce angelic tones."
+        },
+        {
+          "hint": "Pedals",
+          "rationale": "Seven foot pedals shifting string sharps and flats."
+        },
+        {
+          "hint": "Triangular",
+          "rationale": "Graceful towering frame shape."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Strings",
+          "rationale": "Forty-seven nylon and wire strands spanning frame."
+        },
+        {
+          "hint": "Angelic",
+          "rationale": "Heavenly spiritual association in art and myth."
+        },
+        {
+          "hint": "Graceful",
+          "rationale": "Elegant classical concert stage instrument."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Triangular floor instrument with 47 plucked angelic strings."
+      }
+    },
+    {
+      "word": "Bagpipes",
+      "subtle": [
+        {
+          "hint": "Chanter",
+          "rationale": "Melody pipe finger-holed by musician hands."
+        },
+        {
+          "hint": "Drones",
+          "rationale": "Three vertical pipes resting on shoulder humming continuous note."
+        },
+        {
+          "hint": "Tartan",
+          "rationale": "Plaid patterned wool cloth covering airtight reservoir."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Scotland",
+          "rationale": "Highland heritage and martial military tradition."
+        },
+        {
+          "hint": "Kilts",
+          "rationale": "Pleated wool skirts worn by marching pipers."
+        },
+        {
+          "hint": "Blowpipe",
+          "rationale": "Mouth tube inflating airtight leather bag."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Loud",
+          "rationale": "Piercing outdoor sound carrying across glens."
+        },
+        {
+          "hint": "Highland",
+          "rationale": "Traditional Scottish mountain ceremonial music."
+        },
+        {
+          "hint": "Bag",
+          "rationale": "Arm-squeezed air reservoir under elbow."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Scottish highland wind instrument with drone pipes and squeezed bag."
+      }
+    },
+    {
+      "word": "Turntable",
+      "subtle": [
+        {
+          "hint": "Tonearm",
+          "rationale": "Counterbalanced pivoting wand holding cartridge over disc."
+        },
+        {
+          "hint": "Slipmat",
+          "rationale": "Felt circular pad allowing DJ to scratch vinyl freely."
+        },
+        {
+          "hint": "Pitch",
+          "rationale": "Slider control adjusting platter rotational tempo."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Platter",
+          "rationale": "Heavy circular spinning bed supporting vinyl disc."
+        },
+        {
+          "hint": "Stylus",
+          "rationale": "Diamond needle tracing audio waveforms in grooves."
+        },
+        {
+          "hint": "Scratch",
+          "rationale": "Rhythmic back-and-forth vinyl rubbing by hip hop DJ."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Spin",
+          "rationale": "Motorized rotation at 33 or 45 RPM."
+        },
+        {
+          "hint": "Vinyl",
+          "rationale": "Black grooved record placed upon center spindle."
+        },
+        {
+          "hint": "Dj",
+          "rationale": "Performer mixing tracks on dual decks."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Spinning DJ audio player reading vinyl records via stylus."
+      }
+    },
+    {
+      "word": "Xylophone",
+      "subtle": [
+        {
+          "hint": "Rosewood",
+          "rationale": "Dense resonant timber carved for tuned bar keys."
+        },
+        {
+          "hint": "Resonators",
+          "rationale": "Metal tubes suspended beneath bars amplifying pitch."
+        },
+        {
+          "hint": "Orff",
+          "rationale": "Musical educational approach using tuned bar instruments."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Mallets",
+          "rationale": "Rubber or wooden balls on wands used to strike bars."
+        },
+        {
+          "hint": "Bars",
+          "rationale": "Graduated wooden slats arranged like piano keys."
+        },
+        {
+          "hint": "Percussion",
+          "rationale": "Struck tuned melodic instrument family."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Strike",
+          "rationale": "Tapping mallets against wooden bars."
+        },
+        {
+          "hint": "Wood",
+          "rationale": "Material of resonant graduated bars."
+        },
+        {
+          "hint": "Melody",
+          "rationale": "Bright ringing musical notes played across rows."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Tuned percussion instrument with wooden bars struck by mallets."
+      }
+    },
+    {
+      "word": "Clarinet",
+      "subtle": [
+        {
+          "hint": "Grenadilla",
+          "rationale": "Dense African blackwood carved into instrument body."
+        },
+        {
+          "hint": "Rhapsody",
+          "rationale": "Famous glissando wail opening Gershwin Blue."
+        },
+        {
+          "hint": "Bell",
+          "rationale": "Flared bottom cone projecting warm woody tone."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Reed",
+          "rationale": "Single flat cane piece strapped to beak mouthpiece."
+        },
+        {
+          "hint": "Black",
+          "rationale": "Dark wood tube fitted with silver ring keys."
+        },
+        {
+          "hint": "Woodwind",
+          "rationale": "Orchestral and marching wind instrument section."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Blow",
+          "rationale": "Air stream directed into mouthpiece."
+        },
+        {
+          "hint": "Keys",
+          "rationale": "Silver mechanical rings covering cylindrical tone holes."
+        },
+        {
+          "hint": "Solo",
+          "rationale": "Expressive warm classical and klezmer melodies."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Single-reed black woodwind instrument with silver keys."
+      }
+    },
+    {
+      "word": "Trombone",
+      "subtle": [
+        {
+          "hint": "Waterkey",
+          "rationale": "Small lever draining accumulated saliva from slide crook."
+        },
+        {
+          "hint": "Glissando",
+          "rationale": "Continuous seamless pitch smear moving slide."
+        },
+        {
+          "hint": "Counterweight",
+          "rationale": "Metal balance disc resting behind player neck."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Slide",
+          "rationale": "Telescoping double-tube altered by arm extension."
+        },
+        {
+          "hint": "Brass",
+          "rationale": "Polished golden metal tubing and wide bell."
+        },
+        {
+          "hint": "Bell",
+          "rationale": "Flared horn opening projecting low tenor notes."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Horn",
+          "rationale": "Large brass wind instrument without valves."
+        },
+        {
+          "hint": "Blow",
+          "rationale": "Buzzing lips into metal cup mouthpiece."
+        },
+        {
+          "hint": "Jazz",
+          "rationale": "Big band section firing bold slide countermelodies."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Brass instrument changing pitch using a telescoping slide."
+      }
+    },
+    {
+      "word": "Bongos",
+      "subtle": [
+        {
+          "hint": "Hembra",
+          "rationale": "Larger female drum pitched lower than its companion."
+        },
+        {
+          "hint": "Macho",
+          "rationale": "Smaller male drum tuned to high crisp pop."
+        },
+        {
+          "hint": "Martillo",
+          "rationale": "The hammer traditional Cuban eight-stroke rhythm pattern."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Pair",
+          "rationale": "Two small conjoined open-bottom wooden drums."
+        },
+        {
+          "hint": "Knees",
+          "rationale": "Held firmly between player legs while seated."
+        },
+        {
+          "hint": "Cuban",
+          "rationale": "Afro-Caribbean roots originating rhythmic style."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Hands",
+          "rationale": "Struck directly with fingertips and palms."
+        },
+        {
+          "hint": "Drums",
+          "rationale": "Twin percussive instruments tied together."
+        },
+        {
+          "hint": "Beat",
+          "rationale": "High rhythmic tempo in salsa and latin jazz."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Pair of small Cuban hand drums held between the knees."
+      }
+    },
+    {
+      "word": "Rock and Roll",
+      "subtle": [
+        {
+          "hint": "Presley",
+          "rationale": "The King who popularized high-energy rhythm and blues."
+        },
+        {
+          "hint": "Riff",
+          "rationale": "Repeated electric guitar hook defining song identity."
+        },
+        {
+          "hint": "Distortion",
+          "rationale": "Overdriven amplifier crunch grit on guitar tone."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Guitar",
+          "rationale": "Electric six-string driving the sonic assault."
+        },
+        {
+          "hint": "Chuck",
+          "rationale": "Berry duck-walking while playing opening double-stops."
+        },
+        {
+          "hint": "Fifties",
+          "rationale": "Mid-twentieth-century breakthrough decade."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Band",
+          "rationale": "Four-piece lineup of guitar, bass, drums, vocals."
+        },
+        {
+          "hint": "Loud",
+          "rationale": "High-energy rebellious musical genre."
+        },
+        {
+          "hint": "Beat",
+          "rationale": "Driving backbeat accented on beats two and four."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Rebellious fifties electric guitar genre driving the backbeat."
+      }
+    },
+    {
+      "word": "Jazz",
+      "subtle": [
+        {
+          "hint": "Syncopation",
+          "rationale": "Accenting unexpected off-beats in rhythmic pulse."
+        },
+        {
+          "hint": "Scat",
+          "rationale": "Nonsense syllable vocal improvisation mimicking horns."
+        },
+        {
+          "hint": "Standard",
+          "rationale": "Timeless Broadway and tin pan alley repertoire composition."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Saxophone",
+          "rationale": "Smoky brass woodwind soloing over walking bass."
+        },
+        {
+          "hint": "Swing",
+          "rationale": "Rhythmic bounce giving genre its relaxed groove."
+        },
+        {
+          "hint": "Orleans",
+          "rationale": "New city cradle where musical fusion started."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Club",
+          "rationale": "Dimly lit basement lounge venue with stage."
+        },
+        {
+          "hint": "Trumpet",
+          "rationale": "Miles and Armstrong brass horn solos."
+        },
+        {
+          "hint": "Improv",
+          "rationale": "Unscripted spontaneous melodic soloing."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "American art form renowned for swing, brass, and improvisation."
+      }
+    },
+    {
+      "word": "Hip Hop",
+      "subtle": [
+        {
+          "hint": "Bronx",
+          "rationale": "New York borough where block parties sparked movement in 1973."
+        },
+        {
+          "hint": "Turntablism",
+          "rationale": "Using vinyl players as percussive musical instruments."
+        },
+        {
+          "hint": "Freestyle",
+          "rationale": "Spontaneous unwritten lyrical rhyming over beat."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Beats",
+          "rationale": "Boom-bap or 808 rhythmic backing production."
+        },
+        {
+          "hint": "Rap",
+          "rationale": "Rhythmic spoken poetry delivered over instrumentals."
+        },
+        {
+          "hint": "Graffiti",
+          "rationale": "Vibrant aerosol wall art element of the culture."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Rhyme",
+          "rationale": "Clever wordplay and matching vocal syllables."
+        },
+        {
+          "hint": "Dj",
+          "rationale": "Turntable performer spinning breakbeats."
+        },
+        {
+          "hint": "Microphone",
+          "rationale": "Emcee vocal tool commanding crowd."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Urban cultural movement defined by rap, beats, and graffiti."
+      }
+    },
+    {
+      "word": "Classical Symphony",
+      "subtle": [
+        {
+          "hint": "Sonata",
+          "rationale": "Exposition, development, and recapitulation formal structure."
+        },
+        {
+          "hint": "Allegro",
+          "rationale": "Brisk lively tempo marking for opening movement."
+        },
+        {
+          "hint": "Philharmonic",
+          "rationale": "Great metropolitan orchestra society performing masterworks."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Conductor",
+          "rationale": "Maestro directing orchestra with raised wooden baton."
+        },
+        {
+          "hint": "Movements",
+          "rationale": "Four distinct contrasting sections in monumental work."
+        },
+        {
+          "hint": "Beethoven",
+          "rationale": "Titan whose Ninth redefined symphonic scale."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Orchestra",
+          "rationale": "Massed strings, woodwinds, brass, and percussion."
+        },
+        {
+          "hint": "Composer",
+          "rationale": "Master creating grand multi-part musical score."
+        },
+        {
+          "hint": "Concert",
+          "rationale": "Formal auditorium performance in evening wear."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Monumental four-movement orchestral composition led by conductor."
+      }
+    },
+    {
+      "word": "Reggae",
+      "subtle": [
+        {
+          "hint": "Skank",
+          "rationale": "Off-beat staccato guitar chord chop on two and four."
+        },
+        {
+          "hint": "Rastafari",
+          "rationale": "Spiritual faith intertwined with musical message."
+        },
+        {
+          "hint": "Trenchtown",
+          "rationale": "Kingston community where sound was born."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Marley",
+          "rationale": "Legendary cultural icon and global ambassador."
+        },
+        {
+          "hint": "Jamaica",
+          "rationale": "Caribbean island nation of musical origin."
+        },
+        {
+          "hint": "Bassline",
+          "rationale": "Deep heavy rhythmic pulse driving relaxed tempo."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Island",
+          "rationale": "Caribbean relaxed cultural atmosphere."
+        },
+        {
+          "hint": "Peace",
+          "rationale": "Lyrical message preaching love and unity."
+        },
+        {
+          "hint": "Dreadlocks",
+          "rationale": "Hairstyle worn by famous roots reggae singers."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Jamaican off-beat rhythm popularized globally by Bob Marley."
+      }
+    },
+    {
+      "word": "Heavy Metal",
+      "subtle": [
+        {
+          "hint": "Tritone",
+          "rationale": "The devil interval diabolus in musica creating sinister riffs."
+        },
+        {
+          "hint": "Sabbath",
+          "rationale": "Birmingham band Black pioneered thunderous dark sound."
+        },
+        {
+          "hint": "Moshpit",
+          "rationale": "Wild energetic crowd circle slamming in front of stage."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Distortion",
+          "rationale": "High-gain searing amplifier grit on guitars."
+        },
+        {
+          "hint": "Screaming",
+          "rationale": "Intense guttural or falsetto vocal delivery."
+        },
+        {
+          "hint": "Leather",
+          "rationale": "Black studded jackets and boots worn by fans."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Loud",
+          "rationale": "Massive volume and wall of amplifier stacks."
+        },
+        {
+          "hint": "Guitars",
+          "rationale": "Aggressive shredding solos and down-tuned riffs."
+        },
+        {
+          "hint": "Rock",
+          "rationale": "Intense thunderous subgenre of amplified music."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Aggressive amplified genre known for heavy riffs, studs, and volume."
+      }
+    },
+    {
+      "word": "Orchestra",
+      "subtle": [
+        {
+          "hint": "Podium",
+          "rationale": "Raised wooden platform where maestro stands to conduct."
+        },
+        {
+          "hint": "Tuning",
+          "rationale": "Concertmaster oboe playing 440 Hz A for all instruments."
+        },
+        {
+          "hint": "Pit",
+          "rationale": "Sunken floor area in front of stage for opera performances."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Baton",
+          "rationale": "Slender white wand waved to indicate tempo and meter."
+        },
+        {
+          "hint": "Conductor",
+          "rationale": "Leader directing eighty musicians in unison."
+        },
+        {
+          "hint": "Violins",
+          "rationale": "Dominant massed string section filling front."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Classical",
+          "rationale": "Genre of symphonic overtures and concertos."
+        },
+        {
+          "hint": "Hall",
+          "rationale": "Acoustically tuned concert auditorium with tiers."
+        },
+        {
+          "hint": "Instruments",
+          "rationale": "Collection of brass, woodwind, string, and drums."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Large ensemble of strings, brass, and woodwinds led by a conductor."
+      }
+    },
+    {
+      "word": "Amplifier",
+      "subtle": [
+        {
+          "hint": "Vacuum",
+          "rationale": "Vintage glowing glass tubes warming guitar signal."
+        },
+        {
+          "hint": "Gain",
+          "rationale": "Input sensitivity control driving signal into breakup."
+        },
+        {
+          "hint": "Ohm",
+          "rationale": "Speaker impedance matching output transformer."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cabinet",
+          "rationale": "Wooden speaker enclosure loaded with 12-inch drivers."
+        },
+        {
+          "hint": "Knobs",
+          "rationale": "Volume, treble, mid, and bass rotary equalization."
+        },
+        {
+          "hint": "Guitar",
+          "rationale": "Instrument plugged into front input jack via cable."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Loud",
+          "rationale": "Boosting weak audio signal to arena volume."
+        },
+        {
+          "hint": "Sound",
+          "rationale": "Acoustic output blasting through speaker grille."
+        },
+        {
+          "hint": "Power",
+          "rationale": "Electrical watts driving high-decibel volume."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Electronic cabinet boosting instrument signals to high volume."
+      }
+    },
+    {
+      "word": "Metronome",
+      "subtle": [
+        {
+          "hint": "Pendulum",
+          "rationale": "Weighted metal arm swinging side to side mechanically."
+        },
+        {
+          "hint": "Bpm",
+          "rationale": "Beats per minute tempo measurement unit."
+        },
+        {
+          "hint": "Winding",
+          "rationale": "Key turned to tighten clockwork spring motor."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Click",
+          "rationale": "Sharp acoustic pulse marking each passing beat."
+        },
+        {
+          "hint": "Tempo",
+          "rationale": "Speed and pace of musical performance."
+        },
+        {
+          "hint": "Rhythm",
+          "rationale": "Steadiness drilled by practicing with the click."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Tick",
+          "rationale": "Rhythmic mechanical clock-like pulse."
+        },
+        {
+          "hint": "Practice",
+          "rationale": "Musician training sessions maintaining time."
+        },
+        {
+          "hint": "Time",
+          "rationale": "Strict musical meter held without rushing."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Clockwork pendulum device clicking strict musical tempos."
+      }
+    },
+    {
+      "word": "Concert Stage",
+      "subtle": [
+        {
+          "hint": "Truss",
+          "rationale": "Aluminum scaffolding grid suspended overhead holding lights."
+        },
+        {
+          "hint": "Backline",
+          "rationale": "Row of amplifiers and drum risers behind musicians."
+        },
+        {
+          "hint": "Monitors",
+          "rationale": "Angled floor wedge speakers pointing at performers."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Spotlight",
+          "rationale": "High-intensity theatrical beams illuminating singer."
+        },
+        {
+          "hint": "Crowd",
+          "rationale": "Cheering audience facing platform in packed arena."
+        },
+        {
+          "hint": "Curtain",
+          "rationale": "Heavy fabric drape drawn before performance starts."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Perform",
+          "rationale": "Band playing live music for fans."
+        },
+        {
+          "hint": "Platform",
+          "rationale": "Elevated wooden deck upon which band stands."
+        },
+        {
+          "hint": "Arena",
+          "rationale": "Massive indoor stadium venue hosting concerts."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Elevated platform illuminated by spotlights for live concerts."
+      }
+    },
+    {
+      "word": "Sheet Music",
+      "subtle": [
+        {
+          "hint": "Clef",
+          "rationale": "Treble or bass symbol anchoring staff pitch positions."
+        },
+        {
+          "hint": "Staves",
+          "rationale": "Parallel horizontal five-line grids receiving notes."
+        },
+        {
+          "hint": "Coda",
+          "rationale": "Symbolic target jumped to during musical ending."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Notes",
+          "rationale": "Oval symbols and stems indicating pitch and duration."
+        },
+        {
+          "hint": "Stand",
+          "rationale": "Three-legged metal rack propping up printed pages."
+        },
+        {
+          "hint": "Score",
+          "rationale": "Full notation book combining every instrument part."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Paper",
+          "rationale": "Printed musical pages turned during performance."
+        },
+        {
+          "hint": "Read",
+          "rationale": "Sight-reading notation while playing instrument."
+        },
+        {
+          "hint": "Melody",
+          "rationale": "Tunes and harmonies encoded in black print."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Printed notation on staves propped up on music stands."
+      }
+    },
+    {
+      "word": "Headset",
+      "subtle": [
+        {
+          "hint": "Boom",
+          "rationale": "Flexible arm positioning microphone directly before mouth."
+        },
+        {
+          "hint": "Earcups",
+          "rationale": "Cushioned foam circles sealing out ambient room chatter."
+        },
+        {
+          "hint": "Splitter",
+          "rationale": "Y-cable separating headphone and microphone lines."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Gamer",
+          "rationale": "Player communicating with squad in online matches."
+        },
+        {
+          "hint": "Audio",
+          "rationale": "Game sound effects and voice chat delivered together."
+        },
+        {
+          "hint": "Headband",
+          "rationale": "Adjustable arch resting over crown of head."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Ears",
+          "rationale": "Head organs covered by padded speaker cups."
+        },
+        {
+          "hint": "Talk",
+          "rationale": "Speaking into attached boom microphone."
+        },
+        {
+          "hint": "Listen",
+          "rationale": "Hearing teammates and game audio privately."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Headphones with integrated boom microphone for gaming and calls."
+      }
+    }
+  ]
+}

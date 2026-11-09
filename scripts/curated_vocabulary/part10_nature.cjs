@@ -1,0 +1,717 @@
+const fs = require('fs');
+
+const nature = [
+  {
+    word: 'Volcano',
+    subtle: [
+      { hint: 'Basalt', rationale: 'Dark volcanic rock formed from cooled fluid lava.' },
+      { hint: 'Pompeii', rationale: 'Ancient Roman city buried by Mount Vesuvius.' },
+      { hint: 'Magma', rationale: 'Molten rock beneath the crust waiting to erupt.' }
+    ],
+    balanced: [
+      { hint: 'Lava', rationale: 'Molten glowing rock flowing down mountain flanks.' },
+      { hint: 'Erupt', rationale: 'Violent explosive ejection of ash and gas.' },
+      { hint: 'Crater', rationale: 'Bowl-shaped depression at the volcanic summit.' }
+    ],
+    easy: [
+      { hint: 'Ash', rationale: 'Grey powdery plume billowing into sky.' },
+      { hint: 'Mountain', rationale: 'Elevated conical landform forged by eruptions.' },
+      { hint: 'Fire', rationale: 'Incinerating heat and glowing molten rock.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Conical mountain spewing molten lava, ash, and magma.' }
+  },
+  {
+    word: 'Rainbow',
+    subtle: [
+      { hint: 'Prism', rationale: 'Optical medium splitting white light into spectra.' },
+      { hint: 'Droplets', rationale: 'Suspended airborne water spheres refracting sunlight.' },
+      { hint: 'Leprechaun', rationale: 'Folklore creature guarding gold pot at its end.' }
+    ],
+    balanced: [
+      { hint: 'Spectrum', rationale: 'Band of violet, blue, green, yellow, orange, red.' },
+      { hint: 'Colors', rationale: 'Vibrant chromatic bands curving across sky.' },
+      { hint: 'Shower', rationale: 'Passing rain shower illuminated by sun.' }
+    ],
+    easy: [
+      { hint: 'Sky', rationale: 'Atmospheric canvas where optical arc appears.' },
+      { hint: 'Rain', rationale: 'Precipitation required to form colorful bow.' },
+      { hint: 'Sun', rationale: 'Light source shining through raindrops.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Optical color arc formed by sunlight shining through rain.' }
+  },
+  {
+    word: 'Earthquake',
+    subtle: [
+      { hint: 'Seismograph', rationale: 'Instrument recording vibrational seismic waves.' },
+      { hint: 'Epicenter', rationale: 'Surface point directly above subterranean rupture.' },
+      { hint: 'Richter', rationale: 'Magnitude scale measuring seismic shock energy.' }
+    ],
+    balanced: [
+      { hint: 'Tremor', rationale: 'Shaking ground oscillation felt on surface.' },
+      { hint: 'Fault', rationale: 'Fracture line between tectonic tectonic plates.' },
+      { hint: 'Rumble', rationale: 'Low roaring acoustic sound accompanying ground shaking.' }
+    ],
+    easy: [
+      { hint: 'Shake', rationale: 'Violent ground motion toppling buildings.' },
+      { hint: 'Ground', rationale: 'Earth surface cracking under stress.' },
+      { hint: 'Disaster', rationale: 'Destructive natural geological catastrophe.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Violent shaking of the ground along tectonic fault lines.' }
+  },
+  {
+    word: 'Lightning',
+    subtle: [
+      { hint: 'Thunderclap', rationale: 'Booming acoustic shockwave following electrical discharge.' },
+      { hint: 'Conductor', rationale: 'Metal rod installed on roofs routing bolts safely.' },
+      { hint: 'Plasma', rationale: 'Superheated channel hotter than surface of sun.' }
+    ],
+    balanced: [
+      { hint: 'Bolt', rationale: 'Jagged flash of electrical discharge striking earth.' },
+      { hint: 'Strike', rationale: 'Sudden electrical connection between cloud and ground.' },
+      { hint: 'Thunder', rationale: 'Rumbling sound wave trailing the flash.' }
+    ],
+    easy: [
+      { hint: 'Storm', rationale: 'Severe weather system producing electrical activity.' },
+      { hint: 'Flash', rationale: 'Blinding split-second illumination in night sky.' },
+      { hint: 'Electric', rationale: 'High-voltage atmospheric static charge.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Sudden electrostatic discharge between clouds and ground.' }
+  },
+  {
+    word: 'Waterfall',
+    subtle: [
+      { hint: 'Mist', rationale: 'Fine aerosol spray drifting over river valley.' },
+      { hint: 'Plunge', rationale: 'Deep pool carved at base by continuous cascading force.' },
+      { hint: 'Gorge', rationale: 'Steep canyon carved back over millennia.' }
+    ],
+    balanced: [
+      { hint: 'Cascade', rationale: 'Stepped sequence of tumbling water drops.' },
+      { hint: 'Cliff', rationale: 'Vertical rock precipice over which river drops.' },
+      { hint: 'Roar', rationale: 'Loud acoustic rumble of tumbling water volume.' }
+    ],
+    easy: [
+      { hint: 'River', rationale: 'Flowing freshwater stream feeding the drop.' },
+      { hint: 'Drop', rationale: 'Gravitational descent over sheer ledge.' },
+      { hint: 'Spray', rationale: 'Fine aerosol droplets created by plunging cataract.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Cascading river plunging over a cliff into a pool.' }
+  },
+  {
+    word: 'Northern Lights',
+    subtle: [
+      { hint: 'Borealis', rationale: 'Latin scientific designation for northern polar aurora.' },
+      { hint: 'Magnetic', rationale: 'Earth field channeling charged particles to poles.' },
+      { hint: 'Particles', rationale: 'Solar wind electrons colliding with atmospheric oxygen.' }
+    ],
+    balanced: [
+      { hint: 'Aurora', rationale: 'Natural glowing light display in polar night skies.' },
+      { hint: 'Curtain', rationale: 'Waving drapery of luminous colors rippling overhead.' },
+      { hint: 'Green', rationale: 'Most common emerald hue excited by oxygen atoms.' }
+    ],
+    easy: [
+      { hint: 'Arctic', rationale: 'High northern latitudes where display is visible.' },
+      { hint: 'Sky', rationale: 'Nocturnal canvas lit by swirling ribbons.' },
+      { hint: 'Glow', rationale: 'Eerie luminescence illuminating frozen tundra.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Luminous curtains of green light dancing in Arctic skies.' }
+  },
+  {
+    word: 'Glacier',
+    subtle: [
+      { hint: 'Moraine', rationale: 'Ridge of rocky debris deposited at ice edge.' },
+      { hint: 'Crevasse', rationale: 'Deep treacherous fissure splitting frozen surface.' },
+      { hint: 'Calving', rationale: 'Dramatic fracture dropping giant chunks into ocean.' }
+    ],
+    balanced: [
+      { hint: 'Ice', rationale: 'Dense compacted blue crystalline mass.' },
+      { hint: 'Valley', rationale: 'U-shaped trough carved through bedrock over ages.' },
+      { hint: 'Slow', rationale: 'Creeping downhill advance measured in inches per day.' }
+    ],
+    easy: [
+      { hint: 'Melt', rationale: 'Gradual retreat releasing runoff streams.' },
+      { hint: 'Cold', rationale: 'Freezing mountain and polar temperature realm.' },
+      { hint: 'Frozen', rationale: 'Massive moving river of solid ice.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Slow-moving river of dense blue ice carving valleys.' }
+  },
+  {
+    word: 'Coral Reef',
+    subtle: [
+      { hint: 'Polyp', rationale: 'Tiny soft marine organism secreting limestone skeleton.' },
+      { hint: 'Bleaching', rationale: 'Loss of symbiotic algae caused by warming waters.' },
+      { hint: 'Atoll', rationale: 'Ring-shaped reef enclosing a central lagoon.' }
+    ],
+    balanced: [
+      { hint: 'Fish', rationale: 'Clownfish, tangs, and angelfish darting among branches.' },
+      { hint: 'Limestone', rationale: 'Calcium carbonate mineral structure of the reef.' },
+      { hint: 'Lagoon', rationale: 'Sheltered warm turquoise water enclosed by reef.' }
+    ],
+    easy: [
+      { hint: 'Ocean', rationale: 'Warm shallow tropical saltwater home.' },
+      { hint: 'Colorful', rationale: 'Vibrant living undersea garden of marine biodiversity.' },
+      { hint: 'Undersea', rationale: 'Submerged natural marine sanctuary.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Undersea limestone barrier teeming with colorful marine life.' }
+  },
+  {
+    word: 'Desert Dunes',
+    subtle: [
+      { hint: 'Caravan', rationale: 'Line of camels trekking across wind-sculpted ridges.' },
+      { hint: 'Sahara', rationale: 'Vast North African arid sea of rolling hills.' },
+      { hint: 'Mirage', rationale: 'Heat shimmer illusion mimicking water on horizon.' }
+    ],
+    balanced: [
+      { hint: 'Sand', rationale: 'Fine golden silica grains blown into shifting mounds.' },
+      { hint: 'Ridges', rationale: 'Sharp crests carved and reshaped by prevailing wind.' },
+      { hint: 'Arid', rationale: 'Extremely dry climate with near-zero precipitation.' }
+    ],
+    easy: [
+      { hint: 'Wind', rationale: 'Air currents sculpting and migrating sand hills.' },
+      { hint: 'Hot', rationale: 'Blistering daytime surface temperatures.' },
+      { hint: 'Barren', rationale: 'Vast treeless expanse of golden sand.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Vast rolling ridges of wind-blown desert sand.' }
+  },
+  {
+    word: 'Rainforest',
+    subtle: [
+      { hint: 'Understory', rationale: 'Dark humid vegetation layer beneath treetop canopy.' },
+      { hint: 'Bromeliad', rationale: 'Epiphytic plant holding water pockets in leaves.' },
+      { hint: 'Amazon', rationale: 'Vast South American equatorial jungle basin.' }
+    ],
+    balanced: [
+      { hint: 'Canopy', rationale: 'Dense interlocking leafy ceiling blocking sunlight.' },
+      { hint: 'Jungle', rationale: 'Lush tropical biodiversity wilderness.' },
+      { hint: 'Humid', rationale: 'Moist steamy air saturated with continuous rain.' }
+    ],
+    easy: [
+      { hint: 'Trees', rationale: 'Towering hardwood giants draped with vines.' },
+      { hint: 'Green', rationale: 'Overwhelming color of endless lush foliage.' },
+      { hint: 'Tropical', rationale: 'Warm equatorial climate zone receiving downpours.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Dense tropical jungle biome with lush leafy canopy.' }
+  },
+  {
+    word: 'Lightning Storm',
+    subtle: [
+      { hint: 'Anvil', rationale: 'Flat spreading top of towering cumulonimbus cloud.' },
+      { hint: 'Barometer', rationale: 'Instrument dropping sharply as pressure falls.' },
+      { hint: 'Ozone', rationale: 'Sharp electric scent hanging in pre-storm breeze.' }
+    ],
+    balanced: [
+      { hint: 'Thunder', rationale: 'Booming sonic shockwave reverberating across hills.' },
+      { hint: 'Gale', rationale: 'Violent howling winds bending trees.' },
+      { hint: 'Downpour', rationale: 'Torrential curtain of blinding heavy rain.' }
+    ],
+    easy: [
+      { hint: 'Clouds', rationale: 'Dark bruised atmospheric thunderheads.' },
+      { hint: 'Flash', rationale: 'Sudden electrical discharges lighting up landscape.' },
+      { hint: 'Tempest', rationale: 'Violent atmospheric convective disturbance.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Severe atmospheric disturbance with thunder, rain, and flashes.' }
+  },
+  {
+    word: 'Grand Canyon',
+    subtle: [
+      { hint: 'Strata', rationale: 'Horizontal colorful sedimentary rock layers exposed.' },
+      { hint: 'Colorado', rationale: 'Mighty river carving gorge over six million years.' },
+      { hint: 'Mule', rationale: 'Pack animal carrying visitors down steep switchbacks.' }
+    ],
+    balanced: [
+      { hint: 'Arizona', rationale: 'Desert state containing the natural wonder.' },
+      { hint: 'Abyss', rationale: 'One-mile-deep chasm plunging to river bottom.' },
+      { hint: 'Rim', rationale: 'High sandstone edge offering breathtaking vistas.' }
+    ],
+    easy: [
+      { hint: 'Gorge', rationale: 'Colossal steep-walled natural geological ravine.' },
+      { hint: 'River', rationale: 'Flowing watercourse winding through canyon floor.' },
+      { hint: 'Vast', rationale: 'Immense scale spanning hundreds of miles.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal Arizona desert gorge carved by the Colorado River.' }
+  },
+  {
+    word: 'Cave System',
+    subtle: [
+      { hint: 'Spelunker', rationale: 'Explorer equipped with headlamp surveying chambers.' },
+      { hint: 'Guano', rationale: 'Nutrient-rich bat droppings carpeting limestone floor.' },
+      { hint: 'Echo', rationale: 'Acoustic reverberation through subterranean chambers.' }
+    ],
+    balanced: [
+      { hint: 'Tunnels', rationale: 'Interconnected passages winding through bedrock.' },
+      { hint: 'Stalactites', rationale: 'Mineral spears hanging down from stone ceilings.' },
+      { hint: 'Subterranean', rationale: 'Underground realm completely hidden from sun.' }
+    ],
+    easy: [
+      { hint: 'Dark', rationale: 'Pitch-black absence of any natural daylight.' },
+      { hint: 'Bats', rationale: 'Nocturnal winged mammals roosting in ceilings.' },
+      { hint: 'Underground', rationale: 'Subsurface limestone hollows and caverns.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Subterranean labyrinth of dark limestone caverns and tunnels.' }
+  },
+  {
+    word: 'Avalanche',
+    subtle: [
+      { hint: 'Slab', rationale: 'Cohesive snow layer fracturing and releasing downslope.' },
+      { hint: 'Transceiver', rationale: 'Beacon worn by skiers transmitting rescue signal.' },
+      { hint: 'Incline', rationale: 'Critical 30 to 45 degree mountain slope angle.' }
+    ],
+    balanced: [
+      { hint: 'Snowpack', rationale: 'Accumulated winter layers collapsing under stress.' },
+      { hint: 'Slide', rationale: 'Rapid downhill rush of millions of tons of snow.' },
+      { hint: 'Bury', rationale: 'Engulfing everything in path under dense packed white.' }
+    ],
+    easy: [
+      { hint: 'Mountain', rationale: 'Alpine peak where snow slope gives way.' },
+      { hint: 'Snow', rationale: 'Frozen winter precipitation mass.' },
+      { hint: 'Danger', rationale: 'Deadly sudden winter mountain hazard.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Massive rapid snowslide roaring down alpine mountainsides.' }
+  },
+  {
+    word: 'Tsunami',
+    subtle: [
+      { hint: 'Recede', rationale: 'Unusual rapid withdrawal of ocean water exposing seabed.' },
+      { hint: 'Subduction', rationale: 'Tectonic plate boundary slipping and lifting seafloor.' },
+      { hint: 'Buoy', rationale: 'Deep-ocean pressure sensor warning of passing surges.' }
+    ],
+    balanced: [
+      { hint: 'Surge', rationale: 'Towering wall of water rushing miles inland.' },
+      { hint: 'Harbor', rationale: 'Coastal bay funneling devastating wave energy.' },
+      { hint: 'Inundation', rationale: 'Submerging coastal cities under saltwater floods.' }
+    ],
+    easy: [
+      { hint: 'Wave', rationale: 'Massive destructive oceanic wall of water.' },
+      { hint: 'Coast', rationale: 'Shoreline communities struck by tidal surges.' },
+      { hint: 'Flooding', rationale: 'Immense seawater deluge swallowing land.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Devastating oceanic wall of water triggered by sea quakes.' }
+  },
+  {
+    word: 'Geyser',
+    subtle: [
+      { hint: 'Plumbing', rationale: 'Narrow underground volcanic rock fractures and chambers.' },
+      { hint: 'Superheated', rationale: 'Water heated past boiling point under subterranean pressure.' },
+      { hint: 'Oldfaithful', rationale: 'Famous regular erupting feature in Yellowstone.' }
+    ],
+    balanced: [
+      { hint: 'Steam', rationale: 'White hot vapor cloud billowing from opening.' },
+      { hint: 'Spout', rationale: 'Vertical jet blasting boiling water 100 feet.' },
+      { hint: 'Thermal', rationale: 'Geothermal volcanic energy powering eruption.' }
+    ],
+    easy: [
+      { hint: 'Erupt', rationale: 'Cyclical pressurized discharge shooting upward.' },
+      { hint: 'Water', rationale: 'Scalding liquid reservoir discharged into sky.' },
+      { hint: 'Yellowstone', rationale: 'National park home to world greatest concentration.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Geothermal boiling spring shooting cyclical jets of water and steam.' }
+  },
+  {
+    word: 'Tornado',
+    subtle: [
+      { hint: 'Fujita', rationale: 'Damage rating scale ranking storm strength from F0 to F5.' },
+      { hint: 'Sirens', rationale: 'Town emergency acoustic alarms warning residents to seek cellar.' },
+      { hint: 'Debris', rationale: 'Shattered building materials swirling in dark vortex.' }
+    ],
+    balanced: [
+      { hint: 'Funnel', rationale: 'Tapered rotating cloud column reaching down to touch earth.' },
+      { hint: 'Vortex', rationale: 'Violently spinning air column with low center pressure.' },
+      { hint: 'Twister', rationale: 'Colloquial American moniker for the rotating storm.' }
+    ],
+    easy: [
+      { hint: 'Wind', rationale: 'Extreme rotary speeds exceeding 300 miles per hour.' },
+      { hint: 'Storm', rationale: 'Supercell severe weather system spawning vortex.' },
+      { hint: 'Spin', rationale: 'Violent rotational atmospheric motion.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Violently rotating funnel cloud touching ground with extreme winds.' }
+  },
+  {
+    word: 'Sunburst',
+    subtle: [
+      { hint: 'Crepuscular', rationale: 'Ray shafts radiating from sun through gaps in cloud canopy.' },
+      { hint: 'Corona', rationale: 'Glowing plasma halo surrounding stellar disc.' },
+      { hint: 'Horizon', rationale: 'Skyline line crossed at dawn by radiant beams.' }
+    ],
+    balanced: [
+      { hint: 'Beams', rationale: 'Radiant straight shafts of golden daylight.' },
+      { hint: 'Golden', rationale: 'Warm amber hue illuminating cloud edges.' },
+      { hint: 'Radiance', rationale: 'Brilliant emission of light breaking through overcast.' }
+    ],
+    easy: [
+      { hint: 'Light', rationale: 'Luminous solar illumination.' },
+      { hint: 'Dawn', rationale: 'Morning emergence of daylight across sky.' },
+      { hint: 'Bright', rationale: 'Dazzling intense visual clarity.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Dramatic fan of radiant sunlight beams breaking through clouds.' }
+  },
+  {
+    word: 'Meteor Shower',
+    subtle: [
+      { hint: 'Perseids', rationale: 'Famous annual August display radiating from Perseus.' },
+      { hint: 'Comet', rationale: 'Dirty snowball leaving icy dust trail in orbit.' },
+      { hint: 'Radiant', rationale: 'Point in night sky from which streaks appear to originate.' }
+    ],
+    balanced: [
+      { hint: 'Streaks', rationale: 'Fast luminous lines burning across darkness.' },
+      { hint: 'Shooting', rationale: 'Folklore moniker describing falling stars.' },
+      { hint: 'Reentry', rationale: 'Space debris speeding through upper air incinerating into light.' }
+    ],
+    easy: [
+      { hint: 'Stars', rationale: 'Celestial objects seemingly falling across sky.' },
+      { hint: 'Night', rationale: 'Dark starry hours needed to spot streaks.' },
+      { hint: 'Sky', rationale: 'Cosmic overhead dome where display occurs.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Nocturnal display of celestial dust burning as shooting stars.' }
+  },
+  {
+    word: 'Sand Dune',
+    subtle: [
+      { hint: 'Slipface', rationale: 'Steep leeward slope down which loose grains cascade.' },
+      { hint: 'Barchan', rationale: 'Crescent-shaped mound with horns pointing downwind.' },
+      { hint: 'Grains', rationale: 'Microscopic eroded quartz particles.' }
+    ],
+    balanced: [
+      { hint: 'Mound', rationale: 'Hill formed by wind accumulation.' },
+      { hint: 'Wind', rationale: 'Breeze blowing and shaping rolling crests.' },
+      { hint: 'Shifting', rationale: 'Constantly migrating across desert plains.' }
+    ],
+    easy: [
+      { hint: 'Desert', rationale: 'Vast arid wilderness where dunes thrive.' },
+      { hint: 'Beach', rationale: 'Coastal shoreline where sand hills buffer waves.' },
+      { hint: 'Golden', rationale: 'Warm yellow color of sunlit silica slopes.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Wind-sculpted golden hill of shifting sand.' }
+  },
+  {
+    word: 'Oasis',
+    subtle: [
+      { hint: 'Aquifer', rationale: 'Underground pressurized water pocket reaching surface.' },
+      { hint: 'Dates', rationale: 'Sweet fruit harvested from towering palm groves.' },
+      { hint: 'Caravan', rationale: 'Desert traders stopping to replenish water skins.' }
+    ],
+    balanced: [
+      { hint: 'Palms', rationale: 'Date trees growing around fresh water pool.' },
+      { hint: 'Spring', rationale: 'Natural freshwater bubbling up in arid basin.' },
+      { hint: 'Haven', rationale: 'Life-saving green sanctuary amidst arid wasteland.' }
+    ],
+    easy: [
+      { hint: 'Desert', rationale: 'Vast barren sands surrounding the fertile pocket.' },
+      { hint: 'Water', rationale: 'Precious liquid sustaining green vegetation.' },
+      { hint: 'Green', rationale: 'Lush plant foliage contrasting with yellow sand.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fertile green freshwater haven surrounded by desert sands.' }
+  },
+  {
+    word: 'Volcanic Crater',
+    subtle: [
+      { hint: 'Caldera', rationale: 'Massive circular basin formed after magma chamber collapse.' },
+      { hint: 'Fumarole', rationale: 'Venting sulfurous steam opening in crater floor.' },
+      { hint: 'Basalt', rationale: 'Hard black volcanic rock lining rim.' }
+    ],
+    balanced: [
+      { hint: 'Rim', rationale: 'Elevated circular crest looking down into caldera.' },
+      { hint: 'Bowl', rationale: 'Deep circular depression at mountain summit.' },
+      { hint: 'Lava', rationale: 'Molten lake or cooled plug filling bottom.' }
+    ],
+    easy: [
+      { hint: 'Summit', rationale: 'Topmost elevation of the volcanic mountain.' },
+      { hint: 'Vent', rationale: 'Conduit through which magma was ejected.' },
+      { hint: 'Ash', rationale: 'Grey volcanic powder coating slopes.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Bowl-shaped summit depression forged by volcanic eruptions.' }
+  },
+  {
+    word: 'Mangrove',
+    subtle: [
+      { hint: 'Brackish', rationale: 'Mixture of river freshwater and ocean saltwater.' },
+      { hint: 'Prop-roots', rationale: 'Arching stilt roots anchoring trees in soft tidal mud.' },
+      { hint: 'Nursery', rationale: 'Safe tangle where young fish mature sheltered from predators.' }
+    ],
+    balanced: [
+      { hint: 'Swamp', rationale: 'Flooded coastal wetland ecosystem.' },
+      { hint: 'Stilt', rationale: 'Above-ground root network bracing trees against tides.' },
+      { hint: 'Coastal', rationale: 'Intertidal shoreline between land and sea.' }
+    ],
+    easy: [
+      { hint: 'Roots', rationale: 'Complex tangled wooden pillars rising from water.' },
+      { hint: 'Trees', rationale: 'Salt-tolerant shrubs and timber groves.' },
+      { hint: 'Tidal', rationale: 'Water levels rising and falling with ocean tides.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Salt-tolerant coastal swamp forest with tangled stilt roots.' }
+  },
+  {
+    word: 'Tundra',
+    subtle: [
+      { hint: 'Permafrost', rationale: 'Permanently frozen subsoil never thawing in summer.' },
+      { hint: 'Lichens', rationale: 'Hardy crustose organisms clinging to wind-scraped rocks.' },
+      { hint: 'Muskox', rationale: 'Long-haired shaggy Arctic herbivore grazing plains.' }
+    ],
+    balanced: [
+      { hint: 'Treeless', rationale: 'Landscape devoid of timber due to frozen soil.' },
+      { hint: 'Arctic', rationale: 'High circumpolar northern latitude habitat.' },
+      { hint: 'Barren', rationale: 'Vast flat expanse swept by freezing winds.' }
+    ],
+    easy: [
+      { hint: 'Cold', rationale: 'Subzero temperatures dominating most months.' },
+      { hint: 'Frost', rationale: 'Ice crystals encrusting low-growing shrubs.' },
+      { hint: 'Snow', rationale: 'Wintry frozen white blanket.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Treeless frozen Arctic biome underlain by permafrost.' }
+  },
+  {
+    word: 'Fjord',
+    subtle: [
+      { hint: 'Glacial', rationale: 'U-shaped marine inlet carved by ancient ice movement.' },
+      { hint: 'Norway', rationale: 'Scandinavian kingdom famous for deep coastal inlets.' },
+      { hint: 'Steep', rationale: 'Sheer vertical rock walls plunging hundreds of feet.' }
+    ],
+    balanced: [
+      { hint: 'Inlet', rationale: 'Narrow arm of the sea extending far into mountains.' },
+      { hint: 'Cliffs', rationale: 'Towering granite precipices flanking calm seawater.' },
+      { hint: 'Waterway', rationale: 'Deep navigable corridor navigated by cruise ships.' }
+    ],
+    easy: [
+      { hint: 'Sea', rationale: 'Saltwater ocean filling the deep canyon.' },
+      { hint: 'Mountains', rationale: 'Alpine crags rising directly out of water.' },
+      { hint: 'Cruise', rationale: 'Passenger vessels sailing through narrow channels.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Steep-walled glacier-carved marine inlet in mountainous coasts.' }
+  },
+  {
+    word: 'Stalactite',
+    subtle: [
+      { hint: 'Calcite', rationale: 'Dissolved mineral precipitating from water droplets.' },
+      { hint: 'Speleothem', rationale: 'Scientific family name for secondary cave formations.' },
+      { hint: 'Millennia', rationale: 'Centuries required to grow a single inch of stone.' }
+    ],
+    balanced: [
+      { hint: 'Hanging', rationale: 'Suspended down from limestone cave ceiling.' },
+      { hint: 'Drip', rationale: 'Percolating groundwater leaving mineral rings.' },
+      { hint: 'Icicle', rationale: 'Stone shape resembling frozen winter ice cone.' }
+    ],
+    easy: [
+      { hint: 'Ceiling', rationale: 'Subterranean cavern roof where mineral cone starts.' },
+      { hint: 'Cave', rationale: 'Underground limestone chamber location.' },
+      { hint: 'Pointed', rationale: 'Tapered conical mineral spear shape.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pointed mineral formation hanging down from cave ceilings.' }
+  },
+  {
+    word: 'Hot Spring',
+    subtle: [
+      { hint: 'Minerals', rationale: 'Dissolved silica and sulfur therapeutic bath salts.' },
+      { hint: 'Onsen', rationale: 'Traditional Japanese geothermal bathhouse tradition.' },
+      { hint: 'Thermal', rationale: 'Subterranean volcanic heat warming ground reservoir.' }
+    ],
+    balanced: [
+      { hint: 'Boiling', rationale: 'Steaming temperatures bubbling from deep earth.' },
+      { hint: 'Bath', rationale: 'Soaking pool relaxing muscles in open air.' },
+      { hint: 'Steam', rationale: 'Warm vapor rising off turquoise pool surface.' }
+    ],
+    easy: [
+      { hint: 'Pool', rationale: 'Natural basin holding geothermally warmed water.' },
+      { hint: 'Soak', rationale: 'Resting comfortably in warm geothermal waters.' },
+      { hint: 'Warmth', rationale: 'Soothing temperature defying cold mountain air.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Geothermally heated natural mineral water pool.' }
+  },
+  {
+    word: 'Wildfire',
+    subtle: [
+      { hint: 'Embers', rationale: 'Glowing airborne cinders blown miles ahead of front.' },
+      { hint: 'Canadair', rationale: 'Water-bomber aircraft scooping lake water to drop.' },
+      { hint: 'Drought', rationale: 'Arid parched vegetation creating explosive tinder.' }
+    ],
+    balanced: [
+      { hint: 'Blaze', rationale: 'Uncontrollable wall of fire advancing through timber.' },
+      { hint: 'Smoke', rationale: 'Massive dark haze choking skies across regions.' },
+      { hint: 'Forest', rationale: 'Woodland landscape consumed by spreading flames.' }
+    ],
+    easy: [
+      { hint: 'Flames', rationale: 'Raging burning tongues incinerating trees.' },
+      { hint: 'Fire', rationale: 'Destructive thermal combustion.' },
+      { hint: 'Burn', rationale: 'Consuming brush and canopy in natural disaster.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Uncontrollable forest blaze driven by winds and drought.' }
+  },
+  {
+    word: 'Tide Pool',
+    subtle: [
+      { hint: 'Intertidal', rationale: 'Marine shoreline zone exposed at low water levels.' },
+      { hint: 'Anemone', rationale: 'Flower-like tentacled creature attached to pool rocks.' },
+      { hint: 'Barnacles', rationale: 'Crustaceans cemented to stone filtering water.' }
+    ],
+    balanced: [
+      { hint: 'Crabs', rationale: 'Small crustaceans scuttling beneath submerged seaweed.' },
+      { hint: 'Starfish', rationale: 'Five-armed echinoderm clinging to rocks in basin.' },
+      { hint: 'Rocks', rationale: 'Coastal stone crevices trapping seawater.' }
+    ],
+    easy: [
+      { hint: 'Ocean', rationale: 'Marine saltwater environment replenishing pool.' },
+      { hint: 'Coast', rationale: 'Rocky shoreline where pools form.' },
+      { hint: 'Shallow', rationale: 'Clear puddle holding miniature marine worlds.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Rocky coastal puddle trapping seawater and marine creatures.' }
+  },
+  {
+    word: 'Iceberg',
+    subtle: [
+      { hint: 'Titanic', rationale: 'Ocean liner doomed by underwater mass collision.' },
+      { hint: 'Buoyancy', rationale: 'Physics principle floating nine-tenths underwater.' },
+      { hint: 'Bergy-bit', rationale: 'Medium floating chunk calved from main mountain.' }
+    ],
+    balanced: [
+      { hint: 'Floating', rationale: 'Drifting with ocean currents across polar seas.' },
+      { hint: 'Calved', rationale: 'Broken off from coastal glacier terminus.' },
+      { hint: 'Massive', rationale: 'Colossal mountain of freshwater ice.' }
+    ],
+    easy: [
+      { hint: 'Ice', rationale: 'Solid frozen water composing entire structure.' },
+      { hint: 'Ocean', rationale: 'Saltwater sea where frozen mass drifts.' },
+      { hint: 'Cold', rationale: 'Subzero polar temperatures keeping ice solid.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal mass of freshwater ice drifting in polar oceans.' }
+  },
+  {
+    word: 'Forest Canopy',
+    subtle: [
+      { hint: 'Emergent', rationale: 'Giant solitary trees punching through upper green roof.' },
+      { hint: 'Epiphytes', rationale: 'Air plants roosting high on tree branches.' },
+      { hint: 'Lianas', rationale: 'Thick woody vines climbing to reach sunlight.' }
+    ],
+    balanced: [
+      { hint: 'Treetops', rationale: 'Interlocking high branches forming a ceiling.' },
+      { hint: 'Leaves', rationale: 'Dense foliage capturing maximum photosynthesis.' },
+      { hint: 'Overhead', rationale: 'Living green roof sheltering the forest floor.' }
+    ],
+    easy: [
+      { hint: 'Branches', rationale: 'Massive limbs spreading wide across high skies.' },
+      { hint: 'Green', rationale: 'Emerald expanse viewed from airplanes.' },
+      { hint: 'Jungle', rationale: 'Lush tropical ecosystem topped by canopy.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'High leafy ceiling formed by interlocking treetops.' }
+  },
+  {
+    word: 'Eclipse',
+    subtle: [
+      { hint: 'Totality', rationale: 'Complete coverage plunging daytime into twilight.' },
+      { hint: 'Umbra', rationale: 'Central darkest cone of shadow cast on Earth.' },
+      { hint: 'Corona', rationale: 'Pearly white stellar atmosphere flaring around black disc.' }
+    ],
+    balanced: [
+      { hint: 'Shadow', rationale: 'Celestial silhouette cast across landscape.' },
+      { hint: 'Moon', rationale: 'Orb passing directly between Earth and solar disc.' },
+      { hint: 'Alignment', rationale: 'Syzygy straight line of three celestial spheres.' }
+    ],
+    easy: [
+      { hint: 'Sun', rationale: 'Star blocked during daylight phenomenon.' },
+      { hint: 'Darkness', rationale: 'Eerie midday twilight cooling ambient air.' },
+      { hint: 'Sky', rationale: 'Cosmic overhead theater where event unfolds.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Celestial alignment casting shadow and darkening the sun.' }
+  },
+  {
+    word: 'Thunderstorm',
+    subtle: [
+      { hint: 'Supercell', rationale: 'Severe rotating storm with deep persistent updraft.' },
+      { hint: 'Downburst', rationale: 'Violent blast of sinking air hitting ground.' },
+      { hint: 'Hailstones', rationale: 'Frozen balls of ice pelted down by updrafts.' }
+    ],
+    balanced: [
+      { hint: 'Lightning', rationale: 'Jagged electrostatic flashes splitting dark clouds.' },
+      { hint: 'Rumble', rationale: 'Deep resonant sonic boom shaking windows.' },
+      { hint: 'Downpour', rationale: 'Drenching torrent of rain flooding gutters.' }
+    ],
+    easy: [
+      { hint: 'Rain', rationale: 'Heavy precipitation falling in sheets.' },
+      { hint: 'Clouds', rationale: 'Dark ominous cumulonimbus thunderheads.' },
+      { hint: 'Boom', rationale: 'Loud acoustic detonation following flashes.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Violent convective weather system with thunder and lightning.' }
+  },
+  {
+    word: 'Sequoia Tree',
+    subtle: [
+      { hint: 'General', rationale: 'Sherman tree holding title of largest living single stem.' },
+      { hint: 'Bark', rationale: 'Fibrous spongy cinnamon-red fire-resistant trunk skin.' },
+      { hint: 'Millennia', rationale: 'Living specimens surviving over three thousand years.' }
+    ],
+    balanced: [
+      { hint: 'Giant', rationale: 'Massive trunk girth reaching thirty feet across.' },
+      { hint: 'Redwood', rationale: 'Botanical family of majestic California timber giants.' },
+      { hint: 'Trunk', rationale: 'Colossal fluted wooden column soaring into sky.' }
+    ],
+    easy: [
+      { hint: 'Forest', rationale: 'Sierra Nevada mountain groves where giants stand.' },
+      { hint: 'Tall', rationale: 'Towering canopy scraping hundreds of feet.' },
+      { hint: 'Wood', rationale: 'Ancient aromatic fibrous heartwood.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal ancient California timber giant with fireproof bark.' }
+  },
+  {
+    word: 'Bioluminescence',
+    subtle: [
+      { hint: 'Luciferin', rationale: 'Chemical substrate oxidized to emit cold light.' },
+      { hint: 'Abyssal', rationale: 'Deep midnight ocean zone where 90% of creatures glow.' },
+      { hint: 'Anglerfish', rationale: 'Deep-sea predator dangling glowing lure above jaws.' }
+    ],
+    balanced: [
+      { hint: 'Plankton', rationale: 'Microscopic dinoflagellates lighting up crashing waves.' },
+      { hint: 'Fireflies', rationale: 'Summer beetles flashing rhythmic yellow mating signals.' },
+      { hint: 'Glow', rationale: 'Eerie blue or green chemical light emitted by organisms.' }
+    ],
+    easy: [
+      { hint: 'Light', rationale: 'Natural illumination generated without heat.' },
+      { hint: 'Ocean', rationale: 'Marine realm where glowing creatures thrive.' },
+      { hint: 'Shine', rationale: 'Luminescence illuminating deep dark waters.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Cold living light emitted by marine organisms and fireflies.' }
+  },
+  {
+    word: 'Mist',
+    subtle: [
+      { hint: 'Dewpoint', rationale: 'Temperature at which invisible water vapor condenses.' },
+      { hint: 'Valley', rationale: 'Low-lying mountain basin where cool moisture settles.' },
+      { hint: 'Haze', rationale: 'Soft diffuse atmospheric obscuration.' }
+    ],
+    balanced: [
+      { hint: 'Droplets', rationale: 'Suspended microscopic liquid water particles.' },
+      { hint: 'Shrouded', rationale: 'Landscapes veiled in mysterious pale vapor.' },
+      { hint: 'Morning', rationale: 'Early dawn hours when ground cool condenses fog.' }
+    ],
+    easy: [
+      { hint: 'Fog', rationale: 'Dense ground-level cloud reducing visibility.' },
+      { hint: 'Damp', rationale: 'Moist humid feeling in cool air.' },
+      { hint: 'Vapor', rationale: 'Fine water aerosol floating in air.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fine aerosol of suspended water droplets shrouding valleys.' }
+  },
+  {
+    word: 'Canyon',
+    subtle: [
+      { hint: 'Erosion', rationale: 'Gradual wearing down of bedrock by river flow.' },
+      { hint: 'Strata', rationale: 'Exposed horizontal colored geological stone bands.' },
+      { hint: 'Plateau', rationale: 'Elevated flat tableland dissected by deep gorges.' }
+    ],
+    balanced: [
+      { hint: 'Gorge', rationale: 'Steep narrow rocky ravine cut by water.' },
+      { hint: 'Cliffs', rationale: 'Sheer vertical rock walls dropping to canyon floor.' },
+      { hint: 'Ravine', rationale: 'Deep steep-sided valley cut into earth.' }
+    ],
+    easy: [
+      { hint: 'River', rationale: 'Flowing water carving chasm over millions of years.' },
+      { hint: 'Deep', rationale: 'Significant vertical distance from rim to bottom.' },
+      { hint: 'Valley', rationale: 'Steep-walled geological depression.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Deep steep-walled ravine carved into bedrock by rivers.' }
+  }
+];
+
+// Clean any special characters in hints
+nature.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part10_nature.json', JSON.stringify({ nature }, null, 2), 'utf8');
+console.log('Successfully wrote part10_nature.json (37 words)');

@@ -1,0 +1,660 @@
+const fs = require('fs');
+
+const sports = [
+  {
+    word: 'Soccer',
+    subtle: [
+      { hint: 'Studs', rationale: 'Cleats under boot soles gripping damp grass turf.' },
+      { hint: 'Offside', rationale: 'Tactical positioning rule penalizing forward poachers.' },
+      { hint: 'Penalty', rationale: 'Direct spot kick taken 12 yards from goal line.' }
+    ],
+    balanced: [
+      { hint: 'Dribble', rationale: 'Skillful footwork maneuvering ball past defenders.' },
+      { hint: 'Goalpost', rationale: 'White rectangular frame backed by mesh netting.' },
+      { hint: 'Referee', rationale: 'Match official brandishing yellow and red cards.' }
+    ],
+    easy: [
+      { hint: 'Pitch', rationale: 'Marked green grass field of play.' },
+      { hint: 'Kick', rationale: 'Primary foot action striking ball.' },
+      { hint: 'Ball', rationale: 'Hexagonal-stitched spherical leather match sphere.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'World most popular team sport kicked across grass pitches.' }
+  },
+  {
+    word: 'Basketball',
+    subtle: [
+      { hint: 'Squeak', rationale: 'Audible friction sound of rubber sneakers on hardwood floor.' },
+      { hint: 'Travel', rationale: 'Rule violation taking steps without bouncing.' },
+      { hint: 'Alley-oop', rationale: 'High lob pass slammed down mid-air into hoop.' }
+    ],
+    balanced: [
+      { hint: 'Dribble', rationale: 'Bouncing pebbled leather ball continuously with hand.' },
+      { hint: 'Hoop', rationale: 'Orange iron rim suspended 10 feet with cord net.' },
+      { hint: 'Dunk', rationale: 'Forceful airborne slam through the basket.' }
+    ],
+    easy: [
+      { hint: 'Court', rationale: 'Hardwood indoor polished playing surface.' },
+      { hint: 'Shoot', rationale: 'Arced shot aiming for the hoop.' },
+      { hint: 'Net', rationale: 'White cord funnel swishing on clean shots.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fast-paced hoop sport played on polished hardwood courts.' }
+  },
+  {
+    word: 'Tennis',
+    subtle: [
+      { hint: 'Deuce', rationale: 'Tied 40-all score requiring two consecutive points.' },
+      { hint: 'Baseline', rationale: 'Boundary line where long groundstroke rallies unfold.' },
+      { hint: 'Drop', rationale: 'Feather-light delicate shot landing just over net.' }
+    ],
+    balanced: [
+      { hint: 'Racket', rationale: 'Strung oval frame swung to return ball.' },
+      { hint: 'Serve', rationale: 'Overhead opening stroke launching point at speed.' },
+      { hint: 'Volley', rationale: 'Punching ball out of mid-air before bounce.' }
+    ],
+    easy: [
+      { hint: 'Court', rationale: 'Clay, grass, or hard playing surface.' },
+      { hint: 'Net', rationale: 'Center barrier dividing opponents.' },
+      { hint: 'Ace', rationale: 'Untouchable serve winning point immediately.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Racket sport played across a net on clay, grass, or hard courts.' }
+  },
+  {
+    word: 'Swimming',
+    subtle: [
+      { hint: 'Turn', rationale: 'Underwater somersault push-off off pool end wall.' },
+      { hint: 'Chlorine', rationale: 'Chemical disinfectant scent filling indoor aquatic halls.' },
+      { hint: 'Blocks', rationale: 'Angled starting platforms dived from at buzzer.' }
+    ],
+    balanced: [
+      { hint: 'Goggles', rationale: 'Watertight eyewear protecting eyes under pool water.' },
+      { hint: 'Lanes', rationale: 'Floating rope lines separating competitors.' },
+      { hint: 'Stroke', rationale: 'Freestyle, backstroke, breaststroke arm motions.' }
+    ],
+    easy: [
+      { hint: 'Pool', rationale: 'Tiled Olympic basin of water.' },
+      { hint: 'Water', rationale: 'Aquatic medium navigated by racers.' },
+      { hint: 'Dive', rationale: 'Headfirst launch into the water.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Aquatic sport racing across lanes in Olympic pools.' }
+  },
+  {
+    word: 'Baseball',
+    subtle: [
+      { hint: 'Dugout', rationale: 'Sunken sideline shelter where batting order sits.' },
+      { hint: 'Umpire', rationale: 'Masked official calling balls, strikes, and outs.' },
+      { hint: 'Bunt', rationale: 'Delicate tap tapping ball into infield grass.' }
+    ],
+    balanced: [
+      { hint: 'Bat', rationale: 'Tapered wooden or aluminum club swung at pitches.' },
+      { hint: 'Glove', rationale: 'Padded leather mitt catching fly balls.' },
+      { hint: 'Homerun', rationale: 'Hit clearing outfield fence for four-base circuit.' }
+    ],
+    easy: [
+      { hint: 'Diamond', rationale: 'Infield dirt configuration linking bases.' },
+      { hint: 'Pitcher', rationale: 'Mound thrower firing fastballs to catcher.' },
+      { hint: 'Bases', rationale: 'Four canvas cushions rounded by runners.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Classic American pastime played with bats, gloves, and diamonds.' }
+  },
+  {
+    word: 'Bowling',
+    subtle: [
+      { hint: 'Gutter', rationale: 'Side channel catching misaimed rolling balls.' },
+      { hint: 'Split', rationale: 'Difficult pin configuration with wide gap remaining.' },
+      { hint: 'Turf', rationale: 'Three consecutive strikes forming a turkey.' }
+    ],
+    balanced: [
+      { hint: 'Pins', rationale: 'Ten white wooden targets arrayed in triangle.' },
+      { hint: 'Strike', rationale: 'Knocking down all ten pins on first roll.' },
+      { hint: 'Alley', rationale: 'Oiled maple or synthetic lane.' }
+    ],
+    easy: [
+      { hint: 'Ball', rationale: 'Heavy three-hole urethane sphere.' },
+      { hint: 'Spare', rationale: 'Clearing remaining pins on second try.' },
+      { hint: 'Shoes', rationale: 'Smooth-soled rented footwear sliding on approach.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Target sport rolling heavy balls down oiled lanes at ten pins.' }
+  },
+  {
+    word: 'Snowboarding',
+    subtle: [
+      { hint: 'Bindings', rationale: 'Straps locking boots securely to single board.' },
+      { hint: 'Carve', rationale: 'Digging metal steel edge into packed snow on turns.' },
+      { hint: 'Goggles', rationale: 'Tinted eyewear shielding against alpine blizzard.' }
+    ],
+    balanced: [
+      { hint: 'Halfpipe', rationale: 'Snow ditch carved for acrobatic aerial spins.' },
+      { hint: 'Slope', rationale: 'Mountain descent traversed sideways on edge.' },
+      { hint: 'Powder', rationale: 'Fresh fluffy alpine snow ideal for riding.' }
+    ],
+    easy: [
+      { hint: 'Snow', rationale: 'Frozen winter precipitous surface.' },
+      { hint: 'Glide', rationale: 'Gliding downhill sideways across powdered slopes.' },
+      { hint: 'Winter', rationale: 'Cold season when alpine ski resorts operate.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winter mountain sport descending snowy slopes on a single deck.' }
+  },
+  {
+    word: 'Volleyball',
+    subtle: [
+      { hint: 'Rotation', rationale: 'Clockwise shifting of player positions on serve turnover.' },
+      { hint: 'Knee-pads', rationale: 'Cushioned protective knee sleeves for floor dives.' },
+      { hint: 'Setter', rationale: 'Playmaker lofting soft aerial touch for hitters.' }
+    ],
+    balanced: [
+      { hint: 'Spike', rationale: 'Hard downward smash leaping above net top.' },
+      { hint: 'Bump', rationale: 'Forearm pass controlling incoming hard serves.' },
+      { hint: 'Block', rationale: 'Two-handed wall jumping at net to reject spike.' }
+    ],
+    easy: [
+      { hint: 'Net', rationale: 'High mesh barrier separating six-player teams.' },
+      { hint: 'Beach', rationale: 'Sandy two-on-two summer outdoor variation.' },
+      { hint: 'Serve', rationale: 'Overhead strike putting ball into play.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'High-energy team sport bumping and spiking balls over a high net.' }
+  },
+  {
+    word: 'Formula 1',
+    subtle: [
+      { hint: 'Chicane', rationale: 'Tight artificial S-curve slowing racecars down.' },
+      { hint: 'Halo', rationale: 'Titanium protective cockpit hoop shielding driver head.' },
+      { hint: 'Telemetries', rationale: 'Real-time wireless engineering data streamed to pit.' }
+    ],
+    balanced: [
+      { hint: 'Pitstop', rationale: 'Two-second four-wheel tire change by pit crew.' },
+      { hint: 'Circuit', rationale: 'Paved closed-course race track like Monza.' },
+      { hint: 'Podium', rationale: 'Top-three celebration spraying champagne.' }
+    ],
+    easy: [
+      { hint: 'Fast', rationale: 'Blistering speeds exceeding 300 km/h.' },
+      { hint: 'Tires', rationale: 'Smooth slick racing rubber compounds.' },
+      { hint: 'Driver', rationale: 'Elite pilot steering open-wheel single-seater.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pinnacle of open-wheel single-seater motorsport racing.' }
+  },
+  {
+    word: 'Rugby',
+    subtle: [
+      { hint: 'Try', rationale: 'Five-point score grounding ball over opponent goal line.' },
+      { hint: 'Lineout', rationale: 'Aerial toss restart hoisting teammates into air.' },
+      { hint: 'Mouthguard', rationale: 'Rubber dental protector against full-contact impacts.' }
+    ],
+    balanced: [
+      { hint: 'Scrum', rationale: 'Interlocked pack of forwards pushing for ball.' },
+      { hint: 'Tackle', rationale: 'Full-body collision taking runner to ground.' },
+      { hint: 'Punt', rationale: 'Spiral kick booting oval ball downfield.' }
+    ],
+    easy: [
+      { hint: 'Oval', rationale: 'Oblate spheroid shape of leather match ball.' },
+      { hint: 'Pitch', rationale: 'Grass field bounded by H-shaped uprights.' },
+      { hint: 'Pass', rationale: 'Strict backwards ball transfer to teammates.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tough contact sport passing an oval ball backwards.' }
+  },
+  {
+    word: 'Badminton',
+    subtle: [
+      { hint: 'Feathers', rationale: 'Goose quills glued into cork base of projectile.' },
+      { hint: 'Drop', rationale: 'Delicate tap skimming just over tape into forecourt.' },
+      { hint: 'Grip', rationale: 'Taped handle of slender lightweight racket.' }
+    ],
+    balanced: [
+      { hint: 'Shuttlecock', rationale: 'Conical feathered projectile hit back and forth.' },
+      { hint: 'Smash', rationale: 'Steep steep downwards overhead kill shot.' },
+      { hint: 'Racket', rationale: 'Ultralight strung carbon fiber wand.' }
+    ],
+    easy: [
+      { hint: 'Net', rationale: 'Mesh barrier stretched across court.' },
+      { hint: 'Court', rationale: 'Indoor rectangular floor with tramlines.' },
+      { hint: 'Fast', rationale: 'Smash speeds setting racket sport records.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fastest racket sport batting a feathered shuttlecock over a net.' }
+  },
+  {
+    word: 'Gymnastics',
+    subtle: [
+      { hint: 'Chalk', rationale: 'Magnesium powder coating palms to prevent slipping.' },
+      { hint: 'Dismount', rationale: 'Acrobatic airborne finish landing securely on mat.' },
+      { hint: 'Leotard', rationale: 'Sparkling elastic performance suit worn by athletes.' }
+    ],
+    balanced: [
+      { hint: 'Vault', rationale: 'Apparatus sprinted toward before springing overhead.' },
+      { hint: 'Beam', rationale: 'Four-inch narrow elevated balance plank.' },
+      { hint: 'Rings', rationale: 'Suspended circular handgrips demonstrating iron cross.' }
+    ],
+    easy: [
+      { hint: 'Flip', rationale: 'Aerial rotation over floor mat.' },
+      { hint: 'Mat', rationale: 'Cushioned foam landing surface.' },
+      { hint: 'Flexibility', rationale: 'Extreme range of motion and core balance.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Olympic discipline of flips, balance beams, and floor routines.' }
+  },
+  {
+    word: 'Golf',
+    subtle: [
+      { hint: 'Divot', rationale: 'Sod turf chunk sliced out by iron club head.' },
+      { hint: 'Fairway', rationale: 'Close-mown grass corridor leading toward green.' },
+      { hint: 'Birdie', rationale: 'Scoring one stroke under designated par.' }
+    ],
+    balanced: [
+      { hint: 'Clubs', rationale: 'Bag of drivers, irons, and putters carried.' },
+      { hint: 'Bunker', rationale: 'Hazardous sand pit flanking target green.' },
+      { hint: 'Putter', rationale: 'Flat-faced club rolling ball into cup.' }
+    ],
+    easy: [
+      { hint: 'Tee', rationale: 'Wooden peg elevating ball for opening drive.' },
+      { hint: 'Hole', rationale: 'Four-inch cup sunk into green marked with pin.' },
+      { hint: 'Green', rationale: 'Manicured smooth putting surface.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Precision outdoor sport hitting dimpled balls into 18 holes.' }
+  },
+  {
+    word: 'Ice Hockey',
+    subtle: [
+      { hint: 'Zamboni', rationale: 'Resurfacing machine smoothing frozen sheet.' },
+      { hint: 'Crease', rationale: 'Blue semi-circular zone protecting goaltender.' },
+      { hint: 'Slapshot', rationale: 'High-windup booming strike driving puck at 100 mph.' }
+    ],
+    balanced: [
+      { hint: 'Puck', rationale: 'Vulcanized black rubber disc slid across rink.' },
+      { hint: 'Skates', rationale: 'Steel blades gliding across frozen sheet.' },
+      { hint: 'Stick', rationale: 'Curved composite blade handling puck.' }
+    ],
+    easy: [
+      { hint: 'Rink', rationale: 'Enclosed frozen arena surrounded by glass.' },
+      { hint: 'Goal', rationale: 'Mesh cage guarded by padded goalie.' },
+      { hint: 'Check', rationale: 'Physical body impact slamming rival into boards.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'High-speed frozen contact sport chasing vulcanized pucks.' }
+  },
+  {
+    word: 'Cricket',
+    subtle: [
+      { hint: 'Crease', rationale: 'White chalked line marking batter safe territory.' },
+      { hint: 'Innings', rationale: 'Batting team turn to accumulate team runs.' },
+      { hint: 'Spin', rationale: 'Deceptive wrist twist making ball grip and turn.' }
+    ],
+    balanced: [
+      { hint: 'Wicket', rationale: 'Three wooden stumps topped with two bails.' },
+      { hint: 'Bat', rationale: 'Flat willow wood blade with cane handle.' },
+      { hint: 'Bowler', rationale: 'Overarm thrower aiming to hit timber stumps.' }
+    ],
+    easy: [
+      { hint: 'Runs', rationale: 'Points scored by sprinting between wickets.' },
+      { hint: 'Pitch', rationale: '22-yard rectangular strip in center of oval.' },
+      { hint: 'Leather', rationale: 'Hard red or white stitched cork ball.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Bat-and-ball game played on a 22-yard pitch with wickets.' }
+  },
+  {
+    word: 'Boxing',
+    subtle: [
+      { hint: 'Jab', rationale: 'Quick straight lead punch measuring distance.' },
+      { hint: 'Corner', rationale: 'Stool where coach wipes blood and gives advice.' },
+      { hint: 'Bell', rationale: 'Brass chime ending three-minute rounds.' }
+    ],
+    balanced: [
+      { hint: 'Gloves', rationale: 'Padded leather mitts cushioning heavy blows.' },
+      { hint: 'Knockout', rationale: 'Floor strike rendering opponent unable to rise by ten.' },
+      { hint: 'Ring', rationale: 'Square canvas surrounded by four roped strands.' }
+    ],
+    easy: [
+      { hint: 'Punch', rationale: 'Forceful closed-fist combat strike.' },
+      { hint: 'Rounds', rationale: 'Timed segments dividing championship fight.' },
+      { hint: 'Fight', rationale: 'Combat contest between two heavyweights.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Combat sport inside a roped canvas ring with padded gloves.' }
+  },
+  {
+    word: 'Figure Skating',
+    subtle: [
+      { hint: 'Axel', rationale: 'Forward-facing jump landing backwards on edge.' },
+      { hint: 'Costume', rationale: 'Sparkling theatrical sequined dress or suit.' },
+      { hint: 'Routine', rationale: 'Choreographed dance sequence set to music.' }
+    ],
+    balanced: [
+      { hint: 'Blades', rationale: 'Toepick-equipped steel runners gliding on sheet.' },
+      { hint: 'Spins', rationale: 'Rapid rotational pirouettes on one skate.' },
+      { hint: 'Jump', rationale: 'Airborne triple or quadruple revolutions.' }
+    ],
+    easy: [
+      { hint: 'Rink', rationale: 'Frozen arena where performances occur.' },
+      { hint: 'Grace', rationale: 'Artistic elegance and musical expression.' },
+      { hint: 'Twirl', rationale: 'Whirling dance motion on frozen ice.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Artistic dance and jump sport performed on ice with skates.' }
+  },
+  {
+    word: 'Table Tennis',
+    subtle: [
+      { hint: 'Spin', rationale: 'Heavy topspin or backspin curving light ball.' },
+      { hint: 'Rubber', rationale: 'Pimpled or smooth tacky sheet on paddle face.' },
+      { hint: 'Pingpong', rationale: 'Popular onomatopoeic parlor game moniker.' }
+    ],
+    balanced: [
+      { hint: 'Paddle', rationale: 'Small wooden laminated bat with rubber surface.' },
+      { hint: 'Celluloid', rationale: 'Ultralight hollow plastic bouncing ball.' },
+      { hint: 'Smash', rationale: 'Explosive flat kill shot driving ball past opponent.' }
+    ],
+    easy: [
+      { hint: 'Net', rationale: 'Low six-inch mesh dividing green table.' },
+      { hint: 'Bounce', rationale: 'Required single rebound on each court half.' },
+      { hint: 'Fast', rationale: 'Lightning-fast reflexive close-quarters rallies.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fast-paced indoor game batting celluloid balls across a mini net.' }
+  },
+  {
+    word: 'Track and Field',
+    subtle: [
+      { hint: 'Baton', rationale: 'Hollow cylinder exchanged during 4x100 relay.' },
+      { hint: 'Spikes', rationale: 'Pointed pins in soles providing grip on synthetic oval.' },
+      { hint: 'Starting', rationale: 'Blocks anchored to surface for explosive launch.' }
+    ],
+    balanced: [
+      { hint: 'Hurdles', rationale: 'Barriers jumped over during sprint events.' },
+      { hint: 'Javelin', rationale: 'Pointed spear hurled for distance across grass.' },
+      { hint: 'Sprint', rationale: 'Full-tilt speed race over 100 or 200 meters.' }
+    ],
+    easy: [
+      { hint: 'Run', rationale: 'Fundamental athletic locomotion around oval.' },
+      { hint: 'Jump', rationale: 'High jump and long jump sand pit trials.' },
+      { hint: 'Throw', rationale: 'Shot put, discus, and hammer field contests.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Foundational Olympic athletic contest of running, jumping, and throwing.' }
+  },
+  {
+    word: 'Curling',
+    subtle: [
+      { hint: 'Hog', rationale: 'Line stone must cross completely to stay in play.' },
+      { hint: 'Skip', rationale: 'Team captain standing in house calling the line.' },
+      { hint: 'Button', rationale: 'Center circle dot target scoring highest points.' }
+    ],
+    balanced: [
+      { hint: 'Stone', rationale: 'Polished Scottish granite disc with plastic handle.' },
+      { hint: 'Broom', rationale: 'Sweeping brush vigorously polishing pebble ice.' },
+      { hint: 'House', rationale: 'Concentric ring target painted under sheet.' }
+    ],
+    easy: [
+      { hint: 'Sweep', rationale: 'Friction motion melting thin film to glide stone.' },
+      { hint: 'Slide', rationale: 'Pushing out from hack sliding low on ice.' },
+      { hint: 'Target', rationale: 'Bullseye circles where stones are placed.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winter sport sliding heavy granite stones towards circular targets.' }
+  },
+  {
+    word: 'Water Polo',
+    subtle: [
+      { hint: 'Eggbeater', rationale: 'Rotational kick keeping torso buoyant without touching bottom.' },
+      { hint: 'Ejection', rationale: 'Exclusion foul sending player to penalty corner.' },
+      { hint: 'Ear-guards', rationale: 'Plastic cups on swim caps protecting eardrums.' }
+    ],
+    balanced: [
+      { hint: 'Treading', rationale: 'Continuous swimming movement in deep pool.' },
+      { hint: 'Goal', rationale: 'Floating net cage guarded by cap-wearing goalie.' },
+      { hint: 'Cap', rationale: 'Numbered headwear with protective ear flaps.' }
+    ],
+    easy: [
+      { hint: 'Swim', rationale: 'Aquatic propulsion through the pool.' },
+      { hint: 'Ball', rationale: 'Grippy yellow rubber ball thrown with one hand.' },
+      { hint: 'Pool', rationale: 'Deep Olympic aquatic playing venue.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tough aquatic team sport treading deep water and scoring goals.' }
+  },
+  {
+    word: 'BMX',
+    subtle: [
+      { hint: 'Berm', rationale: 'Banked dirt turn ridden at high speed without braking.' },
+      { hint: 'Gate', rationale: 'Drop gate releasing eight racers down starting hill.' },
+      { hint: 'Pegs', rationale: 'Metal axle cylinders stood on for street grinds.' }
+    ],
+    balanced: [
+      { hint: 'Dirt', rationale: 'Earthen track shaped with rhythm jumps and whoops.' },
+      { hint: 'Jumps', rationale: 'Mounds launched off into acrobatic aerials.' },
+      { hint: 'Helmet', rationale: 'Full-face protective shell with goggles.' }
+    ],
+    easy: [
+      { hint: 'Bike', rationale: 'Rugged twenty-inch single-gear bicycle.' },
+      { hint: 'Pedal', rationale: 'Pumping cranks for explosive acceleration.' },
+      { hint: 'Tricks', rationale: 'Tailwhips, barspins, and backflips in air.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Extreme bicycle racing and stunt sport on dirt tracks and ramps.' }
+  },
+  {
+    word: 'Fencing',
+    subtle: [
+      { hint: 'En-garde', rationale: 'Preparatory stance command before combat begins.' },
+      { hint: 'Lame', rationale: 'Electrically conductive jacket registering touches.' },
+      { hint: 'Piste', rationale: 'Narrow 14-meter strip bounding foot movement.' }
+    ],
+    balanced: [
+      { hint: 'Foil', rationale: 'Flexible blunted practice blade thrusting at torso.' },
+      { hint: 'Mask', rationale: 'Wire-mesh protective cage covering face.' },
+      { hint: 'Lunge', rationale: 'Explosive forward leg extension attacking opponent.' }
+    ],
+    easy: [
+      { hint: 'Sword', rationale: 'Slender steel blade used for parries and thrusts.' },
+      { hint: 'White', rationale: 'Pristine uniform color honoring historical tradition.' },
+      { hint: 'Duel', rationale: 'One-on-one combat art of parry and riposte.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Noble swordplay combat discipline using foils, epees, and masks.' }
+  },
+  {
+    word: 'Dodgeball',
+    subtle: [
+      { hint: 'Opening', rationale: 'Frantic sprint to center line at opening whistle.' },
+      { hint: 'Caught', rationale: 'Catching thrown ball eliminating thrower and reviving teammate.' },
+      { hint: 'Sting', rationale: 'Sharp sting of rubber ball impacting bare skin.' }
+    ],
+    balanced: [
+      { hint: 'Duck', rationale: 'Squatting low to evade whistling incoming projectile.' },
+      { hint: 'Eliminate', rationale: 'Sending struck opponent off court to sideline.' },
+      { hint: 'Rubber', rationale: 'Red inflatable textured ball bounced in gym.' }
+    ],
+    easy: [
+      { hint: 'Throw', rationale: 'Hurling ball with maximum velocity.' },
+      { hint: 'Court', rationale: 'Gymnasium floor split by center boundary line.' },
+      { hint: 'Evade', rationale: 'Jumping, diving, and twisting to avoid hits.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Gymnasium team game throwing rubber balls to eliminate rivals.' }
+  },
+  {
+    word: 'Marathon',
+    subtle: [
+      { hint: 'Pacing', rationale: 'Careful discipline holding steady split times per mile.' },
+      { hint: 'Hydration', rationale: 'Paper water cups grabbed from folding tables on route.' },
+      { hint: 'Wall', rationale: 'Exhaustion hitting runners around mile twenty.' }
+    ],
+    balanced: [
+      { hint: 'Twentysix', rationale: 'Number of miles in official distance.' },
+      { hint: 'Endurance', rationale: 'Stamina required for two to four hours of running.' },
+      { hint: 'Finish', rationale: 'Crossing the blue timing mat after 42.195 km.' }
+    ],
+    easy: [
+      { hint: 'Run', rationale: 'Continuous foot travel on paved city streets.' },
+      { hint: 'Race', rationale: 'Mass athletic event with thousands of runners.' },
+      { hint: 'Bib', rationale: 'Numbered paper tag pinned to running singlet.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Legendary 26.2-mile endurance footrace test.' }
+  },
+  {
+    word: 'Ski Jumping',
+    subtle: [
+      { hint: 'Inrun', rationale: 'Steep artificial ramp accelerating jumper to takeoff.' },
+      { hint: 'Telemark', rationale: 'Graceful landing posture with one foot forward.' },
+      { hint: 'Wind', rationale: 'Breeze factors adjusted into final competition scores.' }
+    ],
+    balanced: [
+      { hint: 'Takeoff', rationale: 'Explosive leap into thin air off lip.' },
+      { hint: 'Gliding', rationale: 'Aerodynamic flight posture leaning far over skis.' },
+      { hint: 'Hill', rationale: 'Towering K-point snowy landing slope.' }
+    ],
+    easy: [
+      { hint: 'Snow', rationale: 'Frozen winter landing hill.' },
+      { hint: 'Fly', rationale: 'Soaring airborne over 100 meters through sky.' },
+      { hint: 'Skis', rationale: 'Extra-long wide boards held in V-shape.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Audacious winter sport soaring off ramps and landing on snow.' }
+  },
+  {
+    word: 'Rowing',
+    subtle: [
+      { hint: 'Stroke', rationale: 'Rhythmic drive phase pushing legs down in sync.' },
+      { hint: 'Rigger', rationale: 'Metal triangular bracket holding oarlock away from hull.' },
+      { hint: 'Wake', rationale: 'Smooth V-shaped ripples trail left behind shell.' }
+    ],
+    balanced: [
+      { hint: 'Coxswain', rationale: 'Stern navigator steering and barking stroke cadences.' },
+      { hint: 'Oars', rationale: 'Long carbon fiber blades pulling through water.' },
+      { hint: 'Shell', rationale: 'Ultralight needle-thin racing boat hull.' }
+    ],
+    easy: [
+      { hint: 'River', rationale: 'Flat calm waterway course.' },
+      { hint: 'Water', rationale: 'Surface on which synchronized crews race.' },
+      { hint: 'Boat', rationale: 'Eight-seat or single scull racing craft.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Synchronized water sport pulling oars in needle-thin shells.' }
+  },
+  {
+    word: 'Judo',
+    subtle: [
+      { hint: 'Tatami', rationale: 'Traditional woven straw or foam sparring mats.' },
+      { hint: 'Ippon', rationale: 'Decisive full point winning bout instantly.' },
+      { hint: 'Gentle', rationale: 'Literary translation of the Japanese martial way.' }
+    ],
+    balanced: [
+      { hint: 'Throw', rationale: 'Using opponent momentum to flip them onto back.' },
+      { hint: 'Gi', rationale: 'Heavy white cotton martial arts uniform jacket.' },
+      { hint: 'Belt', rationale: 'Colored sash indicating rank up to black belt.' }
+    ],
+    easy: [
+      { hint: 'Martial', rationale: 'Combat fighting system founded in Japan.' },
+      { hint: 'Mat', rationale: 'Padded floor absorbing impact of throws.' },
+      { hint: 'Grip', rationale: 'Two-handed lapel and sleeve hold controlling balance.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Japanese martial art of grappling, off-balancing, and throwing.' }
+  },
+  {
+    word: 'Handball',
+    subtle: [
+      { hint: 'Crease', rationale: 'Six-meter arc around goal forbidden to field players.' },
+      { hint: 'Glue', rationale: 'Sticky resin applied to ball to maximize one-hand grip.' },
+      { hint: 'Wing', rationale: 'Corner player leaping in at sharp angle to shoot.' }
+    ],
+    balanced: [
+      { hint: 'Goal', rationale: 'Net cage protected by active goalkeeper.' },
+      { hint: 'Dribble', rationale: 'Bouncing ball on indoor court while advancing.' },
+      { hint: 'Throw', rationale: 'High-velocity arm whip firing past defender block.' }
+    ],
+    easy: [
+      { hint: 'Court', rationale: 'Indoor gym floor marked with six-meter zones.' },
+      { hint: 'Jump', rationale: 'Airborne leaps soaring over goal crease to shoot.' },
+      { hint: 'Fast', rationale: 'Rapid transitions and high-scoring matches.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Fast-paced indoor court game hurling balls into nets.' }
+  },
+  {
+    word: 'Bobsled',
+    subtle: [
+      { hint: 'Runners', rationale: 'Steel blades gliding along iced curved track.' },
+      { hint: 'Brakeman', rationale: 'Rear crew member pulling levers after finish line.' },
+      { hint: 'Push', rationale: 'Frantic opening sprint pushing sled off starting blocks.' }
+    ],
+    balanced: [
+      { hint: 'Chute', rationale: 'Concrete iced trough winding through mountain curves.' },
+      { hint: 'Gravity', rationale: 'Force pulling sleek sled downhill at 80 mph.' },
+      { hint: 'Helmet', rationale: 'Aerodynamic full-face head protection.' }
+    ],
+    easy: [
+      { hint: 'Sled', rationale: 'Streamlined fiberglass capsule seating crew.' },
+      { hint: 'Ice', rationale: 'Frozen track surface.' },
+      { hint: 'Winter', rationale: 'Cold weather Olympic sliding sport.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winter Olympic sport rocketing down ice chutes in a sleek sled.' }
+  },
+  {
+    word: 'Triathlon',
+    subtle: [
+      { hint: 'Transition', rationale: 'Timed zone swapping wetsuit for bike and shoes.' },
+      { hint: 'Ironman', rationale: 'Grueling full-distance endurance event in Hawaii.' },
+      { hint: 'Split', rationale: 'Times recorded across three disciplines and transitions.' }
+    ],
+    balanced: [
+      { hint: 'Endurance', rationale: 'Multi-hour physical and mental stamina test.' },
+      { hint: 'Wetsuit', rationale: 'Neoprene gear worn during open-water swim leg.' },
+      { hint: 'Three', rationale: 'Triple-sport sequential competition format.' }
+    ],
+    easy: [
+      { hint: 'Swim', rationale: 'Opening open-water lake or ocean leg.' },
+      { hint: 'Bike', rationale: 'Middle cycling road trial over rolling hills.' },
+      { hint: 'Run', rationale: 'Final footrace marathon to the finish line.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Multi-sport endurance race combining swim, bike, and run.' }
+  },
+  {
+    word: 'Darts',
+    subtle: [
+      { hint: 'Oche', rationale: 'Raised toe line stood behind when throwing.' },
+      { hint: 'Flights', rationale: 'Plastic aerodynamic wings stabilizing throw in air.' },
+      { hint: 'Treb', rationale: 'Triple ring segment scoring three times point value.' }
+    ],
+    balanced: [
+      { hint: 'Bullseye', rationale: 'Fifty-point small red center circle target.' },
+      { hint: 'Board', rationale: 'Sisal fiber round target hung on wall.' },
+      { hint: 'Throw', rationale: 'Precise three-dart wrist release from 7 feet.' }
+    ],
+    easy: [
+      { hint: 'Points', rationale: 'Scoring subtracting down from 501 to zero.' },
+      { hint: 'Pub', rationale: 'British tavern where matches are played.' },
+      { hint: 'Target', rationale: 'Circular numbered board divided into pie sectors.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pub target game throwing metal-tipped darts at a sisal board.' }
+  },
+  {
+    word: 'Wrestling',
+    subtle: [
+      { hint: 'Singlet', rationale: 'Tight one-piece spandex suit worn on mat.' },
+      { hint: 'Takedown', rationale: 'Snapping opponent to mat to score points.' },
+      { hint: 'Bridge', rationale: 'Neck arch holding shoulders off mat to escape pin.' }
+    ],
+    balanced: [
+      { hint: 'Pin', rationale: 'Holding both opponent shoulder blades to mat.' },
+      { hint: 'Mat', rationale: 'Padded circular combat area.' },
+      { hint: 'Grapple', rationale: 'Close physical combat without striking.' }
+    ],
+    easy: [
+      { hint: 'Fight', rationale: 'One-on-one combat contest of leverage.' },
+      { hint: 'Hold', rationale: 'Locks and grips controlling opponent limbs.' },
+      { hint: 'Weight', rationale: 'Strict division categories separating competitors.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient grappling sport pinning opponent shoulders to the mat.' }
+  },
+  {
+    word: 'Polo',
+    subtle: [
+      { hint: 'Chukker', rationale: 'Seven-minute period of intensive mounted play.' },
+      { hint: 'Divots', rationale: 'Turf chunks stomped back into place by spectators at half.' },
+      { hint: 'Pony', rationale: 'Agile trained horse ridden during matches.' }
+    ],
+    balanced: [
+      { hint: 'Mallet', rationale: 'Long flexible bamboo cane with wooden cigar head.' },
+      { hint: 'Horse', rationale: 'Mount galloping across expansive grass field.' },
+      { hint: 'Saddle', rationale: 'Leather seat mounted by riders wielding mallets.' }
+    ],
+    easy: [
+      { hint: 'Ball', rationale: 'Small white wooden or plastic ball hit across turf.' },
+      { hint: 'Grass', rationale: 'Vast field measuring three football pitches.' },
+      { hint: 'Ride', rationale: 'Equestrian horsemanship navigating matches.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Equestrian sport hitting balls with mallets on horseback.' }
+  }
+];
+
+// Clean any special characters in hints
+sports.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part8_sports.json', JSON.stringify({ sports }, null, 2), 'utf8');
+console.log('Successfully wrote part8_sports.json (34 words)');

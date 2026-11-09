@@ -1,0 +1,679 @@
+const fs = require('fs');
+
+const landmarks = [
+  {
+    word: 'Eiffel Tower',
+    subtle: [
+      { hint: 'Gustave', rationale: 'Civil engineer whose firm designed and built the wrought iron lattice.' },
+      { hint: 'Champdemars', rationale: 'Public greensward where monument stands.' },
+      { hint: 'Centennial', rationale: '1889 World Fair commemorating French Revolution.' }
+    ],
+    balanced: [
+      { hint: 'Lattice', rationale: 'Intricate crisscrossing puddled iron girders.' },
+      { hint: 'Paris', rationale: 'Capital city skyline dominated by monument.' },
+      { hint: 'Spire', rationale: 'Three-hundred-meter vertical monument pointing skyward.' }
+    ],
+    easy: [
+      { hint: 'France', rationale: 'European nation where monument is celebrated symbol.' },
+      { hint: 'Iron', rationale: 'Puddled metal forming colossal arched framework.' },
+      { hint: 'Monument', rationale: 'World-famous tourist landmark visited by millions.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Parisian iron lattice monument built for 1889 World Fair.' }
+  },
+  {
+    word: 'Statue of Liberty',
+    subtle: [
+      { hint: 'Bartholdi', rationale: 'French sculptor who designed copper neoclassical figure.' },
+      { hint: 'Bedloe', rationale: 'Original name of harbor island before dedication.' },
+      { hint: 'Tabula', rationale: 'Keystone tablet inscribed with July 4 1776 in Roman numerals.' }
+    ],
+    balanced: [
+      { hint: 'Torch', rationale: 'Gilded flame held aloft in right hand enlightening world.' },
+      { hint: 'Crown', rationale: 'Seven-spiked diadem radiating over harbor.' },
+      { hint: 'Copper', rationale: 'Sheet metal oxidized into distinctive green patina.' }
+    ],
+    easy: [
+      { hint: 'Harbor', rationale: 'New York oceanic gateway welcoming incoming ships.' },
+      { hint: 'Green', rationale: 'Verdigris color of weathered copper skin.' },
+      { hint: 'Freedom', rationale: 'Symbolic democratic ideal represented by figure.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal neoclassical copper figure holding a torch in New York harbor.' }
+  },
+  {
+    word: 'Great Wall of China',
+    subtle: [
+      { hint: 'Badaling', rationale: 'Most visited and carefully preserved stone mountain section.' },
+      { hint: 'Mortar', rationale: 'Sticky rice formula binding defensive bricks for centuries.' },
+      { hint: 'Beacon', rationale: 'Signal towers relaying smoke and fire warnings along ridge.' }
+    ],
+    balanced: [
+      { hint: 'Fortress', rationale: 'Defensive military rampart against northern nomads.' },
+      { hint: 'Ridges', rationale: 'Winding crest lines traversing jagged mountain terrain.' },
+      { hint: 'Bricks', rationale: 'Stone blocks and rammed earth constructing ramparts.' }
+    ],
+    easy: [
+      { hint: 'Longest', rationale: 'Thousands of miles spanning northern frontier.' },
+      { hint: 'Stone', rationale: 'Masonry material of ancient boundary barrier.' },
+      { hint: 'Ancient', rationale: 'Centuries of dynastic construction dating back to Qin.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient stone defensive rampart winding along mountain ridges.' }
+  },
+  {
+    word: 'Colosseum',
+    subtle: [
+      { hint: 'Vespasian', rationale: 'Flavian emperor who commissioned monumental amphitheater.' },
+      { hint: 'Hypogeum', rationale: 'Underground labyrinth of cages, pulleys, and trapdoors.' },
+      { hint: 'Velarium', rationale: 'Massive canvas awning shaded spectators from hot sun.' }
+    ],
+    balanced: [
+      { hint: 'Gladiators', rationale: 'Combatants fighting to the death on sand floor.' },
+      { hint: 'Arches', rationale: 'Three tiers of travertine stone arcades.' },
+      { hint: 'Arena', rationale: 'Oval sand-covered entertainment floor.' }
+    ],
+    easy: [
+      { hint: 'Rome', rationale: 'Eternal capital city where stone stadium stands.' },
+      { hint: 'Italy', rationale: 'Mediterranean nation containing ruins.' },
+      { hint: 'Ancient', rationale: 'First-century imperial engineering marvel.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient Roman stone amphitheater of gladiatorial combat.' }
+  },
+  {
+    word: 'Pyramids of Giza',
+    subtle: [
+      { hint: 'Khufu', rationale: 'Pharaoh for whom the Great tomb was constructed.' },
+      { hint: 'Limestone', rationale: 'Casing stones polished gleaming white in antiquity.' },
+      { hint: 'Shafts', rationale: 'Narrow tunnels aligned precisely with stellar constellations.' }
+    ],
+    balanced: [
+      { hint: 'Sphinx', rationale: 'Couchant limestone lion monument guarding plateau.' },
+      { hint: 'Pharaohs', rationale: 'God-kings interred within royal stone tombs.' },
+      { hint: 'Tombs', rationale: 'Monumental burial chambers designed for afterlife.' }
+    ],
+    easy: [
+      { hint: 'Desert', rationale: 'Sahara sands surrounding plateau.' },
+      { hint: 'Egypt', rationale: 'North African kingdom of Nile civilization.' },
+      { hint: 'Triangular', rationale: 'Four-sided polygonal stone masonry shape.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Monumental triangular stone pharaoh tombs on the Giza plateau.' }
+  },
+  {
+    word: 'Taj Mahal',
+    subtle: [
+      { hint: 'Mumtaz', rationale: 'Beloved empress in whose memory monument was commissioned.' },
+      { hint: 'Pietra-dura', rationale: 'Intricate lapidary inlay of semi-precious gems in marble.' },
+      { hint: 'Yamuna', rationale: 'Sacred river flowing gently behind ivory terrace.' }
+    ],
+    balanced: [
+      { hint: 'Mausoleum', rationale: 'Monumental marble tomb housing royal cenotaphs.' },
+      { hint: 'Minarets', rationale: 'Four slender towers tilting slightly outward at corners.' },
+      { hint: 'Dome', rationale: 'Onion-shaped white marble crown.' }
+    ],
+    easy: [
+      { hint: 'India', rationale: 'South Asian nation where monument stands in Agra.' },
+      { hint: 'Marble', rationale: 'Pristine white stone reflecting changing sky colors.' },
+      { hint: 'Love', rationale: 'Romantic royal devotion inspiring architectural masterpiece.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ivory-white marble mausoleum on Yamuna river built for love.' }
+  },
+  {
+    word: 'Machu Picchu',
+    subtle: [
+      { hint: 'Ashlar', rationale: 'Dry-stone masonry technique fitting granite blocks without mortar.' },
+      { hint: 'Intihuatana', rationale: 'Carved solar hitching stone used for astronomy.' },
+      { hint: 'Urubamba', rationale: 'Sacred river canyon raging thousands of feet below.' }
+    ],
+    balanced: [
+      { hint: 'Inca', rationale: 'Andean civilization constructing mountain citadel.' },
+      { hint: 'Terraces', rationale: 'Stepped agricultural stone tiers climbing hillside.' },
+      { hint: 'Llamas', rationale: 'Woolly pack animals grazing among stone ruins.' }
+    ],
+    easy: [
+      { hint: 'Peru', rationale: 'South American nation containing high citadel.' },
+      { hint: 'Andes', rationale: 'Mountain range surrounding mist-shrouded peaks.' },
+      { hint: 'Ruins', rationale: 'Ancient lost stone city rediscovered in 1911.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Inca dry-stone citadel perched high in the Peruvian Andes.' }
+  },
+  {
+    word: 'Big Ben',
+    subtle: [
+      { hint: 'Westminster', rationale: 'Palace seat of Parliament housing the clock tower.' },
+      { hint: 'Thirteen', rationale: 'Weight in tons of Great Bell cast in Whitechapel.' },
+      { hint: 'Pennies', rationale: 'Coins placed on pendulum bob adjusting clock speed.' }
+    ],
+    balanced: [
+      { hint: 'Clock', rationale: 'Four-faced Victorian precision timekeeping dial.' },
+      { hint: 'Chimes', rationale: 'Westminster acoustic quarter-hour melody.' },
+      { hint: 'London', rationale: 'British capital city skyline landmark.' }
+    ],
+    easy: [
+      { hint: 'Bell', rationale: 'Massive resonant bronze bell inside upper tower.' },
+      { hint: 'England', rationale: 'United Kingdom nation where monument stands.' },
+      { hint: 'Hour', rationale: 'Deep booming strike marking passing of time.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Iconic four-faced clock and resonant bell at Westminster.' }
+  },
+  {
+    word: 'Golden Gate Bridge',
+    subtle: [
+      { hint: 'Strauss', rationale: 'Chief engineer Joseph who led suspension design.' },
+      { hint: 'Marin', rationale: 'County linked to San Francisco peninsula across strait.' },
+      { hint: 'Rivets', rationale: 'Millions of steel pins holding red towers together.' }
+    ],
+    balanced: [
+      { hint: 'Suspension', rationale: 'Main steel wire cables holding highway deck.' },
+      { hint: 'Orange', rationale: 'International Orange hue enhancing visibility in fog.' },
+      { hint: 'Fog', rationale: 'Summer marine layer swirling around high red towers.' }
+    ],
+    easy: [
+      { hint: 'California', rationale: 'West coast state home to iconic span.' },
+      { hint: 'Bay', rationale: 'Body of water spanned by crimson cables.' },
+      { hint: 'Red', rationale: 'Bold recognizable color of towering steel uprights.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'International Orange suspension bridge spanning San Francisco bay.' }
+  },
+  {
+    word: 'Christ the Redeemer',
+    subtle: [
+      { hint: 'Corcovado', rationale: 'Steep granite mountain summit upon which statue stands.' },
+      { hint: 'Soapstone', rationale: 'Soft durable mineral mosaic tile skin covering concrete.' },
+      { hint: 'Tijuca', rationale: 'Urban national rainforest surrounding peak.' }
+    ],
+    balanced: [
+      { hint: 'Arms', rationale: 'Outstretched wide open hands blessing metropolis.' },
+      { hint: 'Deco', rationale: 'Art Deco colossal sculptural aesthetic.' },
+      { hint: 'Summit', rationale: 'Peak 700 meters above sandy bay.' }
+    ],
+    easy: [
+      { hint: 'Statue', rationale: 'Thirty-meter concrete religious figure.' },
+      { hint: 'Brazil', rationale: 'South American nation containing monument.' },
+      { hint: 'Rio', rationale: 'Coastal city spread out below outstretched arms.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal Art Deco statue with outstretched arms atop Corcovado.' }
+  },
+  {
+    word: 'Sydney Opera House',
+    subtle: [
+      { hint: 'Utzon', rationale: 'Danish visionary architect who conceived vaulted shells.' },
+      { hint: 'Ceramic', rationale: 'Over one million Swedish tiles cladding roof sails.' },
+      { hint: 'Bennelong', rationale: 'Harbor point promontory where complex sits.' }
+    ],
+    balanced: [
+      { hint: 'Sails', rationale: 'Precast concrete curved shells resembling windblown canvas.' },
+      { hint: 'Harbor', rationale: 'Deep saltwater inlet surrounding platform.' },
+      { hint: 'Music', rationale: 'Concert halls staging symphonies and operatic drama.' }
+    ],
+    easy: [
+      { hint: 'Australia', rationale: 'Island continent nation where hall stands.' },
+      { hint: 'White', rationale: 'Gleaming pale color of interlocking roof shells.' },
+      { hint: 'Performance', rationale: 'Theatrical and classical acoustic venue.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Iconic harbor performing arts hall with precast sail-like shells.' }
+  },
+  {
+    word: 'Leaning Tower of Pisa',
+    subtle: [
+      { hint: 'Campanile', rationale: 'Freestanding bell tower for nearby cathedral.' },
+      { hint: 'Subsoil', rationale: 'Unstable clay and silt foundation causing famous tilt.' },
+      { hint: 'Counterweights', rationale: 'Lead blocks placed on north side to stabilize slant.' }
+    ],
+    balanced: [
+      { hint: 'Tilt', rationale: 'Four-degree diagonal angle defying gravity.' },
+      { hint: 'Marble', rationale: 'White stone tiers of colonnaded circular arcades.' },
+      { hint: 'Bells', rationale: 'Seven musical chimes in topmost chamber.' }
+    ],
+    easy: [
+      { hint: 'Italy', rationale: 'Tuscan region where monument attracts tourists.' },
+      { hint: 'Diagonal', rationale: 'Slanted off-vertical posture famous in photo poses.' },
+      { hint: 'Galileo', rationale: 'Scientist said to have dropped cannonballs from top.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tuscan freestanding marble bell tower famous for its dramatic tilt.' }
+  },
+  {
+    word: 'Petra',
+    subtle: [
+      { hint: 'Siq', rationale: 'Narrow winding sandstone canyon gorge entry corridor.' },
+      { hint: 'Nabataean', rationale: 'Ancient Arab trading kingdom carving canyon capital.' },
+      { hint: 'Urn', rationale: 'Carved funeral jar atop Treasury believed to hide gold.' }
+    ],
+    balanced: [
+      { hint: 'Treasury', rationale: 'Elaborate Hellenistic temple facade hewn directly from cliff.' },
+      { hint: 'Rose-red', rationale: 'Poetic moniker describing sandstone rock hue.' },
+      { hint: 'Carved', rationale: 'Architecture cut directly into solid rock canyon walls.' }
+    ],
+    easy: [
+      { hint: 'Jordan', rationale: 'Middle Eastern kingdom containing archaeological wonder.' },
+      { hint: 'Desert', rationale: 'Arid rocky mountain landscape.' },
+      { hint: 'Ancient', rationale: 'Historic crossroads of frankincense and silk caravans.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient Nabataean rose-red city carved directly into sandstone cliffs.' }
+  },
+  {
+    word: 'Stonehenge',
+    subtle: [
+      { hint: 'Heel', rationale: 'Outlying rough stone aligning with summer solstice sunrise.' },
+      { hint: 'Aubrey', rationale: 'Ring of 56 chalk pits surrounding central stone circle.' },
+      { hint: 'Preseli', rationale: 'Welsh hills from which smaller bluestones were quarried.' }
+    ],
+    balanced: [
+      { hint: 'Solstice', rationale: 'Astronomical sunrise alignment on longest day of year.' },
+      { hint: 'Monoliths', rationale: 'Giant standing sarsen boulders weighing twenty tons.' },
+      { hint: 'Lintels', rationale: 'Horizontal capping stones resting atop vertical pillars.' }
+    ],
+    easy: [
+      { hint: 'Circle', rationale: 'Circular arrangement of prehistoric megaliths.' },
+      { hint: 'England', rationale: 'Salisbury plain grassland setting.' },
+      { hint: 'Ancient', rationale: 'Neolithic prehistoric ceremonial monument.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Prehistoric circular megalith ring aligned with solar solstices.' }
+  },
+  {
+    word: 'Mount Everest',
+    subtle: [
+      { hint: 'Khumbu', rationale: 'Treacherous labyrinth icefall navigated with aluminum ladders.' },
+      { hint: 'Sherpa', rationale: 'Indigenous Himalayan mountaineers guiding expeditions.' },
+      { hint: 'Chomolungma', rationale: 'Tibetan sacred name meaning Goddess Mother of World.' }
+    ],
+    balanced: [
+      { hint: 'Summit', rationale: 'Highest elevation point on Earth at 8848 meters.' },
+      { hint: 'Himalayas', rationale: 'Towering Asian tectonic collision mountain range.' },
+      { hint: 'Oxygen', rationale: 'Bottled supplemental gas required in death zone.' }
+    ],
+    easy: [
+      { hint: 'Highest', rationale: 'Record altitude peak among all mountains.' },
+      { hint: 'Snow', rationale: 'Perpetual ice and howling subzero blizzards.' },
+      { hint: 'Climb', rationale: 'Ultimate mountaineering peak pursuit.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Highest mountain peak on Earth standing in the Himalayas.' }
+  },
+  {
+    word: 'Louvre Museum',
+    subtle: [
+      { hint: 'Pei', rationale: 'Architect I.M. who designed modern glass pyramid entrance.' },
+      { hint: 'Palace', rationale: 'Historic royal residence of French kings before Versailles.' },
+      { hint: 'Sully', rationale: 'Wing displaying French classical and decorative arts.' }
+    ],
+    balanced: [
+      { hint: 'Pyramid', rationale: 'Glass and steel geometric entry pavilion in courtyard.' },
+      { hint: 'Mona', rationale: 'Portrait of Lisa with enigmatic smile behind glass.' },
+      { hint: 'Venus', rationale: 'Classical armless Greek marble statue de Milo.' }
+    ],
+    easy: [
+      { hint: 'Paris', rationale: 'French capital where grand gallery sits on Seine.' },
+      { hint: 'Art', rationale: 'Tens of thousands of historical paintings and antiquities.' },
+      { hint: 'Paintings', rationale: 'Masterpieces lining miles of parquet corridors.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'World largest art museum in Paris home to Mona Lisa.' }
+  },
+  {
+    word: 'Times Square',
+    subtle: [
+      { hint: 'Ball', rationale: 'Waterford crystal sphere descending at midnight.' },
+      { hint: 'Naked', rationale: 'Guitarist in cowboy hat singing in winter freeze.' },
+      { hint: 'Crossroads', rationale: 'Famous urban moniker as crossroads of the world.' }
+    ],
+    balanced: [
+      { hint: 'Billboards', rationale: 'Towering multi-story digital LED advertising screens.' },
+      { hint: 'Broadway', rationale: 'Theatrical theater district intersection.' },
+      { hint: 'Midnight', rationale: 'New Year Eve countdown gathering hundreds of thousands.' }
+    ],
+    easy: [
+      { hint: 'Neon', rationale: 'Dazzling flashing commercial illumination.' },
+      { hint: 'Manhattan', rationale: 'Dense New York borough entertainment core.' },
+      { hint: 'Crowded', rationale: 'Dense pedestrian plaza teeming with tourists.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Bustling neon-illuminated entertainment hub of Manhattan.' }
+  },
+  {
+    word: 'Burj Khalifa',
+    subtle: [
+      { hint: 'Y-shaped', rationale: 'Tripartite floor plan buttressed core minimizing wind sway.' },
+      { hint: 'Spire', rationale: 'Telescopic steel spire assembled inside and jacked up.' },
+      { hint: 'Eighty', rationale: 'Height exceeding 828 meters and 160 stories.' }
+    ],
+    balanced: [
+      { hint: 'Tallest', rationale: 'Current world record holder for highest skyscraper.' },
+      { hint: 'Dubai', rationale: 'United Arab Emirates desert metropolis location.' },
+      { hint: 'Elevators', rationale: 'Double-deck cars rocketing visitors to observation deck.' }
+    ],
+    easy: [
+      { hint: 'Skyscraper', rationale: 'Towering glass and steel needle piercing clouds.' },
+      { hint: 'Desert', rationale: 'Arabian sands surrounding modern metropolis.' },
+      { hint: 'High', rationale: 'Dizzying extreme vertical scale.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'World tallest skyscraper soaring 828 meters above Dubai.' }
+  },
+  {
+    word: 'Acropolis of Athens',
+    subtle: [
+      { hint: 'Caryatids', rationale: 'Sculpted maiden stone pillars supporting porch roof.' },
+      { hint: 'Pericles', rationale: 'Golden Age statesman who directed grand building program.' },
+      { hint: 'Erechtheion', rationale: 'Ancient temple honoring both Athena and Poseidon.' }
+    ],
+    balanced: [
+      { hint: 'Parthenon', rationale: 'Classical Doric marble temple crowning rocky plateau.' },
+      { hint: 'Citadel', rationale: 'Ancient fortified rocky limestone hill above city.' },
+      { hint: 'Columns', rationale: 'Fluted marble pillars supporting ancient pediment.' }
+    ],
+    easy: [
+      { hint: 'Greece', rationale: 'Mediterranean cradle of Western democracy.' },
+      { hint: 'Ancient', rationale: 'Fifth-century BCE classical architectural wonder.' },
+      { hint: 'Ruins', rationale: 'Weathered marble temples standing on hill.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient rocky citadel crowned by Parthenon marble columns.' }
+  },
+  {
+    word: 'Empire State Building',
+    subtle: [
+      { hint: 'Mooring', rationale: 'Spire originally designed as docking mast for dirigibles.' },
+      { hint: 'Kong', rationale: 'Giant cinematic ape swatting biplanes from summit.' },
+      { hint: 'Limestone', rationale: 'Indiana stone cladding gleaming art deco facade.' }
+    ],
+    balanced: [
+      { hint: 'Art-deco', rationale: 'Architectural style of stepped tiered crown and lobby.' },
+      { hint: 'Spire', rationale: 'Lightning-rod needle broadcasting FM radio signals.' },
+      { hint: 'Observation', rationale: 'Eighty-sixth floor open-air viewing terrace.' }
+    ],
+    easy: [
+      { hint: 'Manhattan', rationale: 'New York borough location on Fifth Avenue.' },
+      { hint: 'Skyscraper', rationale: 'Iconic 102-story high-rise completed in 1931.' },
+      { hint: 'Lights', rationale: 'Colored spire illuminations celebrating holidays.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Iconic 102-story Art Deco skyscraper in midtown Manhattan.' }
+  },
+  {
+    word: 'Niagara Falls',
+    subtle: [
+      { hint: 'Maid', rationale: 'Mist boat taking poncho-clad tourists into spray basin.' },
+      { hint: 'Barrel', rationale: 'Daredevil stunt craft plunged over crest for fame.' },
+      { hint: 'Horseshoe', rationale: 'Curved Canadian cataract carrying ninety percent of flow.' }
+    ],
+    balanced: [
+      { hint: 'Cataract', rationale: 'Massive volume of water cascading over precipice.' },
+      { hint: 'Mist', rationale: 'Towering cloud of spray rising hundreds of feet.' },
+      { hint: 'Border', rationale: 'Natural boundary between Canada and United States.' }
+    ],
+    easy: [
+      { hint: 'Water', rationale: 'Millions of gallons plunging every minute.' },
+      { hint: 'River', rationale: 'Flow connecting Lake Erie to Lake Ontario.' },
+      { hint: 'Roar', rationale: 'Deafening acoustic rumble of tumbling water.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal waterfall on international border with deafening roar.' }
+  },
+  {
+    word: 'St. Basil Cathedral',
+    subtle: [
+      { hint: 'Postnik', rationale: 'Architect legendary for being blinded by Ivan the Terrible.' },
+      { hint: 'Bonfire', rationale: 'Architectural silhouette resembling flame leaping skyward.' },
+      { hint: 'Pokrovsky', rationale: 'Official liturgical name honoring Intercession of Virgin.' }
+    ],
+    balanced: [
+      { hint: 'Onion', rationale: 'Swirling colorful patterned bulbous domes.' },
+      { hint: 'Red-Square', rationale: 'Historic cobblestone plaza beside Moscow Kremlin.' },
+      { hint: 'Domes', rationale: 'Nine clustered chapels topped by vibrant cupolas.' }
+    ],
+    easy: [
+      { hint: 'Moscow', rationale: 'Russian capital city setting.' },
+      { hint: 'Church', rationale: 'Russian Orthodox religious monument.' },
+      { hint: 'Colorful', rationale: 'Vivid red, green, gold, and blue swirled patterns.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colorful onion-domed Russian Orthodox monument on Red Square.' }
+  },
+  {
+    word: 'Alcatraz Island',
+    subtle: [
+      { hint: 'Pelican', rationale: 'Spanish word alcatraces honoring roosting seabirds.' },
+      { hint: 'Capone', rationale: 'Notorious Chicago mobster incarcerated in cell 181.' },
+      { hint: 'Dummy', rationale: 'Papier-mache heads left in beds during famous escape.' }
+    ],
+    balanced: [
+      { hint: 'Prison', rationale: 'Maximum-security federal penitentiary housing felons.' },
+      { hint: 'Rock', rationale: 'Barren sandstone fortress nicknamed The Rock.' },
+      { hint: 'Escape', rationale: 'Treacherous swim across frigid shark-free bay waters.' }
+    ],
+    easy: [
+      { hint: 'Cells', rationale: 'Concrete steel-barred isolation blocks.' },
+      { hint: 'Bay', rationale: 'San Francisco waterway surrounding island.' },
+      { hint: 'Guards', rationale: 'Warden and officers manning catwalks.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Historic island federal penitentiary in San Francisco bay.' }
+  },
+  {
+    word: 'Mount Fuji',
+    subtle: [
+      { hint: 'Hokusai', rationale: 'Master ukiyo-e woodblock printer of 36 Views.' },
+      { hint: 'Stratovolcano', rationale: 'Symmetrical steep composite conical profile.' },
+      { hint: 'Shinto', rationale: 'Indigenous faith venerating peak as sacred kami shrine.' }
+    ],
+    balanced: [
+      { hint: 'Snowcapped', rationale: 'Pristine white winter snow blanket crowning peak.' },
+      { hint: 'Volcano', rationale: 'Dormant conical mountain last erupting in 1707.' },
+      { hint: 'Sacred', rationale: 'Holy pilgrimage mountain climbed in summer dawn.' }
+    ],
+    easy: [
+      { hint: 'Japan', rationale: 'East Asian island nation where peak is national symbol.' },
+      { hint: 'Peak', rationale: 'Highest elevation point in Japan at 3776 meters.' },
+      { hint: 'Tokyo', rationale: 'Metropolis from which conical silhouette is visible.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Sacred snowcapped symmetrical volcanic peak of Japan.' }
+  },
+  {
+    word: 'Angkor Wat',
+    subtle: [
+      { hint: 'Suryavarman', rationale: 'Khmer king who directed twelfth-century construction.' },
+      { hint: 'Bas-relief', rationale: 'Carved sandstone galleries depicting Churning of Ocean.' },
+      { hint: 'Meru', rationale: 'Mythological sacred mountain represented by five towers.' }
+    ],
+    balanced: [
+      { hint: 'Khmer', rationale: 'Ancient empire ruling vast Southeast Asian realm.' },
+      { hint: 'Towers', rationale: 'Five lotus-bud stone spires rising from terrace.' },
+      { hint: 'Moat', rationale: 'Massive rectangular reservoir enclosing temple grounds.' }
+    ],
+    easy: [
+      { hint: 'Cambodia', rationale: 'Southeast Asian nation displaying monument on flag.' },
+      { hint: 'Temple', rationale: 'World largest religious stone temple complex.' },
+      { hint: 'Stone', rationale: 'Sandstone blocks quarried and carved by artisans.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'World largest ancient stone temple complex in Cambodia.' }
+  },
+  {
+    word: 'Chichen Itza',
+    subtle: [
+      { hint: 'Kukulkan', rationale: 'Feathered serpent god descending pyramid shadow at equinox.' },
+      { hint: 'Cenote', rationale: 'Sacred limestone sinkhole containing sacrificial offerings.' },
+      { hint: 'Caracol', rationale: 'Conch-like circular stone astronomical observatory.' }
+    ],
+    balanced: [
+      { hint: 'Mayan', rationale: 'Pre-Columbian civilization building jungle stepped pyramid.' },
+      { hint: 'Pyramid', rationale: 'El Castillo stepped stone temple with 365 steps.' },
+      { hint: 'Equinox', rationale: 'Solar alignment casting undulating snake shadow down steps.' }
+    ],
+    easy: [
+      { hint: 'Mexico', rationale: 'Yucatan peninsula territory of ancient ruins.' },
+      { hint: 'Ruins', rationale: 'Ancient archaeological jungle city.' },
+      { hint: 'Stone', rationale: 'Carved limestone blocks forming temple terraces.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Mayan stepped stone pyramid temple on the Yucatan peninsula.' }
+  },
+  {
+    word: 'Notre Dame',
+    subtle: [
+      { hint: 'Gargoyles', rationale: 'Carved monster waterspouts protecting stone facade.' },
+      { hint: 'Quasimodo', rationale: 'Fictional bell-ringer in Victor Hugo classic novel.' },
+      { hint: 'Spire', rationale: 'Wooden lead-covered spire restored after 2019 fire.' }
+    ],
+    balanced: [
+      { hint: 'Gothic', rationale: 'Architectural style of ribbed vaults and flying buttresses.' },
+      { hint: 'Bells', rationale: 'Massive bourdon Emmanuel chiming in towers.' },
+      { hint: 'Rose', rationale: 'Stained glass circular medallion windows glowing in sun.' }
+    ],
+    easy: [
+      { hint: 'Paris', rationale: 'French capital where cathedral sits on Ile de la Cite.' },
+      { hint: 'Cathedral', rationale: 'Grand medieval Roman Catholic church.' },
+      { hint: 'France', rationale: 'Nation celebrating restoration of historic landmark.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Medieval Gothic Parisian cathedral famed for gargoyles and bells.' }
+  },
+  {
+    word: 'Sagrada Familia',
+    subtle: [
+      { hint: 'Gaudi', rationale: 'Catalan modernist architect who devoted 43 years to design.' },
+      { hint: 'Nativity', rationale: 'Intricate sculptural facade completed under Gaudi life.' },
+      { hint: 'Organic', rationale: 'Forms inspired by nature, tree canopies, and honeycombs.' }
+    ],
+    balanced: [
+      { hint: 'Barcelona', rationale: 'Catalan Mediterranean city skyline home.' },
+      { hint: 'Unfinished', rationale: 'Under active construction since 1882.' },
+      { hint: 'Spires', rationale: 'Eighteen vertical towers crowned by mosaic crosses.' }
+    ],
+    easy: [
+      { hint: 'Basilica', rationale: 'Expiatory Catholic church.' },
+      { hint: 'Spain', rationale: 'Iberian nation containing modernist architectural icon.' },
+      { hint: 'Church', rationale: 'Monumental place of worship with stained glass light.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Gaudi unfinished modernist basilica in Barcelona.' }
+  },
+  {
+    word: 'Tower Bridge',
+    subtle: [
+      { hint: 'Bascules', rationale: 'Counterbalanced hydraulic leaves lifting for tall ship masts.' },
+      { hint: 'Walkways', rationale: 'High-level glass-floor pedestrian corridors between turrets.' },
+      { hint: 'Victorian', rationale: 'Nineteenth-century Gothic revival engineering marvel.' }
+    ],
+    balanced: [
+      { hint: 'Thames', rationale: 'London river spanned by iconic lifting road.' },
+      { hint: 'Lifting', rationale: 'Roadway parting in center to allow vessel passage.' },
+      { hint: 'Turrets', rationale: 'Two stone-clad Gothic towers flanking main span.' }
+    ],
+    easy: [
+      { hint: 'London', rationale: 'British capital city where span crosses river.' },
+      { hint: 'England', rationale: 'United Kingdom nation home to historic crossing.' },
+      { hint: 'River', rationale: 'Tidal waterway flowed under by merchant ships.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Victorian Gothic bascule bridge spanning the River Thames.' }
+  },
+  {
+    word: 'Hollywood Sign',
+    subtle: [
+      { hint: 'Land', rationale: 'Suffix dropped in 1949 from original real estate billboard.' },
+      { hint: 'Lee', rationale: 'Mount in Santa Monica range on whose slope letters stand.' },
+      { hint: 'Peg', rationale: 'Entwistle actress who tragically jumped from letter H.' }
+    ],
+    balanced: [
+      { hint: 'Letters', rationale: 'Nine fifty-foot white sheet metal block characters.' },
+      { hint: 'Cinema', rationale: 'Global symbol of American film industry and dreams.' },
+      { hint: 'Hills', rationale: 'Dry chaparral slope overlooking Los Angeles basin.' }
+    ],
+    easy: [
+      { hint: 'California', rationale: 'West coast state home to movie capital.' },
+      { hint: 'White', rationale: 'Color of massive landmark sheet-metal letters.' },
+      { hint: 'Movies', rationale: 'Entertainment industry symbolized by hillside sign.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Nine white sheet-metal letters overlooking Los Angeles.' }
+  },
+  {
+    word: 'Vatican City',
+    subtle: [
+      { hint: 'Enclave', rationale: 'Sovereign micro-state completely surrounded by Rome.' },
+      { hint: 'Swiss', rationale: 'Guard wearing striped Renaissance doublets protecting Pope.' },
+      { hint: 'Conclave', rationale: 'Cardinal assembly electing pontiff behind locked doors.' }
+    ],
+    balanced: [
+      { hint: 'Pope', rationale: 'Supreme pontiff and Bishop of Rome residing in palace.' },
+      { hint: 'Sistine', rationale: 'Chapel ceiling painted by Michelangelo with frescoes.' },
+      { hint: 'Basilica', rationale: 'Monumental Saint Peter church crowned by grand dome.' }
+    ],
+    easy: [
+      { hint: 'Catholic', rationale: 'Global Christian church governed from Holy See.' },
+      { hint: 'Smallest', rationale: 'World tinest recognized independent sovereign nation.' },
+      { hint: 'Rome', rationale: 'Italian capital city surrounding the walled territory.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Smallest independent sovereign microstate and seat of the Pope.' }
+  },
+  {
+    word: 'Versailles Palace',
+    subtle: [
+      { hint: 'Sun-king', rationale: 'Louis XIV who transformed hunting lodge into golden seat.' },
+      { hint: 'Orangerie', rationale: 'Parterre garden sheltering citrus trees in winter.' },
+      { hint: 'Trianon', rationale: 'Smaller retreat estate in park grounds.' }
+    ],
+    balanced: [
+      { hint: 'Mirrors', rationale: 'Famous grand gallery lined with 357 glass arches.' },
+      { hint: 'Gardens', rationale: 'Geometric formal fountains, parterres, and canals.' },
+      { hint: 'Gilded', rationale: 'Lavish gold leaf coating gates, moldings, and ceilings.' }
+    ],
+    easy: [
+      { hint: 'Royalty', rationale: 'Monarchs living in extravagant luxury before revolution.' },
+      { hint: 'France', rationale: 'European kingdom where estate was seat of power.' },
+      { hint: 'Opulent', rationale: 'Extreme lavishness symbolizing royal excess.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Opulent French royal chateau renowned for Hall of Mirrors.' }
+  },
+  {
+    word: 'Alhambra',
+    subtle: [
+      { hint: 'Nasrid', rationale: 'Last Muslim dynasty in Spain ruling from fortress.' },
+      { hint: 'Muqarnas', rationale: 'Honeycomb vaulting stalactite plasterwork ceilings.' },
+      { hint: 'Generalife', rationale: 'Summer palace gardens with fountains and cypress walks.' }
+    ],
+    balanced: [
+      { hint: 'Moorish', rationale: 'Islamic architectural style of horseshoe arches and tiles.' },
+      { hint: 'Courtyard', rationale: 'Court of Lions with twelve marble water-spouting beasts.' },
+      { hint: 'Granada', rationale: 'Andalusian city overlooked by red fortress palace.' }
+    ],
+    easy: [
+      { hint: 'Palace', rationale: 'Royal Islamic residence and fortified citadel.' },
+      { hint: 'Spain', rationale: 'Iberian nation containing Moorish architectural marvel.' },
+      { hint: 'Fortress', rationale: 'Red stone defensive walls crowning hill.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Moorish palace and fortress complex in Granada Spain.' }
+  },
+  {
+    word: 'Mount Rushmore',
+    subtle: [
+      { hint: 'Borglum', rationale: 'Sculptor Gutzon who blasted granite cliff with dynamite.' },
+      { hint: 'Blackhills', rationale: 'Sacred Lakota mountain range where monument was carved.' },
+      { hint: 'Dynamite', rationale: 'Explosive used to remove ninety percent of rock mass.' }
+    ],
+    balanced: [
+      { hint: 'Presidents', rationale: 'Four American leaders carved into granite mountain.' },
+      { hint: 'Carved', rationale: 'Sixty-foot faces hewn directly into granite cliff.' },
+      { hint: 'Granite', rationale: 'Hard igneous rock cliff face supporting colossal heads.' }
+    ],
+    easy: [
+      { hint: 'Faces', rationale: 'Colossal stone portraits gazing across Dakota forest.' },
+      { hint: 'Mountain', rationale: 'High rock bluff carved with historical figures.' },
+      { hint: 'Monument', rationale: 'National memorial celebrating American history.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal granite sculpture of four US presidents in the Black Hills.' }
+  },
+  {
+    word: 'Trevi Fountain',
+    subtle: [
+      { hint: 'Oceanus', rationale: 'Titan god standing atop central shell-shaped chariot.' },
+      { hint: 'Salvi', rationale: 'Italian architect Nicola who designed Baroque masterpiece.' },
+      { hint: 'Tritons', rationale: 'Sea gods taming wild and calm hippocamps in basin.' }
+    ],
+    balanced: [
+      { hint: 'Coins', rationale: 'Three coins tossed over left shoulder guaranteeing return.' },
+      { hint: 'Baroque', rationale: 'Dramatic ornate Italian architectural style.' },
+      { hint: 'Marble', rationale: 'Travertine stone figures carved against palace facade.' }
+    ],
+    easy: [
+      { hint: 'Rome', rationale: 'Italian capital city where fountain splashes.' },
+      { hint: 'Water', rationale: 'Cascading liquid filling massive public basin.' },
+      { hint: 'Toss', rationale: 'Tradition of throwing money into water with back turned.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Baroque travertine water monument in Rome famous for coin tossing.' }
+  }
+];
+
+// Clean any special characters in hints
+landmarks.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part13_landmarks.json', JSON.stringify({ landmarks }, null, 2), 'utf8');
+console.log('Successfully wrote part13_landmarks.json (35 words)');

@@ -1,0 +1,1894 @@
+{
+  "professions": [
+    {
+      "word": "Astronaut",
+      "subtle": [
+        {
+          "hint": "Floating",
+          "rationale": "Weightless microgravity drift inside orbital cabin."
+        },
+        {
+          "hint": "Visor",
+          "rationale": "Reflective gold sun shield protecting eyes from harsh glare."
+        },
+        {
+          "hint": "Tether",
+          "rationale": "Safety cord anchoring spacewalker to station hull."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Spacesuit",
+          "rationale": "Pressurized multi-layer life-support garment."
+        },
+        {
+          "hint": "Rocket",
+          "rationale": "Powerful booster propelling capsule into orbit."
+        },
+        {
+          "hint": "Spacewalk",
+          "rationale": "Extravehicular activity outside orbital laboratory."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Moon",
+          "rationale": "Celestial body walked on during historic Apollo flights."
+        },
+        {
+          "hint": "Orbit",
+          "rationale": "Path circling Earth aboard space station."
+        },
+        {
+          "hint": "Cosmos",
+          "rationale": "Deep space realm navigated by space explorers."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Space explorer working in orbit aboard stations and rockets."
+      }
+    },
+    {
+      "word": "Detective",
+      "subtle": [
+        {
+          "hint": "Trenchcoat",
+          "rationale": "Classic noir outerwear worn on stakeouts."
+        },
+        {
+          "hint": "Alibi",
+          "rationale": "Suspect claim of being elsewhere at time of incident."
+        },
+        {
+          "hint": "Fingerprints",
+          "rationale": "Friction ridge impressions dusted at crime scenes."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Magnifier",
+          "rationale": "Convex glass lens inspecting tiny traces of fiber."
+        },
+        {
+          "hint": "Suspect",
+          "rationale": "Person investigated for possible involvement."
+        },
+        {
+          "hint": "Clues",
+          "rationale": "Scattered physical evidence pieced together."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Mystery",
+          "rationale": "Unsolved puzzle investigated for truth."
+        },
+        {
+          "hint": "Police",
+          "rationale": "Law enforcement department where detectives serve."
+        },
+        {
+          "hint": "Solve",
+          "rationale": "Cracking difficult cases through deduction."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Investigator piecing together clues to solve mysteries."
+      }
+    },
+    {
+      "word": "Chef",
+      "subtle": [
+        {
+          "hint": "Apron",
+          "rationale": "Protective cloth tied around waist in hot kitchen."
+        },
+        {
+          "hint": "Garnish",
+          "rationale": "Delicate herb placed precisely with plating tweezers."
+        },
+        {
+          "hint": "Simmer",
+          "rationale": "Low slow heat developing deep savory broth."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Toque",
+          "rationale": "Tall pleated white culinary hat signifying rank."
+        },
+        {
+          "hint": "Kitchen",
+          "rationale": "Commercial cooking floor with sizzling ranges."
+        },
+        {
+          "hint": "Knife",
+          "rationale": "Razor-sharp Santoku or French blade for dicing."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Cook",
+          "rationale": "Preparation of exquisite hot meals."
+        },
+        {
+          "hint": "Restaurant",
+          "rationale": "Dining establishment where kitchen is led."
+        },
+        {
+          "hint": "Menu",
+          "rationale": "List of gourmet dishes designed for patrons."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Culinary artist and master of professional restaurant kitchens."
+      }
+    },
+    {
+      "word": "Firefighter",
+      "subtle": [
+        {
+          "hint": "Hydrant",
+          "rationale": "Curbside pressurized iron water fixture on street."
+        },
+        {
+          "hint": "Siren",
+          "rationale": "Loud blaring emergency warning clearing traffic."
+        },
+        {
+          "hint": "Axe",
+          "rationale": "Sturdy tool breaking through heavy wooden doors."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Hose",
+          "rationale": "Heavy canvas line pumping water under pressure."
+        },
+        {
+          "hint": "Ladder",
+          "rationale": "Extendable metal rescue apparatus reaching high windows."
+        },
+        {
+          "hint": "Helmet",
+          "rationale": "Heavy heat-resistant protective brimmed headgear."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Flames",
+          "rationale": "Blazing destructive fires extinguished by crews."
+        },
+        {
+          "hint": "Smoke",
+          "rationale": "Thick dark fumes navigated with breathing gear."
+        },
+        {
+          "hint": "Rescue",
+          "rationale": "Saving trapped victims from burning buildings."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Brave emergency responder extinguishing blazes and rescuing lives."
+      }
+    },
+    {
+      "word": "Pilot",
+      "subtle": [
+        {
+          "hint": "Rudder",
+          "rationale": "Foot pedals controlling vertical tail stabilizer yaw."
+        },
+        {
+          "hint": "Checklist",
+          "rationale": "Rigorous laminated steps completed before departure."
+        },
+        {
+          "hint": "Aviator",
+          "rationale": "Dark teardrop tinted sunglasses worn in sunny skies."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cockpit",
+          "rationale": "Forward instrument compartment flight control center."
+        },
+        {
+          "hint": "Runway",
+          "rationale": "Paved strip illuminated for takeoff and landing."
+        },
+        {
+          "hint": "Altitude",
+          "rationale": "Cruising height above weather systems."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Airplane",
+          "rationale": "Winged commercial jet craft commanded."
+        },
+        {
+          "hint": "Wings",
+          "rationale": "Lift-generating flight structures."
+        },
+        {
+          "hint": "Fly",
+          "rationale": "Navigating airborne paths across the globe."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Aviation captain commanding aircraft from the cockpit."
+      }
+    },
+    {
+      "word": "Architect",
+      "subtle": [
+        {
+          "hint": "Drafting",
+          "rationale": "Precision technical line drawing on angled desk."
+        },
+        {
+          "hint": "Facade",
+          "rationale": "Exterior front face and aesthetic profile of a structure."
+        },
+        {
+          "hint": "Scale",
+          "rationale": "Proportional ruler translating meters to centimeters."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Blueprint",
+          "rationale": "Cyan technical floor plans showing dimensions."
+        },
+        {
+          "hint": "Building",
+          "rationale": "Physical structure planned from foundation to roof."
+        },
+        {
+          "hint": "Hardhat",
+          "rationale": "Protective plastic helmet worn during site inspections."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Design",
+          "rationale": "Creative spatial planning of functional spaces."
+        },
+        {
+          "hint": "Skyscraper",
+          "rationale": "Towering urban structure conceived on paper."
+        },
+        {
+          "hint": "House",
+          "rationale": "Residential dwellings mapped out before building."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Spatial designer planning blueprints for houses and buildings."
+      }
+    },
+    {
+      "word": "Surgeon",
+      "subtle": [
+        {
+          "hint": "Scrubs",
+          "rationale": "Loose sanitary cotton clothing worn in sterile ward."
+        },
+        {
+          "hint": "Sterile",
+          "rationale": "Completely germ-free environment with scrubbed hands."
+        },
+        {
+          "hint": "Forceps",
+          "rationale": "Hinged clamping instrument holding delicate tissue."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Scalpel",
+          "rationale": "Small razor-sharp blade for surgical incisions."
+        },
+        {
+          "hint": "Hospital",
+          "rationale": "Medical institution housing operating suites."
+        },
+        {
+          "hint": "Sutures",
+          "rationale": "Sterile surgical stitches closing wounds."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Doctor",
+          "rationale": "Advanced medical healthcare practitioner."
+        },
+        {
+          "hint": "Operation",
+          "rationale": "Invasive medical procedure repairing organs."
+        },
+        {
+          "hint": "Gloves",
+          "rationale": "Latex barrier handwear worn during surgery."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Specialist doctor performing precise operations with scalpels."
+      }
+    },
+    {
+      "word": "Photographer",
+      "subtle": [
+        {
+          "hint": "Aperture",
+          "rationale": "Adjustable diaphragm iris controlling light entrance."
+        },
+        {
+          "hint": "Shutter",
+          "rationale": "Curtain opening briefly to expose photographic sensor."
+        },
+        {
+          "hint": "Darkroom",
+          "rationale": "Red-lit laboratory where chemical film develops."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Tripod",
+          "rationale": "Three-legged stand stabilizing shots in low light."
+        },
+        {
+          "hint": "Lens",
+          "rationale": "Curved optical glass cylinder focusing light rays."
+        },
+        {
+          "hint": "Flash",
+          "rationale": "Brief intense burst of artificial strobe light."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Camera",
+          "rationale": "Core optical apparatus capturing moments."
+        },
+        {
+          "hint": "Picture",
+          "rationale": "Visual snapshot preserved on film or memory card."
+        },
+        {
+          "hint": "Shoot",
+          "rationale": "Action of framing and taking photos."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Visual artist capturing images through camera lenses and flashes."
+      }
+    },
+    {
+      "word": "Librarian",
+      "subtle": [
+        {
+          "hint": "Barcode",
+          "rationale": "Scannable striped sticker tracking inventory."
+        },
+        {
+          "hint": "Dewey",
+          "rationale": "Decimal classification system organizing knowledge."
+        },
+        {
+          "hint": "Bookmarks",
+          "rationale": "Cardstock markers holding places inside volumes."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Shelves",
+          "rationale": "Tall wooden bookcases lining reading rooms."
+        },
+        {
+          "hint": "Quiet",
+          "rationale": "Hushed peaceful atmosphere respected by readers."
+        },
+        {
+          "hint": "Catalog",
+          "rationale": "Database index locating authors and subjects."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Books",
+          "rationale": "Printed bound volumes lent to patrons."
+        },
+        {
+          "hint": "Reading",
+          "rationale": "Silent literary study encouraged in rooms."
+        },
+        {
+          "hint": "Borrow",
+          "rationale": "Taking books home with a membership card."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Curator of knowledge managing books, quiet rooms, and shelves."
+      }
+    },
+    {
+      "word": "Journalist",
+      "subtle": [
+        {
+          "hint": "Deadline",
+          "rationale": "Strict cutoff time for submitting daily articles."
+        },
+        {
+          "hint": "Byline",
+          "rationale": "Printed writer credit line under article headline."
+        },
+        {
+          "hint": "Dictaphone",
+          "rationale": "Handheld voice recorder capturing interview audio."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Headline",
+          "rationale": "Bold banner text summarizing breaking developments."
+        },
+        {
+          "hint": "Interview",
+          "rationale": "Questioning witnesses and officials for facts."
+        },
+        {
+          "hint": "Reporter",
+          "rationale": "Investigative professional uncovering stories."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Newspaper",
+          "rationale": "Daily print publication containing reports."
+        },
+        {
+          "hint": "News",
+          "rationale": "Current events broadcast to the public."
+        },
+        {
+          "hint": "Article",
+          "rationale": "Written piece published in press or online."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Investigative writer covering breaking news and headlines."
+      }
+    },
+    {
+      "word": "Plumber",
+      "subtle": [
+        {
+          "hint": "Wrench",
+          "rationale": "Heavy adjustable steel tool tightening pipe joints."
+        },
+        {
+          "hint": "Drain",
+          "rationale": "Basin outlet channel carrying wastewater away."
+        },
+        {
+          "hint": "Washer",
+          "rationale": "Rubber sealing ring stopping dripping taps."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Pipes",
+          "rationale": "Copper and PVC conduits routing water through walls."
+        },
+        {
+          "hint": "Leak",
+          "rationale": "Unwanted dripping or spraying from broken joints."
+        },
+        {
+          "hint": "Clog",
+          "rationale": "Blockage obstructing water flow in sink or toilet."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Water",
+          "rationale": "Liquid supplied to faucets and fixtures."
+        },
+        {
+          "hint": "Sink",
+          "rationale": "Bathroom or kitchen basin serviced."
+        },
+        {
+          "hint": "Toilet",
+          "rationale": "Sanitary porcelain bathroom fixture installed."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Tradesperson fixing pipes, leaks, sinks, and drains."
+      }
+    },
+    {
+      "word": "Sculptor",
+      "subtle": [
+        {
+          "hint": "Pedestal",
+          "rationale": "Wooden or stone base displaying finished three-dimensional work."
+        },
+        {
+          "hint": "Armature",
+          "rationale": "Wire framework supporting clay or plaster structure."
+        },
+        {
+          "hint": "Foundry",
+          "rationale": "Workshop casting molten bronze into molds."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Chisel",
+          "rationale": "Steel cutting tool struck with mallet to chip stone."
+        },
+        {
+          "hint": "Marble",
+          "rationale": "White crystalline limestone carved into figures."
+        },
+        {
+          "hint": "Clay",
+          "rationale": "Malleable earth shaped by hand on turntable."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Statue",
+          "rationale": "Three-dimensional likeness carved or molded."
+        },
+        {
+          "hint": "Artist",
+          "rationale": "Creative fine arts professional."
+        },
+        {
+          "hint": "Carve",
+          "rationale": "Action of chipping away excess material."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Artist shaping stone, clay, and bronze into statues."
+      }
+    },
+    {
+      "word": "Veterinarian",
+      "subtle": [
+        {
+          "hint": "Kennel",
+          "rationale": "Enclosed cage recovering patient after treatment."
+        },
+        {
+          "hint": "Rabies",
+          "rationale": "Viral disease prevented by annual inoculations."
+        },
+        {
+          "hint": "Microchip",
+          "rationale": "Tiny scannable RFID capsule implanted under skin."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Clinic",
+          "rationale": "Healthcare facility treating sick domestic companions."
+        },
+        {
+          "hint": "Paws",
+          "rationale": "Animal feet examined on stainless examination table."
+        },
+        {
+          "hint": "Vaccine",
+          "rationale": "Preventive shots administered to puppies and kittens."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Animals",
+          "rationale": "Non-human patients cared for daily."
+        },
+        {
+          "hint": "Doctor",
+          "rationale": "Medical practitioner specializing in fauna."
+        },
+        {
+          "hint": "Pets",
+          "rationale": "Dogs, cats, and birds brought in by owners."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Animal doctor caring for pets and wildlife."
+      }
+    },
+    {
+      "word": "Judge",
+      "subtle": [
+        {
+          "hint": "Bench",
+          "rationale": "Elevated wooden desk where jurist presides."
+        },
+        {
+          "hint": "Chambers",
+          "rationale": "Private judicial office where briefs are reviewed."
+        },
+        {
+          "hint": "Objection",
+          "rationale": "Lawyer courtroom protest ruled upon as sustained."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Gavel",
+          "rationale": "Hardwood mallet struck to demand courtroom order."
+        },
+        {
+          "hint": "Robe",
+          "rationale": "Solemn black garment worn on the bench."
+        },
+        {
+          "hint": "Verdict",
+          "rationale": "Final formal legal decision or sentence."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Court",
+          "rationale": "Hall of legal proceedings and trials."
+        },
+        {
+          "hint": "Law",
+          "rationale": "Statutes and constitutional principles interpreted."
+        },
+        {
+          "hint": "Jury",
+          "rationale": "Citizens instructed on legal standards of evidence."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Courtroom jurist presiding over legal trials with gavel and robe."
+      }
+    },
+    {
+      "word": "Electrician",
+      "subtle": [
+        {
+          "hint": "Strippers",
+          "rationale": "Handheld pliers stripping plastic insulation from copper."
+        },
+        {
+          "hint": "Conduit",
+          "rationale": "Metal tubing shielding wiring inside walls."
+        },
+        {
+          "hint": "Multimeter",
+          "rationale": "Diagnostic tool measuring resistance and amperage."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Breaker",
+          "rationale": "Safety switch in fuse panel cutting circuit."
+        },
+        {
+          "hint": "Voltage",
+          "rationale": "Electrical potential difference measured in volts."
+        },
+        {
+          "hint": "Outlet",
+          "rationale": "Wall socket providing power to appliances."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Wires",
+          "rationale": "Copper strands carrying electrical current."
+        },
+        {
+          "hint": "Power",
+          "rationale": "Energy grid energized for home illumination."
+        },
+        {
+          "hint": "Current",
+          "rationale": "Flow of electric charge through circuits."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Tradesperson wiring outlets, circuits, and electrical power grids."
+      }
+    },
+    {
+      "word": "Paramedic",
+      "subtle": [
+        {
+          "hint": "Defibrillator",
+          "rationale": "Electronic device delivering shock to restore pulse."
+        },
+        {
+          "hint": "Stretcher",
+          "rationale": "Wheeled gurney rolling injured patients to vehicle."
+        },
+        {
+          "hint": "Triage",
+          "rationale": "Rapid assessment prioritizing critically injured."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Ambulance",
+          "rationale": "Emergency rescue vehicle with flashing lights."
+        },
+        {
+          "hint": "Emergency",
+          "rationale": "Urgent life-threatening medical scenario."
+        },
+        {
+          "hint": "Oxygen",
+          "rationale": "Breathing gas administered via clear face mask."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Rescue",
+          "rationale": "Immediate lifesaving intervention at scene."
+        },
+        {
+          "hint": "Hospital",
+          "rationale": "Destination emergency room where patients are transferred."
+        },
+        {
+          "hint": "Firstaid",
+          "rationale": "Immediate treatment bandaging wounds and stabilizing."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Emergency medical responder saving lives in ambulances."
+      }
+    },
+    {
+      "word": "Archaeologist",
+      "subtle": [
+        {
+          "hint": "Sieve",
+          "rationale": "Mesh screen filtering fine dirt from bone fragments."
+        },
+        {
+          "hint": "Brush",
+          "rationale": "Soft bristle tool sweeping dust from pottery shards."
+        },
+        {
+          "hint": "Trowel",
+          "rationale": "Small pointed spade scraping thin soil layers."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Artifacts",
+          "rationale": "Man-made relics preserved in historical strata."
+        },
+        {
+          "hint": "Excavate",
+          "rationale": "Systematically digging trenches at ancient sites."
+        },
+        {
+          "hint": "Ruins",
+          "rationale": "Buried stone foundations of lost settlements."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Ancient",
+          "rationale": "Centuries-old civilizations studied through relics."
+        },
+        {
+          "hint": "Dig",
+          "rationale": "Unearthing treasures buried under centuries of soil."
+        },
+        {
+          "hint": "Fossils",
+          "rationale": "Historical and prehistoric traces in the ground."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Historical scientist unearthing artifacts and ancient ruins."
+      }
+    },
+    {
+      "word": "Lifeguard",
+      "subtle": [
+        {
+          "hint": "Sunscreen",
+          "rationale": "Zinc oxide cream protecting nose from bright sun."
+        },
+        {
+          "hint": "Buoy",
+          "rationale": "Torpedo-shaped red flotation device with tow rope."
+        },
+        {
+          "hint": "Umbrella",
+          "rationale": "Canopy shading elevated wooden lookout perch."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Whistle",
+          "rationale": "Loud pea-less acoustic signal alerting swimmers."
+        },
+        {
+          "hint": "Tower",
+          "rationale": "Elevated observation platform overlooking surf."
+        },
+        {
+          "hint": "Rescue",
+          "rationale": "Paddling out into riptides to save struggling bathers."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Beach",
+          "rationale": "Sandy shoreline watched for dangerous currents."
+        },
+        {
+          "hint": "Pool",
+          "rationale": "Swimming facility supervised from deck chair."
+        },
+        {
+          "hint": "Swim",
+          "rationale": "Core athletic skill required for water rescues."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Beach and pool watchman rescuing struggling swimmers."
+      }
+    },
+    {
+      "word": "Flight Attendant",
+      "subtle": [
+        {
+          "hint": "Aisle",
+          "rationale": "Narrow carpeted walkway between passenger seat rows."
+        },
+        {
+          "hint": "Overhead",
+          "rationale": "Lidded bin holding carry-on rolling luggage."
+        },
+        {
+          "hint": "Briefing",
+          "rationale": "Pre-flight demonstration showing seatbelts and exits."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cabin",
+          "rationale": "Passenger section of commercial airliner."
+        },
+        {
+          "hint": "Cart",
+          "rationale": "Rolling trolley dispensing sodas and snacks."
+        },
+        {
+          "hint": "Safety",
+          "rationale": "Primary responsibility ensuring passenger security."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Airplane",
+          "rationale": "Aircraft workplace flying between global cities."
+        },
+        {
+          "hint": "Passengers",
+          "rationale": "Travelers served food and drinks in air."
+        },
+        {
+          "hint": "Uniform",
+          "rationale": "Tailored suit and neck scarf worn on flights."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Airline cabin crew ensuring passenger safety and hospitality."
+      }
+    },
+    {
+      "word": "Carpenter",
+      "subtle": [
+        {
+          "hint": "Sawdust",
+          "rationale": "Fine wood particles coating workshop floor."
+        },
+        {
+          "hint": "Sandpaper",
+          "rationale": "Abrasive sheet smoothing rough grain."
+        },
+        {
+          "hint": "Level",
+          "rationale": "Bubble vial tool ensuring shelves are horizontal."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Hammer",
+          "rationale": "Hand tool driving nails into timber studs."
+        },
+        {
+          "hint": "Timber",
+          "rationale": "Milled wooden planks framing buildings."
+        },
+        {
+          "hint": "Saw",
+          "rationale": "Toothed blade cutting planks to exact measurements."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Wood",
+          "rationale": "Natural building material shaped and joined."
+        },
+        {
+          "hint": "Nails",
+          "rationale": "Metal fasteners securing timber joints."
+        },
+        {
+          "hint": "Build",
+          "rationale": "Crafting cabinets, furniture, and roof frames."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Woodworking artisan building structures with saw, hammer, and wood."
+      }
+    },
+    {
+      "word": "Graphic Designer",
+      "subtle": [
+        {
+          "hint": "Kerning",
+          "rationale": "Micro-adjusting spacing between individual letter pairs."
+        },
+        {
+          "hint": "Vector",
+          "rationale": "Resolution-independent mathematical anchor point artwork."
+        },
+        {
+          "hint": "Pantone",
+          "rationale": "Standardized color matching system for print."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Typography",
+          "rationale": "Art of arranging fonts and text hierarchy."
+        },
+        {
+          "hint": "Layout",
+          "rationale": "Composition of images and margins on page or screen."
+        },
+        {
+          "hint": "Tablet",
+          "rationale": "Stylus drawing pad connected to digital workstation."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Logo",
+          "rationale": "Visual brand icon created for organizations."
+        },
+        {
+          "hint": "Visual",
+          "rationale": "Aesthetic communication medium."
+        },
+        {
+          "hint": "Digital",
+          "rationale": "Work produced using creative software suites."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Visual artist creating logos, typography, and digital layouts."
+      }
+    },
+    {
+      "word": "Teacher",
+      "subtle": [
+        {
+          "hint": "Chalk",
+          "rationale": "Calcium stick writing equations on blackboard."
+        },
+        {
+          "hint": "Recess",
+          "rationale": "Midday playground break between academic periods."
+        },
+        {
+          "hint": "Attendance",
+          "rationale": "Roll call marking students present each morning."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Classroom",
+          "rationale": "Room furnished with desks where lessons occur."
+        },
+        {
+          "hint": "Homework",
+          "rationale": "Take-home assignments graded with red ink."
+        },
+        {
+          "hint": "Lesson",
+          "rationale": "Structured educational unit delivered to pupils."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "School",
+          "rationale": "Educational institution where educators teach."
+        },
+        {
+          "hint": "Students",
+          "rationale": "Young learners attending daily classes."
+        },
+        {
+          "hint": "Learn",
+          "rationale": "Primary goal guiding daily instruction."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Educator guiding students and lessons in the classroom."
+      }
+    },
+    {
+      "word": "Farmer",
+      "subtle": [
+        {
+          "hint": "Scarecrow",
+          "rationale": "Hay-stuffed decoy dressed to deter crows from crops."
+        },
+        {
+          "hint": "Silo",
+          "rationale": "Tall cylindrical tower storing harvested grain."
+        },
+        {
+          "hint": "Trough",
+          "rationale": "Long shallow container holding water for livestock."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Tractor",
+          "rationale": "Heavy diesel engine towing plows across soil."
+        },
+        {
+          "hint": "Barn",
+          "rationale": "Red wooden shelter housing livestock and hay."
+        },
+        {
+          "hint": "Harvest",
+          "rationale": "Autumn gathering of ripe grains and vegetables."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Crops",
+          "rationale": "Wheat, corn, and vegetables cultivated in fields."
+        },
+        {
+          "hint": "Soil",
+          "rationale": "Fertile earth tilled before planting seeds."
+        },
+        {
+          "hint": "Fields",
+          "rationale": "Vast rural pastures and cultivated acreage."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Agricultural worker cultivating crops and livestock on farms."
+      }
+    },
+    {
+      "word": "Blacksmith",
+      "subtle": [
+        {
+          "hint": "Tongs",
+          "rationale": "Long scissor-like iron grips holding red-hot metal."
+        },
+        {
+          "hint": "Quench",
+          "rationale": "Plunging glowing steel into water barrel to harden."
+        },
+        {
+          "hint": "Coke",
+          "rationale": "Purified coal fueling superheated forge fires."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Anvil",
+          "rationale": "Heavy steel block on which glowing metal is beaten."
+        },
+        {
+          "hint": "Forge",
+          "rationale": "Hearth where fire softens iron for shaping."
+        },
+        {
+          "hint": "Bellows",
+          "rationale": "Hand-pumped bladder blowing air to fan embers."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Hammer",
+          "rationale": "Heavy iron tool striking metal into shapes."
+        },
+        {
+          "hint": "Horseshoe",
+          "rationale": "Curved iron shoe custom-fitted to equine hooves."
+        },
+        {
+          "hint": "Iron",
+          "rationale": "Core ferrous metal forged in shop."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Metal artisan forging iron tools and horseshoes at the anvil."
+      }
+    },
+    {
+      "word": "Dentist",
+      "subtle": [
+        {
+          "hint": "Mirror",
+          "rationale": "Tiny angled circular mirror inspecting back molars."
+        },
+        {
+          "hint": "Spit",
+          "rationale": "Sink bowl rinsed after polishing and scaling."
+        },
+        {
+          "hint": "Floss",
+          "rationale": "Waxed thread cleaning between tight contacts."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Drill",
+          "rationale": "High-speed whirring burr removing tooth decay."
+        },
+        {
+          "hint": "Cavity",
+          "rationale": "Enamel decay cleaned and sealed with filling."
+        },
+        {
+          "hint": "Enamel",
+          "rationale": "Hard exterior mineral coating protecting teeth."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Teeth",
+          "rationale": "Core oral anatomical focus of practice."
+        },
+        {
+          "hint": "Smile",
+          "rationale": "Clean straight outcome of regular dental care."
+        },
+        {
+          "hint": "Mouth",
+          "rationale": "Oral cavity examined under bright clinic light."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Oral healthcare specialist treating teeth and cavities."
+      }
+    },
+    {
+      "word": "Astronomer",
+      "subtle": [
+        {
+          "hint": "Spectra",
+          "rationale": "Deconstructed light lines revealing chemical makeup of stars."
+        },
+        {
+          "hint": "Nebula",
+          "rationale": "Interstellar cloud of dust and gas birthing stars."
+        },
+        {
+          "hint": "Orbit",
+          "rationale": "Elliptical path of planetary bodies around suns."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Telescope",
+          "rationale": "Optical or radio instrument magnifying distant skies."
+        },
+        {
+          "hint": "Observatory",
+          "rationale": "Mountaintop dome housing massive scientific lenses."
+        },
+        {
+          "hint": "Constellation",
+          "rationale": "Pattern of stars mapped across celestial sphere."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Stars",
+          "rationale": "Luminous burning celestial bodies studied at night."
+        },
+        {
+          "hint": "Planets",
+          "rationale": "Spherical worlds orbiting distant stellar systems."
+        },
+        {
+          "hint": "Space",
+          "rationale": "Cosmic expanse investigated beyond Earth."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Scientist studying stars, galaxies, and planets via telescopes."
+      }
+    },
+    {
+      "word": "Choreographer",
+      "subtle": [
+        {
+          "hint": "Rehearsal",
+          "rationale": "Hours spent perfecting routine in mirrored studio."
+        },
+        {
+          "hint": "Count",
+          "rationale": "Rhythmic eight-count guiding synchronicity."
+        },
+        {
+          "hint": "Leotard",
+          "rationale": "Snug stretch garment worn during dance practice."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Routine",
+          "rationale": "Sequenced series of movements set to music."
+        },
+        {
+          "hint": "Stage",
+          "rationale": "Performance platform where company executes piece."
+        },
+        {
+          "hint": "Steps",
+          "rationale": "Individual foot and body movements designed."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dance",
+          "rationale": "Physical artistic expression and movement."
+        },
+        {
+          "hint": "Music",
+          "rationale": "Soundtrack driving tempo and emotional flow."
+        },
+        {
+          "hint": "Ballet",
+          "rationale": "Classical discipline of graceful stage performance."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Dance architect designing routines, steps, and stage movements."
+      }
+    },
+    {
+      "word": "Barista",
+      "subtle": [
+        {
+          "hint": "Tamper",
+          "rationale": "Heavy metal puck compressing grounds into portafilter."
+        },
+        {
+          "hint": "Portafilter",
+          "rationale": "Handled basket clamping into espresso machine group."
+        },
+        {
+          "hint": "Roast",
+          "rationale": "Dark or light bean roast profile chosen for shot."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Espresso",
+          "rationale": "Concentrated shot extracted under nine bars of pressure."
+        },
+        {
+          "hint": "Froth",
+          "rationale": "Steamed microfoam milk textured with steam wand."
+        },
+        {
+          "hint": "Cafe",
+          "rationale": "Coffee shop counter serving aromatic cups."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Coffee",
+          "rationale": "Core brewed beverage prepared to order."
+        },
+        {
+          "hint": "Latte",
+          "rationale": "Milky drink decorated with poured rosetta art."
+        },
+        {
+          "hint": "Cup",
+          "rationale": "Ceramic mug or paper takeaway cup handed to customer."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Coffee artisan pulling espresso shots and steaming milk."
+      }
+    },
+    {
+      "word": "Fisherman",
+      "subtle": [
+        {
+          "hint": "Trawler",
+          "rationale": "Commercial vessel dragging large ocean nets."
+        },
+        {
+          "hint": "Bait",
+          "rationale": "Worm or lure hooked to entice underwater catch."
+        },
+        {
+          "hint": "Tackle",
+          "rationale": "Box organizing hooks, sinkers, and bobbers."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Net",
+          "rationale": "Meshed cordage hauling in schools of marine fish."
+        },
+        {
+          "hint": "Hook",
+          "rationale": "Curved barbed point securing caught catch."
+        },
+        {
+          "hint": "Wharf",
+          "rationale": "Wooden pier where boats dock to unload catch."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Boat",
+          "rationale": "Vessel venturing onto lakes or open ocean."
+        },
+        {
+          "hint": "Ocean",
+          "rationale": "Saltwater domain searched for bountiful catch."
+        },
+        {
+          "hint": "Catch",
+          "rationale": "Haul brought back to harbor market."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Harvester of lakes and seas catching fish with nets and lines."
+      }
+    },
+    {
+      "word": "Mechanic",
+      "subtle": [
+        {
+          "hint": "Dipstick",
+          "rationale": "Slender metal rod measuring oil level in engine."
+        },
+        {
+          "hint": "Gasket",
+          "rationale": "Rubber or cork seal preventing fluid leaks."
+        },
+        {
+          "hint": "Lift",
+          "rationale": "Hydraulic hoist elevating vehicle for underbody access."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Wrench",
+          "rationale": "Socket tool tightening cylinder head bolts."
+        },
+        {
+          "hint": "Engine",
+          "rationale": "Combustion motor diagnosed and overhauled."
+        },
+        {
+          "hint": "Grease",
+          "rationale": "Lubricant coating hands and wheel bearings."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Car",
+          "rationale": "Automotive vehicle serviced in bay."
+        },
+        {
+          "hint": "Garage",
+          "rationale": "Repair workshop with tool chests."
+        },
+        {
+          "hint": "Fix",
+          "rationale": "Restoring malfunctioning machinery to working order."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Automotive technician repairing engines, brakes, and cars."
+      }
+    },
+    {
+      "word": "Baker",
+      "subtle": [
+        {
+          "hint": "Proofing",
+          "rationale": "Allowing yeast dough to rest and rise before baking."
+        },
+        {
+          "hint": "Apron",
+          "rationale": "White cloth dusting flour off work trousers."
+        },
+        {
+          "hint": "Peel",
+          "rationale": "Long wooden paddle sliding loaves into stone deck oven."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Yeast",
+          "rationale": "Living microorganism fermenting dough to create rise."
+        },
+        {
+          "hint": "Oven",
+          "rationale": "Industrial hot hearth baking batches of rolls."
+        },
+        {
+          "hint": "Knead",
+          "rationale": "Pushing and folding dough to develop gluten."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Flour",
+          "rationale": "Finely milled white grain forming dough base."
+        },
+        {
+          "hint": "Bread",
+          "rationale": "Crusty golden loaves pulled fresh from ovens."
+        },
+        {
+          "hint": "Pastry",
+          "rationale": "Sweet croissants and tarts in display case."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Bread and pastry artisan kneading dough and baking loaves."
+      }
+    },
+    {
+      "word": "Florist",
+      "subtle": [
+        {
+          "hint": "Shears",
+          "rationale": "Sharp blades cutting stems at an angle under water."
+        },
+        {
+          "hint": "Ribbon",
+          "rationale": "Silken or satin band tying wrapped arrangement."
+        },
+        {
+          "hint": "Greenhouse",
+          "rationale": "Sunlit glass enclosure nurturing cut flower stock."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bouquet",
+          "rationale": "Artistically arranged bunch of colorful cut stems."
+        },
+        {
+          "hint": "Petals",
+          "rationale": "Delicate colorful blossom leaves scented sweetly."
+        },
+        {
+          "hint": "Roses",
+          "rationale": "Popular red, pink, and white romantic blossoms."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Flowers",
+          "rationale": "Core botanical blooms sold in shop."
+        },
+        {
+          "hint": "Vase",
+          "rationale": "Glass or ceramic vessel holding arrangement in water."
+        },
+        {
+          "hint": "Shop",
+          "rationale": "Fragrant storefront selling floral gifts."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Botanical artisan arranging bouquets, roses, and flowers."
+      }
+    },
+    {
+      "word": "Translator",
+      "subtle": [
+        {
+          "hint": "Idiom",
+          "rationale": "Figurative expression requiring cultural adaptation."
+        },
+        {
+          "hint": "Headset",
+          "rationale": "Audio gear worn in booth for simultaneous interpretation."
+        },
+        {
+          "hint": "Dialect",
+          "rationale": "Regional language variation requiring nuanced phrasing."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Dictionary",
+          "rationale": "Reference book looking up exact word meanings."
+        },
+        {
+          "hint": "Bilingual",
+          "rationale": "Fluency in two or more spoken tongues."
+        },
+        {
+          "hint": "Grammar",
+          "rationale": "Structural syntax rules bridging two languages."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Language",
+          "rationale": "Spoken and written tongues deciphered."
+        },
+        {
+          "hint": "Words",
+          "rationale": "Vocabulary converted accurately across texts."
+        },
+        {
+          "hint": "Speak",
+          "rationale": "Conferring verbally between international delegates."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Language specialist bridging texts and speech across cultures."
+      }
+    },
+    {
+      "word": "Coach",
+      "subtle": [
+        {
+          "hint": "Clipboard",
+          "rationale": "Handheld board holding playbook and roster notes."
+        },
+        {
+          "hint": "Stopwatch",
+          "rationale": "Timing sprint intervals down to the millisecond."
+        },
+        {
+          "hint": "Drills",
+          "rationale": "Repetitive training exercises refining fundamental skills."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Whistle",
+          "rationale": "Acoustic pea signal commanding team attention."
+        },
+        {
+          "hint": "Sideline",
+          "rationale": "Boundary line paced while shouting tactical orders."
+        },
+        {
+          "hint": "Tactics",
+          "rationale": "Strategic game plans designed to outmaneuver rivals."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Team",
+          "rationale": "Athletic squad trained and led into competition."
+        },
+        {
+          "hint": "Training",
+          "rationale": "Conditioning sessions preparing athletes for victory."
+        },
+        {
+          "hint": "Win",
+          "rationale": "Ultimate competitive objective on game day."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Athletic mentor directing team tactics from the sideline."
+      }
+    },
+    {
+      "word": "Scientist",
+      "subtle": [
+        {
+          "hint": "Beaker",
+          "rationale": "Graduated glass vessel mixing chemical reagents."
+        },
+        {
+          "hint": "Peer",
+          "rationale": "Colleague reviewing research manuscripts before publication."
+        },
+        {
+          "hint": "Data",
+          "rationale": "Empirical measurements collected during trials."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Hypothesis",
+          "rationale": "Testable proposed explanation for observed phenomenon."
+        },
+        {
+          "hint": "Labcoat",
+          "rationale": "White protective cotton garment worn over street clothes."
+        },
+        {
+          "hint": "Microscope",
+          "rationale": "Optical instrument revealing cellular structures."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Experiment",
+          "rationale": "Controlled empirical test validating scientific theory."
+        },
+        {
+          "hint": "Research",
+          "rationale": "Systematic pursuit of discovery and knowledge."
+        },
+        {
+          "hint": "Lab",
+          "rationale": "Facility outfitted for scientific experimentation."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Empirical researcher conducting experiments in the laboratory."
+      }
+    }
+  ]
+}

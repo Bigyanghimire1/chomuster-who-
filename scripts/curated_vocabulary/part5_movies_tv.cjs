@@ -1,0 +1,888 @@
+const fs = require('fs');
+
+const moviesTv = [
+  {
+    word: 'Titanic',
+    subtle: [
+      { hint: 'Whistle', rationale: 'Steam distress signal blown in freezing fog.' },
+      { hint: 'Stern', rationale: 'Rear deck rising vertical before plunging.' },
+      { hint: 'Locket', rationale: 'Heart of the Ocean blue diamond pendant.' }
+    ],
+    balanced: [
+      { hint: 'Iceberg', rationale: 'Glacial hazard piercing underwater bulkheads.' },
+      { hint: 'Lifeboats', rationale: 'Scarce rescue craft lowering women and children.' },
+      { hint: 'Unsinkable', rationale: 'Hubristic promotional claim shattered on maiden voyage.' }
+    ],
+    easy: [
+      { hint: 'Ship', rationale: 'Grand luxury ocean passenger liner.' },
+      { hint: 'Atlantic', rationale: 'Frigid ocean where wreck lies.' },
+      { hint: 'Sink', rationale: 'Disaster claiming the vessel in 1912.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tragic romance blockbuster about the ill-fated ocean liner.' }
+  },
+  {
+    word: 'Inception',
+    subtle: [
+      { hint: 'Kick', rationale: 'Sensory drop triggering awakening from dream state.' },
+      { hint: 'Hallway', rationale: 'Zero-gravity rotating corridor fight scene.' },
+      { hint: 'Freight', rationale: 'Train charging down city street in subconscious.' }
+    ],
+    balanced: [
+      { hint: 'Totem', rationale: 'Personal talisman testing reality against dreaming.' },
+      { hint: 'Subconscious', rationale: 'Deep psychological realm infiltrated by extractors.' },
+      { hint: 'Spinner', rationale: 'Spinning brass top determining dream stability.' }
+    ],
+    easy: [
+      { hint: 'Dream', rationale: 'Core altered state of mind where heists occur.' },
+      { hint: 'Layers', rationale: 'Nested dream within a dream architecture.' },
+      { hint: 'Maze', rationale: 'Complex mental labyrinth drafted by architects.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Christopher Nolan sci-fi thriller about layered dream heist.' }
+  },
+  {
+    word: 'Harry Potter',
+    subtle: [
+      { hint: 'Cupboard', rationale: 'Cramped storage space under stairs serving as bedroom.' },
+      { hint: 'Owl', rationale: 'Snowy Hedwig delivering parchment letters.' },
+      { hint: 'Platform', rationale: 'Concealed brick pillar leading to nine and three-quarters.' }
+    ],
+    balanced: [
+      { hint: 'Wand', rationale: 'Holly and phoenix feather magic focus stick.' },
+      { hint: 'Scar', rationale: 'Lightning mark etched on forehead by curse.' },
+      { hint: 'Hogwarts', rationale: 'Scottish castle academy for young magicians.' }
+    ],
+    easy: [
+      { hint: 'Glasses', rationale: 'Round wire spectacles taped at the bridge.' },
+      { hint: 'Magic', rationale: 'Supernatural force taught in spellcasting classes.' },
+      { hint: 'Spell', rationale: 'Incantation cast to disarm or summon.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Boy wizard series set in Hogwarts magic academy.' }
+  },
+  {
+    word: 'The Matrix',
+    subtle: [
+      { hint: 'Spoon', rationale: 'Bending cutlery demonstrating mental simulation.' },
+      { hint: 'Rabbit', rationale: 'White tattoo followed into urban underground.' },
+      { hint: 'Sunglasses', rationale: 'Black rimless shades worn in digital reality.' }
+    ],
+    balanced: [
+      { hint: 'Pill', rationale: 'Choice between red reality and blue illusion.' },
+      { hint: 'Zion', rationale: 'Last human subterranean sanctuary city.' },
+      { hint: 'Code', rationale: 'Cascading green digital characters down screen.' }
+    ],
+    easy: [
+      { hint: 'Simulation', rationale: 'Artificial reality pacifying machine pods.' },
+      { hint: 'Dodge', rationale: 'Slow-motion bullet-dodging rooftop gymnastics.' },
+      { hint: 'Machines', rationale: 'Sentient AI oppressors harvesting human energy.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Cyberpunk sci-fi classic about escaping artificial reality.' }
+  },
+  {
+    word: 'Star Wars',
+    subtle: [
+      { hint: 'Cantina', rationale: 'Mos Eisley spaceport bar filled with aliens.' },
+      { hint: 'Moons', rationale: 'Twin suns of desert planet Tatooine.' },
+      { hint: 'Rebel', rationale: 'Alliance fighting against galactic tyranny.' }
+    ],
+    balanced: [
+      { hint: 'Lightsaber', rationale: 'Plasma blade ignited by Jedi knights.' },
+      { hint: 'Force', rationale: 'Mystical energy field binding the galaxy.' },
+      { hint: 'Jedi', rationale: 'Order of heroic peacekeepers wielding sabers.' }
+    ],
+    easy: [
+      { hint: 'Galaxy', rationale: 'Cosmic setting far, far away.' },
+      { hint: 'Droids', rationale: 'Robotic companions beep-booping on missions.' },
+      { hint: 'Empire', rationale: 'Authoritarian galactic military superpower.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Space opera epic of Jedi, Empire, and the Force.' }
+  },
+  {
+    word: 'Jurassic Park',
+    subtle: [
+      { hint: 'Puddle', rationale: 'Concentric water ripples signaling incoming footsteps.' },
+      { hint: 'Amber', rationale: 'Fossilized tree resin trapping prehistoric mosquito.' },
+      { hint: 'Jeep', rationale: 'Electric tour vehicle stalled outside paddock.' }
+    ],
+    balanced: [
+      { hint: 'Dinosaurs', rationale: 'Genetically cloned prehistoric reptiles.' },
+      { hint: 'Raptor', rationale: 'Clever pack hunters turning door handles.' },
+      { hint: 'Island', rationale: 'Remote Costa Rican Isla Nublar resort.' }
+    ],
+    easy: [
+      { hint: 'Rex', rationale: 'Apex carnivore roaring at visitors.' },
+      { hint: 'Fossils', rationale: 'Ancient bones studied by paleontologists.' },
+      { hint: 'Cloning', rationale: 'Biotechnology synthesizing prehistoric DNA.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Blockbuster about genetically resurrected island dinosaurs.' }
+  },
+  {
+    word: 'Shrek',
+    subtle: [
+      { hint: 'Onions', rationale: 'Vegetable metaphor explaining complex emotional layers.' },
+      { hint: 'Duloc', rationale: 'Sterile miniature kingdom ruled by Lord Farquaad.' },
+      { hint: 'Waffles', rationale: 'Breakfast treat requested by talkative donkey.' }
+    ],
+    balanced: [
+      { hint: 'Swamp', rationale: 'Muddy wetland sanctuary invaded by fairytale creatures.' },
+      { hint: 'Ogre', rationale: 'Misunderstood green mythical giant.' },
+      { hint: 'Donkey', rationale: 'Chatty gray equus best friend.' }
+    ],
+    easy: [
+      { hint: 'Green', rationale: 'Skin color and iconic trumpet ears.' },
+      { hint: 'Fairy', rationale: 'Subverted storybook folklore characters.' },
+      { hint: 'Princess', rationale: 'Fiona locked in dragon-guarded tower.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Animated classic subverting fairy tales with green ogre.' }
+  },
+  {
+    word: 'The Lion King',
+    subtle: [
+      { hint: 'Baobab', rationale: 'Ancient tree where Rafiki paints ceremonial mark.' },
+      { hint: 'Stampede', rationale: 'Gorge rush of wildebeests causing tragedy.' },
+      { hint: 'Sunrise', rationale: 'Golden dawn opening the Circle of Life.' }
+    ],
+    balanced: [
+      { hint: 'Savannah', rationale: 'African grasslands governed by Pride Rock.' },
+      { hint: 'Hakuna', rationale: 'First half of carefree jungle mantra.' },
+      { hint: 'Pride', rationale: 'Family dynasty ruling the African kingdom.' }
+    ],
+    easy: [
+      { hint: 'Cub', rationale: 'Young royal prince destined for throne.' },
+      { hint: 'Roar', rationale: 'Regal vocal call echoing over kingdom.' },
+      { hint: 'Crown', rationale: 'Metaphorical royal succession of the savannah.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Disney animated masterpiece on Pride Rock and royal destiny.' }
+  },
+  {
+    word: 'Spider-Man',
+    subtle: [
+      { hint: 'Photographer', rationale: 'Freelance newspaper job selling front-page shots.' },
+      { hint: 'Subway', rationale: 'Queens train stopped by web lines in heroics.' },
+      { hint: 'Bugle', rationale: 'Tabloid paper run by shouting Jameson.' }
+    ],
+    balanced: [
+      { hint: 'Web', rationale: 'Silken filament spun from wrist shooters.' },
+      { hint: 'Mask', rationale: 'Red fabric head covering with white mesh eyes.' },
+      { hint: 'Crawler', rationale: 'Wall-scaling athletic rooftop agility.' }
+    ],
+    easy: [
+      { hint: 'Suit', rationale: 'Iconic red and blue spandex uniform.' },
+      { hint: 'Superhero', rationale: 'Vigilante defending New York streets.' },
+      { hint: 'Bite', rationale: 'Radioactive arachnid sting granting powers.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Friendly neighborhood web-slinging superhero.' }
+  },
+  {
+    word: 'Batman',
+    subtle: [
+      { hint: 'Batarang', rationale: 'Aerodynamic bat-shaped throwing implement.' },
+      { hint: 'Butler', rationale: 'Loyal mentor Alfred tending wounds.' },
+      { hint: 'Manor', rationale: 'Stately Wayne estate concealing secret cavern.' }
+    ],
+    balanced: [
+      { hint: 'Gotham', rationale: 'Crime-ridden dark metropolis.' },
+      { hint: 'Signal', rationale: 'Searchlight projecting emblem onto overcast clouds.' },
+      { hint: 'Vigilante', rationale: 'Masked non-lethal crusader fighting mafia.' }
+    ],
+    easy: [
+      { hint: 'Cave', rationale: 'Subterranean lair filled with supercomputers.' },
+      { hint: 'Cape', rationale: 'Scalloped black gliding wings attached to suit.' },
+      { hint: 'Dark', rationale: 'Brooding aesthetic and midnight patrols.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Gotham dark knight vigilante protecting the night.' }
+  },
+  {
+    word: 'Superman',
+    subtle: [
+      { hint: 'Phonebooth', rationale: 'Classic street cubicle used for quick costume swaps.' },
+      { hint: 'Glasses', rationale: 'Disguise hiding heroic identity as Clark.' },
+      { hint: 'Planet', rationale: 'Metropolis Daily newspaper where he works.' }
+    ],
+    balanced: [
+      { hint: 'Krypton', rationale: 'Doomed alien homeworld exploding in space.' },
+      { hint: 'Cape', rationale: 'Flowing bright red mantle billowing in flight.' },
+      { hint: 'Kryptonite', rationale: 'Glowing radioactive mineral causing weakness.' }
+    ],
+    easy: [
+      { hint: 'Fly', rationale: 'Superpower soaring faster than speeding bullet.' },
+      { hint: 'Steel', rationale: 'Metal of his famous heroic moniker.' },
+      { hint: 'Hero', rationale: 'First archetype of modern superhero comics.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Man of Steel from Krypton fighting for truth and justice.' }
+  },
+  {
+    word: 'Iron Man',
+    subtle: [
+      { hint: 'Cheeseburger', rationale: 'First meal requested upon returning from cave.' },
+      { hint: 'Arc', rationale: 'Miniature palladium reactor in chest keeping him alive.' },
+      { hint: 'Malibu', rationale: 'Cliffside smart mansion workshop overlooking ocean.' }
+    ],
+    balanced: [
+      { hint: 'Armor', rationale: 'Hot rod red and gold motorized powered exoskeleton.' },
+      { hint: 'Jarvis', rationale: 'Artificial intelligence butler operating suits.' },
+      { hint: 'Repulsor', rationale: 'Palm-mounted concussive energy flight thrusters.' }
+    ],
+    easy: [
+      { hint: 'Billionaire', rationale: 'Genius playboy philanthropist persona.' },
+      { hint: 'Suit', rationale: 'High-tech robotic weaponized flight apparatus.' },
+      { hint: 'Avenger', rationale: 'Founding hero defending Earth from cosmic threats.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tony Stark armoured tech superhero.' }
+  },
+  {
+    word: 'Thor',
+    subtle: [
+      { hint: 'Rainbow', rationale: 'Bifrost bridge connecting magical cosmic realms.' },
+      { hint: 'Goats', rationale: 'Mythological steeds pulling mystical chariot.' },
+      { hint: 'Mead', rationale: 'Golden banquet drink quaffed in festive halls.' }
+    ],
+    balanced: [
+      { hint: 'Hammer', rationale: 'Enchanted weapon Mjolnir lifted only by the worthy.' },
+      { hint: 'Lightning', rationale: 'Atmospheric storm power summoned by god.' },
+      { hint: 'Asgard', rationale: 'Gilded divine realm ruled by Odin.' }
+    ],
+    easy: [
+      { hint: 'God', rationale: 'Norse deity of storms and thunder.' },
+      { hint: 'Thunder', rationale: 'Booming sound accompanying lightning strikes.' },
+      { hint: 'Cape', rationale: 'Crimson warrior mantle worn over armor.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Norse god of thunder wielding the enchanted hammer.' }
+  },
+  {
+    word: 'Hulk',
+    subtle: [
+      { hint: 'Purple', rationale: 'Stretchy pants remaining intact during transformation.' },
+      { hint: 'Heartbeat', rationale: 'Rising pulse monitor triggering adrenal change.' },
+      { hint: 'Serum', rationale: 'Super-soldier formula combined with radiation.' }
+    ],
+    balanced: [
+      { hint: 'Gamma', rationale: 'Penetrating nuclear radiation causing mutation.' },
+      { hint: 'Smash', rationale: 'Iconic roaring combat command and battle action.' },
+      { hint: 'Anger', rationale: 'Emotional trigger transforming mild scientist.' }
+    ],
+    easy: [
+      { hint: 'Green', rationale: 'Skin color of towering muscular alter ego.' },
+      { hint: 'Monster', rationale: 'Enormous destructive powerhouse titan.' },
+      { hint: 'Muscles', rationale: 'Gigantic unstoppable physical strength.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Green gamma-powered powerhouse transforming when angry.' }
+  },
+  {
+    word: 'Dragon',
+    subtle: [
+      { hint: 'Hoard', rationale: 'Massive subterranean pile of stolen golden coins.' },
+      { hint: 'Cavern', rationale: 'Deep mountain lair where beast sleeps for centuries.' },
+      { hint: 'Sulfur', rationale: 'Brimstone scent warning of imminent breath.' }
+    ],
+    balanced: [
+      { hint: 'Wings', rationale: 'Leathery bat-like wings blotting out the sky.' },
+      { hint: 'Scales', rationale: 'Impenetrable armored reptile skin.' },
+      { hint: 'Breathe', rationale: 'Incinerating blast launched from gullet.' }
+    ],
+    easy: [
+      { hint: 'Fire', rationale: 'Flaming element incinerating castles.' },
+      { hint: 'Mythical', rationale: 'Legendary creature of fantasy folklore.' },
+      { hint: 'Tail', rationale: 'Heavy spiky serpentine weapon.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winged fire-breathing mythical beast guarding gold.' }
+  },
+  {
+    word: 'Unicorn',
+    subtle: [
+      { hint: 'Purity', rationale: 'Spiritual virtue associated with mythical equine.' },
+      { hint: 'Tapestry', rationale: 'Medieval French woven hunt artwork.' },
+      { hint: 'Clearing', rationale: 'Sunlit enchanted forest grove where it appears.' }
+    ],
+    balanced: [
+      { hint: 'Spiral', rationale: 'Twisted ridged pattern along forehead horn.' },
+      { hint: 'Rainbow', rationale: 'Colorful celestial motif paired in modern pop art.' },
+      { hint: 'White', rationale: 'Pristine glowing coat color.' }
+    ],
+    easy: [
+      { hint: 'Horn', rationale: 'Single magical spire rising from forehead.' },
+      { hint: 'Horse', rationale: 'Equine body shape with mane and hooves.' },
+      { hint: 'Magic', rationale: 'Fantasy creature with healing legend.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Magical white horse with a spiraled forehead horn.' }
+  },
+  {
+    word: 'Wizard',
+    subtle: [
+      { hint: 'Tome', rationale: 'Ancient leather-bound book of arcane formulas.' },
+      { hint: 'Crystal', rationale: 'Scrying sphere gazing into distant futures.' },
+      { hint: 'Tower', rationale: 'High isolated stone sanctuary for studying stars.' }
+    ],
+    balanced: [
+      { hint: 'Robe', rationale: 'Flowing embroidered star-patterned garment.' },
+      { hint: 'Staff', rationale: 'Tall wooden carved rod channeling elemental power.' },
+      { hint: 'Beard', rationale: 'Long white facial hair reaching past belt.' }
+    ],
+    easy: [
+      { hint: 'Magic', rationale: 'Arcane supernatural casting capability.' },
+      { hint: 'Hat', rationale: 'Tall pointed brimmed conical headwear.' },
+      { hint: 'Spell', rationale: 'Spoken incantation invoking magical effects.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Magical elder casting spells with robe, staff, and hat.' }
+  },
+  {
+    word: 'Vampire',
+    subtle: [
+      { hint: 'Coffin', rationale: 'Velvet-lined wooden box holding resting body.' },
+      { hint: 'Garlic', rationale: 'Pungent kitchen bulb hung over doors as deterrent.' },
+      { hint: 'Transylvania', rationale: 'Romanian forested mountain region of legend.' }
+    ],
+    balanced: [
+      { hint: 'Fangs', rationale: 'Elongated sharp canine teeth puncturing necks.' },
+      { hint: 'Mirror', rationale: 'Glass showing zero reflection of undead form.' },
+      { hint: 'Bat', rationale: 'Nocturnal flying creature shape-shifted into.' }
+    ],
+    easy: [
+      { hint: 'Blood', rationale: 'Vital red fluid craved for eternal life.' },
+      { hint: 'Night', rationale: 'Dark hours when monsters hunt outside.' },
+      { hint: 'Sunlight', rationale: 'Daylight burning undead skin to ash.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Undead blood-drinking nocturnal creature burned by sun.' }
+  },
+  {
+    word: 'Phoenix',
+    subtle: [
+      { hint: 'Rebirth', rationale: 'Spiritual concept of living anew after death.' },
+      { hint: 'Tears', rationale: 'Legendary healing droplets mending fatal wounds.' },
+      { hint: 'Nest', rationale: 'Aromatic cinnamon and myrrh funeral pyre.' }
+    ],
+    balanced: [
+      { hint: 'Ashes', rationale: 'Grey powdery remains from which fledgling rises.' },
+      { hint: 'Flame', rationale: 'Fiery aura enveloping majestic plumage.' },
+      { hint: 'Immortal', rationale: 'Eternal cyclical lifespan renewing indefinitely.' }
+    ],
+    easy: [
+      { hint: 'Bird', rationale: 'Avian mythical creature category.' },
+      { hint: 'Fire', rationale: 'Burning elemental nature.' },
+      { hint: 'Feathers', rationale: 'Golden and crimson glowing quills.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Mythical firebird rising reborn from its own ashes.' }
+  },
+  {
+    word: 'Mermaid',
+    subtle: [
+      { hint: 'Siren', rationale: 'Alluring acoustic singing luring sailors to rocks.' },
+      { hint: 'Comb', rationale: 'Mother of pearl tool styling wet hair on rocks.' },
+      { hint: 'Shipwreck', rationale: 'Sunken wooden galleon explored for human trinkets.' }
+    ],
+    balanced: [
+      { hint: 'Scales', rationale: 'Shimmering iridescent skin covering lower half.' },
+      { hint: 'Fin', rationale: 'Caudal paddle propelling graceful water gliding.' },
+      { hint: 'Lagoon', rationale: 'Sheltered tropical cove where pods surface.' }
+    ],
+    easy: [
+      { hint: 'Tail', rationale: 'Fish-like lower body replacing legs.' },
+      { hint: 'Ocean', rationale: 'Deep underwater saltwater kingdom.' },
+      { hint: 'Swim', rationale: 'Effortless marine movement.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Half-human half-fish maiden dwelling in the ocean.' }
+  },
+  {
+    word: 'Stranger Things',
+    subtle: [
+      { hint: 'Waffles', rationale: 'Eggo brand breakfast treats craved by Eleven.' },
+      { hint: 'Christmas', rationale: 'Colored string lights blinking alphabet messages.' },
+      { hint: 'Bikes', rationale: 'Schwinn bicycles pedaled frantically down dark lanes.' }
+    ],
+    balanced: [
+      { hint: 'Upside', rationale: 'Dark spore-filled mirror dimension underneath.' },
+      { hint: 'Hawkins', rationale: 'Fictional Indiana suburban town beset by monsters.' },
+      { hint: 'Telekinesis', rationale: 'Mind-power crushing cans and moving vans.' }
+    ],
+    easy: [
+      { hint: 'Eighties', rationale: 'Nostalgic decade aesthetic and synth soundtrack.' },
+      { hint: 'Monster', rationale: 'Demogorgon creature stalking teenagers.' },
+      { hint: 'Nosebleed', rationale: 'Physical side-effect of psychic strain.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Eighties sci-fi mystery series set in Hawkins Indiana.' }
+  },
+  {
+    word: 'Finding Nemo',
+    subtle: [
+      { hint: 'Dentist', rationale: 'Sydney harbor office holding fish in aquarium.' },
+      { hint: 'Current', rationale: 'East Australian ocean current ridden with sea turtles.' },
+      { hint: 'Goggles', rationale: 'Scuba diver mask marked with Sydney address.' }
+    ],
+    balanced: [
+      { hint: 'Anemone', rationale: 'Stinging tentacle coral sanctuary home.' },
+      { hint: 'Fin', rationale: 'Lucky small pectoral limb overcoming handicap.' },
+      { hint: 'Reef', rationale: 'Great Barrier coral habitat.' }
+    ],
+    easy: [
+      { hint: 'Clownfish', rationale: 'Orange and white striped reef dweller.' },
+      { hint: 'Orange', rationale: 'Vibrant skin color with black borders.' },
+      { hint: 'Ocean', rationale: 'Vast marine setting searched by father.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pixar animation about lost little clownfish in the ocean.' }
+  },
+  {
+    word: 'Breaking Bad',
+    subtle: [
+      { hint: 'Camper', rationale: 'Fleetwood Bounder RV cooking lab in desert.' },
+      { hint: 'Pollos', rationale: 'Fast food chicken franchise fronting empire.' },
+      { hint: 'Fly', rationale: 'Persistent insect contaminating sterile laboratory.' }
+    ],
+    balanced: [
+      { hint: 'Blue', rationale: 'Distinct chemically pure sapphire crystalline product.' },
+      { hint: 'Chemistry', rationale: 'High school science discipline behind purity.' },
+      { hint: 'Meth', rationale: 'Illicit substance cooked in desert.' }
+    ],
+    easy: [
+      { hint: 'Teacher', rationale: 'Walter White original suburban profession.' },
+      { hint: 'Desert', rationale: 'Albuquerque New Mexico arid setting.' },
+      { hint: 'Crime', rationale: 'Descent into violent cartel underworld.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Acclaimed TV drama about a chemistry teacher turned kingpin.' }
+  },
+  {
+    word: 'Avatar',
+    subtle: [
+      { hint: 'Arch', rationale: 'Hallelujah floating mountain magnetic rock arches.' },
+      { hint: 'Tree', rationale: 'Hometree botanical nerve center of the Na’vi.' },
+      { hint: 'Bioluminescence', rationale: 'Glowing flora and fauna lighting up night forest.' }
+    ],
+    balanced: [
+      { hint: 'Pandora', rationale: 'Alien jungle moon orbiting gas giant Polyphemus.' },
+      { hint: 'Na’vi', rationale: 'Tall blue-skinned humanoid indigenous clan.' },
+      { hint: 'Blue', rationale: 'Vibrant skin hue of indigenous hunter tribe.' }
+    ],
+    easy: [
+      { hint: 'Jungle', rationale: 'Towering alien rainforest ecosystem.' },
+      { hint: 'Alien', rationale: 'Extraterrestrial sentient species.' },
+      { hint: 'Sci-fi', rationale: 'James Cameron futuristic blockbuster.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'James Cameron sci-fi epic set on the moon Pandora.' }
+  },
+  {
+    word: 'The Avengers',
+    subtle: [
+      { hint: 'Shawarma', rationale: 'Post-battle silent meal shared in ruined diner.' },
+      { hint: 'Helicarrier', rationale: 'Stealth airborne military fortress base.' },
+      { hint: 'Tower', rationale: 'Manhattan skyscraper bearing lighted letter A.' }
+    ],
+    balanced: [
+      { hint: 'Assemble', rationale: 'Rallying battle cry gathering Earth mightiest heroes.' },
+      { hint: 'Stones', rationale: 'Infinity cosmic gems sought across universe.' },
+      { hint: 'Team', rationale: 'Cooperative superhero unit saving civilization.' }
+    ],
+    easy: [
+      { hint: 'Heroes', rationale: 'Earth champions defending humanity.' },
+      { hint: 'Shield', rationale: 'Defensive Vibranium star disc and spy agency.' },
+      { hint: 'Marvel', rationale: 'Cinematic comic universe franchise.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Marvel superhero team assembly defending Earth.' }
+  },
+  {
+    word: 'Forrest Gump',
+    subtle: [
+      { hint: 'Feather', rationale: 'White plume floating through air in opening credits.' },
+      { hint: 'Shrimp', rationale: 'Bubba culinary obsession inspiring fishing boat.' },
+      { hint: 'Bench', rationale: 'Bus stop seat where lifelong story is narrated.' }
+    ],
+    balanced: [
+      { hint: 'Chocolates', rationale: 'Sweet box metaphor for unpredictable life.' },
+      { hint: 'Pingpong', rationale: 'Table paddle sport mastered with quick reflexes.' },
+      { hint: 'Run', rationale: 'Cross-country marathon jogging across America.' }
+    ],
+    easy: [
+      { hint: 'Sneakers', rationale: 'Muddy classic Nike shoes worn across nation.' },
+      { hint: 'Medal', rationale: 'Congressional military honor awarded by president.' },
+      { hint: 'Alabama', rationale: 'Southern home state of kindhearted hero.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Heartfelt film about a simple man witnessing historic events.' }
+  },
+  {
+    word: 'Game of Thrones',
+    subtle: [
+      { hint: 'Raven', rationale: 'Three-eyed messenger bird carrying dark portents.' },
+      { hint: 'Valyrian', rationale: 'Ancient magical rippled steel slaying white walkers.' },
+      { hint: 'Winter', rationale: 'Ominous seasonal warning coming from the north.' }
+    ],
+    balanced: [
+      { hint: 'Westeros', rationale: 'Seven Kingdoms continent contested by dynasties.' },
+      { hint: 'Dragons', rationale: 'Three winged scaly children hatched by Daenerys.' },
+      { hint: 'Wall', rationale: 'Colossal ice barrier guarded by Night Watch.' }
+    ],
+    easy: [
+      { hint: 'Swords', rationale: 'Blades forged together to craft iron seat.' },
+      { hint: 'Kingdom', rationale: 'Feudal realm fractured by civil war.' },
+      { hint: 'Kings', rationale: 'Monarchs betraying rivals in deadly power struggle.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Epic fantasy saga of rival houses vying for iron throne.' }
+  },
+  {
+    word: 'Interstellar',
+    subtle: [
+      { hint: 'Watch', rationale: 'Hamilton timepiece ticking Morse code from tesseract.' },
+      { hint: 'Cornfield', rationale: 'Dust bowl farm before departure into cosmos.' },
+      { hint: 'Waves', rationale: 'Towering planetary tidal surges on Miller planet.' }
+    ],
+    balanced: [
+      { hint: 'Wormhole', rationale: 'Spherical spacetime shortcut near Saturn.' },
+      { hint: 'Gargantua', rationale: 'Massive glowing supermassive black hole.' },
+      { hint: 'Tesseract', rationale: 'Five-dimensional room navigating daughter bedroom time.' }
+    ],
+    easy: [
+      { hint: 'Gravity', rationale: 'Physical cosmic force transcending time and space.' },
+      { hint: 'Astronaut', rationale: 'Pilot leaving children to save mankind.' },
+      { hint: 'Space', rationale: 'Infinite starry void explored in sci-fi epic.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Nolan space epic traversing wormholes to save humanity.' }
+  },
+  {
+    word: 'Pulp Fiction',
+    subtle: [
+      { hint: 'Briefcase', rationale: 'Glowing golden interior combination locked case.' },
+      { hint: 'Watch', rationale: 'Gold heirloom hidden during childhood war years.' },
+      { hint: 'Diner', rationale: 'Hawaiian shirt robbery setting holding up customers.' }
+    ],
+    balanced: [
+      { hint: 'Twist', rationale: 'Jack Rabbit Slim sock hop dance competition.' },
+      { hint: 'Royale', rationale: 'Quarter pounder with cheese European menu name.' },
+      { hint: 'Hitman', rationale: 'Suited mob contract killer discussing theology.' }
+    ],
+    easy: [
+      { hint: 'Crime', rationale: 'Los Angeles underworld mob violence.' },
+      { hint: 'Tarantino', rationale: 'Director known for nonlinear storytelling and dialogue.' },
+      { hint: 'Gangster', rationale: 'Organized crime bosses and enforcers.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tarantino nonlinear indie crime classic.' }
+  },
+  {
+    word: 'Back to the Future',
+    subtle: [
+      { hint: 'Giga', rationale: 'Prefix in 1.21 gigawatts of required electrical energy.' },
+      { hint: 'Clocktower', rationale: 'Hill Valley municipal building struck by 10:04 bolt.' },
+      { hint: 'Vest', rationale: 'Orange quilted down puffer jacket mistaken for life preserver.' }
+    ],
+    balanced: [
+      { hint: 'DeLorean', rationale: 'Stainless steel gull-wing sports car time vessel.' },
+      { hint: 'Hoverboard', rationale: 'Wheel-less levitating skateboard ridden in 2015.' },
+      { hint: 'Lightning', rationale: 'High-voltage atmospheric bolt powering flux capacitor.' }
+    ],
+    easy: [
+      { hint: 'Time', rationale: 'Temporal dimension navigated by eccentric inventor.' },
+      { hint: 'Eightyeight', rationale: 'Speed in mph required for temporal displacement.' },
+      { hint: 'Doctor', rationale: 'Wild-haired eccentric scientist Doc Brown.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Classic 80s sci-fi comedy about time-traveling in a DeLorean.' }
+  },
+  {
+    word: 'The Dark Knight',
+    subtle: [
+      { hint: 'Pencil', rationale: 'Disappearing magic trick performed on mob table.' },
+      { hint: 'Coin', rationale: 'Two-headed silver dollar scarred on one side.' },
+      { hint: 'Hospital', rationale: 'Building detonated by nurse in clown makeup.' }
+    ],
+    balanced: [
+      { hint: 'Joker', rationale: 'Anarchist painted smiling psychopath villain.' },
+      { hint: 'Chaos', rationale: 'Philosophical driving doctrine of the villain.' },
+      { hint: 'Gotham', rationale: 'Metropolis pushed to the brink of moral collapse.' }
+    ],
+    easy: [
+      { hint: 'Hero', rationale: 'Vigilante taking blame to preserve city hope.' },
+      { hint: 'Clown', rationale: 'Face paint and purple suit of main nemesis.' },
+      { hint: 'Bat', rationale: 'Nocturnal emblem of the caped crusader.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Masterpiece superhero crime drama featuring the Joker.' }
+  },
+  {
+    word: 'Gladiator',
+    subtle: [
+      { hint: 'Wheat', rationale: 'Sunlit grain stalks brushed by hand in afterlife vision.' },
+      { hint: 'Thumb', rationale: 'Imperial hand gesture deciding life or death in sand.' },
+      { hint: 'Spaniard', rationale: 'Moniker given to enslaved general in arena.' }
+    ],
+    balanced: [
+      { hint: 'Colosseum', rationale: 'Flavian stone arena in Rome staging blood spectacles.' },
+      { hint: 'Sand', rationale: 'Blood-soaked arena floor where gladiators clash.' },
+      { hint: 'General', rationale: 'Military rank held before family betrayal.' }
+    ],
+    easy: [
+      { hint: 'Sword', rationale: 'Gladius short blade used in fatal duel.' },
+      { hint: 'Rome', rationale: 'Ancient empire ruled by corrupt emperor.' },
+      { hint: 'Shield', rationale: 'Bronze defensive combat armament.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Roman epic of Maximus seeking vengeance in the Colosseum.' }
+  },
+  {
+    word: 'The Office',
+    subtle: [
+      { hint: 'Jell-O', rationale: 'Gelatin dessert encasing stapler in classic prank.' },
+      { hint: 'Dundie', rationale: 'Trophy awarded at Chili restaurant banquets.' },
+      { hint: 'Scranton', rationale: 'Pennsylvania industrial city setting of paper branch.' }
+    ],
+    balanced: [
+      { hint: 'Paper', rationale: 'Core commodity sold by Dunder Mifflin staff.' },
+      { hint: 'Cubicle', rationale: 'Workplace partitions dividing desk mates.' },
+      { hint: 'Manager', rationale: 'Michael Scott cringeworthy regional executive.' }
+    ],
+    easy: [
+      { hint: 'Desks', rationale: 'Office furniture where pranksters and salesmen sit.' },
+      { hint: 'Comedy', rationale: 'Mockumentary workplace television genre.' },
+      { hint: 'Pranks', rationale: 'Humorous tricks played on desk-mate Dwight.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Beloved mockumentary comedy set in a paper company office.' }
+  },
+  {
+    word: 'Toy Story',
+    subtle: [
+      { hint: 'Boot', rationale: 'Footwear sole inscribed with owner Andy name.' },
+      { hint: 'Claw', rationale: 'Arcade crane game worshiped by three-eyed aliens.' },
+      { hint: 'Moving', rationale: 'Van chased in climactic highway rocket pursuit.' }
+    ],
+    balanced: [
+      { hint: 'Woody', rationale: 'Pull-string vintage cowboy sheriff leader.' },
+      { hint: 'Buzz', rationale: 'Space ranger action figure believing he can fly.' },
+      { hint: 'Andy', rationale: 'Boy whose bedroom serves as secret play kingdom.' }
+    ],
+    easy: [
+      { hint: 'Plastic', rationale: 'Material of miniature green army men.' },
+      { hint: 'Play', rationale: 'Childhood fantasy recreation with figurines.' },
+      { hint: 'Pixar', rationale: 'First fully computer-animated feature film studio.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Groundbreaking animated tale of toys coming alive when alone.' }
+  },
+  {
+    word: 'Home Alone',
+    subtle: [
+      { hint: 'Microvan', rationale: 'Plumbing van staked out by wet bandits.' },
+      { hint: 'Statue', rationale: 'Driveway bronze ornament knocked down by pizza car.' },
+      { hint: 'Tarantula', rationale: 'Escaped hairy spider placed on burglar face.' }
+    ],
+    balanced: [
+      { hint: 'Traps', rationale: 'Paint cans, micro machines, and iron contraptions.' },
+      { hint: 'Burglars', rationale: 'Incompetent thieves Harry and Marv.' },
+      { hint: 'Kevin', rationale: 'Resourceful boy defending suburban family house.' }
+    ],
+    easy: [
+      { hint: 'Christmas', rationale: 'Holiday season when family flies to Paris.' },
+      { hint: 'House', rationale: 'Large Chicago brick suburban mansion.' },
+      { hint: 'Left', rationale: 'Forgotten behind during frantic airport rush.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Holiday comedy about boy protecting home from burglars.' }
+  },
+  {
+    word: 'Friends',
+    subtle: [
+      { hint: 'Smelly', rationale: 'First word describing comical folk cat song.' },
+      { hint: 'Fountain', rationale: 'Water pool splashed in opening umbrella credits.' },
+      { hint: 'Break', rationale: 'Relationship hiatus hotly debated by Ross and Rachel.' }
+    ],
+    balanced: [
+      { hint: 'Perk', rationale: 'Greenwich Village coffee shop hangout Central Perk.' },
+      { hint: 'Couch', rationale: 'Orange velvet sofa reserved in front of cafe counter.' },
+      { hint: 'Pivot', rationale: 'Desperate staircase command moving heavy furniture.' }
+    ],
+    easy: [
+      { hint: 'Manhattan', rationale: 'New York borough setting with purple door apartment.' },
+      { hint: 'Sitcom', rationale: 'Nineties broadcast comedy television genre.' },
+      { hint: 'Six', rationale: 'Exact number of main tight-knit roommates.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Iconic nineties sitcom about six friends living in New York.' }
+  },
+  {
+    word: 'Ghostbusters',
+    subtle: [
+      { hint: 'Twinkie', rationale: 'Snack cake illustrating massive psychic energy buildup.' },
+      { hint: 'Keymaster', rationale: 'Possessed entity seeking the Gatekeeper of Gozer.' },
+      { hint: 'Firehouse', rationale: 'Decommissioned brick station converted into lab headquarters.' }
+    ],
+    balanced: [
+      { hint: 'Proton', rationale: 'High-energy pack strapped on back firing beams.' },
+      { hint: 'Slimer', rationale: 'Green gluttonous spud leaving ectoplasm slime.' },
+      { hint: 'Trap', rationale: 'Foot-pedal containment box sucking in spirits.' }
+    ],
+    easy: [
+      { hint: 'Specter', rationale: 'Supernatural apparition haunting Manhattan library.' },
+      { hint: 'Stream', rationale: 'Particle energy beam never to be crossed.' },
+      { hint: 'Slime', rationale: 'Sticky ectoplasmic residue left after encounters.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Comedic supernatural squad catching New York ghosts.' }
+  },
+  {
+    word: 'The Lord of the Rings',
+    subtle: [
+      { hint: 'Second', rationale: 'Hobbit morning meal following early breakfast.' },
+      { hint: 'Precious', rationale: 'Creepy whisper hissed by corrupted Gollum.' },
+      { hint: 'Mithril', rationale: 'Lightweight silver chainmail shirt stopping spear.' }
+    ],
+    balanced: [
+      { hint: 'Mordor', rationale: 'Volcanic wasteland kingdom ruled by Sauron.' },
+      { hint: 'Hobbit', rationale: 'Diminutive curly-haired barefoot Shire folk.' },
+      { hint: 'Fellowship', rationale: 'Nine companions sworn to destroy dark relic.' }
+    ],
+    easy: [
+      { hint: 'Volcano', rationale: 'Mount Doom fires melting enchanted gold.' },
+      { hint: 'Elves', rationale: 'Immortal graceful archers of Rivendell.' },
+      { hint: 'Fantasy', rationale: 'Tolkien Middle-earth epic genre.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Tolkien Middle-earth fantasy masterpiece.' }
+  },
+  {
+    word: 'Jaws',
+    subtle: [
+      { hint: 'Barrels', rationale: 'Yellow flotation kegs harpooned to tire monster.' },
+      { hint: 'Orca', rationale: 'Weathered wooden fishing vessel chartered by Quint.' },
+      { hint: 'Amity', rationale: 'Touristy New England island dependent on summer beaches.' }
+    ],
+    balanced: [
+      { hint: 'Fin', rationale: 'Triangular dorsal cutting menacingly through calm surf.' },
+      { hint: 'Bigger', rationale: 'Famous boat size requirement declared by Brody.' },
+      { hint: 'Shark', rationale: 'Apex marine predator terrorizing swimmers.' }
+    ],
+    easy: [
+      { hint: 'Beach', rationale: 'Sandy shoreline closed by town sheriff.' },
+      { hint: 'Ocean', rationale: 'Deep saltwater realm of the great white.' },
+      { hint: 'Teeth', rationale: 'Serrated razor rows lining gaping maw.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Spielberg summer thriller about a giant predatory shark.' }
+  },
+  {
+    word: 'Monsters Inc',
+    subtle: [
+      { hint: 'Sock', rationale: 'Human contamination item triggering code 2319 panic.' },
+      { hint: 'Doors', rationale: 'Vault of bedroom closets accessed on motorized rails.' },
+      { hint: 'Canister', rationale: 'Yellow cylinder storing acoustic scream power.' }
+    ],
+    balanced: [
+      { hint: 'Sulley', rationale: 'Giant blue furry top scarer with purple spots.' },
+      { hint: 'Mike', rationale: 'Small green spherical assistant with single giant eye.' },
+      { hint: 'Scream', rationale: 'Vocal energy harvested to power metropolis.' }
+    ],
+    easy: [
+      { hint: 'Closet', rationale: 'Bedroom portal into monster universe.' },
+      { hint: 'Laughter', rationale: 'Energy source proved ten times more potent than screams.' },
+      { hint: 'Scare', rationale: 'Core corporate activity inside factory.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pixar animation about monsters harvesting closet screams.' }
+  },
+  {
+    word: 'Squid Game',
+    subtle: [
+      { hint: 'Honeycomb', rationale: 'Dalgona sugar candy cut out with tiny sewing needle.' },
+      { hint: 'Marbles', rationale: 'Childhood spheres wagered in emotional betrayal.' },
+      { hint: 'Tracksuit', rationale: 'Green numbered uniform worn by hundreds of debtors.' }
+    ],
+    balanced: [
+      { hint: 'Island', rationale: 'Secret remote bunker complex hosting death games.' },
+      { hint: 'Doll', rationale: 'Giant mechanical singing schoolgirl scanning for movement.' },
+      { hint: 'Guards', rationale: 'Pink-suited masked staff wearing circle, triangle, square.' }
+    ],
+    easy: [
+      { hint: 'Money', rationale: 'Gigantic glass piggy bank suspended overhead.' },
+      { hint: 'Survival', rationale: 'Deadly elimination contest for immense cash.' },
+      { hint: 'Korean', rationale: 'Country of origin for the hit Netflix thriller.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Korean survival drama featuring deadly playground games.' }
+  },
+  {
+    word: 'Pirates of the Caribbean',
+    subtle: [
+      { hint: 'Compass', rationale: 'Navigation tool pointing toward heart deepest desire.' },
+      { hint: 'Aztec', rationale: 'Cursed gold coins turning plunderers into skeletons.' },
+      { hint: 'Rum', rationale: 'Sweet sugarcane liquor perpetually lamented as gone.' }
+    ],
+    balanced: [
+      { hint: 'Sparrow', rationale: 'Flamboyant dreadlocked rogue captain Jack.' },
+      { hint: 'Blackpearl', rationale: 'Legendary fast pirate galleon with black sails.' },
+      { hint: 'Curse', rationale: 'Moonlight affliction revealing skeleton forms.' }
+    ],
+    easy: [
+      { hint: 'Ship', rationale: 'Three-masted tall galleon sailing open seas.' },
+      { hint: 'Captain', rationale: 'Nautical leader commanding buccaneers.' },
+      { hint: 'Sword', rationale: 'Cutlass blade swung in deck-clearing acrobatics.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Swashbuckling franchise starring Captain Jack Sparrow.' }
+  },
+  {
+    word: 'The Godfather',
+    subtle: [
+      { hint: 'Cannoli', rationale: 'Pastry ordered to be taken after leaving firearm.' },
+      { hint: 'Orange', rationale: 'Citrus fruit presaging imminent death or betrayal.' },
+      { hint: 'Rose', rationale: 'Red boutonniere flower pinned to tuxedo lapel.' }
+    ],
+    balanced: [
+      { hint: 'Corleone', rationale: 'Surname of powerful New York crime family.' },
+      { hint: 'Mafia', rationale: 'Italian-American organized syndicate.' },
+      { hint: 'Offer', rationale: 'Proposal famously impossible to refuse.' }
+    ],
+    easy: [
+      { hint: 'Family', rationale: 'Dynasty loyalty superseding all law.' },
+      { hint: 'Don', rationale: 'Honorific title bestowed on syndicate head.' },
+      { hint: 'Crime', rationale: 'Cinematic mafia drama masterpiece.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Cinematic mafia masterpiece directed by Coppola.' }
+  },
+  {
+    word: 'Frozen',
+    subtle: [
+      { hint: 'Arendelle', rationale: 'Norwegian fjord kingdom locked in eternal winter.' },
+      { hint: 'Gloves', rationale: 'Handwear concealing cryogenic touch powers.' },
+      { hint: 'Carrot', rationale: 'Vegetable nose pushed into cheerful snowman face.' }
+    ],
+    balanced: [
+      { hint: 'Snowman', rationale: 'Olaf animated companion loving summer warmth.' },
+      { hint: 'Elsa', rationale: 'Queen possessing ice-generating powers.' },
+      { hint: 'Blizzard', rationale: 'Freezing storm unleashed by emotion.' }
+    ],
+    easy: [
+      { hint: 'Ice', rationale: 'Crystalline frozen palace built on North Mountain.' },
+      { hint: 'Sisters', rationale: 'Anna and Elsa familial bond saving the realm.' },
+      { hint: 'Princess', rationale: 'Royal Disney animated sisters.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Disney animated smash hit about sisters Anna and Elsa.' }
+  },
+  {
+    word: 'Up',
+    subtle: [
+      { hint: 'Grape', rationale: 'Soda bottle badge pinned on scout sash.' },
+      { hint: 'Snipe', rationale: 'Mythical colorful bird named Kevin in jungle.' },
+      { hint: 'Chair', rationale: 'Armchair resting beside empty window spot.' }
+    ],
+    balanced: [
+      { hint: 'Balloons', rationale: 'Thousands of helium spheres lifting wooden home.' },
+      { hint: 'Falls', rationale: 'Paradise tropical cliff destination of dream journey.' },
+      { hint: 'Wilderness', rationale: 'Junior explorer badge pursuit guiding boy scout.' }
+    ],
+    easy: [
+      { hint: 'Fly', rationale: 'Floating through clouds toward South America.' },
+      { hint: 'House', rationale: 'Colorful suburban residence carried into skies.' },
+      { hint: 'Old', rationale: 'Elderly grumpy widower finding new purpose.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Pixar adventure about a house carried by helium balloons.' }
+  },
+  {
+    word: 'Casablanca',
+    subtle: [
+      { hint: 'Letters', rationale: 'Transit transit papers signed by General de Gaulle.' },
+      { hint: 'Gin', rationale: 'Joints of all the towns walked into by lost love.' },
+      { hint: 'Fog', rationale: 'Runway mist shrouding final farewell.' }
+    ],
+    balanced: [
+      { hint: 'Piano', rationale: 'Bar instrument played by Sam for As Time Goes By.' },
+      { hint: 'Runway', rationale: 'Airfield setting for bittersweet parting speech.' },
+      { hint: 'Cafe', rationale: 'Moroccan nightclub Rick’s American gathering spot.' }
+    ],
+    easy: [
+      { hint: 'Classic', rationale: 'Golden age Hollywood romance masterpiece.' },
+      { hint: 'Morocco', rationale: 'North African coastal city setting during wartime.' },
+      { hint: 'Romance', rationale: 'Heartbreaking wartime love story.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Golden Age wartime romantic classic starring Bogart.' }
+  }
+];
+
+// Clean any special characters in hints
+moviesTv.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part5_movies_tv.json', JSON.stringify({ movies_tv: moviesTv }, null, 2), 'utf8');
+console.log('Successfully wrote part5_movies_tv.json (46 words)');

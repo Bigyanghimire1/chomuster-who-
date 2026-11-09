@@ -1,0 +1,698 @@
+const fs = require('fs');
+
+const geography = [
+  {
+    word: 'Japan',
+    subtle: [
+      { hint: 'Bullet', rationale: 'Shinkansen high-speed rail network connecting islands.' },
+      { hint: 'Fuji', rationale: 'Snowcapped iconic volcanic peak.' },
+      { hint: 'Kimono', rationale: 'Traditional silk robe with wide sash.' }
+    ],
+    balanced: [
+      { hint: 'Tokyo', rationale: 'Bustling neon-lit island capital.' },
+      { hint: 'Cherry', rationale: 'Springtime sakura blossom celebrations.' },
+      { hint: 'Islands', rationale: 'Archipelago nation in East Asia.' }
+    ],
+    easy: [
+      { hint: 'Anime', rationale: 'Worldwide popular animated entertainment industry.' },
+      { hint: 'Sushi', rationale: 'Iconic raw fish culinary dish.' },
+      { hint: 'Asia', rationale: 'Continental location.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'East Asian island nation known for tech and tradition.' }
+  },
+  {
+    word: 'France',
+    subtle: [
+      { hint: 'Tricolor', rationale: 'Blue, white, and red national flag.' },
+      { hint: 'Seine', rationale: 'River flowing through the historic capital.' },
+      { hint: 'Riviera', rationale: 'Glamorous Mediterranean southern coastline.' }
+    ],
+    balanced: [
+      { hint: 'Baguette', rationale: 'Long crisp crusty daily bread loaf.' },
+      { hint: 'Eiffel', rationale: 'Towering iron lattice monument in capital.' },
+      { hint: 'Wine', rationale: 'Renowned Bordeaux and Champagne vineyards.' }
+    ],
+    easy: [
+      { hint: 'Paris', rationale: 'Capital of fashion, art, and romance.' },
+      { hint: 'Europe', rationale: 'Western European continental home.' },
+      { hint: 'Cheese', rationale: 'Brie and camembert artisan dairy traditions.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Western European nation famed for art, cuisine, and Paris.' }
+  },
+  {
+    word: 'Egypt',
+    subtle: [
+      { hint: 'Papyrus', rationale: 'Ancient reed paper developed along marsh banks.' },
+      { hint: 'Sphinx', rationale: 'Limestone monument with lion body and human head.' },
+      { hint: 'Hieroglyph', rationale: 'Pictographic writing etched into tomb walls.' }
+    ],
+    balanced: [
+      { hint: 'Nile', rationale: 'Lifeline river flowing through the desert.' },
+      { hint: 'Pyramids', rationale: 'Monumental stone royal tombs at Giza.' },
+      { hint: 'Pharaoh', rationale: 'Ancient god-king rulers of dynasty.' }
+    ],
+    easy: [
+      { hint: 'Desert', rationale: 'Sahara sands surrounding green river delta.' },
+      { hint: 'Cairo', rationale: 'Capital megacity near historic monuments.' },
+      { hint: 'Mummy', rationale: 'Preserved ancient royal burial practice.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Ancient North African kingdom on the Nile with pyramids.' }
+  },
+  {
+    word: 'Brazil',
+    subtle: [
+      { hint: 'Pelé', rationale: 'Legendary soccer king winning three world cups.' },
+      { hint: 'Copacabana', rationale: 'Iconic wave-patterned seaside promenade.' },
+      { hint: 'Bossa', rationale: 'First half of Nova jazz guitar musical style.' }
+    ],
+    balanced: [
+      { hint: 'Carnival', rationale: 'Spectacular annual street parade of samba dancers.' },
+      { hint: 'Amazon', rationale: 'World largest rainforest and river basin.' },
+      { hint: 'Samba', rationale: 'High-energy national dance rhythm.' }
+    ],
+    easy: [
+      { hint: 'Soccer', rationale: 'National passion with five World Cup titles.' },
+      { hint: 'Tropical', rationale: 'Warm equatorial climate zone.' },
+      { hint: 'Yellow', rationale: 'Dominant color of national athletic jersey.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Largest South American nation famous for Carnival and soccer.' }
+  },
+  {
+    word: 'Iceland',
+    subtle: [
+      { hint: 'Puffin', rationale: 'Colorful-billed seabird nesting on coastal cliffs.' },
+      { hint: 'Lava', rationale: 'Molten rock pouring from active volcanic fissures.' },
+      { hint: 'Reykjavik', rationale: 'World northernmost sovereign capital city.' }
+    ],
+    balanced: [
+      { hint: 'Geysers', rationale: 'Natural boiling water spouts bursting from ground.' },
+      { hint: 'Glaciers', rationale: 'Massive moving ice sheets covering mountains.' },
+      { hint: 'Thermal', rationale: 'Hot geothermal spring pools like Blue Lagoon.' }
+    ],
+    easy: [
+      { hint: 'Island', rationale: 'North Atlantic oceanic territory.' },
+      { hint: 'Aurora', rationale: 'Northern lights dancing in winter skies.' },
+      { hint: 'Volcano', rationale: 'Land of fire and ice geological wonders.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Nordic island nation of volcanoes, geysers, and ice.' }
+  },
+  {
+    word: 'Australia',
+    subtle: [
+      { hint: 'Boomerang', rationale: 'Indigenous curved returning hunting wood.' },
+      { hint: 'Billabong', rationale: 'Desert waterhole referenced in folklore songs.' },
+      { hint: 'Didgeridoo', rationale: 'Deep resonant drone woodwind instrument.' }
+    ],
+    balanced: [
+      { hint: 'Kangaroo', rationale: 'Endemic hopping marsupial symbol.' },
+      { hint: 'Outback', rationale: 'Vast red arid inland wilderness.' },
+      { hint: 'Koala', rationale: 'Arboreal native mammal eating eucalyptus.' }
+    ],
+    easy: [
+      { hint: 'Sydney', rationale: 'Largest harbor city with famous Opera House.' },
+      { hint: 'Reef', rationale: 'Great Barrier marine ecosystem along northeast.' },
+      { hint: 'Continent', rationale: 'Southern hemisphere island landmass.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Island continent known for unique wildlife and the Outback.' }
+  },
+  {
+    word: 'Canada',
+    subtle: [
+      { hint: 'Mountie', rationale: 'Red-serge uniformed Royal Canadian Mounted Police.' },
+      { hint: 'Moose', rationale: 'Enormous antlered northern forest mammal.' },
+      { hint: 'Loonie', rationale: 'Popular golden one-dollar coin featuring a bird.' }
+    ],
+    balanced: [
+      { hint: 'Maple', rationale: 'Leaf featured on national flag and sweet syrup.' },
+      { hint: 'Hockey', rationale: 'National winter sport played on ice.' },
+      { hint: 'Poutine', rationale: 'Fries smothered in gravy and cheese curds.' }
+    ],
+    easy: [
+      { hint: 'Snow', rationale: 'Cold winters across northern wilderness.' },
+      { hint: 'Toronto', rationale: 'Largest metropolitan city with CN Tower.' },
+      { hint: 'North', rationale: 'Continental position above the United States.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Second-largest country known for maple syrup and hockey.' }
+  },
+  {
+    word: 'Italy',
+    subtle: [
+      { hint: 'Gondola', rationale: 'Flat-bottomed rowing craft navigating Venice canals.' },
+      { hint: 'Vespa', rationale: 'Classic stylish motor scooter buzzing down alleys.' },
+      { hint: 'Boot', rationale: 'Geographic peninsula shape extending into Mediterranean.' }
+    ],
+    balanced: [
+      { hint: 'Pasta', rationale: 'Staple culinary heritage in hundreds of shapes.' },
+      { hint: 'Colosseum', rationale: 'Ancient Roman gladiatorial amphitheater.' },
+      { hint: 'Pizza', rationale: 'Neapolitan wood-fired cheese and tomato dish.' }
+    ],
+    easy: [
+      { hint: 'Rome', rationale: 'Eternal capital city of ancient empire.' },
+      { hint: 'Gelato', rationale: 'Artisanal dense Italian ice cream.' },
+      { hint: 'Europe', rationale: 'Southern Mediterranean peninsula nation.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Boot-shaped European country renowned for cuisine and history.' }
+  },
+  {
+    word: 'Tokyo',
+    subtle: [
+      { hint: 'Shibuya', rationale: 'Famous multi-directional pedestrian scramble crossing.' },
+      { hint: 'Metro', rationale: 'Punctual train network with uniformed white-gloved pushers.' },
+      { hint: 'Akihabara', rationale: 'Electric town mecca for gaming and anime.' }
+    ],
+    balanced: [
+      { hint: 'Skytree', rationale: 'Tallest broadcast observation tower.' },
+      { hint: 'Neon', rationale: 'Dazzling illuminated nightlife billboards.' },
+      { hint: 'Ramen', rationale: 'Alleyway counters serving steaming noodle bowls.' }
+    ],
+    easy: [
+      { hint: 'Japan', rationale: 'Sovereign nation where metropolis serves as capital.' },
+      { hint: 'Crowded', rationale: 'Most populous urban agglomeration on Earth.' },
+      { hint: 'City', rationale: 'Urban mega-capital category.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'World most populous metropolis and capital of Japan.' }
+  },
+  {
+    word: 'Paris',
+    subtle: [
+      { hint: 'Seine', rationale: 'River winding past Notre Dame and historic islands.' },
+      { hint: 'Louvre', rationale: 'Palace museum home of Mona Lisa.' },
+      { hint: 'Bistro', rationale: 'Sidewalk cafe terrace watching street life.' }
+    ],
+    balanced: [
+      { hint: 'Eiffel', rationale: 'Iron lattice tower dominating skyline.' },
+      { hint: 'Romance', rationale: 'City of light aesthetic celebrated by lovers.' },
+      { hint: 'Croissant', rationale: 'Buttery breakfast pastry enjoyed with cafe au lait.' }
+    ],
+    easy: [
+      { hint: 'France', rationale: 'Nation where city serves as political capital.' },
+      { hint: 'Fashion', rationale: 'Global center of haute couture runways.' },
+      { hint: 'Capital', rationale: 'Seat of government and culture.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'The City of Light and romantic capital of France.' }
+  },
+  {
+    word: 'New York',
+    subtle: [
+      { hint: 'Empire', rationale: 'Art deco skyscraper piercing Manhattan sky.' },
+      { hint: 'Yellow', rationale: 'Fleet of checkered taxis cruising avenues.' },
+      { hint: 'Subway', rationale: '24-hour underground metro system.' }
+    ],
+    balanced: [
+      { hint: 'Broadway', rationale: 'World-famous theatrical entertainment avenue.' },
+      { hint: 'Manhattan', rationale: 'Dense island borough of skyscrapers.' },
+      { hint: 'Bagel', rationale: 'Boiled morning bread with schmear.' }
+    ],
+    easy: [
+      { hint: 'Statue', rationale: 'Liberty green copper harbor monument.' },
+      { hint: 'Skyscrapers', rationale: 'Towering commercial high-rises.' },
+      { hint: 'City', rationale: 'The city that never sleeps.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Global metropolis known as the Big Apple.' }
+  },
+  {
+    word: 'Rome',
+    subtle: [
+      { hint: 'Vespa', rationale: 'Vintage scooters zipping past ancient cobblestones.' },
+      { hint: 'Tiber', rationale: 'River dividing historic neighborhoods.' },
+      { hint: 'Pantheon', rationale: 'Ancient concrete dome with unglazed central oculus.' }
+    ],
+    balanced: [
+      { hint: 'Colosseum', rationale: 'Monumental stone arena of gladiators.' },
+      { hint: 'Vatican', rationale: 'Papal enclave city inside municipal boundaries.' },
+      { hint: 'Fountain', rationale: 'Trevi marble basin holding tossed coins.' }
+    ],
+    easy: [
+      { hint: 'Italy', rationale: 'Country where city serves as capital.' },
+      { hint: 'Ancient', rationale: 'Thousands of years of imperial history.' },
+      { hint: 'Gladiator', rationale: 'Historic arena combatants.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'The Eternal City and historic capital of Italy.' }
+  },
+  {
+    word: 'London',
+    subtle: [
+      { hint: 'Underground', rationale: 'Oldest subway tube transit system in the world.' },
+      { hint: 'Thames', rationale: 'Tidal river flowing beneath historic bridges.' },
+      { hint: 'Guards', rationale: 'Bearskin-hat palace sentries standing stone-faced.' }
+    ],
+    balanced: [
+      { hint: 'Bigben', rationale: 'Historic great clock tower at Parliament.' },
+      { hint: 'Palace', rationale: 'Buckingham royal residence of British monarch.' },
+      { hint: 'Cab', rationale: 'Black hackney carriage navigating streets.' }
+    ],
+    easy: [
+      { hint: 'England', rationale: 'Nation where city serves as capital.' },
+      { hint: 'Rain', rationale: 'Famous overcast dreary climate.' },
+      { hint: 'Bridge', rationale: 'Tower Bridge opening over the river.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Capital of the United Kingdom on the River Thames.' }
+  },
+  {
+    word: 'Greece',
+    subtle: [
+      { hint: 'Feta', rationale: 'Crumbly white brined sheep milk cheese.' },
+      { hint: 'Laurel', rationale: 'Wreath crowning ancient Olympic champions.' },
+      { hint: 'Mykonos', rationale: 'Aegean island of whitewashed chapels and windmills.' }
+    ],
+    balanced: [
+      { hint: 'Athens', rationale: 'Historic capital dominated by the Acropolis.' },
+      { hint: 'Mythology', rationale: 'Legends of Zeus, Athena, and Mount Olympus.' },
+      { hint: 'Olives', rationale: 'Kalamata groves supplying Mediterranean oil.' }
+    ],
+    easy: [
+      { hint: 'Parthenon', rationale: 'Classical temple atop the rocky citadel.' },
+      { hint: 'Islands', rationale: 'Hundreds of Aegean and Ionian sea islands.' },
+      { hint: 'Ancient', rationale: 'Cradle of Western democracy and philosophy.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Mediterranean nation renowned for mythology, islands, and ancient Athens.' }
+  },
+  {
+    word: 'Peru',
+    subtle: [
+      { hint: 'Ceviche', rationale: 'Raw fish cured in citrus juice with red onion.' },
+      { hint: 'Cusco', rationale: 'Andean historic capital of the Inca Empire.' },
+      { hint: 'Lines', rationale: 'Nazca desert geoglyphs etched into dry plains.' }
+    ],
+    balanced: [
+      { hint: 'Machu', rationale: 'Inca stone sanctuary perched in misty cloud forest.' },
+      { hint: 'Llama', rationale: 'Woolly pack mammal native to high Andes.' },
+      { hint: 'Andes', rationale: 'Towering mountain range splitting nation.' }
+    ],
+    easy: [
+      { hint: 'Inca', rationale: 'Pre-Columbian civilization building stone citadels.' },
+      { hint: 'Ruins', rationale: 'Ancient archaeological mountain settlements.' },
+      { hint: 'Lima', rationale: 'Coastal capital city.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'South American nation home to Machu Picchu and the Incas.' }
+  },
+  {
+    word: 'Mexico',
+    subtle: [
+      { hint: 'Agave', rationale: 'Spiky desert succulent distilled into spirits.' },
+      { hint: 'Mariachi', rationale: 'Folk music troupe in sombreros playing violins.' },
+      { hint: 'Mayan', rationale: 'Mesoamerican civilization building jungle pyramids.' }
+    ],
+    balanced: [
+      { hint: 'Taco', rationale: 'Tortilla folded around grilled meat and cilantro.' },
+      { hint: 'Salsa', rationale: 'Spicy chili condiment accompanying meals.' },
+      { hint: 'Sombrero', rationale: 'Wide-brimmed felt or straw sun hat.' }
+    ],
+    easy: [
+      { hint: 'Guacamole', rationale: 'Avocado dip served with tortilla chips.' },
+      { hint: 'Fiesta', rationale: 'Vibrant party and celebration tradition.' },
+      { hint: 'Spanish', rationale: 'Primary national language.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'North American nation known for rich cuisine and pyramids.' }
+  },
+  {
+    word: 'Barcelona',
+    subtle: [
+      { hint: 'Ramblas', rationale: 'Tree-lined pedestrian boulevard bustling with artists.' },
+      { hint: 'Trencadis', rationale: 'Mosaics made of broken ceramic tile shards.' },
+      { hint: 'Catalan', rationale: 'Regional language and cultural identity.' }
+    ],
+    balanced: [
+      { hint: 'Gaudi', rationale: 'Visionary modernist architect shaping skyline.' },
+      { hint: 'Sagrada', rationale: 'Expiatory basilica under construction since 1882.' },
+      { hint: 'Campnou', rationale: 'Enormous historic home stadium of FC Barcelona.' }
+    ],
+    easy: [
+      { hint: 'Spain', rationale: 'Iberian nation containing this coastal city.' },
+      { hint: 'Beach', rationale: 'Mediterranean urban sand promenade.' },
+      { hint: 'Soccer', rationale: 'World-renowned club sport culture.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Catalan coastal city famed for Gaudi architecture and soccer.' }
+  },
+  {
+    word: 'Amsterdam',
+    subtle: [
+      { hint: 'Clogs', rationale: 'Carved wooden shoes painted with folk motifs.' },
+      { hint: 'Herring', rationale: 'Raw cured fish eaten whole by the tail.' },
+      { hint: 'Windmill', rationale: 'Traditional pumping mechanism across nearby polders.' }
+    ],
+    balanced: [
+      { hint: 'Canals', rationale: 'Concentric semicircular waterways with houseboats.' },
+      { hint: 'Bicycles', rationale: 'Ubiquitous two-wheeled urban transport.' },
+      { hint: 'Tulips', rationale: 'Spring bulbs filling floating flower market.' }
+    ],
+    easy: [
+      { hint: 'Netherlands', rationale: 'European kingdom where city is capital.' },
+      { hint: 'Dutch', rationale: 'National identity and language.' },
+      { hint: 'Museums', rationale: 'Houses of Van Gogh and Anne Frank.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Dutch capital famous for canals, bicycles, and tulips.' }
+  },
+  {
+    word: 'Cairo',
+    subtle: [
+      { hint: 'Bazaar', rationale: 'Khan el-Khalili historic labyrinth market.' },
+      { hint: 'Minarets', rationale: 'City of a thousand prayer towers.' },
+      { hint: 'Tahrir', rationale: 'Central public square of historic gatherings.' }
+    ],
+    balanced: [
+      { hint: 'Nile', rationale: 'Mighty river dividing urban neighborhoods.' },
+      { hint: 'Pyramids', rationale: 'Giza stone monuments on western fringe.' },
+      { hint: 'Sphinx', rationale: 'Ancient limestone creature guarding plateau.' }
+    ],
+    easy: [
+      { hint: 'Egypt', rationale: 'Nation where city serves as political capital.' },
+      { hint: 'Desert', rationale: 'Arid climate surrounding metropolis.' },
+      { hint: 'Ancient', rationale: 'Civilization artifacts in grand museums.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Egyptian capital on the Nile adjacent to the Pyramids of Giza.' }
+  },
+  {
+    word: 'Sydney',
+    subtle: [
+      { hint: 'Bondi', rationale: 'Iconic curved ocean beach with crashing waves.' },
+      { hint: 'Ferry', rationale: 'Green and yellow passenger boats crossing harbor.' },
+      { hint: 'Coogee', rationale: 'Coastal cliff walk destination.' }
+    ],
+    balanced: [
+      { hint: 'Harbour', rationale: 'Sprawling natural waterway crossed by bridge.' },
+      { hint: 'Bridge', rationale: 'Massive steel arch nicknamed The Coathanger.' },
+      { hint: 'Opera', rationale: 'Bennelong Point hall with shell-shaped roofs.' }
+    ],
+    easy: [
+      { hint: 'Australia', rationale: 'Nation containing this famous seaport.' },
+      { hint: 'Surfing', rationale: 'Ocean sport enjoyed along eastern beaches.' },
+      { hint: 'City', rationale: 'Largest metropolitan seaport down under.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Australian harbor city famed for Opera House and Harbour Bridge.' }
+  },
+  {
+    word: 'Venice',
+    subtle: [
+      { hint: 'Piazza', rationale: 'Grand square of San Marco filled with pigeons.' },
+      { hint: 'Masks', rationale: 'Elaborate painted carnival masquerade disguises.' },
+      { hint: 'Lagoon', rationale: 'Shallow brackish Adriatic marsh enclosing islands.' }
+    ],
+    balanced: [
+      { hint: 'Gondola', rationale: 'Slender black rowing craft steered through waterways.' },
+      { hint: 'Bridges', rationale: 'Arched foot crossings like Rialto and Sighs.' },
+      { hint: 'Waterways', rationale: 'Canals replacing asphalt streets.' }
+    ],
+    easy: [
+      { hint: 'Italy', rationale: 'European nation containing floating city.' },
+      { hint: 'Canal', rationale: 'Grand Canal carrying water taxis and boats.' },
+      { hint: 'Floating', rationale: 'Architecture built on wooden underwater stilts.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Floating Italian city of gondolas, canals, and bridges.' }
+  },
+  {
+    word: 'Switzerland',
+    subtle: [
+      { hint: 'Yodel', rationale: 'Traditional alpine singing shifting between chest and head.' },
+      { hint: 'Fondue', rationale: 'Communal bubbling pot of melted alpine cheese.' },
+      { hint: 'Chalet', rationale: 'Wooden alpine house with overhanging eaves.' }
+    ],
+    balanced: [
+      { hint: 'Alps', rationale: 'Towering snowcapped European mountain range.' },
+      { hint: 'Watch', rationale: 'Precision luxury timepiece manufacturing.' },
+      { hint: 'Chocolate', rationale: 'Creamy milk confectionery perfected by artisans.' }
+    ],
+    easy: [
+      { hint: 'Skiing', rationale: 'Winter sports descending powdered slopes.' },
+      { hint: 'Neutral', rationale: 'Diplomatic policy avoiding foreign conflicts.' },
+      { hint: 'Banks', rationale: 'Global financial hub in Zurich and Geneva.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Alpine nation known for mountains, watches, and chocolate.' }
+  },
+  {
+    word: 'Norway',
+    subtle: [
+      { hint: 'Viking', rationale: 'Norse seafaring warriors sailing longships.' },
+      { hint: 'Lofoten', rationale: 'Dramatic jagged island archipelago in Arctic.' },
+      { hint: 'Troll', rationale: 'Mythological mountain-dwelling creature of folklore.' }
+    ],
+    balanced: [
+      { hint: 'Fjords', rationale: 'Steep glacier-carved saltwater inlets.' },
+      { hint: 'Midnight', rationale: 'Summer sun never dipping below horizon.' },
+      { hint: 'Oslo', rationale: 'Modern waterfront capital city.' }
+    ],
+    easy: [
+      { hint: 'Aurora', rationale: 'Northern lights swirling green in winter.' },
+      { hint: 'Snow', rationale: 'Pristine winter wonderland landscape.' },
+      { hint: 'Nordic', rationale: 'Scandinavian cultural and regional group.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Scandinavian nation of dramatic fjords and northern lights.' }
+  },
+  {
+    word: 'Thailand',
+    subtle: [
+      { hint: 'Tuk-tuk', rationale: 'Three-wheeled motorized rickshaw buzzing through traffic.' },
+      { hint: 'Muay', rationale: 'First half of national kickboxing martial art.' },
+      { hint: 'Elephant', rationale: 'Revered national symbol parade creature.' }
+    ],
+    balanced: [
+      { hint: 'Bangkok', rationale: 'Bustling capital of golden temples and street food.' },
+      { hint: 'Pad', rationale: 'First word of iconic stir-fried rice noodle dish.' },
+      { hint: 'Temples', rationale: 'Gilded Buddhist wats with layered roofs.' }
+    ],
+    easy: [
+      { hint: 'Spicy', rationale: 'Bold culinary profile with chilies and lemongrass.' },
+      { hint: 'Islands', rationale: 'Tropical southern beaches like Phuket and Samui.' },
+      { hint: 'Asia', rationale: 'Southeast Asian kingdom.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Southeast Asian kingdom of golden temples, street food, and beaches.' }
+  },
+  {
+    word: 'South Africa',
+    subtle: [
+      { hint: 'Vuvuzela', rationale: 'Plastic horn blown loudly at 2010 World Cup.' },
+      { hint: 'Table', rationale: 'Flat-topped mountain overlooking Cape Town.' },
+      { hint: 'Springboks', rationale: 'World champion national rugby team moniker.' }
+    ],
+    balanced: [
+      { hint: 'Mandela', rationale: 'Beloved anti-apartheid leader and first Black president.' },
+      { hint: 'Safari', rationale: 'Wildlife expedition in Kruger National Park.' },
+      { hint: 'Cape', rationale: 'Southern oceanic peninsula point of Good Hope.' }
+    ],
+    easy: [
+      { hint: 'Lions', rationale: 'Savannah predators seen on wildlife safaris.' },
+      { hint: 'Gold', rationale: 'Deep mining history in Johannesburg.' },
+      { hint: 'Rainbow', rationale: 'Metaphor describing diverse multicultural nation.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Southernmost nation of the continent with diverse wildlife and history.' }
+  },
+  {
+    word: 'India',
+    subtle: [
+      { hint: 'Sari', rationale: 'Graceful unstitched draped silk garment.' },
+      { hint: 'Ganges', rationale: 'Sacred river where pilgrims bathe in Varanasi.' },
+      { hint: 'Rickshaw', rationale: 'Three-wheeled urban passenger vehicle.' }
+    ],
+    balanced: [
+      { hint: 'Mahal', rationale: 'Ivory marble mausoleum Taj in Agra.' },
+      { hint: 'Curry', rationale: 'Rich spiced sauce accompanying meals.' },
+      { hint: 'Cricket', rationale: 'National sporting obsession packing stadiums.' }
+    ],
+    easy: [
+      { hint: 'Spices', rationale: 'Cardamom, turmeric, and cumin spice markets.' },
+      { hint: 'Bollywood', rationale: 'Vibrant Hindi musical film industry in Mumbai.' },
+      { hint: 'Asia', rationale: 'Vast South Asian subcontinent.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Vibrant South Asian subcontinent famous for spices, Taj Mahal, and cricket.' }
+  },
+  {
+    word: 'Singapore',
+    subtle: [
+      { hint: 'Merlion', rationale: 'Mythical statue with lion head and fish body.' },
+      { hint: 'Hawker', rationale: 'Open-air communal food center serving cheap delicacies.' },
+      { hint: 'Changi', rationale: 'World-renowned airport featuring indoor waterfall.' }
+    ],
+    balanced: [
+      { hint: 'Clean', rationale: 'Strict fines maintaining spotless streets.' },
+      { hint: 'Marina', rationale: 'Bay resort with infinity pool atop three towers.' },
+      { hint: 'Island', rationale: 'Compact island city-state off Malay peninsula.' }
+    ],
+    easy: [
+      { hint: 'Port', rationale: 'One of the busiest maritime shipping hubs globally.' },
+      { hint: 'Skyscrapers', rationale: 'Futuristic modern financial skyline.' },
+      { hint: 'Gardens', rationale: 'Supertree grove in Gardens by the Bay.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Modern island city-state known for cleanliness and Gardens by the Bay.' }
+  },
+  {
+    word: 'Dubai',
+    subtle: [
+      { hint: 'Burj', rationale: 'Prefix in towering 828-meter record skyscraper.' },
+      { hint: 'Dune', rationale: 'Desert sand-bashing four-wheel drive excursions.' },
+      { hint: 'Mall', rationale: 'Colossal shopping complex featuring indoor ski slope.' }
+    ],
+    balanced: [
+      { hint: 'Tallest', rationale: 'Record holder for highest building on Earth.' },
+      { hint: 'Luxury', rationale: 'Five-star resorts and gold leaf hospitality.' },
+      { hint: 'Palm', rationale: 'Artificial man-made archipelago shaped like tree.' }
+    ],
+    easy: [
+      { hint: 'Desert', rationale: 'Arabian sands transformed into futuristic oasis.' },
+      { hint: 'Skyscrapers', rationale: 'Gleaming glass towers rising from desert.' },
+      { hint: 'Gold', rationale: 'Famous traditional souk trading precious metal.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Futuristic desert metropolis boasting Burj Khalifa and luxury.' }
+  },
+  {
+    word: 'Rio de Janeiro',
+    subtle: [
+      { hint: 'Copacabana', rationale: 'Iconic curved mosaic seaside promenade.' },
+      { hint: 'Sugarloaf', rationale: 'Monolithic granite peak accessed by cable car.' },
+      { hint: 'Favela', rationale: 'Colorful hillside communities overlooking bay.' }
+    ],
+    balanced: [
+      { hint: 'Carnival', rationale: 'World largest street festival and samba parade.' },
+      { hint: 'Samba', rationale: 'Infectious dance rhythm animating Sambadrome.' },
+      { hint: 'Redeemer', rationale: 'Christ statue standing atop Mount Corcovado.' }
+    ],
+    easy: [
+      { hint: 'Beach', rationale: 'Sun-drenched urban sands of Ipanema.' },
+      { hint: 'Brazil', rationale: 'South American nation containing this vibrant city.' },
+      { hint: 'Statue', rationale: 'Giant outstretched-arm monument above city.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Brazilian marvel famed for Christ the Redeemer and Carnival.' }
+  },
+  {
+    word: 'Istanbul',
+    subtle: [
+      { hint: 'Bosphorus', rationale: 'Strait linking Black Sea to Sea of Marmara.' },
+      { hint: 'Cats', rationale: 'Beloved community felines roaming historic alleys.' },
+      { hint: 'Galata', rationale: 'Medieval stone tower overlooking Golden Horn.' }
+    ],
+    balanced: [
+      { hint: 'Mosque', rationale: 'Blue domes and minarets across skyline.' },
+      { hint: 'Bazaar', rationale: 'Grand covered market with thousands of shops.' },
+      { hint: 'Continents', rationale: 'Only city straddling both Europe and Asia.' }
+    ],
+    easy: [
+      { hint: 'Turkey', rationale: 'Historic crossroads nation.' },
+      { hint: 'Spices', rationale: 'Egyptian spice bazaar aromas.' },
+      { hint: 'Ancient', rationale: 'Formerly known as Byzantium and Constantinople.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Historic transcontinental city straddling Europe and Asia.' }
+  },
+  {
+    word: 'San Francisco',
+    subtle: [
+      { hint: 'Alcatraz', rationale: 'Historic island federal penitentiary in bay.' },
+      { hint: 'Lombard', rationale: 'Crooked winding one-block street on Russian Hill.' },
+      { hint: 'Sourdough', rationale: 'Artisanal tangy fermented bread baked by bay.' }
+    ],
+    balanced: [
+      { hint: 'Bridge', rationale: 'International Orange suspension span across strait.' },
+      { hint: 'Cablecar', rationale: 'Historic rolling transit clanging up steep hills.' },
+      { hint: 'Fog', rationale: 'Karl rolling over hills in summer afternoons.' }
+    ],
+    easy: [
+      { hint: 'Hills', rationale: 'Steep inclines traversed by electric trolleys.' },
+      { hint: 'Bay', rationale: 'Enclosed body of water crossed by suspension bridges.' },
+      { hint: 'California', rationale: 'West coast state home to the Golden Gate.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'California bay city famous for Golden Gate Bridge and steep hills.' }
+  },
+  {
+    word: 'New Zealand',
+    subtle: [
+      { hint: 'Haka', rationale: 'Maori ceremonial challenge performed before rugby.' },
+      { hint: 'Hobbiton', rationale: 'Movie set preserved among rolling green farmland.' },
+      { hint: 'Fern', rationale: 'Silver frond emblem of national sports teams.' }
+    ],
+    balanced: [
+      { hint: 'Kiwi', rationale: 'Flightless nocturnal bird and national nickname.' },
+      { hint: 'Sheep', rationale: 'Woolly livestock outnumbering human citizens.' },
+      { hint: 'Islands', rationale: 'Split into North and South scenic territories.' }
+    ],
+    easy: [
+      { hint: 'Mountains', rationale: 'Southern Alps peaks featured in fantasy films.' },
+      { hint: 'Green', rationale: 'Lush pastures and pristine nature landscapes.' },
+      { hint: 'Pacific', rationale: 'Southwestern ocean location.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Island nation famed for Maori culture, kiwi birds, and stunning scenery.' }
+  },
+  {
+    word: 'Morocco',
+    subtle: [
+      { hint: 'Medina', rationale: 'Walled maze-like historic core of ancient cities.' },
+      { hint: 'Tajine', rationale: 'Conical clay pot slow-cooking spiced stews.' },
+      { hint: 'Marrakech', rationale: 'Ochre-walled southern imperial market city.' }
+    ],
+    balanced: [
+      { hint: 'Mint', rationale: 'Sweet tea poured from high spouts into small glasses.' },
+      { hint: 'Sahara', rationale: 'Rolling orange sand dunes of vast southern desert.' },
+      { hint: 'Bazaar', rationale: 'Souks overflowing with carpets and spices.' }
+    ],
+    easy: [
+      { hint: 'Spices', rationale: 'Aromatic saffron, cumin, and paprika stalls.' },
+      { hint: 'Desert', rationale: 'Arid landscapes bordering Atlas Mountains.' },
+      { hint: 'Africa', rationale: 'North African kingdom bordering Atlantic and Mediterranean.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'North African kingdom famed for spice souks, tajines, and mint tea.' }
+  },
+  {
+    word: 'Seoul',
+    subtle: [
+      { hint: 'Han', rationale: 'River flowing through heart of capital.' },
+      { hint: 'Hanbok', rationale: 'Traditional vibrant Korean dress worn at palaces.' },
+      { hint: 'Soju', rationale: 'Clear green-bottled distilled spirit enjoyed with barbecue.' }
+    ],
+    balanced: [
+      { hint: 'Kimchi', rationale: 'Spicy fermented cabbage staple served at every meal.' },
+      { hint: 'Palaces', rationale: 'Gyeongbokgung and historic Joseon dynastic gates.' },
+      { hint: 'Tower', rationale: 'Namsan observation spire overlooking metropolis.' }
+    ],
+    easy: [
+      { hint: 'Korea', rationale: 'East Asian peninsula nation where city is capital.' },
+      { hint: 'Kpop', rationale: 'Global music and entertainment revolution center.' },
+      { hint: 'Metro', rationale: 'High-tech subterranean transit and mega-highrises.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Dynamic South Korean capital where royal palaces meet high-tech pop culture.' }
+  },
+  {
+    word: 'Argentina',
+    subtle: [
+      { hint: 'Mate', rationale: 'Herbal tea sipped from gourd through metal bombilla.' },
+      { hint: 'Gaucho', rationale: 'Skilled horseman roaming grassy pampas.' },
+      { hint: 'Patagonia', rationale: 'Glacial southern wilderness of jagged granite peaks.' }
+    ],
+    balanced: [
+      { hint: 'Tango', rationale: 'Passionate partner dance born in Buenos Aires.' },
+      { hint: 'Steak', rationale: 'Prime grass-fed beef grilled over open wood fires.' },
+      { hint: 'Messi', rationale: 'Legendary soccer captain winning 2022 World Cup.' }
+    ],
+    easy: [
+      { hint: 'Soccer', rationale: 'National passion winning multiple world championships.' },
+      { hint: 'Andes', rationale: 'Mountain spine forming western border with Chile.' },
+      { hint: 'South', rationale: 'South American continental location.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'South American nation famous for tango, steak, and soccer triumphs.' }
+  },
+  {
+    word: 'Kenya',
+    subtle: [
+      { hint: 'Maasai', rationale: 'Red-robed pastoral warriors leaping high in dance.' },
+      { hint: 'Mara', rationale: 'National reserve hosting the Great Migration.' },
+      { hint: 'Swahili', rationale: 'Bantu lingua franca spoken across East Africa.' }
+    ],
+    balanced: [
+      { hint: 'Safari', rationale: 'Expedition tracking lions and zebras across plains.' },
+      { hint: 'Marathon', rationale: 'Elite distance runners dominating world road races.' },
+      { hint: 'Nairobi', rationale: 'Capital city with a national park on its border.' }
+    ],
+    easy: [
+      { hint: 'Savannah', rationale: 'Grasslands dotted with umbrella acacia trees.' },
+      { hint: 'Lions', rationale: 'Big cat predators roaming wild reserves.' },
+      { hint: 'Africa', rationale: 'East African equator nation.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'East African nation renowned for wildlife safaris and champion runners.' }
+  }
+];
+
+// Clean any special characters in hints
+geography.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part6_geography.json', JSON.stringify({ geography }, null, 2), 'utf8');
+console.log('Successfully wrote part6_geography.json (36 words)');

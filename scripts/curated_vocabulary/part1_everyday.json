@@ -1,0 +1,1894 @@
+{
+  "everyday_objects": [
+    {
+      "word": "Umbrella",
+      "subtle": [
+        {
+          "hint": "Storm",
+          "rationale": "Associated with stormy weather requiring overhead cover."
+        },
+        {
+          "hint": "Shelter",
+          "rationale": "Concept of personal protective cover."
+        },
+        {
+          "hint": "Drizzle",
+          "rationale": "Light precipitation prompting you to open it."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Raincoat",
+          "rationale": "Companion garment used during wet weather."
+        },
+        {
+          "hint": "Canopy",
+          "rationale": "Overhead waterproof fabric structure."
+        },
+        {
+          "hint": "Puddle",
+          "rationale": "Water accumulation formed on streets during use."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Downpour",
+          "rationale": "Heavy rain where an umbrella is essential."
+        },
+        {
+          "hint": "Waterproof",
+          "rationale": "Primary fabric barrier quality."
+        },
+        {
+          "hint": "Drops",
+          "rationale": "Falling raindrops hitting the canopy."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Universal everyday object with intuitive clues."
+      }
+    },
+    {
+      "word": "Toothbrush",
+      "subtle": [
+        {
+          "hint": "Morning",
+          "rationale": "Common time for daily bathroom hygiene routine."
+        },
+        {
+          "hint": "Bathroom",
+          "rationale": "Standard room where brushing takes place."
+        },
+        {
+          "hint": "Routine",
+          "rationale": "Habit performed twice daily."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Mouthwash",
+          "rationale": "Companion oral care liquid."
+        },
+        {
+          "hint": "Bristles",
+          "rationale": "The fine cleaning fibers on the brush head."
+        },
+        {
+          "hint": "Dentist",
+          "rationale": "Medical professional advising regular brushing."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Toothpaste",
+          "rationale": "Direct cleansing paste applied to bristles."
+        },
+        {
+          "hint": "Smile",
+          "rationale": "Aesthetic outcome of clean, healthy teeth."
+        },
+        {
+          "hint": "Clean",
+          "rationale": "Primary hygienic purpose."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Essential daily hygiene tool; clear and accessible."
+      }
+    },
+    {
+      "word": "Backpack",
+      "subtle": [
+        {
+          "hint": "Journey",
+          "rationale": "Travel experience involving portable gear."
+        },
+        {
+          "hint": "Travel",
+          "rationale": "Moving between places carrying personal belongings."
+        },
+        {
+          "hint": "Hiking",
+          "rationale": "Outdoor activity relying on a pack."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Zipper",
+          "rationale": "Fastener on storage compartments."
+        },
+        {
+          "hint": "Shoulder",
+          "rationale": "Body part supporting the straps."
+        },
+        {
+          "hint": "Straps",
+          "rationale": "Bands worn across shoulders to carry weight."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Books",
+          "rationale": "Common items carried inside for school."
+        },
+        {
+          "hint": "School",
+          "rationale": "Everyday environment where backpacks are ubiquitous."
+        },
+        {
+          "hint": "Bag",
+          "rationale": "General category of carry item."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Everyday student and traveler essential."
+      }
+    },
+    {
+      "word": "Sunglasses",
+      "subtle": [
+        {
+          "hint": "Horizon",
+          "rationale": "Bright view where sun meets the land."
+        },
+        {
+          "hint": "Afternoon",
+          "rationale": "Peak daylight hours with intense glare."
+        },
+        {
+          "hint": "Glare",
+          "rationale": "Excessive harsh light reflected into eyes."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Beach",
+          "rationale": "Sunny outdoor setting where shades are standard."
+        },
+        {
+          "hint": "Lenses",
+          "rationale": "Darkened glass or plastic optical filters."
+        },
+        {
+          "hint": "Shades",
+          "rationale": "Popular colloquial term for protective eyewear."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Summer",
+          "rationale": "Warm sunny season associated with dark eyewear."
+        },
+        {
+          "hint": "Sunlight",
+          "rationale": "Bright light being filtered."
+        },
+        {
+          "hint": "Dark",
+          "rationale": "Tinted color of the protective lenses."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Simple, universally recognizable accessory."
+      }
+    },
+    {
+      "word": "Headphones",
+      "subtle": [
+        {
+          "hint": "Travel",
+          "rationale": "Personal listening on trains and flights."
+        },
+        {
+          "hint": "Commute",
+          "rationale": "Daily travel while listening to audio."
+        },
+        {
+          "hint": "Volume",
+          "rationale": "Audio level adjusted during playback."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Podcast",
+          "rationale": "Spoken media consumed privately."
+        },
+        {
+          "hint": "Beats",
+          "rationale": "Rhythmic audio pulses in songs."
+        },
+        {
+          "hint": "Sound",
+          "rationale": "Acoustic vibration delivered directly to ears."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Music",
+          "rationale": "Primary artistic entertainment played."
+        },
+        {
+          "hint": "Ears",
+          "rationale": "Body organ covered or fitted by speakers."
+        },
+        {
+          "hint": "Audio",
+          "rationale": "General electronic sound medium."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Replaced technical terms like acoustic/isolation with natural words."
+      }
+    },
+    {
+      "word": "Flashlight",
+      "subtle": [
+        {
+          "hint": "Night",
+          "rationale": "Time of day when artificial beam is needed."
+        },
+        {
+          "hint": "Darkness",
+          "rationale": "Visual condition illuminated by the beam."
+        },
+        {
+          "hint": "Outage",
+          "rationale": "Sudden electrical blackout requiring battery light."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Battery",
+          "rationale": "Power cell providing portable electric energy."
+        },
+        {
+          "hint": "Handheld",
+          "rationale": "Physical form factor of a portable torch."
+        },
+        {
+          "hint": "Beam",
+          "rationale": "Directional column of emitted light."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Torch",
+          "rationale": "Common English synonym for handheld light."
+        },
+        {
+          "hint": "Glow",
+          "rationale": "Radiant illumination produced in darkness."
+        },
+        {
+          "hint": "Shine",
+          "rationale": "Action of casting brightness into the dark."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Everyday tool for dark spaces and emergencies."
+      }
+    },
+    {
+      "word": "Mirror",
+      "subtle": [
+        {
+          "hint": "Vanity",
+          "rationale": "Dressing table area where reflection is viewed."
+        },
+        {
+          "hint": "Wall",
+          "rationale": "Vertical surface where mirrors hang."
+        },
+        {
+          "hint": "Glass",
+          "rationale": "Primary smooth substrate material."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Look",
+          "rationale": "Visual act of observing one’s appearance."
+        },
+        {
+          "hint": "Appearance",
+          "rationale": "Personal look checked in the reflection."
+        },
+        {
+          "hint": "Silver",
+          "rationale": "Metallic backing reflecting light."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Reflection",
+          "rationale": "Visual copy produced on reflective glass."
+        },
+        {
+          "hint": "Face",
+          "rationale": "Anatomical feature most often checked."
+        },
+        {
+          "hint": "Reverse",
+          "rationale": "Optical inversion created by reflection."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Simple, direct household fixture."
+      }
+    },
+    {
+      "word": "Wallet",
+      "subtle": [
+        {
+          "hint": "Pocket",
+          "rationale": "Garment location where wallets are kept."
+        },
+        {
+          "hint": "Leather",
+          "rationale": "Common material for folding billfolds."
+        },
+        {
+          "hint": "Purchase",
+          "rationale": "Transaction requiring payment cards or cash."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Receipts",
+          "rationale": "Paper proofs of purchase tucked inside."
+        },
+        {
+          "hint": "Cards",
+          "rationale": "Plastic debit and credit payment tools."
+        },
+        {
+          "hint": "Coins",
+          "rationale": "Loose metal currency kept in pockets."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Money",
+          "rationale": "Primary stored currency value."
+        },
+        {
+          "hint": "Cash",
+          "rationale": "Physical paper currency inside folds."
+        },
+        {
+          "hint": "Pay",
+          "rationale": "Act of spending stored money at checkout."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Clear associations with personal finance and checkout."
+      }
+    },
+    {
+      "word": "Alarm Clock",
+      "subtle": [
+        {
+          "hint": "Dawn",
+          "rationale": "Early morning sunrise when it triggers."
+        },
+        {
+          "hint": "Bedside",
+          "rationale": "Nightstand table where it sits."
+        },
+        {
+          "hint": "Ticking",
+          "rationale": "Mechanical sound of advancing seconds."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Snooze",
+          "rationale": "Button pressed to delay waking up."
+        },
+        {
+          "hint": "Morning",
+          "rationale": "Time of day when the bell or buzzer sounds."
+        },
+        {
+          "hint": "Ringtone",
+          "rationale": "Auditory alert played to awaken sleeper."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Wakeup",
+          "rationale": "Primary life purpose of the device."
+        },
+        {
+          "hint": "Early",
+          "rationale": "Time description for morning schedules."
+        },
+        {
+          "hint": "Buzzer",
+          "rationale": "Harsh electronic sound prompting awakening."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Universal bedroom device."
+      }
+    },
+    {
+      "word": "Scissors",
+      "subtle": [
+        {
+          "hint": "Crafts",
+          "rationale": "Creative making activities requiring cutting."
+        },
+        {
+          "hint": "Barber",
+          "rationale": "Professional stylist cutting hair."
+        },
+        {
+          "hint": "Ribbon",
+          "rationale": "Gift wrapping material sliced across blades."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Snip",
+          "rationale": "Onomatopoeic sound of shearing paper."
+        },
+        {
+          "hint": "Blades",
+          "rationale": "Twin sharpened steel cutting edges."
+        },
+        {
+          "hint": "Handles",
+          "rationale": "Finger loops used to open and close tool."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Cut",
+          "rationale": "Primary action performed by two blades."
+        },
+        {
+          "hint": "Paper",
+          "rationale": "Most common household material cut."
+        },
+        {
+          "hint": "Sharp",
+          "rationale": "Essential blade edge condition."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Simple two-blade shearing tool."
+      }
+    },
+    {
+      "word": "Pillow",
+      "subtle": [
+        {
+          "hint": "Rest",
+          "rationale": "Physical state of unwinding in bed."
+        },
+        {
+          "hint": "Dream",
+          "rationale": "Subconscious imagery during sleep."
+        },
+        {
+          "hint": "Bed",
+          "rationale": "Furniture where pillows reside."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Feathers",
+          "rationale": "Traditional down stuffing material."
+        },
+        {
+          "hint": "Cushion",
+          "rationale": "Soft fabric support item."
+        },
+        {
+          "hint": "Cotton",
+          "rationale": "Common breathable fabric case."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Sleep",
+          "rationale": "Primary physiological activity."
+        },
+        {
+          "hint": "Soft",
+          "rationale": "Comforting tactile texture under the head."
+        },
+        {
+          "hint": "Head",
+          "rationale": "Anatomical part supported during sleep."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Cozy bedtime item."
+      }
+    },
+    {
+      "word": "Hammer",
+      "subtle": [
+        {
+          "hint": "Toolbox",
+          "rationale": "Storage chest for manual repair tools."
+        },
+        {
+          "hint": "Workbench",
+          "rationale": "Carpentry workspace surface."
+        },
+        {
+          "hint": "Construction",
+          "rationale": "Industry erecting buildings."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Wood",
+          "rationale": "Primary material joined with nails."
+        },
+        {
+          "hint": "Steel",
+          "rationale": "Heavy metallic head material."
+        },
+        {
+          "hint": "Handle",
+          "rationale": "Grip used to swing the tool."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Nail",
+          "rationale": "Direct companion metal fastener struck."
+        },
+        {
+          "hint": "Pound",
+          "rationale": "Action of striking forcefully."
+        },
+        {
+          "hint": "Hit",
+          "rationale": "Direct physical collision action."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Quintessential pounding tool."
+      }
+    },
+    {
+      "word": "Candle",
+      "subtle": [
+        {
+          "hint": "Dinner",
+          "rationale": "Evening meal illuminated by candlelight."
+        },
+        {
+          "hint": "Scent",
+          "rationale": "Fragrance diffused by aromatic candles."
+        },
+        {
+          "hint": "Warmth",
+          "rationale": "Gentle thermal radiance."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Wick",
+          "rationale": "Central braided cord that burns."
+        },
+        {
+          "hint": "Wax",
+          "rationale": "Solid fuel material that liquefies."
+        },
+        {
+          "hint": "Melt",
+          "rationale": "Thermal transformation of solid fuel."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Flame",
+          "rationale": "Small glowing fire at the tip."
+        },
+        {
+          "hint": "Fire",
+          "rationale": "Element producing light and heat."
+        },
+        {
+          "hint": "Light",
+          "rationale": "Illumination produced in darkness."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic wax light source."
+      }
+    },
+    {
+      "word": "Keychain",
+      "subtle": [
+        {
+          "hint": "Pocket",
+          "rationale": "Where daily keys are carried."
+        },
+        {
+          "hint": "Brass",
+          "rationale": "Metal used for traditional keys."
+        },
+        {
+          "hint": "Jingle",
+          "rationale": "Metallic chime of keys rubbing together."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Metal",
+          "rationale": "Material of the split ring."
+        },
+        {
+          "hint": "Ring",
+          "rationale": "Circular hoop holding keys together."
+        },
+        {
+          "hint": "Holder",
+          "rationale": "Organizing clasp for keys."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Keys",
+          "rationale": "Direct items held on the ring."
+        },
+        {
+          "hint": "Door",
+          "rationale": "Barrier unlocked by attached keys."
+        },
+        {
+          "hint": "Lock",
+          "rationale": "Mechanism opened by attached keys."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Simple everyday hardware."
+      }
+    },
+    {
+      "word": "Blender",
+      "subtle": [
+        {
+          "hint": "Kitchen",
+          "rationale": "Room where culinary appliances sit."
+        },
+        {
+          "hint": "Counter",
+          "rationale": "Surface supporting the motorized base."
+        },
+        {
+          "hint": "Whirring",
+          "rationale": "Rapid sound of the high-speed electric motor."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Puree",
+          "rationale": "Culinary consistency achieved by spinning blades."
+        },
+        {
+          "hint": "Crush",
+          "rationale": "Mechanical breakdown of ice and fruit."
+        },
+        {
+          "hint": "Pitcher",
+          "rationale": "Container holding the liquid ingredients."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Smoothie",
+          "rationale": "Popular thick fruit drink made inside."
+        },
+        {
+          "hint": "Mixer",
+          "rationale": "General appliance purpose."
+        },
+        {
+          "hint": "Juice",
+          "rationale": "Liquid refreshment blended from produce."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Familiar electric kitchen mixer."
+      }
+    },
+    {
+      "word": "Coffee Mug",
+      "subtle": [
+        {
+          "hint": "Morning",
+          "rationale": "Start of day beverage routine."
+        },
+        {
+          "hint": "Desk",
+          "rationale": "Office workspace surface where mugs rest."
+        },
+        {
+          "hint": "Warmth",
+          "rationale": "Heat transferred through ceramic."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Ceramic",
+          "rationale": "Stoneware material of standard mugs."
+        },
+        {
+          "hint": "Handle",
+          "rationale": "Side loop gripped to avoid burning fingers."
+        },
+        {
+          "hint": "Sip",
+          "rationale": "Act of drinking hot beverage."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Brew",
+          "rationale": "Freshly brewed hot beverage contained."
+        },
+        {
+          "hint": "Tea",
+          "rationale": "Hot infused leaf beverage served inside."
+        },
+        {
+          "hint": "Cup",
+          "rationale": "Direct drinking vessel category."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Everyday hot beverage vessel."
+      }
+    },
+    {
+      "word": "Wristwatch",
+      "subtle": [
+        {
+          "hint": "Strap",
+          "rationale": "Leather or metal band securing it."
+        },
+        {
+          "hint": "Tick",
+          "rationale": "Quiet mechanical sound of second hand."
+        },
+        {
+          "hint": "Minutes",
+          "rationale": "Units of time tracked on dial."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Dial",
+          "rationale": "Circular numbered face showing hands."
+        },
+        {
+          "hint": "Hands",
+          "rationale": "Pointers indicating hour and minute."
+        },
+        {
+          "hint": "Arm",
+          "rationale": "Body part around which strap wraps."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Clock",
+          "rationale": "General timekeeping apparatus."
+        },
+        {
+          "hint": "Time",
+          "rationale": "Dimension measured and displayed."
+        },
+        {
+          "hint": "Hour",
+          "rationale": "Time measurement displayed on wrist dial."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic personal accessory."
+      }
+    },
+    {
+      "word": "Water Bottle",
+      "subtle": [
+        {
+          "hint": "Gym",
+          "rationale": "Fitness workout setting where bottles are kept."
+        },
+        {
+          "hint": "Thirst",
+          "rationale": "Biological sensation prompting hydration."
+        },
+        {
+          "hint": "Plastic",
+          "rationale": "Common lightweight reusable material."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Hydrate",
+          "rationale": "Physiological act of drinking water."
+        },
+        {
+          "hint": "Cap",
+          "rationale": "Top screw lid preventing spills."
+        },
+        {
+          "hint": "Refill",
+          "rationale": "Replenishing water at a tap or fountain."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Liquid",
+          "rationale": "Clear fluid carried along for daily hydration."
+        },
+        {
+          "hint": "Drink",
+          "rationale": "Action of consuming liquid."
+        },
+        {
+          "hint": "Flask",
+          "rationale": "Reusable portable drinking cylinder."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Ubiquitous personal hydration item."
+      }
+    },
+    {
+      "word": "Stapler",
+      "subtle": [
+        {
+          "hint": "Office",
+          "rationale": "Corporate work environment filled with paperwork."
+        },
+        {
+          "hint": "Desk",
+          "rationale": "Worksurface where stapler sits."
+        },
+        {
+          "hint": "Fasten",
+          "rationale": "Action of securing items together."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Metal",
+          "rationale": "Material of the small wire clips."
+        },
+        {
+          "hint": "Bind",
+          "rationale": "Joining multiple pages permanently."
+        },
+        {
+          "hint": "Press",
+          "rationale": "Physical downwards push to crimp wire."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Paper",
+          "rationale": "Material sheets clamped together."
+        },
+        {
+          "hint": "Staples",
+          "rationale": "Direct consumable wire fasteners loaded inside."
+        },
+        {
+          "hint": "Sheets",
+          "rationale": "Individual papers organized in stacks."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Essential stationery tool."
+      }
+    },
+    {
+      "word": "Notebook",
+      "subtle": [
+        {
+          "hint": "Thoughts",
+          "rationale": "Mental ideas transcribed onto paper."
+        },
+        {
+          "hint": "Diary",
+          "rationale": "Personal journal format."
+        },
+        {
+          "hint": "Student",
+          "rationale": "Person carrying notes in class."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Spiral",
+          "rationale": "Wire binding holding pages together."
+        },
+        {
+          "hint": "Pages",
+          "rationale": "Lined paper leaves bound in book."
+        },
+        {
+          "hint": "Pen",
+          "rationale": "Writing instrument used on sheets."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Write",
+          "rationale": "Action of inking words onto paper."
+        },
+        {
+          "hint": "Paper",
+          "rationale": "Physical medium inside the cover."
+        },
+        {
+          "hint": "Notes",
+          "rationale": "Short records jotted down."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Universal study and writing tool."
+      }
+    },
+    {
+      "word": "Blanket",
+      "subtle": [
+        {
+          "hint": "Winter",
+          "rationale": "Cold season requiring heavy bedding."
+        },
+        {
+          "hint": "Cozy",
+          "rationale": "Comforting, snug physical sensation."
+        },
+        {
+          "hint": "Couch",
+          "rationale": "Living room seating where throws are kept."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Fleece",
+          "rationale": "Soft synthetic warm fabric."
+        },
+        {
+          "hint": "Warmth",
+          "rationale": "Thermal insulation provided."
+        },
+        {
+          "hint": "Wrap",
+          "rationale": "Action of draping fabric around body."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Bed",
+          "rationale": "Furniture where blankets are placed."
+        },
+        {
+          "hint": "Cover",
+          "rationale": "Protective fabric spread over sleeper."
+        },
+        {
+          "hint": "Sleep",
+          "rationale": "Nightly rest aided by warm covers."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Universal bedroom item."
+      }
+    },
+    {
+      "word": "Luggage",
+      "subtle": [
+        {
+          "hint": "Packing",
+          "rationale": "Preparation of clothing before departure."
+        },
+        {
+          "hint": "Journey",
+          "rationale": "Trip across long distances."
+        },
+        {
+          "hint": "Vacation",
+          "rationale": "Leisure travel trip."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Wheels",
+          "rationale": "Rolling components enabling easy towing."
+        },
+        {
+          "hint": "Handle",
+          "rationale": "Telescopic arm pulled through airport."
+        },
+        {
+          "hint": "Trip",
+          "rationale": "Voyage requiring packed suitcases."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Suitcase",
+          "rationale": "Direct synonym for travel case."
+        },
+        {
+          "hint": "Airport",
+          "rationale": "Transit hub filled with rolling bags."
+        },
+        {
+          "hint": "Travel",
+          "rationale": "Movement of people across destinations."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Travel essential."
+      }
+    },
+    {
+      "word": "Towel",
+      "subtle": [
+        {
+          "hint": "Cotton",
+          "rationale": "Natural absorbent textile material."
+        },
+        {
+          "hint": "Pool",
+          "rationale": "Swimming area where sunbathers dry off."
+        },
+        {
+          "hint": "Fabric",
+          "rationale": "Terrycloth woven material."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bathroom",
+          "rationale": "Room where bath towels hang on racks."
+        },
+        {
+          "hint": "Shower",
+          "rationale": "Washing routine preceding towel drying."
+        },
+        {
+          "hint": "Cloth",
+          "rationale": "Textile wipe used on skin."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dry",
+          "rationale": "Primary action of removing moisture."
+        },
+        {
+          "hint": "Wet",
+          "rationale": "Moisture condition absorbed from body."
+        },
+        {
+          "hint": "Bath",
+          "rationale": "Immersion tub washing routine."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Household bathroom basic."
+      }
+    },
+    {
+      "word": "Hairbrush",
+      "subtle": [
+        {
+          "hint": "Morning",
+          "rationale": "Time of grooming routine after waking."
+        },
+        {
+          "hint": "Mirror",
+          "rationale": "Reflective surface viewed during styling."
+        },
+        {
+          "hint": "Tangle",
+          "rationale": "Knotted strands smoothed by bristles."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Handle",
+          "rationale": "Grip used while brushing locks."
+        },
+        {
+          "hint": "Groom",
+          "rationale": "Act of tidying personal appearance."
+        },
+        {
+          "hint": "Bristles",
+          "rationale": "Stiff plastic or nylon tines on paddle."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Hair",
+          "rationale": "Body strands styled on head."
+        },
+        {
+          "hint": "Comb",
+          "rationale": "Companion styling tool."
+        },
+        {
+          "hint": "Head",
+          "rationale": "Anatomical area where styling occurs."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Grooming accessory."
+      }
+    },
+    {
+      "word": "Doorbell",
+      "subtle": [
+        {
+          "hint": "Visitor",
+          "rationale": "Guest standing outside residence."
+        },
+        {
+          "hint": "Entrance",
+          "rationale": "Front boundary of home."
+        },
+        {
+          "hint": "Chime",
+          "rationale": "Pleasant acoustic alert sound."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Button",
+          "rationale": "Circular switch pressed on exterior wall."
+        },
+        {
+          "hint": "Ring",
+          "rationale": "Acoustic alert echoing inside home."
+        },
+        {
+          "hint": "Porch",
+          "rationale": "Covered front deck where bell is mounted."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Door",
+          "rationale": "Main entryway where visitor waits."
+        },
+        {
+          "hint": "Ding",
+          "rationale": "Familiar two-tone bell chime."
+        },
+        {
+          "hint": "Guest",
+          "rationale": "Person alerting host of arrival."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Home entrance hardware."
+      }
+    },
+    {
+      "word": "Teapot",
+      "subtle": [
+        {
+          "hint": "Afternoon",
+          "rationale": "Traditional British teatime hour."
+        },
+        {
+          "hint": "Porcelain",
+          "rationale": "Fine ceramic material of classic teapots."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Steaming temperature of freshly brewed liquid."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Spout",
+          "rationale": "Curved pouring funnel."
+        },
+        {
+          "hint": "Leaves",
+          "rationale": "Dried camellia leaves infused in hot water."
+        },
+        {
+          "hint": "Steam",
+          "rationale": "Vapor rising from boiling brew."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Tea",
+          "rationale": "Direct infused herbal beverage."
+        },
+        {
+          "hint": "Boil",
+          "rationale": "Thermal heating of brewing water."
+        },
+        {
+          "hint": "Cup",
+          "rationale": "Vessel into which tea is poured."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic hot drink vessel."
+      }
+    },
+    {
+      "word": "Screwdriver",
+      "subtle": [
+        {
+          "hint": "Toolbox",
+          "rationale": "Hardware container holding bits."
+        },
+        {
+          "hint": "Repair",
+          "rationale": "Fixing loose mechanical parts."
+        },
+        {
+          "hint": "Workbench",
+          "rationale": "Workshop surface for manual tasks."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Handle",
+          "rationale": "Plastic or rubber grip twisted by hand."
+        },
+        {
+          "hint": "Twist",
+          "rationale": "Rotational torque motion applied."
+        },
+        {
+          "hint": "Steel",
+          "rationale": "Hardened metallic shaft."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Fasten",
+          "rationale": "Securing threaded hardware into material."
+        },
+        {
+          "hint": "Turn",
+          "rationale": "Clockwise or counterclockwise motion."
+        },
+        {
+          "hint": "Tighten",
+          "rationale": "Securing a threaded fastener."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Everyday manual tool."
+      }
+    },
+    {
+      "word": "Thermos",
+      "subtle": [
+        {
+          "hint": "Commute",
+          "rationale": "Carrying hot coffee to work."
+        },
+        {
+          "hint": "Winter",
+          "rationale": "Chilly season when hot soup is prized."
+        },
+        {
+          "hint": "Flask",
+          "rationale": "General term for portable insulated cylinder."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Insulated",
+          "rationale": "Double-wall thermal vacuum barrier."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Retaining heat over hours."
+        },
+        {
+          "hint": "Steel",
+          "rationale": "Durable metal vacuum canister."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Hot",
+          "rationale": "High temperature maintained inside."
+        },
+        {
+          "hint": "Soup",
+          "rationale": "Liquid meal commonly transported."
+        },
+        {
+          "hint": "Coffee",
+          "rationale": "Common caffeinated beverage kept warm."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Vacuum-insulated bottle."
+      }
+    },
+    {
+      "word": "Curtain",
+      "subtle": [
+        {
+          "hint": "Sunlight",
+          "rationale": "Daylight blocked from entering room."
+        },
+        {
+          "hint": "Fabric",
+          "rationale": "Textile drapery hanging from rod."
+        },
+        {
+          "hint": "Room",
+          "rationale": "Interior living space sheltered."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Drape",
+          "rationale": "Hanging folds of fabric."
+        },
+        {
+          "hint": "Rod",
+          "rationale": "Horizontal pole supporting drapery."
+        },
+        {
+          "hint": "Privacy",
+          "rationale": "Shielding room interior from outside eyes."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Window",
+          "rationale": "Glass pane covered by the fabric."
+        },
+        {
+          "hint": "Close",
+          "rationale": "Action of drawing fabric across glass."
+        },
+        {
+          "hint": "Shade",
+          "rationale": "Darkness cast by drawn curtains."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Home window furnishing."
+      }
+    },
+    {
+      "word": "Sponge",
+      "subtle": [
+        {
+          "hint": "Kitchen",
+          "rationale": "Room where dish cleaning occurs."
+        },
+        {
+          "hint": "Yellow",
+          "rationale": "Iconic cellulose sponge color."
+        },
+        {
+          "hint": "Soapy",
+          "rationale": "Coated in dishwashing suds."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Absorb",
+          "rationale": "Porous capability of soaking liquid."
+        },
+        {
+          "hint": "Foam",
+          "rationale": "Porous synthetic or natural texture."
+        },
+        {
+          "hint": "Scrub",
+          "rationale": "Friction cleaning motion on plates."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dishes",
+          "rationale": "Dirty cookware cleaned in sink."
+        },
+        {
+          "hint": "Wash",
+          "rationale": "Water cleaning routine."
+        },
+        {
+          "hint": "Clean",
+          "rationale": "Sanitary outcome of scrubbing."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Essential kitchen wash tool."
+      }
+    },
+    {
+      "word": "Calculator",
+      "subtle": [
+        {
+          "hint": "Math",
+          "rationale": "School discipline involving equations."
+        },
+        {
+          "hint": "Office",
+          "rationale": "Accountancy work setting."
+        },
+        {
+          "hint": "Student",
+          "rationale": "Learner solving homework problems."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Buttons",
+          "rationale": "Keypad pressed to input values."
+        },
+        {
+          "hint": "Digits",
+          "rationale": "Numerical symbols entered."
+        },
+        {
+          "hint": "Solve",
+          "rationale": "Computing mathematical outcome."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Numbers",
+          "rationale": "Arithmetic values computed."
+        },
+        {
+          "hint": "Count",
+          "rationale": "Mathematical arithmetic process."
+        },
+        {
+          "hint": "Screen",
+          "rationale": "Display showing calculation output."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Arithmetic digital device."
+      }
+    },
+    {
+      "word": "Compass",
+      "subtle": [
+        {
+          "hint": "Hiking",
+          "rationale": "Outdoor wilderness navigation activity."
+        },
+        {
+          "hint": "Explorer",
+          "rationale": "Adventurer traversing unknown lands."
+        },
+        {
+          "hint": "Map",
+          "rationale": "Cartographic paper paired with compass."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Needle",
+          "rationale": "Magnetized pointer pivoting inside casing."
+        },
+        {
+          "hint": "Direction",
+          "rationale": "Bearing toward cardinal coordinates."
+        },
+        {
+          "hint": "Magnetic",
+          "rationale": "Physical field aligning the needle."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "North",
+          "rationale": "Primary cardinal direction indicated."
+        },
+        {
+          "hint": "Navigate",
+          "rationale": "Act of finding way across terrain."
+        },
+        {
+          "hint": "Lost",
+          "rationale": "Condition prompting compass use."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic navigational instrument."
+      }
+    },
+    {
+      "word": "Lighter",
+      "subtle": [
+        {
+          "hint": "Pocket",
+          "rationale": "Small personal carry location."
+        },
+        {
+          "hint": "Thumb",
+          "rationale": "Finger flicking the spark wheel."
+        },
+        {
+          "hint": "Spark",
+          "rationale": "Friction ignition creating small flame."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Flint",
+          "rationale": "Mineral wheel creating spark."
+        },
+        {
+          "hint": "Gas",
+          "rationale": "Pressurized butane fuel."
+        },
+        {
+          "hint": "Click",
+          "rationale": "Mechanical sound of ignition."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Flame",
+          "rationale": "Small fire produced at nozzle."
+        },
+        {
+          "hint": "Fire",
+          "rationale": "Element ignited for candles or camp."
+        },
+        {
+          "hint": "Burn",
+          "rationale": "Combustion created."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Pocket ignition tool."
+      }
+    },
+    {
+      "word": "Broom",
+      "subtle": [
+        {
+          "hint": "Corner",
+          "rationale": "Where brooms stand propped against wall."
+        },
+        {
+          "hint": "Handle",
+          "rationale": "Long wooden or plastic pole held."
+        },
+        {
+          "hint": "Floor",
+          "rationale": "Surface cleared of debris."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Straw",
+          "rationale": "Traditional dried grass bristle bundle."
+        },
+        {
+          "hint": "Dustpan",
+          "rationale": "Shovel companion collecting dirt pile."
+        },
+        {
+          "hint": "Bristles",
+          "rationale": "Stiff fibers sweeping particles."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Sweep",
+          "rationale": "Action of brushing floor clean."
+        },
+        {
+          "hint": "Dust",
+          "rationale": "Fine dry particles swept away."
+        },
+        {
+          "hint": "Clean",
+          "rationale": "Hygienic outcome of sweeping."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Everyday floor cleaning tool."
+      }
+    },
+    {
+      "word": "Padlock",
+      "subtle": [
+        {
+          "hint": "Security",
+          "rationale": "Concept of protecting possessions."
+        },
+        {
+          "hint": "Chain",
+          "rationale": "Steel links secured by the shackle."
+        },
+        {
+          "hint": "Locker",
+          "rationale": "Gym storage cabinet secured."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Shackle",
+          "rationale": "U-shaped hardened steel metal loop."
+        },
+        {
+          "hint": "Brass",
+          "rationale": "Traditional durable heavy lock body."
+        },
+        {
+          "hint": "Steel",
+          "rationale": "Strong metal resisting cutters."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Key",
+          "rationale": "Notched metal tool inserted to unlock."
+        },
+        {
+          "hint": "Lock",
+          "rationale": "Mechanism fastening gate or latch."
+        },
+        {
+          "hint": "Safe",
+          "rationale": "Condition of locked items."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Heavy portable mechanical lock."
+      }
+    }
+  ]
+}

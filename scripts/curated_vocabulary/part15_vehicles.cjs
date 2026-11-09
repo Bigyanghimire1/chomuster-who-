@@ -1,0 +1,679 @@
+const fs = require('fs');
+
+const vehicles = [
+  {
+    word: 'Helicopter',
+    subtle: [
+      { hint: 'Collective', rationale: 'Lever controlling main rotor blade pitch angle.' },
+      { hint: 'Helipad', rationale: 'Marked rooftop landing circle with painted H.' },
+      { hint: 'Chopper', rationale: 'Colloquial acoustic nickname from rotor blade thumping.' }
+    ],
+    balanced: [
+      { hint: 'Rotors', rationale: 'Spinning horizontal aerodynamic lift blades.' },
+      { hint: 'Hover', rationale: 'Remaining motionless suspended in mid-air.' },
+      { hint: 'Skids', rationale: 'Tubular landing landing runners beneath cockpit.' }
+    ],
+    easy: [
+      { hint: 'Fly', rationale: 'Airborne flight capability in any direction.' },
+      { hint: 'Blades', rationale: 'Whirling overhead composite airfoils.' },
+      { hint: 'Rescue', rationale: 'Emergency medical and mountain extraction missions.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Vertical takeoff aircraft hovering on spinning rotor blades.' }
+  },
+  {
+    word: 'Submarine',
+    subtle: [
+      { hint: 'Ballast', rationale: 'Tanks flooded with water to submerge or blown with air to rise.' },
+      { hint: 'Periscope', rationale: 'Retractable optical tube peering above waves while submerged.' },
+      { hint: 'Torpedo', rationale: 'Underwater propelled explosive weapon fired from tubes.' }
+    ],
+    balanced: [
+      { hint: 'Sonar', rationale: 'Acoustic sound ping detecting objects in dark depths.' },
+      { hint: 'Submerged', rationale: 'Operating beneath ocean surface hidden from radar.' },
+      { hint: 'Nuclear', rationale: 'Reactor powertrain enabling months of submerged endurance.' }
+    ],
+    easy: [
+      { hint: 'Underwater', rationale: 'Deep marine saltwater operating environment.' },
+      { hint: 'Ocean', rationale: 'Vast depths patrolled by naval vessels.' },
+      { hint: 'Dive', rationale: 'Plunging beneath ocean waves.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Naval vessel submerging deep underwater using ballast tanks.' }
+  },
+  {
+    word: 'Electric Scooter',
+    subtle: [
+      { hint: 'Throttle', rationale: 'Thumb lever on handlebar regulating motor speed.' },
+      { hint: 'Dockless', rationale: 'App-unlocked city fleet parked anywhere on sidewalks.' },
+      { hint: 'Foldable', rationale: 'Hinged stem collapsing flat for carrying onto trains.' }
+    ],
+    balanced: [
+      { hint: 'Handlebars', rationale: 'Steering T-bar holding brake levers and bell.' },
+      { hint: 'Deck', rationale: 'Narrow footboard stood upon with both feet.' },
+      { hint: 'Battery', rationale: 'Rechargeable lithium cell inside floorboard.' }
+    ],
+    easy: [
+      { hint: 'Wheels', rationale: 'Two small rubber tires rolling on pavement.' },
+      { hint: 'Sidewalk', rationale: 'Urban pedestrian lane shared with walkers.' },
+      { hint: 'Ride', rationale: 'Quick short-distance city commuting.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Two-wheeled stand-up battery ride popular in modern cities.' }
+  },
+  {
+    word: 'Sailboat',
+    subtle: [
+      { hint: 'Tack', rationale: 'Zig-zag steering maneuver turning bow through wind.' },
+      { hint: 'Keel', rationale: 'Heavy weighted underwater fin preventing capsize.' },
+      { hint: 'Halyard', rationale: 'Line used to hoist canvas up vertical mast.' }
+    ],
+    balanced: [
+      { hint: 'Mast', rationale: 'Tall wooden or aluminum spar supporting canvas.' },
+      { hint: 'Canvas', rationale: 'Triangular white fabric catching ocean breezes.' },
+      { hint: 'Rudder', rationale: 'Underwater blade steered by wooden tiller.' }
+    ],
+    easy: [
+      { hint: 'Wind', rationale: 'Natural atmospheric energy driving hull across water.' },
+      { hint: 'Ocean', rationale: 'Saltwater cruising marine domain.' },
+      { hint: 'Voyage', rationale: 'Navigating open waters between ports.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Vessel driven across water by wind captured in canvas sails.' }
+  },
+  {
+    word: 'Hot Air Balloon',
+    subtle: [
+      { hint: 'Envelope', rationale: 'Massive ripstop nylon fabric bag holding heated air.' },
+      { hint: 'Crown-line', rationale: 'Rope attached to top vent used during deflation.' },
+      { hint: 'Propane', rationale: 'Liquefied gas fuel cylinder supplying flame burners.' }
+    ],
+    balanced: [
+      { hint: 'Burner', rationale: 'Roaring flame unit blasting heat upward into fabric.' },
+      { hint: 'Basket', rationale: 'Woven wicker gondola holding passengers and pilot.' },
+      { hint: 'Float', rationale: 'Buoyant gentle ascent drifting with wind currents.' }
+    ],
+    easy: [
+      { hint: 'Sky', rationale: 'Airy realm navigated at sunrise.' },
+      { hint: 'Fly', rationale: 'Lighter-than-air flight above landscapes.' },
+      { hint: 'Wicker', rationale: 'Woven cane material of passenger compartment.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Lighter-than-air craft floating in wicker basket beneath heated bag.' }
+  },
+  {
+    word: 'High-Speed Train',
+    subtle: [
+      { hint: 'Pantograph', rationale: 'Articulated roof arm collecting overhead electrical current.' },
+      { hint: 'Maglev', rationale: 'Magnetic levitation technology floating cars above track.' },
+      { hint: 'Aerodynamic', rationale: 'Tapered nose cone reducing air resistance at 300 km/h.' }
+    ],
+    balanced: [
+      { hint: 'Rails', rationale: 'Continuous welded steel tracks stretching across country.' },
+      { hint: 'Bullet', rationale: 'Shinkansen sleek silhouette evoking high-speed ammunition.' },
+      { hint: 'Electric', rationale: 'Overhead power cables driving powerful traction motors.' }
+    ],
+    easy: [
+      { hint: 'Fast', rationale: 'Blistering passenger transit between cities.' },
+      { hint: 'Station', rationale: 'Terminal platforms boarding thousands of passengers.' },
+      { hint: 'Passengers', rationale: 'Commuters traveling intercity in quiet comfort.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Aerodynamic bullet train racing on tracks at 300 km/h.' }
+  },
+  {
+    word: 'Spaceship',
+    subtle: [
+      { hint: 'Airlock', rationale: 'Hermetic chamber equalizing pressure for spacewalks.' },
+      { hint: 'Thrusters', rationale: 'RCS hydrazine jets controlling pitch, roll, and yaw.' },
+      { hint: 'Heatshield', rationale: 'Ceramic tiles absorbing blistering reentry friction.' }
+    ],
+    balanced: [
+      { hint: 'Rocket', rationale: 'High-thrust booster escaping Earth gravity.' },
+      { hint: 'Orbit', rationale: 'Trajectory circling planetary bodies in vacuum.' },
+      { hint: 'Astronauts', rationale: 'Crew living and working aboard orbital capsule.' }
+    ],
+    easy: [
+      { hint: 'Cosmos', rationale: 'Infinite vacuum void navigated outside atmosphere.' },
+      { hint: 'Stars', rationale: 'Celestial destinations of interstellar voyages.' },
+      { hint: 'Launch', rationale: 'Explosive vertical countdown from pad.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Cosmic exploration craft launched by rockets into orbit.' }
+  },
+  {
+    word: 'Bulldozer',
+    subtle: [
+      { hint: 'Ripper', rationale: 'Heavy claw tooth on rear breaking up solid rock.' },
+      { hint: 'Hydraulic', rationale: 'High-pressure fluid cylinders tilting front blade.' },
+      { hint: 'Clearing', rationale: 'Pushing brush and boulders to level construction site.' }
+    ],
+    balanced: [
+      { hint: 'Tracks', rationale: 'Continuous steel tread chains crawling over mud.' },
+      { hint: 'Blade', rationale: 'Massive curved steel scoop pushing tons of dirt.' },
+      { hint: 'Heavy', rationale: 'Massive armored diesel earthmoving machine.' }
+    ],
+    easy: [
+      { hint: 'Dirt', rationale: 'Soil and rubble moved across earthworks.' },
+      { hint: 'Yellow', rationale: 'Standard industrial safety paint color.' },
+      { hint: 'Push', rationale: 'Primary mechanical action moving earth.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Heavy tracked earthmoving machine with massive steel front blade.' }
+  },
+  {
+    word: 'Ambulance',
+    subtle: [
+      { hint: 'Defibrillator', rationale: 'Cardiac monitor unit delivering emergency pulse shock.' },
+      { hint: 'Gurney', rationale: 'Wheeled collapsible cot rolled through rear doors.' },
+      { hint: 'Paramedic', rationale: 'Emergency medical technician treating patients in back.' }
+    ],
+    balanced: [
+      { hint: 'Siren', rationale: 'Piercing acoustic wail parting heavy traffic.' },
+      { hint: 'Emergency', rationale: 'Urgent lifesaving transport to trauma center.' },
+      { hint: 'Flashers', rationale: 'Red and blue flashing strobe lights on roof.' }
+    ],
+    easy: [
+      { hint: 'Hospital', rationale: 'Medical center destination of transport.' },
+      { hint: 'White', rationale: 'Vehicle body paint decorated with red crosses.' },
+      { hint: 'Rescue', rationale: 'Responding rapidly to 911 emergency calls.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Emergency medical vehicle racing patients to hospitals with sirens.' }
+  },
+  {
+    word: 'Jet Ski',
+    subtle: [
+      { hint: 'Impeller', rationale: 'Internal water pump rotor blasting thrust out rear nozzle.' },
+      { hint: 'Lanyard', rationale: 'Kill-switch cord looped on wrist stopping engine on fall.' },
+      { hint: 'Sponson', rationale: 'Side hull fins enhancing high-speed turning bite.' }
+    ],
+    balanced: [
+      { hint: 'Throttle', rationale: 'Handlebar trigger accelerating across chop.' },
+      { hint: 'Spray', rationale: 'Rooster tail of water arcing behind craft.' },
+      { hint: 'Waves', rationale: 'Surf crests launched off into aerial jumps.' }
+    ],
+    easy: [
+      { hint: 'Water', rationale: 'Lake or ocean aquatic riding surface.' },
+      { hint: 'Fast', rationale: 'Thrilling speed skimming over water surface.' },
+      { hint: 'Ride', rationale: 'Straddling seat holding handlebars.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Personal watercraft blasting over waves with water jet propulsion.' }
+  },
+  {
+    word: 'Fire Truck',
+    subtle: [
+      { hint: 'Outriggers', rationale: 'Hydraulic stabilization legs extending to ground.' },
+      { hint: 'Pumper', rationale: 'Internal turbine drawing thousands of gallons per minute.' },
+      { hint: 'Nozzle', rationale: 'Brass hose tip focusing high-pressure stream.' }
+    ],
+    balanced: [
+      { hint: 'Ladder', rationale: 'Hundred-foot aerial turntable ladder reaching high floors.' },
+      { hint: 'Hose', rationale: 'Heavy canvas line pumping water onto blazes.' },
+      { hint: 'Siren', rationale: 'Deafening mechanical wail clearing city intersections.' }
+    ],
+    easy: [
+      { hint: 'Red', rationale: 'Vibrant recognizable emergency vehicle color.' },
+      { hint: 'Flames', rationale: 'Destructive building fires extinguished by crew.' },
+      { hint: 'Water', rationale: 'Liquid pumped through lines to douse inferno.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Red emergency vehicle carrying aerial ladders, hoses, and water.' }
+  },
+  {
+    word: 'Hovercraft',
+    subtle: [
+      { hint: 'Skirt', rationale: 'Flexible reinforced rubber perimeter curtain trapping air.' },
+      { hint: 'Duct', rationale: 'Circular shroud directing thrust propeller airflow.' },
+      { hint: 'Cushion', rationale: 'Pressurized air pocket lifting craft inches above terrain.' }
+    ],
+    balanced: [
+      { hint: 'Amphibious', rationale: 'Capable of transitioning smoothly between water and land.' },
+      { hint: 'Propeller', rationale: 'Giant rear aerodynamic fan providing forward thrust.' },
+      { hint: 'Float', rationale: 'Gliding frictionless across mud, ice, and waves.' }
+    ],
+    easy: [
+      { hint: 'Air', rationale: 'Pressurized cushion supporting entire vessel weight.' },
+      { hint: 'Water', rationale: 'Surface skimmed over without displacement hull.' },
+      { hint: 'Land', rationale: 'Shores driven right onto without stopping.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Amphibious vehicle gliding on a pressurized cushion of air.' }
+  },
+  {
+    word: 'Motorcycle',
+    subtle: [
+      { hint: 'Clutch', rationale: 'Left handlebar lever disengaging transmission for shifts.' },
+      { hint: 'Kickstand', rationale: 'Pivoting metal leg leaning bike upright when parked.' },
+      { hint: 'Fairing', rationale: 'Aerodynamic plastic shell deflecting highway wind.' }
+    ],
+    balanced: [
+      { hint: 'Handlebars', rationale: 'Steering bar gripped while leaning into sharp curves.' },
+      { hint: 'Helmet', rationale: 'Full-face protective shell worn by rider.' },
+      { hint: 'Exhaust', rationale: 'Chrome pipe rumbling with combustion pulses.' }
+    ],
+    easy: [
+      { hint: 'Wheels', rationale: 'Two tires rolling in single-track alignment.' },
+      { hint: 'Engine', rationale: 'Internal combustion motor mounted between legs.' },
+      { hint: 'Ride', rationale: 'Straddling seat cruising down highways.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Two-wheeled motorized highway vehicle steered by handlebars.' }
+  },
+  {
+    word: 'Steam Locomotive',
+    subtle: [
+      { hint: 'Firebox', rationale: 'Hearth chamber where coal shoveler feeds roaring flames.' },
+      { hint: 'Cowcatcher', rationale: 'Wedge-shaped iron grate on front clearing tracks.' },
+      { hint: 'Tender', rationale: 'Coupled car carrying coal and water reserves behind engine.' }
+    ],
+    balanced: [
+      { hint: 'Smokestack', rationale: 'Vertical chimney puffing billowing white exhaust.' },
+      { hint: 'Pistons', rationale: 'Steam cylinders driving massive iron side connecting rods.' },
+      { hint: 'Whistle', rationale: 'Piercing high-pressure steam blast warning of approach.' }
+    ],
+    easy: [
+      { hint: 'Coal', rationale: 'Black fossil fuel shoveled to boil water.' },
+      { hint: 'Tracks', rationale: 'Twin steel rails traversed across continents.' },
+      { hint: 'Choo-choo', rationale: 'Rhythmic chugging sound echoing along railway.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Historical railway engine powered by coal, boiling water, and steam.' }
+  },
+  {
+    word: 'Monster Truck',
+    subtle: [
+      { hint: 'Nitrogen', rationale: 'Pressurized gas shocks absorbing twenty-foot jump impacts.' },
+      { hint: 'Grave-Digger', rationale: 'Legendary black and green themed competition vehicle.' },
+      { hint: 'Crush', rationale: 'Driving over and flattening junk sedans in arena.' }
+    ],
+    balanced: [
+      { hint: 'Suspension', rationale: 'Enormous tubular steel links lifting cab ten feet high.' },
+      { hint: 'Arena', rationale: 'Dirt floor stadium hosting freestyle jump showdowns.' },
+      { hint: 'Methanol', rationale: 'Supercharged racing fuel powering 1500-horsepower V8.' }
+    ],
+    easy: [
+      { hint: 'Giant', rationale: 'Massive 66-inch agricultural terra tires.' },
+      { hint: 'Loud', rationale: 'Deafening open-header racing engine roar.' },
+      { hint: 'Jumps', rationale: 'Airborne launches soaring over rows of cars.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Giant-tired supercharged spectacle truck crushing arena cars.' }
+  },
+  {
+    word: 'Yacht',
+    subtle: [
+      { hint: 'Helipad', rationale: 'Aft deck circular landing zone for private helicopters.' },
+      { hint: 'Stewardess', rationale: 'Crew staff serving champagne and catering to guests.' },
+      { hint: 'Mooring', rationale: 'Docking in luxury marinas in Monaco or Saint-Tropez.' }
+    ],
+    balanced: [
+      { hint: 'Deck', rationale: 'Teak wood sun terrace furnished with loungers.' },
+      { hint: 'Luxury', rationale: 'Billionaire status symbol with five-star amenities.' },
+      { hint: 'Marina', rationale: 'Exclusive harbor docking superyachts.' }
+    ],
+    easy: [
+      { hint: 'Boat', rationale: 'Private recreational marine watercraft.' },
+      { hint: 'Ocean', rationale: 'Mediterranean or Caribbean cruising waters.' },
+      { hint: 'White', rationale: 'Gleaming fiberglass and paint finish.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Luxurious private pleasure vessel docked in glamorous marinas.' }
+  },
+  {
+    word: 'Tractor',
+    subtle: [
+      { hint: 'PTO', rationale: 'Power take-off splined shaft spinning towed farm implements.' },
+      { hint: 'Hitch', rationale: 'Three-point hydraulic linkage coupling heavy plows.' },
+      { hint: 'Diesel', rationale: 'High-torque low-RPM agricultural workhorse fuel.' }
+    ],
+    balanced: [
+      { hint: 'Plow', rationale: 'Curved steel blades turning over soil furrows.' },
+      { hint: 'Fields', rationale: 'Expansive rural acreage cultivated for crops.' },
+      { hint: 'Farmer', rationale: 'Agricultural operator driving slow passes.' }
+    ],
+    easy: [
+      { hint: 'Tires', rationale: 'Enormous deep-tread rear rubber wheels.' },
+      { hint: 'Green', rationale: 'John Deere signature brand paint color.' },
+      { hint: 'Farm', rationale: 'Rural agricultural property where machine works.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Heavy agricultural farm vehicle plowing fields with giant tires.' }
+  },
+  {
+    word: 'Gondola',
+    subtle: [
+      { hint: 'Forcola', rationale: 'Carved walnut oarlock post supporting long rowing oar.' },
+      { hint: 'Ferro', rationale: 'Metal prow decoration representing six Venetian districts.' },
+      { hint: 'Canal', rationale: 'Historic waterway navigated between stone palazzos.' }
+    ],
+    balanced: [
+      { hint: 'Gondolier', rationale: 'Striped-shirt boatman rowing standing at stern.' },
+      { hint: 'Venice', rationale: 'Floating Italian city of bridges and lagoons.' },
+      { hint: 'Oar', rationale: 'Single long wooden paddle swept in sculling motion.' }
+    ],
+    easy: [
+      { hint: 'Boat', rationale: 'Slender flat-bottomed traditional rowing craft.' },
+      { hint: 'Black', rationale: 'Mandatory glossy lacquered paint hue.' },
+      { hint: 'Romance', rationale: 'Romantic tourist ride through Venetian waterways.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Traditional black flat-bottomed rowing craft of Venice canals.' }
+  },
+  {
+    word: 'Airplane',
+    subtle: [
+      { hint: 'Altimeter', rationale: 'Barometric gauge reading height above sea level.' },
+      { hint: 'Aileron', rationale: 'Hinged wing flap controlling banking and roll.' },
+      { hint: 'Turbofan', rationale: 'High-bypass jet engine slung under wing.' }
+    ],
+    balanced: [
+      { hint: 'Runway', rationale: 'Paved strip where landing gear touches down.' },
+      { hint: 'Wings', rationale: 'Aerodynamic airfoils generating flight lift.' },
+      { hint: 'Cockpit', rationale: 'Forward flight deck commanded by pilot and copilot.' }
+    ],
+    easy: [
+      { hint: 'Fly', rationale: 'Airborne journey above clouds.' },
+      { hint: 'Sky', rationale: 'Atmospheric flight realm.' },
+      { hint: 'Airport', rationale: 'Terminal facility boarding passengers and luggage.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winged commercial jet craft transporting travelers across skies.' }
+  },
+  {
+    word: 'Cable Car',
+    subtle: [
+      { hint: 'Bullwheel', rationale: 'Large grooved terminal pulley reversing haulage rope.' },
+      { hint: 'Grip', rationale: 'Mechanical lever jaw clamping onto moving underground cable.' },
+      { hint: 'Turntable', rationale: 'Wooden circle turned by hand to reverse car direction.' }
+    ],
+    balanced: [
+      { hint: 'Hills', rationale: 'Steep San Francisco streets climbed on tracks.' },
+      { hint: 'Bell', rationale: 'Brass acoustic chime clanged by gripman.' },
+      { hint: 'Track', rationale: 'Slotted street rails with moving underground wire.' }
+    ],
+    easy: [
+      { hint: 'Trolley', rationale: 'Wooden historical street transit passenger vehicle.' },
+      { hint: 'Sanfrancisco', rationale: 'California bay city famous for historic line.' },
+      { hint: 'Ride', rationale: 'Standing on running board holding brass poles.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Historic wooden transit vehicle gripping underground cables up hills.' }
+  },
+  {
+    word: 'Hang Glider',
+    subtle: [
+      { hint: 'Thermals', rationale: 'Rising columns of warm air sustaining soaring flight.' },
+      { hint: 'A-frame', rationale: 'Control bar held by pilot to shift center of gravity.' },
+      { hint: 'Variometer', rationale: 'Audio instrument beeping to indicate rate of climb.' }
+    ],
+    balanced: [
+      { hint: 'Harness', rationale: 'Suspended cocoon holding pilot in prone flying posture.' },
+      { hint: 'Wings', rationale: 'Triangular Dacron sail stretched over aluminum frame.' },
+      { hint: 'Cliff', rationale: 'High coastal bluff launched from on foot.' }
+    ],
+    easy: [
+      { hint: 'Gliding', rationale: 'Motorless soaring flight riding wind.' },
+      { hint: 'Fly', rationale: 'Airborne freedom soaring like an eagle.' },
+      { hint: 'Sky', rationale: 'High open atmosphere where pilot glides.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Non-motorized triangular foot-launched soaring glider.' }
+  },
+  {
+    word: 'Tugboat',
+    subtle: [
+      { hint: 'Bollard', rationale: 'Heavy post on deck securing thick towing hawser.' },
+      { hint: 'Fenders', rationale: 'Rubber tires cushioning hull against ship steel.' },
+      { hint: 'Kort', rationale: 'Nozzle shroud focusing propeller thrust for pulling power.' }
+    ],
+    balanced: [
+      { hint: 'Towing', rationale: 'Pulling massive container ships into tight harbor slips.' },
+      { hint: 'Harbor', rationale: 'Bustling seaport waters where craft maneuvers.' },
+      { hint: 'Powerful', rationale: 'Enormous horsepower packed into small stout hull.' }
+    ],
+    easy: [
+      { hint: 'Boat', rationale: 'Stout sturdy marine work vessel.' },
+      { hint: 'Push', rationale: 'Nudging ocean liners into docking berths.' },
+      { hint: 'Water', rationale: 'Port waterway navigated daily.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Powerful compact harbor vessel pushing and towing massive ships.' }
+  },
+  {
+    word: 'Forklift',
+    subtle: [
+      { hint: 'Mast', rationale: 'Vertical hydraulic assembly elevating prongs.' },
+      { hint: 'Counterweight', rationale: 'Heavy rear iron casting balancing front loads.' },
+      { hint: 'Pallet', rationale: 'Wooden slatted platform slipped into by twin tines.' }
+    ],
+    balanced: [
+      { hint: 'Prongs', rationale: 'Twin steel horizontal lifting blades on front.' },
+      { hint: 'Warehouse', rationale: 'Storage facility with high pallet racking aisles.' },
+      { hint: 'Hydraulic', rationale: 'High-pressure fluid rams hoisting tons of freight.' }
+    ],
+    easy: [
+      { hint: 'Lift', rationale: 'Raising heavy cargo to upper storage shelves.' },
+      { hint: 'Boxes', rationale: 'Stacked cartons transported across warehouse.' },
+      { hint: 'Drive', rationale: 'Operator steering rear-wheel-turning machine.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Warehouse vehicle with twin steel prongs lifting heavy pallets.' }
+  },
+  {
+    word: 'Cruise Ship',
+    subtle: [
+      { hint: 'Promenade', rationale: 'Broad teak deck circumnavigating passenger superstructure.' },
+      { hint: 'Port-hole', rationale: 'Circular brass-framed cabin window looking out at sea.' },
+      { hint: 'Lido', rationale: 'Sun deck area featuring swimming pools and buffets.' }
+    ],
+    balanced: [
+      { hint: 'Buffet', rationale: 'All-inclusive dining spread serving thousands of guests.' },
+      { hint: 'Balcony', rationale: 'Private terrace attached to passenger stateroom.' },
+      { hint: 'Cabins', rationale: 'Hotel rooms arranged across multiple passenger decks.' }
+    ],
+    easy: [
+      { hint: 'Vacation', rationale: 'Leisure holiday sailing to tropical islands.' },
+      { hint: 'Ocean', rationale: 'Saltwater seas traversed between tourist ports.' },
+      { hint: 'Huge', rationale: 'Floating resort city carrying thousands of travelers.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal passenger resort liner sailing ocean vacation voyages.' }
+  },
+  {
+    word: 'Snowmobile',
+    subtle: [
+      { hint: 'Tether', rationale: 'Emergency kill switch cord clipped to rider jacket.' },
+      { hint: 'Thumb-throttle', rationale: 'Lever on right handlebar gripped against freezing air.' },
+      { hint: 'Carbide', rationale: 'Hardened metal runners on ski bottoms gripping packed ice.' }
+    ],
+    balanced: [
+      { hint: 'Skis', rationale: 'Pair of front steerable runners slicing across powder.' },
+      { hint: 'Track', rationale: 'Rear rubber studded belt providing propulsion over snow.' },
+      { hint: 'Winter', rationale: 'Cold season when frozen trails are ridden.' }
+    ],
+    easy: [
+      { hint: 'Snow', rationale: 'Frozen white winter precipitation navigated.' },
+      { hint: 'Ride', rationale: 'Straddling seat cruising down backcountry trails.' },
+      { hint: 'Cold', rationale: 'Subzero temperatures defied with heated grips.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Winter vehicle skimming over snow with front skis and rear track.' }
+  },
+  {
+    word: 'Go-Kart',
+    subtle: [
+      { hint: 'Slicks', rationale: 'Treadless smooth racing tires gripping asphalt track.' },
+      { hint: 'Centrifugal', rationale: 'Automatic clutch engaging as engine revs climb.' },
+      { hint: 'Apex', rationale: 'Optimal inside turning point through tight chicane.' }
+    ],
+    balanced: [
+      { hint: 'Lap', rationale: 'Timed circuit around twisting indoor or outdoor track.' },
+      { hint: 'Helmet', rationale: 'Protective headgear worn while racing bumper to bumper.' },
+      { hint: 'Karting', rationale: 'Grassroots motorsport breeding ground for racing champions.' }
+    ],
+    easy: [
+      { hint: 'Fast', rationale: 'Thrilling ground-level sensation of speed.' },
+      { hint: 'Race', rationale: 'Competitive sprint to checkered flag.' },
+      { hint: 'Track', rationale: 'Paved circuit lined with protective tire barriers.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Low-slung open-wheel miniature racing kart.' }
+  },
+  {
+    word: 'Segway',
+    subtle: [
+      { hint: 'Dean-kamen', rationale: 'Inventor who hyped personal transporter before 2001 debut.' },
+      { hint: 'Leansteer', rationale: 'Handlebar column tilted sideways to execute turns.' },
+      { hint: 'Gyroscopes', rationale: 'Five internal sensors keeping platform upright dynamically.' }
+    ],
+    balanced: [
+      { hint: 'Balance', rationale: 'Self-righting technology adjusting motors hundreds of times per second.' },
+      { hint: 'Upright', rationale: 'Rider posture standing tall on two parallel wheels.' },
+      { hint: 'Lean', rationale: 'Shifting body weight forward to roll or back to brake.' }
+    ],
+    easy: [
+      { hint: 'Wheels', rationale: 'Two side-by-side motorized wheels.' },
+      { hint: 'Electric', rationale: 'Battery-powered zero-emission personal transit.' },
+      { hint: 'Handlebar', rationale: 'Vertical T-bar held while rolling on sidewalks.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Two-wheeled self-balancing upright personal transporter.' }
+  },
+  {
+    word: 'Tanker Ship',
+    subtle: [
+      { hint: 'Manifold', rationale: 'Valve pipe network distributing liquid cargo to tanks.' },
+      { hint: 'Inert', rationale: 'Exhaust gas blanket pumped over oil to prevent combustion.' },
+      { hint: 'Draft', rationale: 'Massive underwater hull depth when fully laden with oil.' }
+    ],
+    balanced: [
+      { hint: 'Crude', rationale: 'Unrefined petroleum pumped into sealed cavernous holds.' },
+      { hint: 'Hull', rationale: 'Double-walled steel hull preventing marine oil spills.' },
+      { hint: 'Petroleum', rationale: 'Liquid fossil fuel transported between continents.' }
+    ],
+    easy: [
+      { hint: 'Oil', rationale: 'Primary liquid commodity transported across seas.' },
+      { hint: 'Cargo', rationale: 'Millions of barrels carried in oceanic holds.' },
+      { hint: 'Ocean', rationale: 'Saltwater global maritime shipping lanes.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Colossal double-hulled vessel transporting petroleum across oceans.' }
+  },
+  {
+    word: 'Cargo Plane',
+    subtle: [
+      { hint: 'Nose-door', rationale: 'Cockpit swinging upward allowing drive-in freight loading.' },
+      { hint: 'Pallets', rationale: 'Standardized LD3 aluminum containers locked onto floor rollers.' },
+      { hint: 'Payload', rationale: 'Tons of commercial freight carried in windowless fuselage.' }
+    ],
+    balanced: [
+      { hint: 'Freight', rationale: 'International commercial parcels and palletized crates.' },
+      { hint: 'Ramp', rationale: 'Rear drop tailgate loading military vehicles.' },
+      { hint: 'Logistics', rationale: 'Global supply chain overnight express delivery network.' }
+    ],
+    easy: [
+      { hint: 'Boxes', rationale: 'Cardboard parcels sorted for international flight.' },
+      { hint: 'Fly', rationale: 'Long-distance intercontinental airborne transit.' },
+      { hint: 'Airport', rationale: 'Dedicated cargo tarmac loading freighters at night.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Heavy transport aircraft flying freight and parcels overnight.' }
+  },
+  {
+    word: 'Delivery Van',
+    subtle: [
+      { hint: 'Parcel-shelf', rationale: 'Tiered shelving organizing packages by stop order.' },
+      { hint: 'Handbrake', rationale: 'Pulled hundreds of times daily on neighborhood curbs.' },
+      { hint: 'Manifest', rationale: 'Route list of addresses visited on daily courier shift.' }
+    ],
+    balanced: [
+      { hint: 'Courier', rationale: 'Driver running parcels up driveways to front porches.' },
+      { hint: 'Packages', rationale: 'Cardboard boxes ordered online and delivered.' },
+      { hint: 'Sliding', rationale: 'Side door opening quickly for rapid parcel access.' }
+    ],
+    easy: [
+      { hint: 'Boxes', rationale: 'Parcels dropped off on home doorsteps.' },
+      { hint: 'Drive', rationale: 'Navigating neighborhood streets on delivery route.' },
+      { hint: 'Street', rationale: 'Residential roads where courier stops.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Neighborhood courier van delivering cardboard packages.' }
+  },
+  {
+    word: 'Camper Van',
+    subtle: [
+      { hint: 'Pop-top', rationale: 'Elevating roof canopy providing standing headroom and upper bunk.' },
+      { hint: 'Kitchenette', rationale: 'Compact two-burner stove and mini sink counter inside.' },
+      { hint: 'Westfalia', rationale: 'Historic German converter of iconic Volkswagen campers.' }
+    ],
+    balanced: [
+      { hint: 'Camping', rationale: 'Road-trip lifestyle sleeping inside vehicle anywhere.' },
+      { hint: 'Bed', rationale: 'Rear bench folding flat into double mattress.' },
+      { hint: 'Roadtrip', rationale: 'Cross-country adventure exploring national parks.' }
+    ],
+    easy: [
+      { hint: 'Travel', rationale: 'Mobile lifestyle roaming highways.' },
+      { hint: 'Sleep', rationale: 'Resting overnight inside fitted living quarters.' },
+      { hint: 'Wheels', rationale: 'Home on tires parked beside mountain lakes.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Converted mobile living vehicle with bed and kitchenette.' }
+  },
+  {
+    word: 'Double Decker Bus',
+    subtle: [
+      { hint: 'Routemaster', rationale: 'Iconic vintage red London model with rear open platform.' },
+      { hint: 'Front-row', rationale: 'Coveted upper front window seats offering panoramic vista.' },
+      { hint: 'Staircase', rationale: 'Spiral steps connecting lower deck to upper seats.' }
+    ],
+    balanced: [
+      { hint: 'Upper', rationale: 'Second floor passenger tier looking down on traffic.' },
+      { hint: 'Two-tier', rationale: 'Stacked double passenger level layout.' },
+      { hint: 'London', rationale: 'British capital where red transit icons dominate streets.' }
+    ],
+    easy: [
+      { hint: 'Red', rationale: 'Classic bright scarlet paint of London transit fleet.' },
+      { hint: 'Passengers', rationale: 'Dozens of commuters seated across both tiers.' },
+      { hint: 'Transit', rationale: 'Public municipal urban street transportation.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Iconic red two-story passenger transit vehicle in London.' }
+  },
+  {
+    word: 'Subway Train',
+    subtle: [
+      { hint: 'Third-rail', rationale: 'High-voltage energized rail supplying current to train shoe.' },
+      { hint: 'Turnstile', rationale: 'Fare gate clicked through entering underground concourse.' },
+      { hint: 'Screech', rationale: 'Metal wheel friction rounding tight subterranean curves.' }
+    ],
+    balanced: [
+      { hint: 'Tunnel', rationale: 'Subterranean tube bored through bedrock under city.' },
+      { hint: 'Platform', rationale: 'Underground passenger station where doors slide open.' },
+      { hint: 'Metro', rationale: 'Urban rapid rail network moving millions beneath streets.' }
+    ],
+    easy: [
+      { hint: 'Underground', rationale: 'Subterranean transit network beneath city streets.' },
+      { hint: 'Station', rationale: 'Stops where commuters board and depart.' },
+      { hint: 'Commute', rationale: 'Daily rush hour passenger journey to work.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Underground rapid transit rail navigating tunnels beneath cities.' }
+  },
+  {
+    word: 'Rowboat',
+    subtle: [
+      { hint: 'Oarlock', rationale: 'U-shaped metal swivel peg pivoting wooden oar shaft.' },
+      { hint: 'Thwart', rationale: 'Wooden transverse bench seat bracing hull and rower.' },
+      { hint: 'Transom', rationale: 'Flat vertical stern board capping rear of boat.' }
+    ],
+    balanced: [
+      { hint: 'Oars', rationale: 'Pair of wooden paddles pulled back to propel boat.' },
+      { hint: 'Paddling', rationale: 'Manual arm stroke pulling water toward stern.' },
+      { hint: 'Lake', rationale: 'Calm freshwater pond or river setting.' }
+    ],
+    easy: [
+      { hint: 'Boat', rationale: 'Small wooden or aluminum water vessel.' },
+      { hint: 'Water', rationale: 'Surface rowed upon with steady strokes.' },
+      { hint: 'Fish', rationale: 'Anglers casting lines from small rowed craft.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Small wooden watercraft propelled manually by a pair of oars.' }
+  },
+  {
+    word: 'Kayak',
+    subtle: [
+      { hint: 'Spray-skirt', rationale: 'Neoprene waterproof seal worn around waist snapping onto rim.' },
+      { hint: 'Eskimo-roll', rationale: 'Technique righting capsized boat without exiting cockpit.' },
+      { hint: 'Inuit', rationale: 'Arctic indigenous origin constructing seal-skin hulls.' }
+    ],
+    balanced: [
+      { hint: 'Paddle', rationale: 'Double-bladed shaft dipped alternately on left and right.' },
+      { hint: 'Cockpit', rationale: 'Enclosed opening where paddler sits with legs inside.' },
+      { hint: 'Rapids', rationale: 'White-water river turbulence navigated with quick strokes.' }
+    ],
+    easy: [
+      { hint: 'Boat', rationale: 'Narrow enclosed low-slung personal watercraft.' },
+      { hint: 'River', rationale: 'Flowing freshwater stream navigated by paddler.' },
+      { hint: 'Water', rationale: 'Surface sliced through with slender pointed bow.' }
+    ],
+    editorial: { wordFamiliarity: 'high', hintFamiliarity: 'high', semanticStrength: 'strong', culturalAccessibility: 'global', multiImposterFairness: 'balanced', recommendation: 'strong_candidate', notes: 'Narrow personal watercraft propelled with a double-bladed paddle.' }
+  }
+];
+
+// Clean any special characters in hints
+vehicles.forEach(item => {
+  [...item.subtle, ...item.balanced, ...item.easy].forEach(h => {
+    h.hint = h.hint.replace(/[^a-zA-Z0-9]/g, '');
+  });
+});
+
+fs.writeFileSync('scripts/curated_vocabulary/part15_vehicles.json', JSON.stringify({ vehicles }, null, 2), 'utf8');
+console.log('Successfully wrote part15_vehicles.json (35 words)');

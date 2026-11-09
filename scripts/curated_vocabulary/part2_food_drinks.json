@@ -1,0 +1,2002 @@
+{
+  "food_drinks": [
+    {
+      "word": "Pizza",
+      "subtle": [
+        {
+          "hint": "Delivery",
+          "rationale": "Common service method bringing cardboard boxes to homes."
+        },
+        {
+          "hint": "Slice",
+          "rationale": "Triangular portion cut from the whole pie."
+        },
+        {
+          "hint": "Cardboard",
+          "rationale": "Material of the iconic square takeaway box."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Crust",
+          "rationale": "Dough perimeter baked crispy or stuffed."
+        },
+        {
+          "hint": "Pepperoni",
+          "rationale": "Spiced cured sausage rounds used as standard topping."
+        },
+        {
+          "hint": "Mozzarella",
+          "rationale": "Stretchy white cheese melted over tomato base."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Oven",
+          "rationale": "Wood-fired or gas appliance baking the pie."
+        },
+        {
+          "hint": "Topping",
+          "rationale": "Assortment of meats and vegetables scattered on top."
+        },
+        {
+          "hint": "Italian",
+          "rationale": "Traditional culinary country of origin."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Globally iconic dish with universally recognizable associations."
+      }
+    },
+    {
+      "word": "Sushi",
+      "subtle": [
+        {
+          "hint": "Chopsticks",
+          "rationale": "Traditional wooden utensils used to pick up pieces."
+        },
+        {
+          "hint": "Rolls",
+          "rationale": "Cylindrical maki presentations sliced into rounds."
+        },
+        {
+          "hint": "Ginger",
+          "rationale": "Pickled palate cleanser served alongside."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Seaweed",
+          "rationale": "Crisp dried nori sheet wrapped around rice."
+        },
+        {
+          "hint": "Rice",
+          "rationale": "Vinegared grain serving as foundation."
+        },
+        {
+          "hint": "Wasabi",
+          "rationale": "Pungent green horseradish paste served with soy sauce."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Salmon",
+          "rationale": "Popular raw orange fish topping."
+        },
+        {
+          "hint": "Raw",
+          "rationale": "State of fresh fish served on rice."
+        },
+        {
+          "hint": "Japanese",
+          "rationale": "East Asian cultural culinary heritage."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic Japanese delicacy with distinct visual elements."
+      }
+    },
+    {
+      "word": "Croissant",
+      "subtle": [
+        {
+          "hint": "Breakfast",
+          "rationale": "Morning meal setting where it is staple fare."
+        },
+        {
+          "hint": "Morning",
+          "rationale": "Time of day fresh batches come out of ovens."
+        },
+        {
+          "hint": "Layers",
+          "rationale": "Multiple laminated sheets of dough."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Butter",
+          "rationale": "Key fat folded repeatedly into dough."
+        },
+        {
+          "hint": "Flaky",
+          "rationale": "Delicate texture of exterior pastry sheets."
+        },
+        {
+          "hint": "Crescent",
+          "rationale": "Curved horn shape defining its form."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Bakery",
+          "rationale": "Shop where artisan breads and pastries are made."
+        },
+        {
+          "hint": "Pastry",
+          "rationale": "General culinary category of baked dough treat."
+        },
+        {
+          "hint": "French",
+          "rationale": "Culture famously identified with Parisian breakfast."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Buttery French pastry with clear textural and visual clues."
+      }
+    },
+    {
+      "word": "Burger",
+      "subtle": [
+        {
+          "hint": "Fastfood",
+          "rationale": "Casual restaurant sector where it dominates."
+        },
+        {
+          "hint": "Grill",
+          "rationale": "Cooking surface searing ground meat."
+        },
+        {
+          "hint": "Sesame",
+          "rationale": "Tiny seeds sprinkled across top bread."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Patty",
+          "rationale": "Formed disc of ground beef cooked hot."
+        },
+        {
+          "hint": "Lettuce",
+          "rationale": "Crisp green leaf placed inside layers."
+        },
+        {
+          "hint": "Pickle",
+          "rationale": "Brined sliced cucumber adding tang."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Bun",
+          "rationale": "Round split roll holding fillings."
+        },
+        {
+          "hint": "Beef",
+          "rationale": "Traditional meat chosen for patty."
+        },
+        {
+          "hint": "Ketchup",
+          "rationale": "Classic red tomato sauce condiment."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Universal sandwich staple with unmistakable ingredients."
+      }
+    },
+    {
+      "word": "Taco",
+      "subtle": [
+        {
+          "hint": "Street",
+          "rationale": "Informal food cart venue serving freshly made portions."
+        },
+        {
+          "hint": "Lime",
+          "rationale": "Citrus wedge squeezed over top."
+        },
+        {
+          "hint": "Tuesday",
+          "rationale": "Popular cultural weekday designated for dining."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Shell",
+          "rationale": "Hard folded corn casing or soft wrapper."
+        },
+        {
+          "hint": "Salsa",
+          "rationale": "Spiced tomato condiment ladled over filling."
+        },
+        {
+          "hint": "Cilantro",
+          "rationale": "Fresh aromatic herb garnish."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Tortilla",
+          "rationale": "Flat corn or flour round folded around meat."
+        },
+        {
+          "hint": "Mexican",
+          "rationale": "Country of origin for this famous dish."
+        },
+        {
+          "hint": "Filling",
+          "rationale": "Seasoned meat and cheese inside."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Folded handheld meal with vibrant spices and accompaniments."
+      }
+    },
+    {
+      "word": "Coffee",
+      "subtle": [
+        {
+          "hint": "Morning",
+          "rationale": "First beverage consumed to start day."
+        },
+        {
+          "hint": "Roasted",
+          "rationale": "Heat treatment turning raw green beans brown."
+        },
+        {
+          "hint": "Energy",
+          "rationale": "Stimulating physical boost after drinking."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Beans",
+          "rationale": "Harvested seeds ground before brewing."
+        },
+        {
+          "hint": "Caffeine",
+          "rationale": "Natural active stimulant compound."
+        },
+        {
+          "hint": "Mug",
+          "rationale": "Ceramic handle vessel holding hot liquid."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Brew",
+          "rationale": "Extraction process mixing hot water and grounds."
+        },
+        {
+          "hint": "Cup",
+          "rationale": "Common serving container."
+        },
+        {
+          "hint": "Drink",
+          "rationale": "General beverage category."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Ubiquitous brewed morning beverage."
+      }
+    },
+    {
+      "word": "Ramen",
+      "subtle": [
+        {
+          "hint": "Steam",
+          "rationale": "Warm vapor rising from deep hot bowl."
+        },
+        {
+          "hint": "College",
+          "rationale": "Student dormitory environment relying on quick noodles."
+        },
+        {
+          "hint": "Slurp",
+          "rationale": "Audible traditional technique for eating hot noodles."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Broth",
+          "rationale": "Savory pork or chicken stock base."
+        },
+        {
+          "hint": "Chopsticks",
+          "rationale": "Utensils used to lift long strands."
+        },
+        {
+          "hint": "Noodles",
+          "rationale": "Wheat strands swimming in soup."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Bowl",
+          "rationale": "Deep ceramic dish holding soup and toppings."
+        },
+        {
+          "hint": "Soup",
+          "rationale": "Liquid culinary category."
+        },
+        {
+          "hint": "Japanese",
+          "rationale": "Country famous for authentic noodle shops."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Hearty Japanese soup with curly noodles and broth."
+      }
+    },
+    {
+      "word": "Ice Cream",
+      "subtle": [
+        {
+          "hint": "Summer",
+          "rationale": "Warm season when cold desserts peak in popularity."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Primary sugar flavor profile."
+        },
+        {
+          "hint": "Scoop",
+          "rationale": "Hemispherical tool shaping servings."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cone",
+          "rationale": "Crisp wafer holder holding scoops."
+        },
+        {
+          "hint": "Vanilla",
+          "rationale": "Most popular classic base flavor."
+        },
+        {
+          "hint": "Sundae",
+          "rationale": "Elaborate dish topped with syrup and cherries."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Freeze",
+          "rationale": "Subzero temperature keeping dessert solid."
+        },
+        {
+          "hint": "Melt",
+          "rationale": "Transformation into liquid when warm."
+        },
+        {
+          "hint": "Dessert",
+          "rationale": "Post-dinner sweet treat category."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Frozen dairy treat enjoyed globally in cones and cups."
+      }
+    },
+    {
+      "word": "Waffles",
+      "subtle": [
+        {
+          "hint": "Breakfast",
+          "rationale": "Weekend morning brunch staple."
+        },
+        {
+          "hint": "Grid",
+          "rationale": "Distinct geometric pocket pattern."
+        },
+        {
+          "hint": "Iron",
+          "rationale": "Heated hinged appliance creating indented squares."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Batter",
+          "rationale": "Pourable flour mixture cooked between plates."
+        },
+        {
+          "hint": "Syrup",
+          "rationale": "Sweet maple liquid pooling inside pockets."
+        },
+        {
+          "hint": "Crisp",
+          "rationale": "Golden brown crunchy exterior texture."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Honey",
+          "rationale": "Sweet golden topping alternative."
+        },
+        {
+          "hint": "Brunch",
+          "rationale": "Late morning weekend social meal."
+        },
+        {
+          "hint": "Plate",
+          "rationale": "Dish on which warm stack is served."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Gridded batter cake with syrup pockets."
+      }
+    },
+    {
+      "word": "Popcorn",
+      "subtle": [
+        {
+          "hint": "Kernels",
+          "rationale": "Hard dry corn seeds waiting to expand."
+        },
+        {
+          "hint": "Movie",
+          "rationale": "Entertainment venue inextricably linked to this snack."
+        },
+        {
+          "hint": "Cinema",
+          "rationale": "Theater lobby filled with aromatic butter scent."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Butter",
+          "rationale": "Melted golden sauce poured over white puffs."
+        },
+        {
+          "hint": "Microwave",
+          "rationale": "Appliance popping bagged kernels in minutes."
+        },
+        {
+          "hint": "Salty",
+          "rationale": "Essential seasoning sprinkled over fluffy pieces."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Snack",
+          "rationale": "Light finger food enjoyed between meals."
+        },
+        {
+          "hint": "Popped",
+          "rationale": "Explosive expansion under high heat."
+        },
+        {
+          "hint": "Bucket",
+          "rationale": "Large paper cylinder sold at concession stands."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Cinema snack bursting from hard kernels."
+      }
+    },
+    {
+      "word": "Donut",
+      "subtle": [
+        {
+          "hint": "Coffee",
+          "rationale": "Classic beverage pairing in morning routine."
+        },
+        {
+          "hint": "Round",
+          "rationale": "Circular outline of the pastry."
+        },
+        {
+          "hint": "Glaze",
+          "rationale": "Clear shiny sugar coating dipped over surface."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Sprinkles",
+          "rationale": "Colorful sugar specks decorating icing."
+        },
+        {
+          "hint": "Hole",
+          "rationale": "Empty central opening characteristic of ring variety."
+        },
+        {
+          "hint": "Bakery",
+          "rationale": "Store frying and displaying rows of pastries."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Fried",
+          "rationale": "Cooking method submerging dough in hot oil."
+        },
+        {
+          "hint": "Dough",
+          "rationale": "Yeast or cake flour foundation."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Sugary confection taste."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Fried ring pastry with hole in center."
+      }
+    },
+    {
+      "word": "Cheesecake",
+      "subtle": [
+        {
+          "hint": "Rich",
+          "rationale": "Dense decadent mouthfeel of dairy filling."
+        },
+        {
+          "hint": "Slice",
+          "rationale": "Wedge-shaped portion cut from springform pan."
+        },
+        {
+          "hint": "Graham",
+          "rationale": "Sweet crushed cracker base crust."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Creamy",
+          "rationale": "Smooth velvety dairy texture."
+        },
+        {
+          "hint": "Crust",
+          "rationale": "Buttery cookie crumb foundation."
+        },
+        {
+          "hint": "Berries",
+          "rationale": "Strawberry or raspberry compote topping."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dairy",
+          "rationale": "Rich cream and butter ingredients defining filling."
+        },
+        {
+          "hint": "Dessert",
+          "rationale": "Chilled sweet course served after dinner."
+        },
+        {
+          "hint": "Cake",
+          "rationale": "Round celebratory baked dish format."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Chilled or baked dairy dessert on biscuit base."
+      }
+    },
+    {
+      "word": "Lemonade",
+      "subtle": [
+        {
+          "hint": "Stand",
+          "rationale": "Neighborhood sidewalk table run by children."
+        },
+        {
+          "hint": "Refreshing",
+          "rationale": "Cool thirst-quenching sensation on hot days."
+        },
+        {
+          "hint": "Summer",
+          "rationale": "Warm weather season ideal for icy drinks."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Citrus",
+          "rationale": "Botanical fruit family providing tart juice."
+        },
+        {
+          "hint": "Pitcher",
+          "rationale": "Large glass pouring jug with ice cubes."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Sugar dissolved to balance natural acidity."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Sour",
+          "rationale": "Sharp puckering taste of fresh citrus."
+        },
+        {
+          "hint": "Yellow",
+          "rationale": "Vibrant color of the fruit and drink."
+        },
+        {
+          "hint": "Juice",
+          "rationale": "Liquid squeezed from fruit pulp."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Sweet and sour citrus drink on ice."
+      }
+    },
+    {
+      "word": "Chocolate",
+      "subtle": [
+        {
+          "hint": "Cocoa",
+          "rationale": "Powdered bean extract giving deep brown flavor."
+        },
+        {
+          "hint": "Wrapped",
+          "rationale": "Enclosed in foil or decorative paper packaging."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Pleasant confection taste enjoyed globally."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Bar",
+          "rationale": "Solid rectangular block scored into squares."
+        },
+        {
+          "hint": "Dark",
+          "rationale": "High-cacao variety with bitter complex undertones."
+        },
+        {
+          "hint": "Milk",
+          "rationale": "Dairy ingredient blended for smooth sweetness."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Candy",
+          "rationale": "General category of confection."
+        },
+        {
+          "hint": "Melt",
+          "rationale": "Softening at body temperature on the tongue."
+        },
+        {
+          "hint": "Dessert",
+          "rationale": "Indulgent sweet ending to a meal."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Beloved confectionery made from cacao."
+      }
+    },
+    {
+      "word": "Spaghetti",
+      "subtle": [
+        {
+          "hint": "Twirl",
+          "rationale": "Action of spinning long strands around tines."
+        },
+        {
+          "hint": "Fork",
+          "rationale": "Table utensil used to eat long pasta."
+        },
+        {
+          "hint": "Long",
+          "rationale": "Slender cylindrical shape of raw dried pasta."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Meatball",
+          "rationale": "Round seasoned meat companion served on top."
+        },
+        {
+          "hint": "Marinara",
+          "rationale": "Simmered red tomato and herb sauce."
+        },
+        {
+          "hint": "Tomato",
+          "rationale": "Base vegetable for traditional red sauce."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Pasta",
+          "rationale": "General Italian wheat noodle category."
+        },
+        {
+          "hint": "Noodles",
+          "rationale": "Long cooked dough strands."
+        },
+        {
+          "hint": "Italian",
+          "rationale": "Country renowned for pasta culture."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Classic Italian long pasta dish with tomato sauce."
+      }
+    },
+    {
+      "word": "Cappuccino",
+      "subtle": [
+        {
+          "hint": "Morning",
+          "rationale": "Traditional European breakfast coffee ritual."
+        },
+        {
+          "hint": "Barista",
+          "rationale": "Trained specialist pulling shots and steaming milk."
+        },
+        {
+          "hint": "Steam",
+          "rationale": "High-pressure wand frothing dairy into foam."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Foam",
+          "rationale": "Thick aerated milk layer resting on top."
+        },
+        {
+          "hint": "Espresso",
+          "rationale": "Concentrated dark coffee base shot."
+        },
+        {
+          "hint": "Cinnamon",
+          "rationale": "Aromatic spice dusted across froth."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Coffee",
+          "rationale": "Core hot caffeinated beverage."
+        },
+        {
+          "hint": "Cup",
+          "rationale": "Porcelain bowl-like cup served on saucer."
+        },
+        {
+          "hint": "Mug",
+          "rationale": "Vessel holding warm caffeinated brew."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Italian coffee drink featuring espresso and microfoam."
+      }
+    },
+    {
+      "word": "Guacamole",
+      "subtle": [
+        {
+          "hint": "Dip",
+          "rationale": "Shared appetizer condiment scooped with crisps."
+        },
+        {
+          "hint": "Green",
+          "rationale": "Characteristic vibrant color of mashed fruit."
+        },
+        {
+          "hint": "Bowl",
+          "rationale": "Stone molcajete or ceramic container for serving."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Avocado",
+          "rationale": "Creamy green fruit mashed as sole base."
+        },
+        {
+          "hint": "Lime",
+          "rationale": "Citrus juice providing acidity and preventing browning."
+        },
+        {
+          "hint": "Cilantro",
+          "rationale": "Fresh green herb chopped into mixture."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Chips",
+          "rationale": "Crispy fried tortilla triangles used for dipping."
+        },
+        {
+          "hint": "Salsa",
+          "rationale": "Companion Mexican red dip on festive tables."
+        },
+        {
+          "hint": "Mexican",
+          "rationale": "Traditional cuisine where recipe originated."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Mashed avocado dip seasoned with lime and salt."
+      }
+    },
+    {
+      "word": "Smoothie",
+      "subtle": [
+        {
+          "hint": "Blender",
+          "rationale": "Electric motor whirling blades to puree contents."
+        },
+        {
+          "hint": "Straw",
+          "rationale": "Wide bore tube used to sip thick cold beverage."
+        },
+        {
+          "hint": "Thick",
+          "rationale": "Dense viscous texture distinguishing it from juice."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Fruit",
+          "rationale": "Fresh or frozen produce pureed into drink."
+        },
+        {
+          "hint": "Yogurt",
+          "rationale": "Creamy probiotic dairy adding body."
+        },
+        {
+          "hint": "Berries",
+          "rationale": "Strawberries and blueberries coloring the puree."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Drink",
+          "rationale": "Cold healthy beverage."
+        },
+        {
+          "hint": "Cold",
+          "rationale": "Chilled iced temperature."
+        },
+        {
+          "hint": "Juice",
+          "rationale": "Liquid fruit base mixed with ice."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Pureed chilled fruit and yogurt beverage."
+      }
+    },
+    {
+      "word": "Bagel",
+      "subtle": [
+        {
+          "hint": "Breakfast",
+          "rationale": "Morning bakery bread paired with coffee."
+        },
+        {
+          "hint": "Round",
+          "rationale": "Circular shape of the boiled bread roll."
+        },
+        {
+          "hint": "Chewy",
+          "rationale": "Dense toothsome texture from boiling before baking."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Toasted",
+          "rationale": "Heated crispy inside with soft exterior."
+        },
+        {
+          "hint": "Hole",
+          "rationale": "Distinct center opening allowing even boiling."
+        },
+        {
+          "hint": "Salmon",
+          "rationale": "Smoked lox draped over cream cheese."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Cream",
+          "rationale": "Rich white cheese spread slathered inside."
+        },
+        {
+          "hint": "Bread",
+          "rationale": "General yeast dough category."
+        },
+        {
+          "hint": "Bakery",
+          "rationale": "Shop rolling and boiling batches daily."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Ring-shaped boiled and baked bread roll."
+      }
+    },
+    {
+      "word": "Pancakes",
+      "subtle": [
+        {
+          "hint": "Sunday",
+          "rationale": "Relaxed weekend morning tradition for families."
+        },
+        {
+          "hint": "Stack",
+          "rationale": "Tower of multiple golden rounds piled on plate."
+        },
+        {
+          "hint": "Griddle",
+          "rationale": "Flat hot plate surface cooking batter."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Batter",
+          "rationale": "Whisked flour, egg, and milk mixture."
+        },
+        {
+          "hint": "Syrup",
+          "rationale": "Amber maple drizzle dripping down sides."
+        },
+        {
+          "hint": "Butter",
+          "rationale": "Melting yellow pat placed on hot top cake."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Breakfast",
+          "rationale": "Primary morning meal category."
+        },
+        {
+          "hint": "Flat",
+          "rationale": "Thin circular shape formed on hot iron."
+        },
+        {
+          "hint": "Plate",
+          "rationale": "Dish holding breakfast serving."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Fluffy stacked griddle cakes with syrup."
+      }
+    },
+    {
+      "word": "Lasagna",
+      "subtle": [
+        {
+          "hint": "Oven",
+          "rationale": "Hot appliance baking assembled casserole dish."
+        },
+        {
+          "hint": "Tray",
+          "rationale": "Rectangular deep ceramic or metal baking pan."
+        },
+        {
+          "hint": "Layers",
+          "rationale": "Successive sheets of pasta, cheese, and sauce."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Ricotta",
+          "rationale": "Creamy white Italian cheese filling."
+        },
+        {
+          "hint": "Marinara",
+          "rationale": "Simmered red meat and tomato ragu sauce."
+        },
+        {
+          "hint": "Meat",
+          "rationale": "Ground beef or sausage layered between sheets."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Pasta",
+          "rationale": "Wide flat noodle ribbons."
+        },
+        {
+          "hint": "Cheese",
+          "rationale": "Melted golden mozzarella baked on top."
+        },
+        {
+          "hint": "Italian",
+          "rationale": "Famous cuisine where dish was perfected."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Baked pasta dish with layered meat, sauce, and cheese."
+      }
+    },
+    {
+      "word": "French Fries",
+      "subtle": [
+        {
+          "hint": "Fastfood",
+          "rationale": "Standard side order accompanying hamburgers."
+        },
+        {
+          "hint": "Salty",
+          "rationale": "Fine crystals tossed over hot cooked batons."
+        },
+        {
+          "hint": "Side",
+          "rationale": "Culinary role secondary to main entree."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Potato",
+          "rationale": "Starchy tuber peeled and sliced into strips."
+        },
+        {
+          "hint": "Crispy",
+          "rationale": "Golden crunchy exterior mouthfeel."
+        },
+        {
+          "hint": "Ketchup",
+          "rationale": "Red tomato dip commonly served alongside."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Golden",
+          "rationale": "Yellow-brown hue after hot oil frying."
+        },
+        {
+          "hint": "Fried",
+          "rationale": "Deep-oil cooking technique."
+        },
+        {
+          "hint": "Snack",
+          "rationale": "Finger food eaten with hands."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Deep-fried golden potato batons."
+      }
+    },
+    {
+      "word": "Brownie",
+      "subtle": [
+        {
+          "hint": "Square",
+          "rationale": "Classic geometric shape cut from baking pan."
+        },
+        {
+          "hint": "Fudge",
+          "rationale": "Dense chewy interior chocolate consistency."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Comforting temperature fresh from oven."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cocoa",
+          "rationale": "Powder providing deep chocolate richness."
+        },
+        {
+          "hint": "Walnuts",
+          "rationale": "Chopped nuts frequently folded into batter."
+        },
+        {
+          "hint": "Rich",
+          "rationale": "Decadent buttery chocolate flavor."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Chocolate",
+          "rationale": "Core flavor defining this baked treat."
+        },
+        {
+          "hint": "Baked",
+          "rationale": "Cooked in pan inside dry heat oven."
+        },
+        {
+          "hint": "Dessert",
+          "rationale": "Sweet course often served with vanilla ice cream."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Dense fudgy chocolate baked square."
+      }
+    },
+    {
+      "word": "Espresso",
+      "subtle": [
+        {
+          "hint": "Shot",
+          "rationale": "Small single concentrated serving glass."
+        },
+        {
+          "hint": "Energy",
+          "rationale": "Rapid caffeine rush following quick sip."
+        },
+        {
+          "hint": "Dark",
+          "rationale": "Deep rich brown liquid color."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Crema",
+          "rationale": "Velvety golden foam layer atop liquid."
+        },
+        {
+          "hint": "Roasted",
+          "rationale": "High-heat dark bean preparation."
+        },
+        {
+          "hint": "Barista",
+          "rationale": "Coffee artisan operating high-pressure pump."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Coffee",
+          "rationale": "Base brewed bean category."
+        },
+        {
+          "hint": "Strong",
+          "rationale": "Intense concentrated flavor punch."
+        },
+        {
+          "hint": "Small",
+          "rationale": "Tiny demitasse cup volume."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Concentrated high-pressure coffee shot with crema."
+      }
+    },
+    {
+      "word": "Hot Chocolate",
+      "subtle": [
+        {
+          "hint": "Winter",
+          "rationale": "Chilly season when hot comforting mugs are craved."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Soothing temperature warming cold hands."
+        },
+        {
+          "hint": "Mug",
+          "rationale": "Ceramic cup clutched by a fireside."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Marshmallow",
+          "rationale": "Puffy white confection floating on surface."
+        },
+        {
+          "hint": "Cocoa",
+          "rationale": "Roasted bean powder dissolved into milk."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Pleasant sugary profile loved by all ages."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Milk",
+          "rationale": "Warm dairy liquid base whisked with chocolate."
+        },
+        {
+          "hint": "Drink",
+          "rationale": "Hot liquid beverage category."
+        },
+        {
+          "hint": "Cream",
+          "rationale": "Whipped topping swirled on top."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Steaming cocoa beverage topped with marshmallows."
+      }
+    },
+    {
+      "word": "Burrito",
+      "subtle": [
+        {
+          "hint": "Foil",
+          "rationale": "Shiny silver wrapper keeping tightly rolled cylinder warm."
+        },
+        {
+          "hint": "Rolled",
+          "rationale": "Method of folding large flour disc around fillings."
+        },
+        {
+          "hint": "Heavy",
+          "rationale": "Dense substantial weight in the hand."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Beans",
+          "rationale": "Pinto or black legumes packed inside."
+        },
+        {
+          "hint": "Rice",
+          "rationale": "Seasoned grain filling bulk inside wrapper."
+        },
+        {
+          "hint": "Salsa",
+          "rationale": "Piquant tomato sauce ladled inside."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Tortilla",
+          "rationale": "Large round flour flatbread holding ingredients."
+        },
+        {
+          "hint": "Wrap",
+          "rationale": "Enclosed handheld meal format."
+        },
+        {
+          "hint": "Mexican",
+          "rationale": "Culinary culture inspiring the recipe."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Hearty rolled tortilla stuffed with beans, rice, and meat."
+      }
+    },
+    {
+      "word": "Dumplings",
+      "subtle": [
+        {
+          "hint": "Steam",
+          "rationale": "Hot water vapor cooking delicate parcels."
+        },
+        {
+          "hint": "Bamboo",
+          "rationale": "Woven steamer basket used for cooking."
+        },
+        {
+          "hint": "Folded",
+          "rationale": "Pleated dough edge sealing ingredients."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Dough",
+          "rationale": "Thin flour skin wrapped around filling."
+        },
+        {
+          "hint": "Dipping",
+          "rationale": "Action of dipping into soy sauce and vinegar."
+        },
+        {
+          "hint": "Pork",
+          "rationale": "Common seasoned minced meat filling."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Asian",
+          "rationale": "Culinary continent where dim sum thrives."
+        },
+        {
+          "hint": "Filling",
+          "rationale": "Minced meat and vegetables inside."
+        },
+        {
+          "hint": "Steamed",
+          "rationale": "Primary healthy cooking method."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Delicate dough pockets stuffed with savory fillings."
+      }
+    },
+    {
+      "word": "Steak",
+      "subtle": [
+        {
+          "hint": "Sizzle",
+          "rationale": "Sound of seasoned meat hitting searing cast iron."
+        },
+        {
+          "hint": "Grill",
+          "rationale": "High heat charcoal or gas grate cooking surface."
+        },
+        {
+          "hint": "Knife",
+          "rationale": "Serrated table blade cutting through dense fibers."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Rare",
+          "rationale": "Desired red warm center doneness level."
+        },
+        {
+          "hint": "Sirloin",
+          "rationale": "Popular cut of beef prized for tenderness."
+        },
+        {
+          "hint": "Pepper",
+          "rationale": "Coarse cracked black seasoning rubbed on exterior."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Meat",
+          "rationale": "Animal protein category."
+        },
+        {
+          "hint": "Beef",
+          "rationale": "Cattle origin of prime cuts."
+        },
+        {
+          "hint": "Dinner",
+          "rationale": "Evening upscale entree meal."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Seared premium beef cut cooked to temperature."
+      }
+    },
+    {
+      "word": "Apple Pie",
+      "subtle": [
+        {
+          "hint": "Autumn",
+          "rationale": "Fall orchard harvest season."
+        },
+        {
+          "hint": "Crust",
+          "rationale": "Buttery flaky pastry lattice on top."
+        },
+        {
+          "hint": "Cinnamon",
+          "rationale": "Warm aromatic spice dusted over sliced fruit."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Baked",
+          "rationale": "Cooked slowly in round tin in the oven."
+        },
+        {
+          "hint": "Slice",
+          "rationale": "Wedge served warm with vanilla ice cream."
+        },
+        {
+          "hint": "Golden",
+          "rationale": "Color of browned butter pastry."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Fruit",
+          "rationale": "Core produce filling sweet pastry."
+        },
+        {
+          "hint": "Dessert",
+          "rationale": "Classic post-dinner baked sweet course."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Sugary spiced filling flavor."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Traditional baked fruit pastry with spiced filling."
+      }
+    },
+    {
+      "word": "Cupcake",
+      "subtle": [
+        {
+          "hint": "Birthday",
+          "rationale": "Celebration party where treats are shared."
+        },
+        {
+          "hint": "Wrapper",
+          "rationale": "Fluted paper liner holding individual cake."
+        },
+        {
+          "hint": "Party",
+          "rationale": "Festive gathering with dessert buffet."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Frosting",
+          "rationale": "Swirled sweet buttercream icing on crown."
+        },
+        {
+          "hint": "Sprinkles",
+          "rationale": "Colorful sugar beads scattered over frosting."
+        },
+        {
+          "hint": "Vanilla",
+          "rationale": "Popular aromatic batter flavor."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Sweet",
+          "rationale": "Sugary confection taste."
+        },
+        {
+          "hint": "Miniature",
+          "rationale": "Small personal portion size."
+        },
+        {
+          "hint": "Bakery",
+          "rationale": "Bakeshop displaying trays of frosted treats."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Individual miniature frosted cake in paper liner."
+      }
+    },
+    {
+      "word": "Pretzel",
+      "subtle": [
+        {
+          "hint": "Knot",
+          "rationale": "Intertwined looped shape resembling folded arms."
+        },
+        {
+          "hint": "Salty",
+          "rationale": "Large coarse white crystals stuck to crust."
+        },
+        {
+          "hint": "Twisted",
+          "rationale": "Dough rope formed into iconic German symbol."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Mustard",
+          "rationale": "Tangy yellow dip paired with warm soft bread."
+        },
+        {
+          "hint": "Baked",
+          "rationale": "Cooked to dark glossy mahogany exterior."
+        },
+        {
+          "hint": "Brown",
+          "rationale": "Rich deep color achieved from lye or baking soda bath."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dough",
+          "rationale": "Yeast bread base formed into loops."
+        },
+        {
+          "hint": "Snack",
+          "rationale": "Handheld bite at stadiums and fairs."
+        },
+        {
+          "hint": "Beer",
+          "rationale": "Bavarian pub beverage traditionally served with it."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Twisted knotted bread snack with coarse salt."
+      }
+    },
+    {
+      "word": "Milkshake",
+      "subtle": [
+        {
+          "hint": "Diner",
+          "rationale": "Retro American restaurant counter serving chilled glasses."
+        },
+        {
+          "hint": "Straw",
+          "rationale": "Wide paper or plastic tube for sipping thick liquid."
+        },
+        {
+          "hint": "Tall",
+          "rationale": "Classic flared soda glass presentation."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Malt",
+          "rationale": "Grain powder added for vintage rich flavor."
+        },
+        {
+          "hint": "Whipped",
+          "rationale": "Fluffy white dairy peak topping glass."
+        },
+        {
+          "hint": "Vanilla",
+          "rationale": "Classic sweet dairy base flavor."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Cold",
+          "rationale": "Icy thick refreshing beverage temperature."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Sugar and dairy confection taste."
+        },
+        {
+          "hint": "Drink",
+          "rationale": "Beverage sipped with dessert."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Blended dairy beverage served with straw and whipped topping."
+      }
+    },
+    {
+      "word": "Nachos",
+      "subtle": [
+        {
+          "hint": "Cinema",
+          "rationale": "Stadium or theater snack tray with cheese well."
+        },
+        {
+          "hint": "Sharing",
+          "rationale": "Platter meant for multiple friends to grab from."
+        },
+        {
+          "hint": "Platter",
+          "rationale": "Large serving plate piled with chips."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Jalapeno",
+          "rationale": "Sliced green spicy peppers scattered over top."
+        },
+        {
+          "hint": "Salsa",
+          "rationale": "Chunky tomato dip spooned over chips."
+        },
+        {
+          "hint": "Melted",
+          "rationale": "Gooey warm cheese state draping crisps."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Chips",
+          "rationale": "Crisp triangular corn tortillas forming base."
+        },
+        {
+          "hint": "Cheese",
+          "rationale": "Warm orange sauce or cheddar blanket."
+        },
+        {
+          "hint": "Snack",
+          "rationale": "Informal finger food."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Crisp tortilla chips smothered in melted cheese and peppers."
+      }
+    },
+    {
+      "word": "Churro",
+      "subtle": [
+        {
+          "hint": "Carnival",
+          "rationale": "Street fair venue selling warm fried sweets."
+        },
+        {
+          "hint": "Long",
+          "rationale": "Elongated rod-like shape of pastry."
+        },
+        {
+          "hint": "Fluted",
+          "rationale": "Star-shaped ridges running length of dough."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Cinnamon",
+          "rationale": "Aromatic brown spice rolled over warm surface."
+        },
+        {
+          "hint": "Sugar",
+          "rationale": "Granulated sweetness coating exterior ridges."
+        },
+        {
+          "hint": "Fried",
+          "rationale": "Piped dough cooked in bubbling hot oil."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Dip",
+          "rationale": "Warm thick chocolate sauce cup served alongside."
+        },
+        {
+          "hint": "Dough",
+          "rationale": "Extruded choux batter base."
+        },
+        {
+          "hint": "Sweet",
+          "rationale": "Dessert treat flavor."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Crispy fried dough stick rolled in cinnamon and sugar."
+      }
+    },
+    {
+      "word": "Fondue",
+      "subtle": [
+        {
+          "hint": "Alpine",
+          "rationale": "Swiss mountain region where communal meal was born."
+        },
+        {
+          "hint": "Skewer",
+          "rationale": "Long metal fork spearing bread cubes."
+        },
+        {
+          "hint": "Dip",
+          "rationale": "Action of submerging morsel into hot communal cauldron."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Melted",
+          "rationale": "Liquid warm consistency of gruyere and emmental."
+        },
+        {
+          "hint": "Swiss",
+          "rationale": "Nationality behind traditional communal pot."
+        },
+        {
+          "hint": "Pot",
+          "rationale": "Cauldron resting over tabletop flame."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Cheese",
+          "rationale": "Primary rich savory ingredient bubbling in pot."
+        },
+        {
+          "hint": "Warm",
+          "rationale": "Constant temperature maintained by burner."
+        },
+        {
+          "hint": "Bread",
+          "rationale": "Crusty cubes pierced by forks."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Communal bubbling cheese pot for dipping crusty bread."
+      }
+    },
+    {
+      "word": "Falafel",
+      "subtle": [
+        {
+          "hint": "Pita",
+          "rationale": "Pocket flatbread stuffed with golden fried balls."
+        },
+        {
+          "hint": "Street",
+          "rationale": "Bustling food stall serving quick wraps."
+        },
+        {
+          "hint": "Tahini",
+          "rationale": "Sesame paste sauce drizzled over fried bites."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Chickpeas",
+          "rationale": "Ground legume base seasoned with garlic."
+        },
+        {
+          "hint": "Herb",
+          "rationale": "Fresh parsley and coriander turning interior green."
+        },
+        {
+          "hint": "Fried",
+          "rationale": "Crispy dark brown exterior from hot oil."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Ball",
+          "rationale": "Spherical or patty shape scooped before frying."
+        },
+        {
+          "hint": "Middle",
+          "rationale": "Middle Eastern cultural culinary roots."
+        },
+        {
+          "hint": "Vegetarian",
+          "rationale": "Plant-based protein meal popular worldwide."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Deep-fried seasoned chickpea spheres in pita."
+      }
+    },
+    {
+      "word": "Omelet",
+      "subtle": [
+        {
+          "hint": "Breakfast",
+          "rationale": "Morning hot kitchen meal cooked to order."
+        },
+        {
+          "hint": "Skillet",
+          "rationale": "Non-stick shallow pan flipped on stovetop."
+        },
+        {
+          "hint": "Folded",
+          "rationale": "Technique wrapping cooked egg over fillings."
+        }
+      ],
+      "balanced": [
+        {
+          "hint": "Whisk",
+          "rationale": "Fork or tool beating eggs with splash of milk."
+        },
+        {
+          "hint": "Mushrooms",
+          "rationale": "Sliced sauteed vegetable filling."
+        },
+        {
+          "hint": "Cheesy",
+          "rationale": "Melted cheese tucked inside fold."
+        }
+      ],
+      "easy": [
+        {
+          "hint": "Egg",
+          "rationale": "Primary poultry ingredient beaten and cooked."
+        },
+        {
+          "hint": "Pan",
+          "rationale": "Cookware heating the beaten mixture."
+        },
+        {
+          "hint": "Morning",
+          "rationale": "Time of day breakfast is served."
+        }
+      ],
+      "editorial": {
+        "wordFamiliarity": "high",
+        "hintFamiliarity": "high",
+        "semanticStrength": "strong",
+        "culturalAccessibility": "global",
+        "multiImposterFairness": "balanced",
+        "recommendation": "strong_candidate",
+        "notes": "Folded beaten egg dish stuffed with cheese and vegetables."
+      }
+    }
+  ]
+}
