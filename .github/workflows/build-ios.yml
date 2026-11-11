@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Dependencies
@@ -29,33 +29,37 @@ jobs:
       - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Resolve Swift Packages
-        run: |
-          xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj
-
-      - name: Build and Archive iOS App (Unsigned for Sideloadly)
+      - name: Build iOS App with Ad-Hoc Signature (for Sideloadly)
         run: |
           set -eo pipefail
-          mkdir -p build
-          xcodebuild archive \
+          echo "Compiling iOS App for real iPhone hardware..."
+          xcodebuild build \
             -project ios/App/App.xcodeproj \
             -scheme App \
             -configuration Release \
             -sdk iphoneos \
             -destination "generic/platform=iOS" \
-            -archivePath "$PWD/build/App.xcarchive" \
-            CODE_SIGN_IDENTITY="" \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=YES \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
 
       - name: Package into IPA
         run: |
           set -eo pipefail
+          APP_PATH=$(find build/Build/Products/Release-iphoneos -name "*.app" | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "Error: Could not find .app bundle. Listing build directory:"
+            find build -maxdepth 4
+            exit 1
+          fi
+          echo "Found compiled app at: $APP_PATH"
           mkdir -p Payload
-          cp -r "$PWD/build/App.xcarchive/Products/Applications/"*.app Payload/
+          cp -r "$APP_PATH" Payload/
           zip -r ChomuWho.ipa Payload
-          echo "Created ChomuWho.ipa successfully"
-          ls -la ChomuWho.ipa
+          echo "Successfully packaged ChomuWho.ipa"
+          ls -lh ChomuWho.ipa
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
