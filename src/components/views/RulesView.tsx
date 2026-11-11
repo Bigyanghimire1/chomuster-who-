@@ -8,7 +8,10 @@ export const RulesView: React.FC = () => {
   const { dispatch } = useGame();
 
   return (
-    <div className="max-w-md mx-auto px-4 py-5 space-y-5 pb-16 animate-fade-in">
+    <div
+      className="max-w-md mx-auto px-4 py-5 space-y-5 animate-fade-in"
+      style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom, 0px))' }}
+    >
       <div className="flex items-center justify-between">
         <button
           onClick={() => dispatch({ type: 'SET_PHASE', phase: 'HOME' })}
@@ -47,7 +50,7 @@ export const RulesView: React.FC = () => {
             <span className="text-[11px] text-chomu-muted">See the secret word and category.</span>
           </div>
           <div className="mt-1.5 flex items-center gap-2">
-            <Badge variant="coral" size="sm">Imposters</Badge>
+            <Badge variant="coral" size="sm">Chomas</Badge>
             <span className="text-[11px] text-chomu-muted">Do NOT know the word, but get a single-word hint.</span>
           </div>
         </Card>
@@ -64,10 +67,10 @@ export const RulesView: React.FC = () => {
             Once everyone has seen their secret, place the device on the table. Take turns around the circle saying ONE word or short phrase related to the secret word.
           </p>
           <p className="text-[11px] text-chomu-muted/80 mt-1.5">
-            <strong>Civilians:</strong> Give subtle clues so other civilians know you know, without giving the word away to the imposter.
+            <strong>Civilians:</strong> Give subtle clues so other civilians know you know, without giving the word away to the Chomu.
           </p>
           <p className="text-[11px] text-chomu-muted/80 mt-1">
-            <strong>Imposters:</strong> Blend in, pretend you know the word, and use your hint wisely!
+            <strong>Chomas:</strong> Blend in, pretend you know the word, and use your hint wisely!
           </p>
         </Card>
 
@@ -80,7 +83,7 @@ export const RulesView: React.FC = () => {
             <h3 className="text-sm font-black text-chomu-text">Discuss and Accuse</h3>
           </div>
           <p className="text-xs text-chomu-muted leading-relaxed">
-            Talk, debate, and call out suspicious clues. On the count of three, everyone points at who they think is the chomu (imposter)!
+            Talk, debate, and call out suspicious clues. On the count of three, everyone points at who they think is the Chomu!
           </p>
         </Card>
 
@@ -90,10 +93,10 @@ export const RulesView: React.FC = () => {
             <div className="w-6 h-6 rounded-lg bg-chomu-purple/15 text-chomu-purple flex items-center justify-center font-black text-xs">
               4
             </div>
-            <h3 className="text-sm font-black text-chomu-text">Reveal Imposters</h3>
+            <h3 className="text-sm font-black text-chomu-text">Reveal Chomas</h3>
           </div>
           <p className="text-xs text-chomu-muted leading-relaxed">
-            Tap <strong>REVEAL IMPOSTERS</strong> on the device to unveil who the real chomu was and what the secret word was!
+            Tap <strong>REVEAL CHOMAS</strong> on the device to unveil who the real Chomu was and what the secret word was!
           </p>
         </Card>
       </div>

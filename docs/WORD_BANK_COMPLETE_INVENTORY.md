@@ -2,7 +2,7 @@
 
 This document represents the complete, transparent, word-by-word inventory of the **Chomu Who?** word database across all **15 canonical categories**.
 
-Every single word has been audited, curated, and provided with **9 handcrafted single-word hints** (3 Subtle, 3 Balanced, 3 Easier) to guarantee that games with up to 3 imposters receive distinct, high-quality, non-repeating clues.
+Every single word has been audited, curated, and provided with **9 handcrafted single-word hints** (3 Subtle, 3 Balanced, 3 Easier) to guarantee that games with up to 3 Chomas (1 Chomu · 2 Chomas · 3 Chomas) receive distinct, high-quality, non-repeating clues.
 
 ---
 

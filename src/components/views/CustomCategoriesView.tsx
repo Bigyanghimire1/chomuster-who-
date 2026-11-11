@@ -43,7 +43,10 @@ export const CustomCategoriesView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-5 space-y-5 pb-16 animate-fade-in">
+    <div
+      className="max-w-md mx-auto px-4 py-5 space-y-5 animate-fade-in"
+      style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom, 0px))' }}
+    >
       <div className="flex items-center justify-between">
         <button
           onClick={() => dispatch({ type: 'SET_PHASE', phase: 'HOME' })}

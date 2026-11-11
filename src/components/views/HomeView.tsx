@@ -8,7 +8,7 @@ export const HomeView: React.FC = () => {
   const { dispatch } = useGame();
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] max-w-md mx-auto px-4 py-6 animate-fade-in">
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-6 animate-fade-in">
       {/* 1. Hero Vector Composition */}
       <div className="w-full flex flex-col items-center text-center mt-2">
         <HeroIllustration className="mb-5" />

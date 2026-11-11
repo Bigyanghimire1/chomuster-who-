@@ -14,7 +14,7 @@ export const RoundInProgressView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] max-w-md mx-auto px-4 py-6 select-none animate-fade-in text-center">
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-6 select-none animate-fade-in text-center">
       {/* 1. Header Banner */}
       <div className="w-full">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-surface border border-chomu-border text-xs font-bold text-chomu-purple mb-3">
@@ -40,7 +40,7 @@ export const RoundInProgressView: React.FC = () => {
         <Card className="bg-chomu-surface/60 border-chomu-border py-2 px-3 text-center mb-1">
           <span className="text-xs text-chomu-muted font-semibold">
             {state.players.length} players &bull; {state.settings.imposterCount}{' '}
-            {state.settings.imposterCount === 1 ? 'imposter' : 'imposters'} hidden
+            {state.settings.imposterCount === 1 ? 'Chomu' : 'Chomas'} hidden
           </span>
         </Card>
 
@@ -51,7 +51,7 @@ export const RoundInProgressView: React.FC = () => {
           leftIcon={<Eye className="w-5 h-5 fill-current" />}
           onClick={handleRevealImposters}
         >
-          REVEAL IMPOSTERS
+          REVEAL CHOMAS
         </Button>
 
         <p className="text-xs text-chomu-muted font-medium">

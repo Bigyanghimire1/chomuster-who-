@@ -333,7 +333,7 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
             {/* Hint Inputs */}
             <div className="space-y-3 bg-chomu-bg/60 border border-chomu-border/60 rounded-2xl p-4">
               <span className="text-xs font-black text-chomu-text uppercase tracking-wider block">
-                Single-Word Imposter Hints (3 distinct per tier)
+                Single-Word Chomu Hints (3 distinct per tier)
               </span>
 
               <div>

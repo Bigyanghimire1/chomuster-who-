@@ -19,6 +19,7 @@ import { getMaxImposters } from '../../services/roleAssignment';
 import { AVATAR_LIST } from '../../services/storageService';
 import { HintDifficulty } from '../../data/wordDatabase';
 import { Player } from '../../types/game';
+import { audioService } from '../../services/audioService';
 
 export const SetupView: React.FC = () => {
   const { state, dispatch, allCategories } = useGame();
@@ -53,6 +54,7 @@ export const SetupView: React.FC = () => {
 
     const updated = [...players, newP];
     dispatch({ type: 'UPDATE_PLAYERS', players: updated });
+    audioService.playPlayerAdded();
     setNewPlayerName('');
     setNameError(null);
   };
@@ -64,6 +66,7 @@ export const SetupView: React.FC = () => {
     }
     const updated = players.filter(p => p.id !== id);
     dispatch({ type: 'UPDATE_PLAYERS', players: updated });
+    audioService.playPlayerRemoved();
 
     const newMax = getMaxImposters(updated.length);
     if (settings.imposterCount > newMax) {
@@ -93,6 +96,7 @@ export const SetupView: React.FC = () => {
   };
 
   const handleToggleCategory = (id: string) => {
+    audioService.playCategorySelect();
     const exists = settings.selectedCategoryIds.includes(id);
     let next: string[];
     if (exists) {
@@ -121,11 +125,15 @@ export const SetupView: React.FC = () => {
 
   const handleStartGame = () => {
     if (!canStart) return;
+    audioService.playGameStart();
     dispatch({ type: 'START_GAME', allCategories });
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-5 space-y-5 pb-32 animate-fade-in">
+    <div
+      className="max-w-md mx-auto px-4 py-5 space-y-5 animate-fade-in"
+      style={{ paddingBottom: 'calc(7.5rem + env(safe-area-inset-bottom, 0px))' }}
+    >
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-black text-chomu-text tracking-tight">Game Setup</h2>
@@ -217,13 +225,13 @@ export const SetupView: React.FC = () => {
         </div>
       </Card>
 
-      {/* 2. Imposter Count */}
+      {/* 2. Chomu Count */}
       <Card className="bg-chomu-surface border-chomu-border p-4">
         <div className="flex items-center justify-between mb-2.5">
           <div className="flex items-center gap-1.5">
             <Flame className="w-4 h-4 text-chomu-coral" />
             <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              Imposters
+              Chomu Count
             </span>
           </div>
           <span className="text-[11px] text-chomu-muted font-medium">
@@ -253,7 +261,7 @@ export const SetupView: React.FC = () => {
               >
                 <span className="text-base font-black leading-none mb-0.5">{count}</span>
                 <span className="text-[10px] font-medium">
-                  {count === 1 ? '1 Imposter' : `${count} Imposters`}
+                  {count === 1 ? '1 Chomu' : `${count} Chomas`}
                 </span>
               </button>
             );
@@ -261,13 +269,13 @@ export const SetupView: React.FC = () => {
         </div>
       </Card>
 
-      {/* 3. Imposter Hint Difficulty (Default: Subtle) */}
+      {/* 3. Chomu Hint Difficulty (Default: Subtle) */}
       <Card className="bg-chomu-surface border-chomu-border p-4">
         <div className="flex items-center justify-between mb-2.5">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-chomu-purple" />
             <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              Imposter Hint System
+              Chomu Hint System
             </span>
           </div>
         </div>
@@ -370,7 +378,10 @@ export const SetupView: React.FC = () => {
       </Card>
 
       {/* 5. Sticky Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-chomu-bg/95 backdrop-blur-md border-t border-chomu-border z-30">
+      <div
+        className="fixed bottom-0 left-0 right-0 px-4 pt-3.5 bg-chomu-bg/95 backdrop-blur-md border-t border-chomu-border z-30"
+        style={{ paddingBottom: 'calc(0.875rem + env(safe-area-inset-bottom, 0px))' }}
+      >
         <div className="max-w-md mx-auto">
           <Button
             variant="primary"

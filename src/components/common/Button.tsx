@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!disabled) {
-      audioService.playVoteTap();
+      audioService.playButtonTap();
       if (onClick) onClick(e);
     }
   };

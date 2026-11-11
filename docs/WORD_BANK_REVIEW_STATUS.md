@@ -10,7 +10,7 @@
 | **Generic Placeholders** | 0 Allowed | **0** | ✅ Cleaned |
 | **Strict Single-Word Format** | 100% (`^[\p{L}\p{N}]+$`) | **100%** | ✅ Compliant |
 | **Direct Answer Leakage** | 0 Allowed | **0** | ✅ Zero Leaks |
-| **Multi-Imposter Distinctness** | 3 Unique Hints per Tier | **100%** | ✅ Guaranteed |
+| **Multi-Chomu Distinctness** | 3 Unique Hints per Tier | **100%** | ✅ Guaranteed |
 | **Semantic Rationales** | 100% Documented | **4,932 / 4,932** | ✅ Complete |
 
 ---

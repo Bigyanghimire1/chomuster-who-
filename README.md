@@ -5,17 +5,17 @@
 
 **CHOMU WHO?** is an exceptionally polished, offline-first, pass-and-play social deduction party game built for friends sitting together around a single phone or tablet.
 
-It features original branding, a vibrant dark-gaming palette, 15 complete categories (500+ curated words), a strict single-word imposter hint engine, procedural Web Audio effects, and a streamlined 5-phase game lifecycle designed specifically for live in-person party play.
+It features original branding, a vibrant dark-gaming palette, 15 complete categories (500+ curated words), a strict single-word Chomu hint engine, procedural Web Audio effects, and a streamlined 5-phase game lifecycle designed specifically for live in-person party play.
 
 ---
 
 ## 🌟 Key Highlights
 
-- **100% Free & Permanently Unlocked**: Every category, setting, imposter count (1, 2, or 3), and hint tier is completely unlocked out of the box with zero subscriptions, paywalls, or advertisements.
+- **100% Free & Permanently Unlocked**: Every category, setting, Chomu count (1, 2, or 3), and hint tier is completely unlocked out of the box with zero subscriptions, paywalls, or advertisements.
 - **Radically Streamlined 5-Phase Party Lifecycle**:
   $$\text{HOME} \longrightarrow \text{SETUP} \longrightarrow \text{ROLE DISTRIBUTION (PASS DEVICE)} \longrightarrow \text{ROUND IN PROGRESS} \longrightarrow \text{FINAL REVEAL}$$
   In-app ballots, voting timers, and clue logs have been eliminated so players engage face-to-face in person. The phone acts strictly as the secret distributor and the final unmasking engine.
-- **Strict Single-Word Imposter Hints**: Every imposter receives exactly **one lexical word** (matching `/^[\p{L}\p{N}]+$/u`), never sentences or phrases. Hints are tiered by difficulty (`Subtle` [default], `Balanced`, `Easier`, or `No Hint`).
+- **Strict Single-Word Chomu Hints**: Every Chomu receives exactly **one lexical word** (matching `/^[\p{L}\p{N}]+$/u`), never sentences or phrases. Hints are tiered by difficulty (`Subtle` [default], `Balanced`, `Easier`, or `No Hint`).
 - **Cryptographic Unbiased Role Engine**: Powered by rejection-sampled Fisher–Yates shuffling using `crypto.getRandomValues()` to guarantee zero first-player bias and equal probability across all player positions.
 - **Pointer-Safe Hold-to-Reveal**: Cards require holding down (280ms threshold) and immediately vanish on finger release, window blur, or tab switch.
 - **Word Bank Studio & Editorial Review Workspace**: Built-in content management suite to inspect, search, filter, and approve 548 secret words across 15+ categories. Includes side-by-side comparison of current vs. AI-proposed hints, semantic rationales, quality assessments, bulk entry, and CSV/JSON export/import.
@@ -36,7 +36,7 @@ It features original branding, a vibrant dark-gaming palette, 15 complete catego
 | `border` | `#363D5B` | Structural dividers & borders |
 | `purple` | `#9275FF` | Primary button fill & brand accent |
 | `lime` | `#C5EF75` | Civilian status & positive accents |
-| `coral` | `#FF6987` | Imposter badge & danger alerts |
+| `coral` | `#FF6987` | Chomu badge & danger alerts |
 | `cyan` | `#68D9E7` | Highlights & lens reflections |
 | `yellow` | `#FFC86D` | Accent badges & secondary tags |
 | `text` | `#F6F5FC` | High-contrast primary text |
@@ -100,22 +100,22 @@ npm test
 
 ## 🎮 How to Play
 
-1. **Setup**: Select 3–15 players, pick 1–3 imposters, choose your categories, and select hint difficulty (`Subtle` is recommended).
+1. **Setup**: Select 3–15 players, pick 1–3 Chomas (1 Chomu · 2 Chomas · 3 Chomas), choose your categories, and select hint difficulty (`Subtle` is recommended).
 2. **Pass Device (Private Role Reveal)**: Pass the phone around secretly. Each player holds down the card to view their role:
    - **Civilians**: See the secret word and category.
-   - **Imposters**: Do not see the word, but receive a single-word hint.
+   - **Chomas**: Do not see the word, but receive a single-word hint.
    - Releasing the card immediately hides the secret and displays `SEEN ✓`.
    - The final player taps `START ROUND →` once everyone has seen their role.
 3. **Round in Progress (In-Person Play)**:
    - Place the device face-up on the table.
    - Players go around the circle giving **one word** or short phrase clue related to the secret word.
    - Civilians give subtle clues to identify each other without revealing the word.
-   - Imposters bluff and pretend they know the word.
+   - Chomas bluff and pretend they know the word.
    - Everyone discusses and debates who is suspicious.
-   - On the count of three, everyone points at their suspected chomu!
+   - On the count of three, everyone points at their suspected Chomu!
 4. **Final Reveal**:
-   - Tap **REVEAL IMPOSTERS** on the device.
-   - The app unveils who the real imposter(s) were and what the secret word was!
+   - Tap **REVEAL CHOMAS** on the device.
+   - The app unveils who the real Chomu was (or who the Chomas were) and what the secret word was!
    - Tap **PLAY AGAIN** to immediately deal a new round with the same roster.
 
 ---

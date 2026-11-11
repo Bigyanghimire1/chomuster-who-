@@ -21,7 +21,7 @@ export const FinalRevealView: React.FC = () => {
   const civilianPlayers = state.players.filter(p => !roles[p.id]?.isImposter);
 
   useEffect(() => {
-    audioService.playVictoryFanfare();
+    audioService.playImposterReveal();
     try {
       confetti({
         particleCount: 80,
@@ -43,12 +43,12 @@ export const FinalRevealView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[calc(100vh-4rem)] max-w-md mx-auto px-4 py-5 select-none animate-fade-in text-center space-y-4">
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-5 select-none animate-fade-in text-center space-y-4">
       {/* 1. Header */}
       <div className="w-full">
         <FinalRevealArtwork className="mx-auto mb-2" />
         <h1 className="text-2xl sm:text-3xl font-black text-chomu-coral tracking-tight uppercase mb-1">
-          {imposterPlayers.length === 1 ? 'THE IMPOSTER WAS...' : 'THE IMPOSTERS WERE...'}
+          {imposterPlayers.length === 1 ? 'THE CHOMU WAS...' : 'THE CHOMAS WERE...'}
         </h1>
         <p className="text-xs text-chomu-muted font-medium">
           The secrets are out. Did your group spot them?
@@ -82,7 +82,7 @@ export const FinalRevealView: React.FC = () => {
                 </div>
               </div>
               <Badge variant="coral" size="sm">
-                IMPOSTER
+                CHOMU
               </Badge>
             </Card>
           );
