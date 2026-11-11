@@ -21,6 +21,16 @@
     user-select: text;
     -webkit-user-select: text;
   }
+
+  /* Prevent iOS Safari automatic viewport zoom on text inputs while preserving user accessibility */
+  @media screen and (max-width: 768px) {
+    input,
+    textarea,
+    select,
+    [contenteditable="true"] {
+      font-size: 16px !important;
+    }
+  }
 }
 
 @layer utilities {

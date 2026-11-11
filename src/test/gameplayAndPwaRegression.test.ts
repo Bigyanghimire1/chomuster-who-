@@ -158,4 +158,157 @@ describe('PWA & Startup Performance Budget Suite', () => {
     expect(content.display).toBe('standalone');
     expect(content.theme_color).toBe('#101225');
   });
+
+  it('validates all required PNG icon assets exist with correct dimensions', () => {
+    const appleTouchPath = path.resolve(__dirname, '../../public/apple-touch-icon.png');
+    const pwa192Path = path.resolve(__dirname, '../../public/pwa-192x192.png');
+    const pwa512Path = path.resolve(__dirname, '../../public/pwa-512x512.png');
+    const pwaMaskablePath = path.resolve(__dirname, '../../public/pwa-maskable-512x512.png');
+    const iosAppIconPath = path.resolve(
+      __dirname,
+      '../../ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png'
+    );
+
+    expect(fs.existsSync(appleTouchPath)).toBe(true);
+    expect(fs.existsSync(pwa192Path)).toBe(true);
+    expect(fs.existsSync(pwa512Path)).toBe(true);
+    expect(fs.existsSync(pwaMaskablePath)).toBe(true);
+    expect(fs.existsSync(iosAppIconPath)).toBe(true);
+
+    // PNG headers contain width and height at bytes 16-24
+    const getPngDimensions = (filePath: string) => {
+      const buffer = fs.readFileSync(filePath);
+      const width = buffer.readUInt32BE(16);
+      const height = buffer.readUInt32BE(20);
+      return { width, height };
+    };
+
+    expect(getPngDimensions(appleTouchPath)).toEqual({ width: 180, height: 180 });
+    expect(getPngDimensions(pwa192Path)).toEqual({ width: 192, height: 192 });
+    expect(getPngDimensions(pwa512Path)).toEqual({ width: 512, height: 512 });
+    expect(getPngDimensions(pwaMaskablePath)).toEqual({ width: 512, height: 512 });
+    expect(getPngDimensions(iosAppIconPath)).toEqual({ width: 1024, height: 1024 });
+  });
+
+  it('verifies index.html links to apple-touch-icon.png with sizes 180x180', () => {
+    const indexPath = path.resolve(__dirname, '../../index.html');
+    const html = fs.readFileSync(indexPath, 'utf-8');
+    expect(html).toContain('apple-touch-icon');
+    expect(html).toContain('/apple-touch-icon.png');
+    expect(html).toContain('sizes="180x180"');
+  });
+
+  it('verifies index.css enforces minimum 16px font-size on mobile inputs to eliminate iOS auto-zoom', () => {
+    const cssPath = path.resolve(__dirname, '../../src/index.css');
+    const css = fs.readFileSync(cssPath, 'utf-8');
+    expect(css).toContain('font-size: 16px !important;');
+    expect(css).toContain('max-width: 768px');
+  });
+});
+
+describe('Player Management & Strict 3-Player Minimum Suite', () => {
+  it('defaults to an empty roster on fresh initialization without predefined demo names', () => {
+    const freshState = initializeState([], DEFAULT_SETTINGS);
+    expect(freshState.players).toEqual([]);
+    expect(freshState.players.length).toBe(0);
+  });
+
+  it('strictly rejects starting a game when player count is below 3', () => {
+    const baseSettings = { ...DEFAULT_SETTINGS, selectedCategoryIds: ['everyday_objects'] };
+
+    // 0 players
+    const state0 = initializeState([], baseSettings);
+    const result0 = gameReducer(state0, { type: 'START_GAME', allCategories: DEFAULT_CATEGORIES });
+    expect(result0.phase).toBe('HOME');
+    expect(result0.secret).toBeNull();
+
+    // 1 player
+    const state1 = initializeState([{ id: 'p1', name: 'Maya', score: 0, avatar: 'sleuth' }], baseSettings);
+    const result1 = gameReducer(state1, { type: 'START_GAME', allCategories: DEFAULT_CATEGORIES });
+    expect(result1.phase).toBe('HOME');
+    expect(result1.secret).toBeNull();
+
+    // 2 players
+    const state2 = initializeState(
+      [
+        { id: 'p1', name: 'Maya', score: 0, avatar: 'sleuth' },
+        { id: 'p2', name: 'Liam', score: 0, avatar: 'shadow' },
+      ],
+      baseSettings
+    );
+    const result2 = gameReducer(state2, { type: 'START_GAME', allCategories: DEFAULT_CATEGORIES });
+    expect(result2.phase).toBe('HOME');
+    expect(result2.secret).toBeNull();
+
+    // 3 players — succeeds!
+    const state3 = initializeState(
+      [
+        { id: 'p1', name: 'Maya', score: 0, avatar: 'sleuth' },
+        { id: 'p2', name: 'Liam', score: 0, avatar: 'shadow' },
+        { id: 'p3', name: 'Noah', score: 0, avatar: 'agent' },
+      ],
+      baseSettings
+    );
+    const result3 = gameReducer(state3, { type: 'START_GAME', allCategories: DEFAULT_CATEGORIES });
+    expect(result3.phase).toBe('PASS_DEVICE');
+    expect(result3.secret).not.toBeNull();
+  });
+
+  it('allows players to be updated, renamed, and individually removed down to zero', () => {
+    let state = initializeState([], DEFAULT_SETTINGS);
+
+    // 1. Add player 1
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [{ id: 'p1', name: 'Maya', score: 0, avatar: 'sleuth' }],
+    });
+    expect(state.players.length).toBe(1);
+
+    // 2. Add player 2 & 3
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [
+        { id: 'p1', name: 'Maya', score: 0, avatar: 'sleuth' },
+        { id: 'p2', name: 'Liam', score: 0, avatar: 'shadow' },
+        { id: 'p3', name: 'Noah', score: 0, avatar: 'agent' },
+      ],
+    });
+    expect(state.players.length).toBe(3);
+
+    // 3. Rename player (preserve stable ID)
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [
+        { id: 'p1', name: 'Maya Angelou', score: 0, avatar: 'sleuth' },
+        { id: 'p2', name: 'Liam', score: 0, avatar: 'shadow' },
+        { id: 'p3', name: 'Noah', score: 0, avatar: 'agent' },
+      ],
+    });
+    expect(state.players[0].name).toBe('Maya Angelou');
+    expect(state.players[0].id).toBe('p1');
+
+    // 4. Delete players down to 2
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [
+        { id: 'p1', name: 'Maya Angelou', score: 0, avatar: 'sleuth' },
+        { id: 'p2', name: 'Liam', score: 0, avatar: 'shadow' },
+      ],
+    });
+    expect(state.players.length).toBe(2);
+
+    // 5. Delete down to 1
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [{ id: 'p1', name: 'Maya Angelou', score: 0, avatar: 'sleuth' }],
+    });
+    expect(state.players.length).toBe(1);
+
+    // 6. Delete all players (empty roster)
+    state = gameReducer(state, {
+      type: 'UPDATE_PLAYERS',
+      players: [],
+    });
+    expect(state.players.length).toBe(0);
+  });
 });

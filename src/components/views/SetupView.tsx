@@ -6,9 +6,12 @@ import {
   Shuffle,
   Play,
   Check,
+  X,
+  Edit2,
   AlertCircle,
   Flame,
   Sparkles,
+  UserPlus,
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
@@ -26,6 +29,11 @@ export const SetupView: React.FC = () => {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [nameError, setNameError] = useState<string | null>(null);
 
+  // Inline renaming state
+  const [editingPlayerId, setEditingPlayerId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState<string>('');
+  const [editError, setEditError] = useState<string | null>(null);
+
   const players = state.players;
   const settings = state.settings;
   const maxImposters = getMaxImposters(players.length);
@@ -35,7 +43,7 @@ export const SetupView: React.FC = () => {
     const trimmed = newPlayerName.trim();
     if (!trimmed) return;
 
-    if (players.some(p => p.name.toLowerCase() === trimmed.toLowerCase())) {
+    if (players.some(p => p.name.trim().toLowerCase() === trimmed.toLowerCase())) {
       setNameError(`A player named "${trimmed}" already exists.`);
       return;
     }
@@ -57,20 +65,64 @@ export const SetupView: React.FC = () => {
     audioService.playPlayerAdded();
     setNewPlayerName('');
     setNameError(null);
+
+    // Adjust imposter count if new count allows higher selection
+    const newMax = getMaxImposters(updated.length);
+    if (settings.imposterCount > newMax) {
+      dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: newMax } });
+    }
+  };
+
+  const handleStartRename = (player: Player) => {
+    setEditingPlayerId(player.id);
+    setEditingName(player.name);
+    setEditError(null);
+  };
+
+  const handleSaveRename = (playerId: string) => {
+    const trimmed = editingName.trim();
+    if (!trimmed) {
+      setEditError('Name cannot be empty.');
+      return;
+    }
+
+    const duplicate = players.some(
+      p => p.id !== playerId && p.name.trim().toLowerCase() === trimmed.toLowerCase()
+    );
+    if (duplicate) {
+      setEditError(`A player named "${trimmed}" already exists.`);
+      return;
+    }
+
+    const updated = players.map(p => (p.id === playerId ? { ...p, name: trimmed } : p));
+    dispatch({ type: 'UPDATE_PLAYERS', players: updated });
+    audioService.playButtonTap();
+    setEditingPlayerId(null);
+    setEditingName('');
+    setEditError(null);
+  };
+
+  const handleCancelRename = () => {
+    setEditingPlayerId(null);
+    setEditingName('');
+    setEditError(null);
   };
 
   const handleRemovePlayer = (id: string) => {
-    if (players.length <= 3) {
-      setNameError('At least 3 players are required.');
-      return;
-    }
     const updated = players.filter(p => p.id !== id);
     dispatch({ type: 'UPDATE_PLAYERS', players: updated });
     audioService.playPlayerRemoved();
 
+    if (editingPlayerId === id) {
+      handleCancelRename();
+    }
+    if (nameError) {
+      setNameError(null);
+    }
+
     const newMax = getMaxImposters(updated.length);
     if (settings.imposterCount > newMax) {
-      dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: newMax } });
+      dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: Math.max(1, newMax) } });
     }
   };
 
@@ -87,12 +139,14 @@ export const SetupView: React.FC = () => {
   };
 
   const handleShufflePlayers = () => {
+    if (players.length < 2) return;
     const copy = [...players];
     for (let i = copy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [copy[i], copy[j]] = [copy[j], copy[i]];
     }
     dispatch({ type: 'UPDATE_PLAYERS', players: copy });
+    audioService.playNav();
   };
 
   const handleToggleCategory = (id: string) => {
@@ -121,7 +175,8 @@ export const SetupView: React.FC = () => {
   const canStart =
     players.length >= 3 &&
     settings.selectedCategoryIds.length > 0 &&
-    !nameError;
+    !nameError &&
+    !editingPlayerId;
 
   const handleStartGame = () => {
     if (!canStart) return;
@@ -148,7 +203,7 @@ export const SetupView: React.FC = () => {
         </Button>
       </div>
 
-      {/* 1. Players Section */}
+      {/* 1. Players Section (Zero-Default Roster, Renameable & Fully Deletable) */}
       <Card className="bg-chomu-surface border-chomu-border p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1.5">
@@ -157,25 +212,29 @@ export const SetupView: React.FC = () => {
               Players ({players.length}/15)
             </span>
           </div>
-          <button
-            onClick={handleShufflePlayers}
-            className="flex items-center gap-1 text-[11px] text-chomu-purple hover:text-chomu-text font-semibold"
-          >
-            <Shuffle className="w-3 h-3" /> Shuffle
-          </button>
+          {players.length >= 2 && (
+            <button
+              onClick={handleShufflePlayers}
+              className="flex items-center gap-1 text-[11px] text-chomu-purple hover:text-chomu-text font-semibold transition-colors"
+            >
+              <Shuffle className="w-3 h-3" /> Shuffle
+            </button>
+          )}
         </div>
 
+        {/* Add Player Input Form (Enforces text-base >=16px to prevent iOS Safari auto-zoom) */}
         <form onSubmit={handleAddPlayer} className="flex gap-2 mb-3">
           <input
             type="text"
-            placeholder="Add player name..."
+            placeholder={players.length === 0 ? 'Enter first player name...' : 'Add another player...'}
             value={newPlayerName}
-            maxLength={16}
+            maxLength={18}
+            autoCapitalize="words"
             onChange={e => {
               setNewPlayerName(e.target.value);
               if (nameError) setNameError(null);
             }}
-            className="flex-1 bg-chomu-bg border border-chomu-border rounded-xl px-3.5 py-2 text-sm text-chomu-text placeholder-chomu-muted/60 focus:outline-none focus:border-chomu-purple"
+            className="flex-1 bg-chomu-bg border border-chomu-border rounded-xl px-3.5 py-2.5 text-base sm:text-sm text-chomu-text placeholder-chomu-muted/60 focus:outline-none focus:border-chomu-purple transition-all"
           />
           <Button
             type="submit"
@@ -189,40 +248,124 @@ export const SetupView: React.FC = () => {
         </form>
 
         {nameError && (
-          <div className="flex items-center gap-1.5 text-chomu-coral text-xs mb-3 bg-chomu-coral/10 p-2 rounded-xl border border-chomu-coral/20">
+          <div className="flex items-center gap-1.5 text-chomu-coral text-xs mb-3 bg-chomu-coral/10 p-2.5 rounded-xl border border-chomu-coral/20 animate-fade-in">
             <AlertCircle className="w-3.5 h-3.5 shrink-0" />
             <span>{nameError}</span>
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-2">
-          {players.map(p => (
-            <div
-              key={p.id}
-              className="flex items-center justify-between bg-chomu-bg border border-chomu-border rounded-xl px-2.5 py-1.5"
-            >
-              <div
-                onClick={() => handleCycleAvatar(p.id)}
-                title="Tap to change avatar"
-                className="flex items-center gap-2 min-w-0 cursor-pointer group"
-              >
-                <div className="relative group-hover:scale-110 transition-transform">
-                  <PlayerAvatar id={p.avatar} size="sm" />
-                </div>
-                <span className="text-xs font-semibold text-chomu-text truncate">
-                  {p.name}
-                </span>
-              </div>
-              <button
-                onClick={() => handleRemovePlayer(p.id)}
-                disabled={players.length <= 3}
-                className="text-chomu-muted hover:text-chomu-coral p-1 disabled:opacity-20 transition-colors"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
+        {/* Players List or Clean Empty State */}
+        {players.length === 0 ? (
+          <div className="py-7 px-4 text-center rounded-2xl bg-chomu-bg/60 border border-dashed border-chomu-border space-y-2 mb-2 animate-fade-in">
+            <div className="w-12 h-12 rounded-2xl bg-chomu-purple/15 border border-chomu-purple/30 flex items-center justify-center mx-auto text-chomu-purple">
+              <UserPlus className="w-6 h-6" />
             </div>
-          ))}
-        </div>
+            <h3 className="text-sm font-bold text-chomu-text">Add your friends</h3>
+            <p className="text-xs text-chomu-muted max-w-[260px] mx-auto leading-relaxed">
+              Type each player&apos;s name above to build your party roster. You need at least 3 players to start.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-1">
+            {players.map(p => {
+              const isEditing = editingPlayerId === p.id;
+              return (
+                <div
+                  key={p.id}
+                  className={`flex items-center justify-between bg-chomu-bg border rounded-xl px-3 py-2 transition-all ${
+                    isEditing ? 'border-chomu-purple ring-1 ring-chomu-purple/30' : 'border-chomu-border'
+                  }`}
+                >
+                  <div
+                    onClick={() => !isEditing && handleCycleAvatar(p.id)}
+                    title={isEditing ? undefined : 'Tap to change avatar'}
+                    className={`flex items-center gap-2.5 min-w-0 ${!isEditing ? 'cursor-pointer group' : ''}`}
+                  >
+                    <div className="relative group-hover:scale-105 transition-transform shrink-0">
+                      <PlayerAvatar id={p.avatar} size="sm" />
+                    </div>
+
+                    {isEditing ? (
+                      <div className="flex-1 min-w-0 mr-1">
+                        <input
+                          type="text"
+                          autoFocus
+                          value={editingName}
+                          maxLength={18}
+                          autoCapitalize="words"
+                          onChange={e => {
+                            setEditingName(e.target.value);
+                            if (editError) setEditError(null);
+                          }}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter') handleSaveRename(p.id);
+                            if (e.key === 'Escape') handleCancelRename();
+                          }}
+                          className="w-full bg-chomu-surface border border-chomu-purple rounded-lg px-2 py-1 text-base sm:text-xs text-chomu-text focus:outline-none"
+                        />
+                        {editError && (
+                          <span className="text-[10px] text-chomu-coral block mt-0.5 truncate">
+                            {editError}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span
+                        onClick={() => handleStartRename(p)}
+                        title="Click to rename"
+                        className="text-xs font-bold text-chomu-text truncate hover:text-chomu-purple transition-colors cursor-pointer"
+                      >
+                        {p.name}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-0.5 shrink-0 ml-1">
+                    {isEditing ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveRename(p.id)}
+                          title="Save name"
+                          className="p-1 text-chomu-lime hover:text-white transition-colors"
+                        >
+                          <Check className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleCancelRename}
+                          title="Cancel"
+                          className="p-1 text-chomu-muted hover:text-chomu-coral transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleStartRename(p)}
+                          title="Rename player"
+                          className="p-1 text-chomu-muted hover:text-chomu-purple transition-colors"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemovePlayer(p.id)}
+                          title="Delete player"
+                          className="p-1 text-chomu-muted hover:text-chomu-coral transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Card>
 
       {/* 2. Chomu Count */}
@@ -235,13 +378,15 @@ export const SetupView: React.FC = () => {
             </span>
           </div>
           <span className="text-[11px] text-chomu-muted font-medium">
-            Max {maxImposters} for {players.length} players
+            {players.length < 3
+              ? 'Requires at least 3 players'
+              : `Max ${maxImposters} for ${players.length} players`}
           </span>
         </div>
 
         <div className="grid grid-cols-3 gap-2">
           {[1, 2, 3].map(count => {
-            const isAvailable = count <= maxImposters;
+            const isAvailable = players.length >= 3 && count <= maxImposters;
             const isSelected = settings.imposterCount === count;
             return (
               <button
@@ -249,11 +394,12 @@ export const SetupView: React.FC = () => {
                 type="button"
                 disabled={!isAvailable}
                 onClick={() => {
+                  audioService.playButtonTap();
                   dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: count } });
                 }}
                 className={`py-2 px-1 rounded-xl border flex flex-col items-center justify-center transition-all ${
-                  isSelected
-                    ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral font-bold'
+                  isSelected && isAvailable
+                    ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral font-bold shadow-sm'
                     : isAvailable
                     ? 'bg-chomu-bg border-chomu-border text-chomu-muted hover:border-chomu-muted/60'
                     : 'bg-chomu-bg/40 border-chomu-border/30 text-chomu-muted/30 cursor-not-allowed'
@@ -377,7 +523,7 @@ export const SetupView: React.FC = () => {
         </div>
       </Card>
 
-      {/* 5. Sticky Bottom Action Bar */}
+      {/* 5. Sticky Bottom Action Bar with 3-Player Gating */}
       <div
         className="fixed bottom-0 left-0 right-0 px-4 pt-3.5 bg-chomu-bg/95 backdrop-blur-md border-t border-chomu-border z-30"
         style={{ paddingBottom: 'calc(0.875rem + env(safe-area-inset-bottom, 0px))' }}
@@ -396,8 +542,10 @@ export const SetupView: React.FC = () => {
           {!canStart && (
             <p className="text-[11px] text-center text-chomu-muted mt-1.5">
               {players.length < 3
-                ? 'Need at least 3 players to start'
-                : 'Select at least one category'}
+                ? `Add at least 3 players to start (${3 - players.length} more needed)`
+                : settings.selectedCategoryIds.length === 0
+                ? 'Select at least one category to play'
+                : 'Complete setup to start'}
             </p>
           )}
         </div>

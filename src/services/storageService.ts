@@ -21,12 +21,7 @@ export const AVATAR_LIST: PlayerAvatarId[] = [
   'detective',
 ];
 
-export const DEFAULT_PLAYERS: Player[] = [
-  { id: 'p1', name: 'Alex', score: 0, avatar: 'sleuth' },
-  { id: 'p2', name: 'Sam', score: 0, avatar: 'shadow' },
-  { id: 'p3', name: 'Jordan', score: 0, avatar: 'pokerface' },
-  { id: 'p4', name: 'Taylor', score: 0, avatar: 'agent' },
-];
+export const DEFAULT_PLAYERS: Player[] = [];
 
 export const DEFAULT_SETTINGS: GameSettings = {
   imposterCount: 1,
@@ -39,20 +34,36 @@ export const storageService = {
   loadPlayers(): Player[] {
     try {
       const data = localStorage.getItem(KEYS.ROSTER) || localStorage.getItem(KEYS.LEGACY_ROSTER);
-      if (!data) return DEFAULT_PLAYERS;
+      if (!data) return [];
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length >= 3) {
-        return parsed.map((p, idx) => ({
-          id: p.id || `p_${Date.now()}_${idx}`,
-          name: typeof p.name === 'string' && p.name.trim() ? p.name.trim() : `Player ${idx + 1}`,
-          score: typeof p.score === 'number' ? p.score : 0,
-          avatar: AVATAR_LIST.includes(p.avatar) ? p.avatar : AVATAR_LIST[idx % AVATAR_LIST.length],
-        }));
+      if (Array.isArray(parsed)) {
+        // Automatically migrate away from legacy hardcoded demo players
+        const isLegacySampleRoster =
+          parsed.length === 4 &&
+          parsed[0]?.name === 'Alex' &&
+          parsed[1]?.name === 'Sam' &&
+          parsed[2]?.name === 'Jordan' &&
+          parsed[3]?.name === 'Taylor';
+
+        if (isLegacySampleRoster) {
+          localStorage.removeItem(KEYS.ROSTER);
+          localStorage.removeItem(KEYS.LEGACY_ROSTER);
+          return [];
+        }
+
+        return parsed
+          .filter(p => p && typeof p.name === 'string' && p.name.trim().length > 0)
+          .map((p, idx) => ({
+            id: p.id || `p_${Date.now()}_${idx}`,
+            name: p.name.trim(),
+            score: typeof p.score === 'number' ? p.score : 0,
+            avatar: AVATAR_LIST.includes(p.avatar) ? p.avatar : AVATAR_LIST[idx % AVATAR_LIST.length],
+          }));
       }
     } catch {
       // Fallback
     }
-    return DEFAULT_PLAYERS;
+    return [];
   },
 
   savePlayers(players: Player[]): void {
