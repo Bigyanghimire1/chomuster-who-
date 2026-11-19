@@ -1,19 +1,23 @@
 import React from 'react';
-import { Play, PlusCircle, BookOpen, Database } from 'lucide-react';
+import { Wifi, PlusCircle, BookOpen, Database, Smartphone } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { HeroIllustration } from '../illustrations/HeroIllustration';
 
-export const HomeView: React.FC = () => {
+interface HomeViewProps {
+  onPlayOnline?: () => void;
+}
+
+export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
   const { dispatch } = useGame();
 
   return (
     <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-6 animate-fade-in">
       {/* 1. Hero Vector Composition */}
-      <div className="w-full flex flex-col items-center text-center mt-2">
-        <HeroIllustration className="mb-5" />
+      <div className="w-full flex flex-col items-center text-center mt-1">
+        <HeroIllustration className="mb-4" />
 
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-chomu-text mb-2">
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-chomu-text mb-1.5">
           CHOMU <span className="text-chomu-purple">WHO?</span>
         </h1>
         <p className="text-sm text-chomu-muted font-medium max-w-[280px]">
@@ -21,20 +25,52 @@ export const HomeView: React.FC = () => {
         </p>
       </div>
 
-      {/* 2. Main Actions */}
-      <div className="w-full max-w-[300px] space-y-3 mb-8">
-        <Button
-          variant="primary"
-          size="xl"
-          fullWidth
-          leftIcon={<Play className="w-5 h-5 fill-current" />}
-          onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
-          className="text-base"
-        >
-          START GAME
-        </Button>
+      {/* 2. Main Game Modes (Prominent Selection) */}
+      <div className="w-full max-w-[340px] space-y-3.5 my-5">
+        <div className="space-y-2.5">
+          {/* Mode 1: Pass & Play (Offline Party) */}
+          <Button
+            variant="primary"
+            size="xl"
+            fullWidth
+            leftIcon={<Smartphone className="w-5 h-5 flex-shrink-0" />}
+            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
+            className="flex-col py-3.5 shadow-lg shadow-chomu-purple/20 border border-chomu-purple/40"
+          >
+            <div className="flex items-center gap-1.5 leading-tight">
+              <span className="text-base font-black tracking-tight">Pass &amp; Play</span>
+              <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md bg-chomu-bg/30 text-chomu-text">
+                Offline Party
+              </span>
+            </div>
+            <span className="text-[11px] font-semibold text-chomu-text/85 tracking-normal mt-0.5">
+              One shared device &bull; 3 to 15 players
+            </span>
+          </Button>
 
-        <div className="grid grid-cols-2 gap-2.5">
+          {/* Mode 2: Play Online (With Friends) */}
+          <Button
+            variant="lime"
+            size="xl"
+            fullWidth
+            leftIcon={<Wifi className="w-5 h-5 flex-shrink-0" />}
+            onClick={() => onPlayOnline?.()}
+            className="flex-col py-3.5 shadow-lg shadow-chomu-lime/20 border border-chomu-lime/40"
+          >
+            <div className="flex items-center gap-1.5 leading-tight">
+              <span className="text-base font-black tracking-tight">Play Online</span>
+              <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md bg-chomu-bg/30 text-chomu-text">
+                With Friends
+              </span>
+            </div>
+            <span className="text-[11px] font-semibold text-chomu-text/85 tracking-normal mt-0.5">
+              P2P rooms &bull; Secret cards &bull; Voice chat
+            </span>
+          </Button>
+        </div>
+
+        {/* Secondary Navigation (Preserves all existing features) */}
+        <div className="grid grid-cols-2 gap-2.5 pt-1">
           <Button
             variant="secondary"
             size="md"
@@ -67,8 +103,8 @@ export const HomeView: React.FC = () => {
       </div>
 
       {/* 3. Minimal Footer */}
-      <footer className="text-center text-xs text-chomu-muted font-medium py-2">
-        <span>Pass &amp; Play &bull; One Device &bull; 100% Offline</span>
+      <footer className="text-center text-xs text-chomu-muted font-medium py-1">
+        <span>Pass &amp; Play &bull; Online Multiplayer &bull; Voice Chat</span>
       </footer>
     </div>
   );

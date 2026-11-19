@@ -1,15 +1,37 @@
 import React from 'react';
 import { Volume2, VolumeX, BookOpen, Home, Database } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
+import { useMultiplayer } from '../../context/MultiplayerContext';
 import { ChomuLogo } from '../illustrations/ChomuLogo';
 import { audioService } from '../../services/audioService';
 
 export const Header: React.FC = () => {
   const { state, dispatch, toggleSound } = useGame();
-  const isPlaying = state.phase === 'PASS_DEVICE' || state.phase === 'ROUND_IN_PROGRESS';
+  
+  // Safely consume MultiplayerContext if mounted
+  let roomState: any = null;
+  let leaveRoom: (() => Promise<void>) | null = null;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const mp = useMultiplayer();
+    roomState = mp.roomState;
+    leaveRoom = mp.leaveRoom;
+  } catch {
+    // Ignored if tested without MultiplayerProvider
+  }
 
-  const handleHomeClick = () => {
+  const isPlaying = state.phase === 'PASS_DEVICE' || state.phase === 'ROUND_IN_PROGRESS';
+  const isInOnlineRoom = Boolean(roomState && roomState.roomCode);
+
+  const handleHomeClick = async () => {
     audioService.playNav();
+    if (isInOnlineRoom && leaveRoom) {
+      if (window.confirm('Leave current online room and return to home screen?')) {
+        await leaveRoom();
+        dispatch({ type: 'RESET_TO_HOME' });
+      }
+      return;
+    }
     if (isPlaying) {
       if (window.confirm('Leave current game and return to home screen?')) {
         dispatch({ type: 'RESET_TO_HOME' });
@@ -54,7 +76,13 @@ export const Header: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1">
-          {state.phase !== 'HOME' && (
+          {isInOnlineRoom && roomState?.roomCode && (
+            <span className="text-[11px] font-mono font-black px-2 py-0.5 rounded-full bg-chomu-lime/20 text-chomu-lime border border-chomu-lime/30 mr-1">
+              {roomState.roomCode}
+            </span>
+          )}
+
+          {(state.phase !== 'HOME' || isInOnlineRoom) && (
             <button
               onClick={handleHomeClick}
               title="Home"

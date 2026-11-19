@@ -1,0 +1,305 @@
+/**
+ * AudioAnalyser — Real-time Web Audio API RMS level and speech detection.
+ * Computes Root Mean Square (RMS) audio energy and determines speaking state
+ * with configurable threshold (~0.02) and debounce hold-time to prevent flickering.
+ */
+
+export interface AudioAnalyserOptions {
+  /** Fast Fourier Transform size (power of 2, default: 512) */
+  fftSize?: number;
+  /** Smoothing time constant between 0 and 1 (default: 0.3) */
+  smoothingTimeConstant?: number;
+  /** RMS threshold above which speech is detected (default: 0.02) */
+  threshold?: number;
+  /** Debounce hold time in ms so natural speech gaps don't flicker (default: 200ms) */
+  holdTimeMs?: number;
+  /** Optional external AudioContext */
+  audioContext?: AudioContext;
+}
+
+export interface AudioAnalysisResult {
+  /** Raw Root Mean Square value (typically 0.00 to ~0.40) */
+  rms: number;
+  /** Normalized level scaled for UI visualizations (0.0 to 1.0) */
+  level: number;
+  /** Boolean indicating whether speech is currently detected */
+  isSpeaking: boolean;
+}
+
+export type AudioAnalysisListener = (result: AudioAnalysisResult) => void;
+
+export class AudioAnalyser {
+  private ctx: AudioContext | null = null;
+  private isExternalCtx: boolean = false;
+  private sourceNode: MediaStreamAudioSourceNode | null = null;
+  private analyserNode: AnalyserNode | null = null;
+  private timeData: Uint8Array | null = null;
+  private floatData: Float32Array | null = null;
+
+  private threshold: number;
+  private holdTimeMs: number;
+  private lastSpeakingTime: number = 0;
+
+  private currentRms: number = 0;
+  private currentLevel: number = 0;
+  private currentlySpeaking: boolean = false;
+
+  private animFrameId: number | null = null;
+  private timerId: ReturnType<typeof setInterval> | null = null;
+  private listeners: Set<AudioAnalysisListener> = new Set();
+  private isDestroyed: boolean = false;
+
+  constructor(stream?: MediaStream, options: AudioAnalyserOptions = {}) {
+    this.threshold = options.threshold ?? 0.02;
+    this.holdTimeMs = options.holdTimeMs ?? 200;
+
+    if (stream) {
+      this.attachStream(stream, options);
+    }
+  }
+
+  /**
+   * Attach or re-attach a MediaStream to the analyser.
+   */
+  public attachStream(stream: MediaStream, options: AudioAnalyserOptions = {}): void {
+    if (this.isDestroyed) return;
+    this.cleanupNodes();
+
+    if (typeof window === 'undefined') return;
+
+    try {
+      if (options.audioContext) {
+        this.ctx = options.audioContext;
+        this.isExternalCtx = true;
+      } else if (!this.ctx) {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+          this.isExternalCtx = false;
+        }
+      }
+
+      if (!this.ctx) return;
+
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+
+      const fftSize = options.fftSize ?? 512;
+      this.analyserNode = this.ctx.createAnalyser();
+      this.analyserNode.fftSize = fftSize;
+      this.analyserNode.smoothingTimeConstant = options.smoothingTimeConstant ?? 0.3;
+
+      this.timeData = new Uint8Array(this.analyserNode.fftSize);
+      this.floatData = new Float32Array(this.analyserNode.fftSize);
+
+      this.sourceNode = this.ctx.createMediaStreamSource(stream);
+      // Connect to analyser ONLY (do NOT connect to destination to avoid mic feedback!)
+      this.sourceNode.connect(this.analyserNode);
+
+      this.startLoop();
+    } catch (err) {
+      console.warn('[AudioAnalyser] Failed to initialize Web Audio nodes:', err);
+    }
+  }
+
+  /**
+   * Computes the current instantaneous Root Mean Square (RMS) of the audio signal.
+   */
+  public computeRms(): number {
+    if (!this.analyserNode) return 0;
+
+    let sumSquares = 0;
+
+    // Use float data if available for maximum precision
+    if (this.floatData) {
+      (this.analyserNode as unknown as { getFloatTimeDomainData: (arr: Float32Array) => void }).getFloatTimeDomainData(this.floatData);
+      const len = this.floatData.length;
+      for (let i = 0; i < len; i++) {
+        const val = this.floatData[i];
+        sumSquares += val * val;
+      }
+      return Math.sqrt(sumSquares / len);
+    }
+
+    // Fallback to byte data (normalized around 128)
+    if (this.timeData) {
+      (this.analyserNode as unknown as { getByteTimeDomainData: (arr: Uint8Array) => void }).getByteTimeDomainData(this.timeData);
+      const len = this.timeData.length;
+      for (let i = 0; i < len; i++) {
+        const norm = (this.timeData[i] - 128) / 128;
+        sumSquares += norm * norm;
+      }
+      return Math.sqrt(sumSquares / len);
+    }
+
+    return 0;
+  }
+
+  /**
+   * Internal animation / polling tick.
+   */
+  private tick = (): void => {
+    if (this.isDestroyed || !this.analyserNode) return;
+
+    const rawRms = this.computeRms();
+    this.currentRms = rawRms;
+
+    // Scale RMS into a 0.0 - 1.0 UI friendly range (0.25 RMS represents loud speech)
+    this.currentLevel = Math.min(1, Math.max(0, rawRms / 0.25));
+
+    const now = Date.now();
+    if (rawRms >= this.threshold) {
+      this.lastSpeakingTime = now;
+    }
+
+    const isSpeaking = (now - this.lastSpeakingTime) < this.holdTimeMs;
+    this.currentlySpeaking = isSpeaking;
+
+    const result: AudioAnalysisResult = {
+      rms: this.currentRms,
+      level: this.currentLevel,
+      isSpeaking: this.currentlySpeaking,
+    };
+
+    this.notifyListeners(result);
+
+    // Schedule next frame
+    if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+      this.animFrameId = window.requestAnimationFrame(this.tick);
+    }
+  };
+
+  /**
+   * Start the measurement update loop.
+   */
+  public startLoop(): void {
+    if (this.animFrameId !== null || this.timerId !== null) return;
+
+    if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+      this.animFrameId = window.requestAnimationFrame(this.tick);
+    } else {
+      // Fallback for headless / test environments
+      this.timerId = setInterval(this.tick, 50);
+    }
+  }
+
+  /**
+   * Stop the measurement update loop.
+   */
+  public stopLoop(): void {
+    if (this.animFrameId !== null && typeof window !== 'undefined') {
+      window.cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+    if (this.timerId !== null) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+  }
+
+  /**
+   * Subscribe to real-time analysis updates.
+   * Returns an unsubscribe function.
+   */
+  public subscribe(listener: AudioAnalysisListener): () => void {
+    this.listeners.add(listener);
+    // Emit initial state immediately
+    listener({
+      rms: this.currentRms,
+      level: this.currentLevel,
+      isSpeaking: this.currentlySpeaking,
+    });
+
+    return () => {
+      this.listeners.delete(listener);
+    };
+  }
+
+  private notifyListeners(result: AudioAnalysisResult): void {
+    this.listeners.forEach((listener) => {
+      try {
+        listener(result);
+      } catch (err) {
+        console.error('[AudioAnalyser] Error in listener callback:', err);
+      }
+    });
+  }
+
+  /**
+   * Get current RMS level.
+   */
+  public getRms(): number {
+    return this.currentRms;
+  }
+
+  /**
+   * Get normalized audio level (0.0 to 1.0).
+   */
+  public getLevel(): number {
+    return this.currentLevel;
+  }
+
+  /**
+   * Get current speaking state.
+   */
+  public getIsSpeaking(): boolean {
+    return this.currentlySpeaking;
+  }
+
+  /**
+   * Update speaking threshold.
+   */
+  public setThreshold(threshold: number): void {
+    this.threshold = threshold;
+  }
+
+  public getThreshold(): number {
+    return this.threshold;
+  }
+
+  /**
+   * Clean up Web Audio nodes.
+   */
+  private cleanupNodes(): void {
+    this.stopLoop();
+
+    if (this.sourceNode) {
+      try {
+        this.sourceNode.disconnect();
+      } catch {}
+      this.sourceNode = null;
+    }
+
+    if (this.analyserNode) {
+      try {
+        this.analyserNode.disconnect();
+      } catch {}
+      this.analyserNode = null;
+    }
+
+    if (this.ctx && !this.isExternalCtx) {
+      try {
+        if (this.ctx.state !== 'closed') {
+          this.ctx.close().catch(() => {});
+        }
+      } catch {}
+      this.ctx = null;
+    }
+
+    this.currentRms = 0;
+    this.currentLevel = 0;
+    this.currentlySpeaking = false;
+  }
+
+  /**
+   * Destroy the analyser instance completely.
+   */
+  public destroy(): void {
+    this.isDestroyed = true;
+    this.cleanupNodes();
+    this.listeners.clear();
+  }
+}

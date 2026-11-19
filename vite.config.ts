@@ -84,6 +84,12 @@ export default defineConfig({
           if (id.includes('node_modules/lucide-react')) {
             return 'vendor-icons';
           }
+          if (id.includes('node_modules/trystero')) {
+            return 'vendor-trystero';
+          }
+          if (id.includes('node_modules/qrcode') || id.includes('node_modules/canvas-confetti')) {
+            return 'vendor-visuals';
+          }
           if (id.includes('wordStudioBaseline')) {
             return 'word-studio-baseline';
           }
