@@ -37,9 +37,10 @@ export interface VoiceState {
 export type VoiceStateListener = (state: VoiceState) => void;
 
 export interface RoomStreamAdapter {
-  addStream?: (stream: MediaStream, targetPeerId?: string) => void;
-  removeStream?: (stream: MediaStream, targetPeerId?: string) => void;
+  addStream?: (stream: MediaStream, targetPeerId?: string | { target?: string }) => void | Promise<void>;
+  removeStream?: (stream: MediaStream, targetPeerId?: string | { target?: string }) => void | Promise<void>;
   onStream?: (callback: (stream: MediaStream, peerId: string) => void) => void;
+  onPeerStream?: (callback: (stream: MediaStream, context: any) => void) => void;
 }
 
 export class VoiceManager {
@@ -406,11 +407,21 @@ export class VoiceManager {
   public attachRoom(room: RoomStreamAdapter): void {
     this.attachedRoom = room;
 
-    // Listen to incoming remote streams from peers
-    if (room.onStream) {
-      room.onStream((stream: MediaStream, peerId: string) => {
+    const handleIncomingStream = (stream: MediaStream, contextOrPeerId: any) => {
+      const peerId =
+        typeof contextOrPeerId === 'string'
+          ? contextOrPeerId
+          : contextOrPeerId?.peerId || contextOrPeerId?.userId || '';
+      if (peerId) {
         this.addRemoteStream(peerId, stream);
-      });
+      }
+    };
+
+    // Listen to incoming remote streams from peers (supports both Trystero onPeerStream and legacy onStream)
+    if (room.onPeerStream) {
+      room.onPeerStream(handleIncomingStream);
+    } else if (room.onStream) {
+      room.onStream(handleIncomingStream);
     }
 
     // Publish existing local stream if mic is already active
@@ -419,6 +430,23 @@ export class VoiceManager {
         room.addStream(this.localStream);
       } catch (err) {
         console.warn('[VoiceManager] Failed to publish stream to newly attached room:', err);
+      }
+    }
+  }
+
+  /**
+   * Broadcast or target local stream to a specific peer.
+   */
+  public publishLocalStream(targetPeerId?: string): void {
+    if (this.localStream && this.attachedRoom?.addStream) {
+      try {
+        if (targetPeerId) {
+          this.attachedRoom.addStream(this.localStream, { target: targetPeerId });
+        } else {
+          this.attachedRoom.addStream(this.localStream);
+        }
+      } catch (err) {
+        console.warn('[VoiceManager] Failed to publish stream to peer:', err);
       }
     }
   }

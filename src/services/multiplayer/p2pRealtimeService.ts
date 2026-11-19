@@ -37,6 +37,7 @@ import {
   handleUpdateSettings,
   sanitizeRoomStateForPeer,
 } from './roomProtocol';
+import { voiceManager } from '../voice/voiceManager';
 
 export type RealtimeStrategy = 'nostr' | 'torrent';
 
@@ -342,6 +343,15 @@ export class P2PRealtimeService {
         this.handlePeerDisconnect(peerId);
       });
       this.unsubscribers.push(unsub);
+    }
+
+    // Attach voice manager to the WebRTC room for peer audio stream exchange
+    if (this.room) {
+      try {
+        voiceManager.attachRoom(this.room);
+      } catch (err) {
+        console.warn('[P2PRealtimeService] Failed to attach room to voiceManager:', err);
+      }
     }
   }
 
@@ -669,6 +679,11 @@ export class P2PRealtimeService {
   // ==========================================================================
 
   private handlePeerConnect(peerId: string): void {
+    // Ensure newly connected peer receives local audio stream if mic is active
+    try {
+      voiceManager.publishLocalStream(peerId);
+    } catch {}
+
     if (this.isHostPlayer && this.roomState) {
       if (!this.roomState.players[peerId]) {
         // Peer will send JOIN_REQUEST
@@ -685,6 +700,10 @@ export class P2PRealtimeService {
   }
 
   private handlePeerDisconnect(peerId: string): void {
+    try {
+      voiceManager.removeRemoteStream(peerId);
+    } catch {}
+
     if (this.isHostPlayer && this.roomState) {
       this.roomState = handlePlayerLeave(this.roomState, peerId);
       this.broadcastSanitizedSync();
@@ -746,6 +765,12 @@ export class P2PRealtimeService {
   public async leaveRoom(): Promise<void> {
     this.stopHeartbeat();
 
+    try {
+      voiceManager.detachRoom();
+    } catch {
+      // Ignore detach errors
+    }
+
     for (const unsub of this.unsubscribers) {
       try {
         unsub();
@@ -779,6 +804,13 @@ export class P2PRealtimeService {
     this.currentRoomCode = '';
 
     this.notifyStateChange();
+  }
+
+  /**
+   * Returns current active Trystero room instance (if connected).
+   */
+  public getRoom(): any {
+    return this.room;
   }
 }
 

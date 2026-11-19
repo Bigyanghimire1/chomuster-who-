@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { AudioAnalyser } from '../services/voice/audioAnalyser';
-import { VoiceManager } from '../services/voice/voiceManager';
+import { VoiceManager, voiceManager } from '../services/voice/voiceManager';
+import { P2PRealtimeService } from '../services/multiplayer/p2pRealtimeService';
 
 describe('Voice & Audio System Unit Tests', () => {
   describe('AudioAnalyser — RMS Audio Energy & Speaking Detection', () => {
@@ -212,6 +213,82 @@ describe('Voice & Audio System Unit Tests', () => {
       // Detach
       vm.detachRoom();
       expect(mockRoom.removeStream).toHaveBeenCalledWith(mockLocalStream);
+    });
+
+    it('attaches to Trystero room via onPeerStream and receives remote peer stream context', () => {
+      let registeredHandler: ((stream: MediaStream, ctx: any) => void) | null = null;
+      const mockRoom = {
+        addStream: vi.fn(),
+        removeStream: vi.fn(),
+        onPeerStream: vi.fn((cb: any) => {
+          registeredHandler = cb;
+        }),
+      };
+
+      vm.attachRoom(mockRoom);
+      expect(mockRoom.onPeerStream).toHaveBeenCalled();
+      expect(registeredHandler).not.toBeNull();
+
+      // Trigger incoming peer stream with Trystero context
+      const mockPeerStream = {} as MediaStream;
+      registeredHandler!(mockPeerStream, { peerId: 'peer_trystero_99' });
+
+      expect(vm.getState().activePeerIds).toContain('peer_trystero_99');
+
+      // Test publishLocalStream targeted & broadcast
+      const mockTrack = { enabled: true, stop: vi.fn() };
+      const mockLocal = {
+        getAudioTracks: () => [mockTrack],
+        getTracks: () => [mockTrack],
+      } as unknown as MediaStream;
+      (vm as unknown as { localStream: MediaStream }).localStream = mockLocal;
+
+      vm.publishLocalStream('peer_trystero_99');
+      expect(mockRoom.addStream).toHaveBeenCalledWith(mockLocal, { target: 'peer_trystero_99' });
+
+      vm.publishLocalStream();
+      expect(mockRoom.addStream).toHaveBeenCalledWith(mockLocal);
+    });
+
+    it('integrates with P2PRealtimeService room lifecycle for voice stream exchange', async () => {
+      let attachedToRoom: any = null;
+      const attachSpy = vi.spyOn(voiceManager, 'attachRoom').mockImplementation((room) => {
+        attachedToRoom = room;
+      });
+      const detachSpy = vi.spyOn(voiceManager, 'detachRoom');
+
+      const mockActions: Record<string, any> = {};
+      const mockJoinRoom = () => ({
+        makeAction: (name: string) => {
+          const actionObj = {
+            send: async () => {},
+            onMessage: () => () => {},
+          };
+          mockActions[name] = actionObj;
+          return actionObj;
+        },
+        onPeerJoin: () => () => {},
+        onPeerLeave: () => () => {},
+        onPeerStream: () => () => {},
+        addStream: vi.fn(),
+        removeStream: vi.fn(),
+        leave: async () => {},
+      });
+
+      const service = new P2PRealtimeService();
+      await service.createRoom('VOIC', 'HostAlice', 'sleuth', {
+        joinRoomFn: mockJoinRoom,
+      });
+
+      expect(attachSpy).toHaveBeenCalled();
+      expect(attachedToRoom).not.toBeNull();
+      expect(service.getRoom()).toBe(attachedToRoom);
+
+      await service.leaveRoom();
+      expect(detachSpy).toHaveBeenCalled();
+
+      attachSpy.mockRestore();
+      detachSpy.mockRestore();
     });
 
     it('stops microphone tracks on stopMicrophone()', () => {
