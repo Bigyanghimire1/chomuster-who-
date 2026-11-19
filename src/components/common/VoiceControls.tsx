@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Video, VideoOff } from 'lucide-react';
 import { useVoiceState, voiceManager, VoiceManager } from '../../services/voice/voiceManager';
 import { audioService } from '../../services/audioService';
 
@@ -16,6 +16,8 @@ export interface VoiceControlsProps {
   onMuteToggle?: (isMuted: boolean) => void;
   /** Callback fired when deafen is toggled */
   onDeafenToggle?: (isDeafened: boolean) => void;
+  /** Callback fired when camera is toggled */
+  onCameraToggle?: (isCameraOn: boolean) => void;
 }
 
 export const VoiceControls: React.FC<VoiceControlsProps> = ({
@@ -25,6 +27,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
   manager = voiceManager,
   onMuteToggle,
   onDeafenToggle,
+  onCameraToggle,
 }) => {
   const {
     isMicActive,
@@ -33,9 +36,11 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
     isLocalSpeaking,
     localLevel,
     isInitializing,
+    isCameraOn,
     error,
     toggleMute,
     toggleDeafen,
+    toggleCamera,
     startMicrophone,
   } = useVoiceState(manager);
 
@@ -53,6 +58,15 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
       await toggleMute();
       if (onMuteToggle) onMuteToggle(!isMuted);
     }
+  };
+
+  const handleCameraClick = async () => {
+    try {
+      audioService.playButtonTap();
+    } catch {}
+
+    await toggleCamera();
+    if (onCameraToggle) onCameraToggle(!isCameraOn);
   };
 
   const handleDeafenClick = () => {
@@ -103,6 +117,30 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           )}
         </button>
 
+        {/* Camera Toggle */}
+        <button
+          type="button"
+          onClick={handleCameraClick}
+          aria-label={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+          title={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+          className={`p-2 rounded-xl transition-all relative group select-none ${
+            isCameraOn
+              ? 'text-chomu-cyan bg-chomu-cyan/15 hover:bg-chomu-cyan/25'
+              : 'text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface'
+          }`}
+        >
+          {isCameraOn ? (
+            <Video className="w-4 h-4" />
+          ) : (
+            <VideoOff className="w-4 h-4" />
+          )}
+
+          {/* Active camera dot indicator */}
+          {isCameraOn && (
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-chomu-cyan animate-pulse pointer-events-none" />
+          )}
+        </button>
+
         {/* Deafen Toggle */}
         <button
           type="button"
@@ -143,6 +181,21 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           aria-label={isMuted ? 'Unmute' : 'Mute'}
         >
           {isMuted || !isMicActive ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
+        </button>
+
+        {/* Camera Toggle */}
+        <button
+          type="button"
+          onClick={handleCameraClick}
+          className={`p-1 rounded-full transition-colors ${
+            isCameraOn
+              ? 'text-chomu-cyan hover:bg-chomu-cyan/20'
+              : 'text-chomu-muted hover:text-chomu-text'
+          }`}
+          title={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+          aria-label={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+        >
+          {isCameraOn ? <Video className="w-3.5 h-3.5" /> : <VideoOff className="w-3.5 h-3.5" />}
         </button>
 
         {shouldShowMeter && isMicActive && !isMuted && (
@@ -191,6 +244,20 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         >
           {isMuted || !isMicActive ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
           <span>{!isMicActive ? 'Start Mic' : isMuted ? 'Unmute' : 'Mute'}</span>
+        </button>
+
+        {/* Camera Toggle */}
+        <button
+          type="button"
+          onClick={handleCameraClick}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+            isCameraOn
+              ? 'bg-chomu-cyan/15 text-chomu-cyan border border-chomu-cyan/30 hover:bg-chomu-cyan/25'
+              : 'bg-chomu-surface text-chomu-muted hover:text-chomu-text border border-chomu-border hover:bg-chomu-elevated'
+          }`}
+        >
+          {isCameraOn ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
+          <span>{isCameraOn ? 'Camera On' : 'Camera Off'}</span>
         </button>
 
         <button
@@ -259,10 +326,36 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           )}
         </button>
 
+        {/* Camera Toggle Button */}
+        <button
+          type="button"
+          onClick={handleCameraClick}
+          aria-label={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+          className={`relative p-2.5 rounded-full transition-all flex items-center justify-center ${
+            isCameraOn
+              ? 'bg-chomu-cyan/20 text-chomu-cyan hover:bg-chomu-cyan/30 ring-1 ring-chomu-cyan/40 shadow-[0_0_10px_rgba(104,217,231,0.3)]'
+              : 'bg-chomu-elevated text-chomu-muted hover:text-chomu-text hover:bg-chomu-border'
+          }`}
+          title={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
+        >
+          {isCameraOn ? (
+            <Video className="w-4 h-4" />
+          ) : (
+            <VideoOff className="w-4 h-4" />
+          )}
+
+          {/* Active camera status indicator dot */}
+          {isCameraOn && (
+            <span
+              className="absolute top-1 right-1 w-2 h-2 rounded-full bg-chomu-cyan animate-pulse pointer-events-none shadow-[0_0_6px_rgba(104,217,231,0.8)]"
+            />
+          )}
+        </button>
+
         {/* Real-time Level Meter & Status text */}
         {shouldShowMeter && (
           <div className="flex flex-col justify-center px-1.5 min-w-[54px]">
-            <div className="flex items-center gap-1 mb-1">
+            <div className="flex items-center gap-1.5 mb-1">
               <span className="text-[10px] uppercase font-bold tracking-wider text-chomu-muted">
                 {isDeafened
                   ? 'Deafened'
@@ -274,6 +367,11 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
                         ? 'Speaking'
                         : 'Connected'}
               </span>
+              {isCameraOn && (
+                <span className="text-[9px] px-1 py-0.2 rounded bg-chomu-cyan/20 text-chomu-cyan font-semibold tracking-tight">
+                  CAM
+                </span>
+              )}
             </div>
 
             {/* Visualizer bars */}

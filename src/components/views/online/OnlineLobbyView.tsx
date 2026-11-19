@@ -9,7 +9,6 @@ import {
   Play,
   LogOut,
   X,
-  Crown,
   Clock,
   Sparkles,
 } from 'lucide-react';
@@ -17,8 +16,7 @@ import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
 import { Card } from '../../common/Card';
 import { Badge } from '../../common/Badge';
-import { PlayerAvatar } from '../../illustrations/PlayerAvatar';
-import { SpeakingIndicator } from '../../common/SpeakingIndicator';
+import { VideoCard } from '../../common/VideoCard';
 import { QRCodeModal } from './QRCodeModal';
 import { DEFAULT_CATEGORIES } from '../../../data/categories';
 import { audioService } from '../../../services/audioService';
@@ -38,6 +36,8 @@ export const OnlineLobbyView: React.FC = () => {
     kickPlayer,
     leaveRoom,
     speakingPeers,
+    localStream,
+    peerStreams,
   } = useMultiplayer();
 
   const [isQrOpen, setIsQrOpen] = useState<boolean>(false);
@@ -260,73 +260,49 @@ export const OnlineLobbyView: React.FC = () => {
         )}
       </div>
 
-      {/* Players Grid */}
+      {/* Players Grid with Video Tiles */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         {players.map((p) => {
           const isMe = p.id === myPlayerId;
           const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
+          const stream = isMe ? localStream : peerStreams[p.id] || null;
 
           return (
-            <Card
+            <div
               key={p.id}
-              className={`p-3 flex items-center justify-between border transition-all ${
-                isMe
-                  ? 'bg-chomu-elevated/90 border-chomu-purple/60 shadow-lg'
-                  : 'bg-chomu-surface/80 border-chomu-border'
-              }`}
+              className="relative aspect-video min-h-[160px] sm:min-h-[180px]"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <SpeakingIndicator
-                  isSpeaking={isPeerSpeaking}
-                  size="md"
-                  variant="ring"
-                  ringColor="lime"
-                >
-                  <PlayerAvatar id={p.avatar} size="md" />
-                </SpeakingIndicator>
+              <VideoCard
+                player={p}
+                stream={stream}
+                isSpeaking={isPeerSpeaking}
+                isLocal={isMe}
+                actionSlot={
+                  isHost && !p.isHost && p.id !== myPlayerId ? (
+                    <button
+                      onClick={() => kickPlayer(p.id)}
+                      className="p-1 text-chomu-muted hover:text-chomu-coral hover:bg-chomu-coral/20 rounded-lg transition-colors"
+                      title="Kick player"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  ) : null
+                }
+              />
 
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-black text-chomu-text truncate">
-                      {p.name}
-                    </span>
-                    {isMe && (
-                      <span className="text-[10px] text-chomu-purple font-bold">
-                        (You)
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-1.5 pt-0.5">
-                    {p.isHost && (
-                      <Badge variant="yellow" size="sm">
-                        <Crown className="w-3 h-3 inline mr-0.5" /> HOST
-                      </Badge>
-                    )}
-                    {p.isReady ? (
-                      <Badge variant="lime" size="sm">
-                        <Check className="w-3 h-3 inline mr-0.5" /> Ready
-                      </Badge>
-                    ) : (
-                      <Badge variant="muted" size="sm">
-                        <Clock className="w-3 h-3 inline mr-0.5" /> Waiting
-                      </Badge>
-                    )}
-                  </div>
-                </div>
+              {/* Ready / Waiting Badge Overlay */}
+              <div className="absolute top-2 right-2 z-10 pointer-events-none">
+                {p.isReady ? (
+                  <Badge variant="lime" size="sm" className="shadow-md">
+                    <Check className="w-3 h-3 inline mr-0.5" /> Ready
+                  </Badge>
+                ) : (
+                  <Badge variant="muted" size="sm" className="shadow-md">
+                    <Clock className="w-3 h-3 inline mr-0.5" /> Waiting
+                  </Badge>
+                )}
               </div>
-
-              {/* Host kick button */}
-              {isHost && !p.isHost && p.id !== myPlayerId && (
-                <button
-                  onClick={() => kickPlayer(p.id)}
-                  className="p-1.5 text-chomu-muted hover:text-chomu-coral hover:bg-chomu-coral/10 rounded-xl transition-colors ml-2"
-                  title="Kick player"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </Card>
+            </div>
           );
         })}
       </div>

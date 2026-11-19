@@ -41,6 +41,12 @@ export interface MultiplayerContextValue {
   chatMessages: ChatPayload[];
   speakingPeers: Record<string, boolean>;
 
+  // WebRTC Media & Streams
+  localStream: MediaStream | null;
+  peerStreams: Record<string, MediaStream>;
+  isCameraOn: boolean;
+  isMicOn: boolean;
+
   // Actions
   createRoom: (
     roomCode: string,
@@ -66,6 +72,12 @@ export interface MultiplayerContextValue {
   kickPlayer: (targetPlayerId: string) => void;
   sendChat: (text: string) => void;
   clearError: () => void;
+
+  // Media Actions
+  toggleCamera: () => Promise<void>;
+  enableCamera: (constraints?: MediaTrackConstraints) => Promise<MediaStream | null>;
+  disableCamera: () => void;
+  toggleMic: () => Promise<void>;
 }
 
 const MultiplayerContext = createContext<MultiplayerContextValue | null>(null);
@@ -87,6 +99,20 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const [chatMessages, setChatMessages] = useState<ChatPayload[]>([]);
   const [timerRemaining, setTimerRemaining] = useState<number>(0);
   const [speakingPeers, setSpeakingPeers] = useState<Record<string, boolean>>({});
+
+  // WebRTC Camera & Video Streams
+  const [localStream, setLocalStream] = useState<MediaStream | null>(() =>
+    voiceManager.getLocalStream()
+  );
+  const [peerStreams, setPeerStreams] = useState<Record<string, MediaStream>>(() =>
+    voiceManager.getPeerStreams()
+  );
+  const [isCameraOn, setIsCameraOn] = useState<boolean>(() =>
+    voiceManager.isCameraOn
+  );
+  const [isMicOn, setIsMicOn] = useState<boolean>(() =>
+    voiceManager.isMicOn
+  );
 
   const previousPhaseRef = useRef<OnlinePhase | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
@@ -128,9 +154,14 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
-  // Sync with VoiceManager for speaking detection
+  // Sync with VoiceManager for speaking detection and media streams
   useEffect(() => {
     const unsubVoice = voiceManager.subscribe((vState) => {
+      setLocalStream(voiceManager.getLocalStream());
+      setPeerStreams(vState.peerStreams || {});
+      setIsCameraOn(vState.isCameraOn);
+      setIsMicOn(vState.isMicActive && !vState.isMuted);
+
       const combined: Record<string, boolean> = {
         ...vState.speakingPeers,
       };
@@ -284,6 +315,7 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const leaveRoom = useCallback(async () => {
     try {
+      voiceManager.disableCamera();
       await p2pRealtimeService.leaveRoom();
     } catch {
       // Ignore leave error
@@ -348,6 +380,22 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     setError(null);
   }, []);
 
+  const toggleCamera = useCallback(async () => {
+    await voiceManager.toggleCamera();
+  }, []);
+
+  const enableCamera = useCallback(async (constraints?: MediaTrackConstraints) => {
+    return await voiceManager.enableCamera(constraints);
+  }, []);
+
+  const disableCamera = useCallback(() => {
+    voiceManager.disableCamera();
+  }, []);
+
+  const toggleMic = useCallback(async () => {
+    await voiceManager.toggleMute();
+  }, []);
+
   const value: MultiplayerContextValue = {
     roomState,
     phase,
@@ -364,6 +412,10 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     timerRemaining,
     chatMessages,
     speakingPeers,
+    localStream,
+    peerStreams,
+    isCameraOn,
+    isMicOn,
     createRoom,
     joinRoom,
     leaveRoom,
@@ -379,6 +431,10 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     kickPlayer,
     sendChat,
     clearError,
+    toggleCamera,
+    enableCamera,
+    disableCamera,
+    toggleMic,
   };
 
   return (

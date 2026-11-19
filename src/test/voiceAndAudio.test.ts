@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import fs from 'fs';
+import path from 'path';
 import { AudioAnalyser } from '../services/voice/audioAnalyser';
 import { VoiceManager, voiceManager } from '../services/voice/voiceManager';
 import { P2PRealtimeService } from '../services/multiplayer/p2pRealtimeService';
@@ -305,6 +307,147 @@ describe('Voice & Audio System Unit Tests', () => {
       expect(stopTrack).toHaveBeenCalled();
       expect(vm.getLocalStream()).toBeNull();
       expect(vm.getState().isMicActive).toBe(false);
+    });
+
+    it('manages camera lifecycle, constraints, and peerStreams tracking', async () => {
+      expect(vm.getState().isCameraOn).toBe(false);
+      expect(vm.isCameraOn).toBe(false);
+      expect(vm.peerStreams).toEqual({});
+      expect(vm.getState().peerStreams).toEqual({});
+
+      // Mock mediaDevices.getUserMedia
+      const stopVideoTrack = vi.fn();
+      const mockVideoTrack = {
+        kind: 'video',
+        readyState: 'live',
+        stop: stopVideoTrack,
+        onended: null as (() => void) | null,
+      };
+
+      const mockCameraStream = {
+        getVideoTracks: () => [mockVideoTrack],
+        getAudioTracks: () => [],
+        getTracks: () => [mockVideoTrack],
+        addTrack: vi.fn(),
+        removeTrack: vi.fn(),
+      } as unknown as MediaStream;
+
+      let capturedConstraints: any = null;
+      vi.stubGlobal('navigator', {
+        mediaDevices: {
+          getUserMedia: vi.fn(async (constraints: any) => {
+            capturedConstraints = constraints;
+            return mockCameraStream;
+          }),
+        },
+      });
+
+      // Mock room to verify stream publishing
+      const mockRoom = {
+        addStream: vi.fn(),
+        removeStream: vi.fn(),
+        onPeerStream: vi.fn(),
+      };
+      vm.attachRoom(mockRoom);
+
+      // Listen to media updates
+      const mediaUpdates: any[] = [];
+      const unsubMedia = vm.onMediaUpdate((data) => {
+        mediaUpdates.push(data);
+      });
+
+      // Enable camera
+      const resStream = await vm.enableCamera();
+      expect(resStream).not.toBeNull();
+      expect(vm.getState().isCameraOn).toBe(true);
+      expect(vm.isCameraOn).toBe(true);
+      expect(capturedConstraints?.video).toEqual({
+        width: { ideal: 480 },
+        height: { ideal: 360 },
+        frameRate: { max: 20 },
+      });
+      expect(mockRoom.addStream).toHaveBeenCalled();
+
+      // Verify remote stream tracking in peerStreams
+      const mockRemoteStream = {
+        getAudioTracks: () => [],
+        getVideoTracks: () => [{ kind: 'video' }],
+      } as unknown as MediaStream;
+
+      vm.addRemoteStream('remote_player_1', mockRemoteStream);
+      expect(vm.peerStreams['remote_player_1']).toBe(mockRemoteStream);
+      expect(vm.getState().peerStreams['remote_player_1']).toBe(mockRemoteStream);
+      expect(vm.getPeerStream('remote_player_1')).toBe(mockRemoteStream);
+
+      // Disable camera
+      vm.disableCamera();
+      expect(vm.getState().isCameraOn).toBe(false);
+      expect(vm.isCameraOn).toBe(false);
+      expect(stopVideoTrack).toHaveBeenCalled();
+
+      // Remove remote peer
+      vm.removeRemoteStream('remote_player_1');
+      expect(vm.peerStreams['remote_player_1']).toBeUndefined();
+      expect(vm.getState().peerStreams['remote_player_1']).toBeUndefined();
+
+      unsubMedia();
+      vi.unstubAllGlobals();
+    });
+
+    it('toggles camera state and handles isMicOn status accurately', async () => {
+      expect(vm.isMicOn).toBe(false);
+      expect(vm.getState().isMicOn).toBe(false);
+
+      // Simulate mic active and unmuted
+      (vm as unknown as { state: { isMicActive: boolean; isMuted: boolean; isMicOn: boolean } }).state.isMicActive = true;
+      (vm as unknown as { state: { isMicActive: boolean; isMuted: boolean; isMicOn: boolean } }).state.isMuted = false;
+      expect(vm.isMicOn).toBe(true);
+
+      // Mute mic
+      vm.setMuted(true);
+      expect(vm.isMicOn).toBe(false);
+      expect(vm.getState().isMicOn).toBe(false);
+
+      // Toggle camera
+      const enableSpy = vi.spyOn(vm, 'enableCamera').mockResolvedValue(null);
+      const disableSpy = vi.spyOn(vm, 'disableCamera');
+
+      await vm.toggleCamera();
+      expect(enableSpy).toHaveBeenCalled();
+
+      (vm as unknown as { state: { isCameraOn: boolean } }).state.isCameraOn = true;
+      await vm.toggleCamera();
+      expect(disableSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('WebRTC Video & Camera UI/Context Integration', () => {
+    it('verifies VoiceControls contains camera toggle button and icons', () => {
+      const filePath = path.resolve(process.cwd(), 'src/components/common/VoiceControls.tsx');
+      const content = fs.readFileSync(filePath, 'utf8');
+
+      expect(content).toContain('Video');
+      expect(content).toContain('VideoOff');
+      expect(content).toContain('toggleCamera');
+      expect(content).toContain('handleCameraClick');
+      expect(content).toContain('isCameraOn');
+      expect(content).toContain('CAM');
+    });
+
+    it('verifies MultiplayerContext exposes localStream, peerStreams, isCameraOn, toggleCamera, and isMicOn', () => {
+      const filePath = path.resolve(process.cwd(), 'src/context/MultiplayerContext.tsx');
+      const content = fs.readFileSync(filePath, 'utf8');
+
+      expect(content).toContain('localStream: MediaStream | null;');
+      expect(content).toContain('peerStreams: Record<string, MediaStream>;');
+      expect(content).toContain('isCameraOn: boolean;');
+      expect(content).toContain('isMicOn: boolean;');
+      expect(content).toContain('toggleCamera: () => Promise<void>;');
+      expect(content).toContain('toggleCamera,');
+      expect(content).toContain('isCameraOn,');
+      expect(content).toContain('isMicOn,');
+      expect(content).toContain('localStream,');
+      expect(content).toContain('peerStreams,');
     });
   });
 });
