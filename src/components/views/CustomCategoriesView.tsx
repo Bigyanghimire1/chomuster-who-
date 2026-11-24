@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ArrowLeft, AlertCircle, Database, Sparkles } from 'lucide-react';
+import { Plus, Trash2, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
@@ -50,7 +50,8 @@ export const CustomCategoriesView: React.FC = () => {
       <div className="flex items-center justify-between">
         <button
           onClick={() => dispatch({ type: 'SET_PHASE', phase: 'HOME' })}
-          className="flex items-center gap-1.5 text-xs text-chomu-muted hover:text-chomu-text transition-colors"
+          className="flex items-center gap-1.5 text-xs text-chomu-muted hover:text-chomu-text transition-colors min-h-[44px] py-2 px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-lg"
+          aria-label="Return to Home"
         >
           <ArrowLeft className="w-4 h-4" /> Home
         </button>
@@ -67,33 +68,6 @@ export const CustomCategoriesView: React.FC = () => {
           Create packs for friend groups, party themes, or inside jokes.
         </p>
       </div>
-
-      {/* Entry point to Word Bank Studio */}
-      <Card
-        onClick={() => dispatch({ type: 'SET_PHASE', phase: 'WORD_STUDIO' })}
-        interactive
-        className="bg-gradient-to-r from-chomu-surface via-chomu-elevated to-chomu-surface border-chomu-purple/40 p-4"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-chomu-purple/15 text-chomu-purple flex items-center justify-center shrink-0">
-              <Database className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <h3 className="text-sm font-black text-chomu-text">Word Bank Studio</h3>
-                <span className="text-[10px] font-black uppercase text-chomu-purple bg-chomu-purple/10 px-1.5 py-0.5 rounded border border-chomu-purple/20">
-                  NEW
-                </span>
-              </div>
-              <p className="text-[11px] text-chomu-muted">
-                Explore, review, and curate 548 words with AI hints &amp; exports.
-              </p>
-            </div>
-          </div>
-          <Sparkles className="w-4 h-4 text-chomu-purple shrink-0" />
-        </div>
-      </Card>
 
       {isCreating ? (
         <Card className="bg-chomu-surface border-chomu-border p-4">

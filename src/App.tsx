@@ -37,9 +37,6 @@ const CustomCategoriesView = lazy(() =>
 const RulesView = lazy(() =>
   import('./components/views/RulesView').then(m => ({ default: m.RulesView }))
 );
-const WordBankStudioView = lazy(() =>
-  import('./components/views/wordStudio/WordBankStudioView').then(m => ({ default: m.WordBankStudioView }))
-);
 
 const ViewLoadingFallback: React.FC = () => (
   <div className="flex-1 flex items-center justify-center min-h-[50vh]">
@@ -138,10 +135,9 @@ const GameRouter: React.FC = () => {
             <>
               {/* Secondary modal views accessible while in an online room */}
               {localGameState.phase === 'RULES' && <RulesView />}
-              {localGameState.phase === 'WORD_STUDIO' && <WordBankStudioView />}
 
               {/* Main Online Phases */}
-              {localGameState.phase !== 'RULES' && localGameState.phase !== 'WORD_STUDIO' && (
+              {localGameState.phase !== 'RULES' && (
                 <>
                   {onlinePhase === 'LOBBY' && <OnlineLobbyView />}
                   {onlinePhase === 'ROLE_REVEAL' && <OnlineRoleRevealView />}
@@ -163,7 +159,6 @@ const GameRouter: React.FC = () => {
               {localGameState.phase === 'FINAL_REVEAL' && <FinalRevealView />}
               {localGameState.phase === 'CUSTOM_CATEGORIES' && <CustomCategoriesView />}
               {localGameState.phase === 'RULES' && <RulesView />}
-              {localGameState.phase === 'WORD_STUDIO' && <WordBankStudioView />}
             </>
           )}
         </Suspense>

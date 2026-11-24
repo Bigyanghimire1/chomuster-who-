@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, VolumeX, BookOpen, Home, Database } from 'lucide-react';
+import { Volume2, VolumeX, BookOpen, Home } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useMultiplayer } from '../../context/MultiplayerContext';
 import { ChomuLogo } from '../illustrations/ChomuLogo';
@@ -41,11 +41,6 @@ export const Header: React.FC = () => {
     }
   };
 
-  const handleStudioClick = () => {
-    audioService.playNav();
-    dispatch({ type: 'SET_PHASE', phase: 'WORD_STUDIO' });
-  };
-
   const handleRulesClick = () => {
     audioService.playNav();
     dispatch({ type: 'SET_PHASE', phase: 'RULES' });
@@ -59,10 +54,11 @@ export const Header: React.FC = () => {
         minHeight: 'calc(56px + env(safe-area-inset-top, 0px))',
       }}
     >
-      <div className="w-full max-w-md mx-auto px-4 h-14 flex items-center justify-between">
-        <div
+      <div className="w-full max-w-md md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        <button
           onClick={handleHomeClick}
-          className="flex items-center gap-2.5 cursor-pointer group select-none"
+          aria-label="Chomu Who? Return to home screen"
+          className="flex items-center gap-2.5 cursor-pointer group select-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-xl px-1 text-left"
         >
           <ChomuLogo size="sm" />
           <div className="flex items-baseline gap-1.5 leading-none">
@@ -73,7 +69,7 @@ export const Header: React.FC = () => {
               WHO?
             </span>
           </div>
-        </div>
+        </button>
 
         <div className="flex items-center gap-1">
           {isInOnlineRoom && roomState?.roomCode && (
@@ -86,24 +82,18 @@ export const Header: React.FC = () => {
             <button
               onClick={handleHomeClick}
               title="Home"
-              className="p-2 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors"
+              aria-label="Home"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
             >
               <Home className="w-4 h-4" />
             </button>
           )}
 
           <button
-            onClick={handleStudioClick}
-            title="Word Bank Studio"
-            className="p-2 text-chomu-muted hover:text-chomu-purple rounded-xl hover:bg-chomu-surface transition-colors"
-          >
-            <Database className="w-4 h-4" />
-          </button>
-
-          <button
             onClick={handleRulesClick}
             title="Game Rules"
-            className="p-2 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors"
+            aria-label="Game Rules"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
           >
             <BookOpen className="w-4 h-4" />
           </button>
@@ -116,7 +106,8 @@ export const Header: React.FC = () => {
               }
             }}
             title={state.settings.soundEnabled ? 'Mute Sounds' : 'Unmute Sounds'}
-            className="p-2 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors"
+            aria-label={state.settings.soundEnabled ? 'Mute Sounds' : 'Unmute Sounds'}
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
           >
             {state.settings.soundEnabled ? (
               <Volume2 className="w-4 h-4 text-chomu-purple" />

@@ -20,6 +20,7 @@ import { PlayerAvatarId } from '../types/game';
 import { p2pRealtimeService } from '../services/multiplayer/p2pRealtimeService';
 import { voiceManager } from '../services/voice/voiceManager';
 import { audioService } from '../services/audioService';
+import { sessionService } from '../services/storageService';
 
 export interface MultiplayerContextValue {
   // Room and Peer State
@@ -65,6 +66,7 @@ export interface MultiplayerContextValue {
   startGame: () => void;
   confirmRole: () => void;
   startRound: () => void;
+  nextTurn?: () => void;
   endRound: () => void;
   startVoting: () => void;
   vote: (targetPlayerId: string) => void;
@@ -154,6 +156,28 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
+  // Automatic session recovery across page refreshes
+  useEffect(() => {
+    const savedSession = sessionService.loadSession();
+    if (savedSession && !p2pRealtimeService.isConnected()) {
+      setIsConnecting(true);
+      p2pRealtimeService
+        .joinRoom(savedSession.roomCode, savedSession.playerName, savedSession.avatar, {
+          sessionPlayerId: savedSession.sessionPlayerId,
+        })
+        .then(() => {
+          setIsConnected(true);
+        })
+        .catch((err) => {
+          console.warn('[MultiplayerContext] Auto-recovery failed:', err);
+          sessionService.clearSession();
+        })
+        .finally(() => {
+          setIsConnecting(false);
+        });
+    }
+  }, []);
+
   // Sync with VoiceManager for speaking detection and media streams
   useEffect(() => {
     const unsubVoice = voiceManager.subscribe((vState) => {
@@ -224,6 +248,15 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (remaining <= 5 && remaining > 0) {
           audioService.playTick();
+        }
+
+        // Host automatically concludes voting when voting time expires
+        if (remaining === 0 && p2pRealtimeService.isHost()) {
+          try {
+            p2pRealtimeService.concludeVoting();
+          } catch {
+            // Already concluding
+          }
         }
       } else {
         setTimerRemaining(0);
@@ -320,6 +353,8 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch {
       // Ignore leave error
     } finally {
+      sessionService.clearSession();
+      sessionService.clearHostSecrets();
       setRoomState(null);
       setMySecret(null);
       setIsConnected(false);
@@ -348,6 +383,10 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const startRound = useCallback(() => {
     p2pRealtimeService.startRound();
+  }, []);
+
+  const nextTurn = useCallback(() => {
+    p2pRealtimeService.nextTurn();
   }, []);
 
   const endRound = useCallback(() => {
@@ -424,6 +463,7 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     startGame,
     confirmRole,
     startRound,
+    nextTurn,
     endRound,
     startVoting,
     vote,

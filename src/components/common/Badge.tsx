@@ -1,8 +1,21 @@
 import React from 'react';
 
-interface BadgeProps {
+export interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'lime' | 'coral' | 'purple' | 'cyan' | 'yellow' | 'muted' | 'emerald' | 'crimson' | 'indigo';
+  variant?:
+    | 'lime'
+    | 'coral'
+    | 'purple'
+    | 'cyan'
+    | 'yellow'
+    | 'muted'
+    | 'emerald'
+    | 'crimson'
+    | 'indigo'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info';
   size?: 'sm' | 'md';
   className?: string;
 }
@@ -24,6 +37,10 @@ export const Badge: React.FC<BadgeProps> = ({
     emerald: 'bg-chomu-lime/15 text-chomu-lime border-chomu-lime/30',
     crimson: 'bg-chomu-coral/15 text-chomu-coral border-chomu-coral/30',
     indigo: 'bg-chomu-purple/15 text-chomu-purple border-chomu-purple/30',
+    success: 'bg-chomu-lime/15 text-chomu-lime border-chomu-lime/30',
+    danger: 'bg-chomu-coral/15 text-chomu-coral border-chomu-coral/30',
+    warning: 'bg-chomu-yellow/15 text-chomu-yellow border-chomu-yellow/30',
+    info: 'bg-chomu-cyan/15 text-chomu-cyan border-chomu-cyan/30',
   };
 
   const sizes = {

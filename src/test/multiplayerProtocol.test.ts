@@ -7,15 +7,20 @@ import {
 } from '../services/multiplayer/roomCodeGenerator';
 import {
   createInitialRoomState,
+  electNextHost,
+  findReboundPeerId,
+  handleAbortRoundToLobby,
+  handleCalculateResults,
+  handleCastVote,
+  handleNextRound,
+  handleNextTurn,
   handlePlayerJoin,
   handlePlayerLeave,
+  handleRoleAcknowledged,
   handleSetReady,
   handleStartGame,
-  handleRoleAcknowledged,
   handleStartVoting,
-  handleCastVote,
-  handleCalculateResults,
-  handleNextRound,
+  rebindHostSecretState,
   sanitizeRoomStateForPeer,
   createJoinRequestMessage,
   createJoinAckMessage,
@@ -299,5 +304,257 @@ describe('P2PRealtimeService Integration with Mock Signaling', () => {
     await service.leaveRoom();
     expect(service.isConnected()).toBe(false);
     unsub();
+  });
+});
+
+describe('Milestone 2: Authoritative Spotlight Turn Management', () => {
+  it('initializes spotlight fields and advances turns authoritatively', () => {
+    let state = createInitialRoomState('SPOT', 'p-alice', 'Alice', 'sleuth');
+    expect(state.currentTurnPlayerId).toBeNull();
+    expect(state.turnOrder).toEqual(['p-alice']);
+    expect(state.turnStartTime).toBeNull();
+    expect(state.turnDurationSeconds).toBe(180);
+
+    state = handlePlayerJoin(state, 'p-bob', 'Bob', 'shadow');
+    state = handlePlayerJoin(state, 'p-charlie', 'Charlie', 'agent');
+    expect(state.turnOrder).toContain('p-alice');
+    expect(state.turnOrder).toContain('p-bob');
+    expect(state.turnOrder).toContain('p-charlie');
+
+    // Start game
+    const { nextState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+    expect(state.phase).toBe('ROLE_REVEAL');
+    expect(state.turnOrder.length).toBe(3);
+
+    // Acknowledge roles
+    state = handleRoleAcknowledged(state, 'p-alice');
+    state = handleRoleAcknowledged(state, 'p-bob');
+    state = handleRoleAcknowledged(state, 'p-charlie');
+    expect(state.phase).toBe('ROUND');
+    expect(state.currentTurnPlayerId).toBe(state.turnOrder[0]);
+    expect(state.turnStartTime).not.toBeNull();
+
+    // Advance turn 1 -> turn 2
+    const firstTurnPlayerId = state.currentTurnPlayerId;
+    state = handleNextTurn(state);
+    expect(state.currentTurnPlayerId).toBe(state.turnOrder[1]);
+    expect(state.currentTurnPlayerId).not.toBe(firstTurnPlayerId);
+
+    // Advance turn 2 -> turn 3
+    state = handleNextTurn(state);
+    expect(state.currentTurnPlayerId).toBe(state.turnOrder[2]);
+
+    // Advance turn 3 -> transitions to VOTING
+    state = handleNextTurn(state);
+    expect(state.phase).toBe('VOTING');
+    expect(state.currentTurnPlayerId).toBeNull();
+  });
+
+  it('handles player departure during round and advances active turn if necessary', () => {
+    let state = createInitialRoomState('SPOT', 'p1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p2', 'Bob', 'shadow');
+    state = handlePlayerJoin(state, 'p3', 'Charlie', 'agent');
+
+    const { nextState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+    state = handleRoleAcknowledged(state, 'p1');
+    state = handleRoleAcknowledged(state, 'p2');
+    state = handleRoleAcknowledged(state, 'p3');
+
+    const currentTurn = state.currentTurnPlayerId!;
+    expect(currentTurn).toBeDefined();
+
+    // The active turn player disconnects
+    state = handlePlayerLeave(state, currentTurn);
+    expect(state.players[currentTurn].isConnected).toBe(false);
+    expect(state.turnOrder).not.toContain(currentTurn);
+    // Active turn advances to one of the remaining connected players
+    expect(state.currentTurnPlayerId).not.toBe(currentTurn);
+    expect(['p1', 'p2', 'p3'].filter(id => id !== currentTurn)).toContain(state.currentTurnPlayerId);
+  });
+});
+
+describe('Milestone 2: Session Recovery & Atomic Player Re-binding', () => {
+  it('rebinds a reconnecting player with new peerId without creating duplicate slots', () => {
+    let state = createInitialRoomState('RECO', 'host-1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'peer-bob-old', 'Bob', 'shadow', 'session-uuid-bob');
+    state = handlePlayerJoin(state, 'peer-charlie', 'Charlie', 'agent', 'session-uuid-charlie');
+
+    // Bob scores points and marks ready
+    state.players['peer-bob-old'].score = 250;
+    state = handleSetReady(state, 'peer-bob-old', true);
+    expect(state.players['peer-bob-old'].score).toBe(250);
+    expect(state.players['peer-bob-old'].isReady).toBe(true);
+
+    // Charlie votes for Bob
+    state = { ...state, phase: 'VOTING' };
+    state = handleCastVote(state, 'peer-charlie', 'peer-bob-old');
+    expect(state.players['peer-charlie'].votedForId).toBe('peer-bob-old');
+
+    // Bob disconnects (e.g. browser refresh)
+    state = handlePlayerLeave(state, 'peer-bob-old');
+    expect(state.players['peer-bob-old'].isConnected).toBe(false);
+
+    // Bob reconnects with brand new peer ID and same sessionPlayerId
+    state = handlePlayerJoin(state, 'peer-bob-new', 'Bob', 'shadow', 'session-uuid-bob');
+
+    // Total player count must remain exactly 3 (no phantom duplicate)
+    expect(Object.keys(state.players).length).toBe(3);
+    expect(state.players['peer-bob-new']).toBeDefined();
+    expect(state.players['peer-bob-old']).toBeUndefined(); // Old slot removed
+
+    // Bob preserves score, readiness, and connected status
+    expect(state.players['peer-bob-new'].score).toBe(250);
+    expect(state.players['peer-bob-new'].isReady).toBe(true);
+    expect(state.players['peer-bob-new'].isConnected).toBe(true);
+
+    // Charlie's vote target must be re-bound to the new peer ID
+    expect(state.players['peer-charlie'].votedForId).toBe('peer-bob-new');
+  });
+
+  it('rebinds host secret state so reconnected player retains their secret role', () => {
+    let state = createInitialRoomState('SECR', 'host-1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p-bob', 'Bob', 'shadow', 'sess-bob');
+    state = handlePlayerJoin(state, 'p-charlie', 'Charlie', 'agent', 'sess-charlie');
+
+    const { nextState, hostSecretState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+
+    const oldSecret = hostSecretState.playerSecrets['p-bob'];
+    expect(oldSecret).toBeDefined();
+
+    // Rebind secrets from 'p-bob' to 'p-bob-new'
+    const updatedSecrets = rebindHostSecretState(hostSecretState, 'p-bob', 'p-bob-new');
+    expect(updatedSecrets.playerSecrets['p-bob']).toBeUndefined();
+    expect(updatedSecrets.playerSecrets['p-bob-new']).toEqual(oldSecret);
+
+    if (oldSecret.isChomu) {
+      expect(updatedSecrets.chomuIds).toContain('p-bob-new');
+      expect(updatedSecrets.chomuIds).not.toContain('p-bob');
+    }
+  });
+
+  it('locates rebound slot by fallback name if session token is missing', () => {
+    const players = {
+      p1: { id: 'p1', name: 'Alice', avatar: 'sleuth', isConnected: true } as any,
+      p2: { id: 'p2', name: 'Bob', avatar: 'shadow', isConnected: false } as any,
+    };
+
+    expect(findReboundPeerId(players, undefined, 'Bob')).toBe('p2');
+    expect(findReboundPeerId(players, undefined, 'Unknown')).toBeNull();
+  });
+});
+
+describe('Milestone 2: Deterministic Host Migration & Grace Period', () => {
+  it('elects the next host deterministically using localeCompare', () => {
+    const players = {
+      'peer-zebra': { id: 'peer-zebra', isConnected: true } as any,
+      'peer-apple': { id: 'peer-apple', isConnected: true } as any,
+      'peer-mango': { id: 'peer-mango', isConnected: true } as any,
+      'peer-banana': { id: 'peer-banana', isConnected: false } as any, // disconnected: ineligible
+    };
+
+    // Among connected ['peer-zebra', 'peer-apple', 'peer-mango'], 'peer-apple' is lexicographically first
+    expect(electNextHost(players)).toBe('peer-apple');
+
+    // If 'peer-apple' is excluded (the departed host), next is 'peer-mango'
+    expect(electNextHost(players, 'peer-apple')).toBe('peer-mango');
+  });
+
+  it('aborts active round cleanly to lobby on handleAbortRoundToLobby', () => {
+    let state = createInitialRoomState('ABRT', 'p1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p2', 'Bob', 'shadow');
+    state = handlePlayerJoin(state, 'p3', 'Charlie', 'agent');
+
+    const { nextState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+    expect(state.phase).toBe('ROLE_REVEAL');
+
+    state = handleAbortRoundToLobby(state, 'Host disconnected unexpectedly');
+    expect(state.phase).toBe('LOBBY');
+    expect(state.secretCategory).toBeNull();
+    expect(state.roundStartTime).toBeNull();
+    expect(state.votingResult).toBeNull();
+    for (const player of Object.values(state.players)) {
+      expect(player.isReady).toBe(false);
+      expect(player.hasSeenRole).toBe(false);
+    }
+  });
+});
+
+describe('Milestone 2: Protocol Idempotency & Phase Guards', () => {
+  it('prevents handleRoleAcknowledged from restarting roundStartTime when re-invoked', () => {
+    let state = createInitialRoomState('IDEM', 'p1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p2', 'Bob', 'shadow');
+    state = handlePlayerJoin(state, 'p3', 'Charlie', 'agent');
+
+    const { nextState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+
+    state = handleRoleAcknowledged(state, 'p1');
+    state = handleRoleAcknowledged(state, 'p2');
+    state = handleRoleAcknowledged(state, 'p3');
+    expect(state.phase).toBe('ROUND');
+
+    const originalRoundStartTime = state.roundStartTime;
+    expect(originalRoundStartTime).not.toBeNull();
+
+    // Duplicate acknowledgment attempt during ROUND
+    const stateAfterDuplicate = handleRoleAcknowledged(state, 'p1');
+    expect(stateAfterDuplicate.roundStartTime).toBe(originalRoundStartTime);
+    expect(stateAfterDuplicate).toBe(state); // Unmodified
+  });
+
+  it('prevents handleCalculateResults from multiplying score increments on repeated execution', () => {
+    let state = createInitialRoomState('IDEM', 'p1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p2', 'Bob', 'shadow');
+    state = handlePlayerJoin(state, 'p3', 'Charlie', 'agent');
+
+    const { nextState, hostSecretState } = handleStartGame(state, DEFAULT_CATEGORIES);
+    state = nextState;
+    state = handleRoleAcknowledged(state, 'p1');
+    state = handleRoleAcknowledged(state, 'p2');
+    state = handleRoleAcknowledged(state, 'p3');
+    state = handleStartVoting(state);
+
+    const chomuId = hostSecretState.chomuIds[0];
+    const civilianIds = ['p1', 'p2', 'p3'].filter(id => id !== chomuId);
+
+    // Vote for chomu
+    for (const civ of civilianIds) {
+      state = handleCastVote(state, civ, chomuId);
+    }
+    state = handleCastVote(state, chomuId, civilianIds[0]);
+
+    // First calculation
+    state = handleCalculateResults(state, hostSecretState);
+    expect(state.phase).toBe('RESULTS');
+    const firstScore = state.players[civilianIds[0]].score;
+    expect(firstScore).toBe(100);
+
+    // Repeated calculation on RESULTS state must be idempotent
+    const stateAfterDuplicateCalc = handleCalculateResults(state, hostSecretState);
+    expect(stateAfterDuplicateCalc.players[civilianIds[0]].score).toBe(100); // Does NOT increase to 200!
+    expect(stateAfterDuplicateCalc).toBe(state);
+  });
+
+  it('guards handleSetReady and handleCastVote against invalid phases and targets', () => {
+    let state = createInitialRoomState('IDEM', 'p1', 'Alice', 'sleuth');
+    state = handlePlayerJoin(state, 'p2', 'Bob', 'shadow');
+
+    // In LOBBY, casting vote is rejected
+    const votingInLobby = handleCastVote(state, 'p1', 'p2');
+    expect(votingInLobby).toBe(state);
+
+    // Setting ready in ROUND is rejected
+    state = { ...state, phase: 'ROUND' };
+    const readyInRound = handleSetReady(state, 'p1', true);
+    expect(readyInRound).toBe(state);
+
+    // Voting for non-existent player in VOTING is rejected
+    state = { ...state, phase: 'VOTING' };
+    const voteForGhost = handleCastVote(state, 'p1', 'ghost-player');
+    expect(voteForGhost).toBe(state);
   });
 });

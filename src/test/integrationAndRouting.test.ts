@@ -150,7 +150,7 @@ describe('Integration, URL Routing & Deployment Verification', () => {
       // Preserved Auxiliary Actions
       expect(content).toContain('Custom Words');
       expect(content).toContain('How to Play');
-      expect(content).toContain('Word Bank Studio');
+      expect(content).not.toContain('Word Bank Studio');
     });
 
     it('verifies App source includes MultiplayerProvider and VoiceControls HUD', () => {

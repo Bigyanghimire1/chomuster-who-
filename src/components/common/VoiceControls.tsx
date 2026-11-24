@@ -97,7 +97,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
                 ? 'Unmute Mic'
                 : 'Mute Mic'
           }
-          className={`p-2 rounded-xl transition-all relative group select-none ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-xl transition-all relative group select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             !isMicActive
               ? 'text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface'
               : isMuted
@@ -123,7 +123,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           onClick={handleCameraClick}
           aria-label={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
           title={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
-          className={`p-2 rounded-xl transition-all relative group select-none ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-xl transition-all relative group select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isCameraOn
               ? 'text-chomu-cyan bg-chomu-cyan/15 hover:bg-chomu-cyan/25'
               : 'text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface'
@@ -147,7 +147,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           onClick={handleDeafenClick}
           aria-label={isDeafened ? 'Undeafen Audio' : 'Deafen Audio'}
           title={isDeafened ? 'Undeafen Voice' : 'Deafen Voice'}
-          className={`p-2 rounded-xl transition-all relative group select-none ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-xl transition-all relative group select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isDeafened
               ? 'text-chomu-coral bg-chomu-coral/10 hover:bg-chomu-coral/20'
               : 'text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface'
@@ -172,7 +172,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         <button
           type="button"
           onClick={handleMicClick}
-          className={`p-1 rounded-full transition-colors ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isMuted || !isMicActive
               ? 'text-chomu-coral hover:bg-chomu-coral/20'
               : 'text-chomu-lime hover:bg-chomu-lime/20'
@@ -187,7 +187,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         <button
           type="button"
           onClick={handleCameraClick}
-          className={`p-1 rounded-full transition-colors ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isCameraOn
               ? 'text-chomu-cyan hover:bg-chomu-cyan/20'
               : 'text-chomu-muted hover:text-chomu-text'
@@ -217,7 +217,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         <button
           type="button"
           onClick={handleDeafenClick}
-          className={`p-1 rounded-full transition-colors ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isDeafened ? 'text-chomu-coral hover:bg-chomu-coral/20' : 'text-chomu-muted hover:text-chomu-text'
           }`}
           title={isDeafened ? 'Undeafen' : 'Deafen'}
@@ -294,7 +294,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           aria-label={
             !isMicActive ? 'Start Microphone' : isMuted ? 'Unmute Microphone' : 'Mute Microphone'
           }
-          className={`relative p-2.5 rounded-full transition-all flex items-center justify-center ${
+          className={`relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-full transition-all flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             !isMicActive
               ? 'bg-chomu-elevated text-chomu-muted hover:text-chomu-text hover:bg-chomu-border'
               : isMuted
@@ -331,7 +331,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           type="button"
           onClick={handleCameraClick}
           aria-label={isCameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
-          className={`relative p-2.5 rounded-full transition-all flex items-center justify-center ${
+          className={`relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-full transition-all flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isCameraOn
               ? 'bg-chomu-cyan/20 text-chomu-cyan hover:bg-chomu-cyan/30 ring-1 ring-chomu-cyan/40 shadow-[0_0_10px_rgba(104,217,231,0.3)]'
               : 'bg-chomu-elevated text-chomu-muted hover:text-chomu-text hover:bg-chomu-border'
@@ -400,7 +400,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           type="button"
           onClick={handleDeafenClick}
           aria-label={isDeafened ? 'Undeafen Audio' : 'Deafen Audio'}
-          className={`p-2.5 rounded-full transition-all flex items-center justify-center ${
+          className={`w-11 h-11 min-w-[44px] min-h-[44px] rounded-full transition-all flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
             isDeafened
               ? 'bg-chomu-coral/20 text-chomu-coral hover:bg-chomu-coral/30 ring-1 ring-chomu-coral/40'
               : 'bg-chomu-elevated text-chomu-muted hover:text-chomu-text hover:bg-chomu-border'

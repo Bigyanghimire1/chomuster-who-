@@ -150,7 +150,7 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-chomu-bg/80 backdrop-blur-sm animate-fade-in"
     >
-      <div className="relative w-full max-w-md bg-chomu-surface border border-chomu-border rounded-3xl p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-md sm:max-w-lg md:max-w-xl bg-chomu-surface border border-chomu-border rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-chomu-border/60">
           <div className="flex items-center gap-2">
@@ -163,18 +163,24 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 rounded-full text-chomu-muted hover:text-chomu-text hover:bg-chomu-elevated transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-chomu-muted hover:text-chomu-text hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 gap-2 p-1 mt-4 mb-4 bg-chomu-elevated rounded-2xl border border-chomu-border/50">
+        <div
+          role="tablist"
+          aria-label="Online game mode tabs"
+          className="grid grid-cols-2 gap-2 p-1 mt-4 mb-4 bg-chomu-elevated rounded-2xl border border-chomu-border/50"
+        >
           <button
             type="button"
+            role="tab"
+            aria-selected={activeTab === 'create'}
             onClick={() => handleTabSwitch('create')}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
               activeTab === 'create'
                 ? 'bg-chomu-purple text-chomu-bg shadow-md'
                 : 'text-chomu-muted hover:text-chomu-text'
@@ -185,8 +191,10 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={activeTab === 'join'}
             onClick={() => handleTabSwitch('join')}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
               activeTab === 'join'
                 ? 'bg-chomu-purple text-chomu-bg shadow-md'
                 : 'text-chomu-muted hover:text-chomu-text'
@@ -213,7 +221,8 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
                   type="button"
                   onClick={handleRegenerateCode}
                   title="Generate new room code"
-                  className="p-2 rounded-xl text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface transition-colors"
+                  aria-label="Generate new room code"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-chomu-muted hover:text-chomu-text hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -271,22 +280,29 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
             <label className="block text-xs font-bold text-chomu-muted uppercase tracking-wider mb-2">
               Choose Avatar
             </label>
-            <div className="grid grid-cols-4 gap-2.5">
+            <div
+              role="radiogroup"
+              aria-label="Select player avatar"
+              className="grid grid-cols-4 gap-2 sm:gap-2.5"
+            >
               {AVATAR_LIST.map((avatarId) => {
                 const isSelected = selectedAvatar === avatarId;
                 return (
                   <button
                     key={avatarId}
                     type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    aria-label={`Select avatar ${avatarId}`}
                     onClick={() => handleSelectAvatar(avatarId)}
-                    className={`relative p-2 rounded-2xl flex flex-col items-center justify-center transition-all ${
+                    className={`relative min-h-[56px] min-w-[44px] p-2 rounded-2xl flex flex-col items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
                       isSelected
-                        ? 'bg-chomu-purple/20 border-2 border-chomu-purple shadow-sm ring-2 ring-chomu-purple/30 scale-105'
+                        ? 'bg-chomu-purple/20 border-2 border-chomu-purple shadow-sm ring-2 ring-chomu-purple/30 scale-[1.02]'
                         : 'bg-chomu-elevated/70 border border-chomu-border/70 hover:bg-chomu-elevated hover:border-chomu-border'
                     }`}
                   >
                     <PlayerAvatar id={avatarId} size="md" />
-                    <span className="text-[10px] capitalize font-semibold text-chomu-muted mt-1 truncate max-w-full">
+                    <span className="text-[10px] sm:text-[11px] capitalize font-bold text-chomu-muted mt-1 truncate max-w-full">
                       {avatarId}
                     </span>
                   </button>

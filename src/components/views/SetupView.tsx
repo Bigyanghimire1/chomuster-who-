@@ -186,7 +186,7 @@ export const SetupView: React.FC = () => {
 
   return (
     <div
-      className="max-w-md mx-auto px-4 py-5 space-y-5 animate-fade-in"
+      className="w-full max-w-md md:max-w-4xl lg:max-w-5xl mx-auto px-4 sm:px-6 py-5 space-y-5 animate-fade-in"
       style={{ paddingBottom: 'calc(7.5rem + env(safe-area-inset-bottom, 0px))' }}
     >
       <div className="flex items-center justify-between">
@@ -203,24 +203,30 @@ export const SetupView: React.FC = () => {
         </Button>
       </div>
 
-      {/* 1. Players Section (Zero-Default Roster, Renameable & Fully Deletable) */}
-      <Card className="bg-chomu-surface border-chomu-border p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-chomu-purple" />
-            <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              Players ({players.length}/15)
-            </span>
-          </div>
-          {players.length >= 2 && (
-            <button
-              onClick={handleShufflePlayers}
-              className="flex items-center gap-1 text-[11px] text-chomu-purple hover:text-chomu-text font-semibold transition-colors"
-            >
-              <Shuffle className="w-3 h-3" /> Shuffle
-            </button>
-          )}
-        </div>
+      {/* 2-Column Responsive Layout on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+        {/* Left Column: Player Management & Chomu Count */}
+        <div className="space-y-5">
+          {/* 1. Players Section (Zero-Default Roster, Renameable & Fully Deletable) */}
+          <Card className="bg-chomu-surface border-chomu-border p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-chomu-purple" />
+                <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
+                  Players ({players.length}/15)
+                </span>
+              </div>
+              {players.length >= 2 && (
+                <button
+                  type="button"
+                  onClick={handleShufflePlayers}
+                  aria-label="Shuffle player order"
+                  className="inline-flex items-center gap-1 min-h-[44px] px-2.5 py-1.5 text-xs text-chomu-purple hover:text-chomu-text font-semibold transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+                >
+                  <Shuffle className="w-3.5 h-3.5" /> Shuffle
+                </button>
+              )}
+            </div>
 
         {/* Add Player Input Form (Enforces text-base >=16px to prevent iOS Safari auto-zoom) */}
         <form onSubmit={handleAddPlayer} className="flex gap-2 mb-3">
@@ -327,7 +333,8 @@ export const SetupView: React.FC = () => {
                           type="button"
                           onClick={() => handleSaveRename(p.id)}
                           title="Save name"
-                          className="p-1 text-chomu-lime hover:text-white transition-colors"
+                          aria-label={`Save rename for ${p.name}`}
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-lime hover:text-white rounded-xl hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                         >
                           <Check className="w-4 h-4" />
                         </button>
@@ -335,7 +342,8 @@ export const SetupView: React.FC = () => {
                           type="button"
                           onClick={handleCancelRename}
                           title="Cancel"
-                          className="p-1 text-chomu-muted hover:text-chomu-coral transition-colors"
+                          aria-label="Cancel rename"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-coral rounded-xl hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -346,17 +354,19 @@ export const SetupView: React.FC = () => {
                           type="button"
                           onClick={() => handleStartRename(p)}
                           title="Rename player"
-                          className="p-1 text-chomu-muted hover:text-chomu-purple transition-colors"
+                          aria-label={`Rename ${p.name}`}
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-purple rounded-xl hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                         >
-                          <Edit2 className="w-3.5 h-3.5" />
+                          <Edit2 className="w-4 h-4" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleRemovePlayer(p.id)}
                           title="Delete player"
-                          className="p-1 text-chomu-muted hover:text-chomu-coral transition-colors"
+                          aria-label={`Delete ${p.name}`}
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-coral rounded-xl hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </>
                     )}
@@ -368,167 +378,182 @@ export const SetupView: React.FC = () => {
         )}
       </Card>
 
-      {/* 2. Chomu Count */}
-      <Card className="bg-chomu-surface border-chomu-border p-4">
-        <div className="flex items-center justify-between mb-2.5">
-          <div className="flex items-center gap-1.5">
-            <Flame className="w-4 h-4 text-chomu-coral" />
-            <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              Chomu Count
+        {/* 2. Chomu Count */}
+        <Card className="bg-chomu-surface border-chomu-border p-4">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-1.5">
+              <Flame className="w-4 h-4 text-chomu-coral" />
+              <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
+                Chomu Count
+              </span>
+            </div>
+            <span className="text-[11px] text-chomu-muted font-medium">
+              {players.length < 3
+                ? 'Requires at least 3 players'
+                : `Max ${maxImposters} for ${players.length} players`}
             </span>
           </div>
-          <span className="text-[11px] text-chomu-muted font-medium">
-            {players.length < 3
-              ? 'Requires at least 3 players'
-              : `Max ${maxImposters} for ${players.length} players`}
-          </span>
-        </div>
 
-        <div className="grid grid-cols-3 gap-2">
-          {[1, 2, 3].map(count => {
-            const isAvailable = players.length >= 3 && count <= maxImposters;
-            const isSelected = settings.imposterCount === count;
-            return (
-              <button
-                key={count}
-                type="button"
-                disabled={!isAvailable}
-                onClick={() => {
-                  audioService.playButtonTap();
-                  dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: count } });
-                }}
-                className={`py-2 px-1 rounded-xl border flex flex-col items-center justify-center transition-all ${
-                  isSelected && isAvailable
-                    ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral font-bold shadow-sm'
-                    : isAvailable
-                    ? 'bg-chomu-bg border-chomu-border text-chomu-muted hover:border-chomu-muted/60'
-                    : 'bg-chomu-bg/40 border-chomu-border/30 text-chomu-muted/30 cursor-not-allowed'
-                }`}
-              >
-                <span className="text-base font-black leading-none mb-0.5">{count}</span>
-                <span className="text-[10px] font-medium">
-                  {count === 1 ? '1 Chomu' : `${count} Chomas`}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </Card>
-
-      {/* 3. Chomu Hint Difficulty (Default: Subtle) */}
-      <Card className="bg-chomu-surface border-chomu-border p-4">
-        <div className="flex items-center justify-between mb-2.5">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-chomu-purple" />
-            <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              Chomu Hint System
-            </span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-4 gap-1.5">
-          {(
-            [
-              { id: 'subtle', label: 'Subtle', desc: 'Indirect single word' },
-              { id: 'balanced', label: 'Balanced', desc: 'Clearer clue' },
-              { id: 'easy', label: 'Easier', desc: 'High context' },
-              { id: 'none', label: 'No Hint', desc: 'Blind mode' },
-            ] as const
-          ).map(diff => {
-            const isSelected = settings.hintDifficulty === diff.id;
-            return (
-              <button
-                key={diff.id}
-                type="button"
-                onClick={() =>
-                  dispatch({
-                    type: 'UPDATE_SETTINGS',
-                    settings: { hintDifficulty: diff.id as HintDifficulty },
-                  })
-                }
-                className={`p-2 rounded-xl border text-center transition-all ${
-                  isSelected
-                    ? 'bg-chomu-purple/15 border-chomu-purple text-chomu-text font-bold shadow-sm'
-                    : 'bg-chomu-bg border-chomu-border text-chomu-muted hover:border-chomu-muted/60'
-                }`}
-              >
-                <span className="text-xs font-bold block leading-tight mb-0.5">{diff.label}</span>
-                <span className="text-[9px] text-chomu-muted block leading-none">{diff.desc}</span>
-              </button>
-            );
-          })}
-        </div>
-      </Card>
-
-      {/* 4. Categories Selector (NATURAL PAGE SCROLL - NO NESTED OVERFLOW SCROLLBAR) */}
-      <Card className="bg-chomu-surface border-chomu-border p-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-            Categories ({settings.selectedCategoryIds.length}/{allCategories.length})
-          </span>
-          <div className="flex items-center gap-2 text-xs">
-            <button
-              onClick={handleSelectAllCategories}
-              className="text-chomu-purple hover:underline font-semibold"
-            >
-              All
-            </button>
-            <span className="text-chomu-muted">&bull;</span>
-            <button
-              onClick={handleClearAllCategories}
-              className="text-chomu-muted hover:text-chomu-text font-medium"
-            >
-              Clear
-            </button>
-          </div>
-        </div>
-
-        {settings.selectedCategoryIds.length === 0 && (
-          <div className="bg-chomu-coral/10 border border-chomu-coral/20 text-chomu-coral text-xs p-2 rounded-xl mb-3 flex items-center gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-            <span>Select at least one category to play.</span>
-          </div>
-        )}
-
-        {/* Natural page flow grid without nested scrollbar */}
-        <div className="grid grid-cols-2 gap-2">
-          {allCategories.map(cat => {
-            const isSelected = settings.selectedCategoryIds.includes(cat.id);
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleToggleCategory(cat.id)}
-                className={`flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all ${
-                  isSelected
-                    ? 'bg-chomu-elevated border-chomu-purple text-chomu-text shadow-sm'
-                    : 'bg-chomu-bg/70 border-chomu-border text-chomu-muted hover:border-chomu-muted/40'
-                }`}
-              >
-                <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                    isSelected ? 'bg-chomu-purple text-chomu-bg' : 'bg-chomu-surface text-chomu-muted'
+          <div role="radiogroup" aria-label="Select Chomu count" className="grid grid-cols-3 gap-2">
+            {[1, 2, 3].map(count => {
+              const isAvailable = players.length >= 3 && count <= maxImposters;
+              const isSelected = settings.imposterCount === count;
+              return (
+                <button
+                  key={count}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected && isAvailable}
+                  aria-label={`${count === 1 ? '1 Chomu' : `${count} Chomas`}`}
+                  disabled={!isAvailable}
+                  onClick={() => {
+                    audioService.playButtonTap();
+                    dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: count } });
+                  }}
+                  className={`min-h-[44px] py-2 px-1 rounded-xl border flex flex-col items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                    isSelected && isAvailable
+                      ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral font-bold shadow-sm'
+                      : isAvailable
+                      ? 'bg-chomu-bg border-chomu-border text-chomu-muted hover:border-chomu-muted/60'
+                      : 'bg-chomu-bg/40 border-chomu-border/30 text-chomu-muted/30 cursor-not-allowed'
                   }`}
                 >
-                  <CategoryVectorIcon id={cat.id} className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="text-xs font-bold truncate block">{cat.name}</span>
-                  <span className="text-[10px] text-chomu-muted block">{cat.words.length} words</span>
-                </div>
-                {isSelected && <Check className="w-4 h-4 text-chomu-purple shrink-0" />}
+                  <span className="text-base font-black leading-none mb-0.5">{count}</span>
+                  <span className="text-[10px] font-medium">
+                    {count === 1 ? '1 Chomu' : `${count} Chomas`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+
+      {/* Right Column: Clues & Categories */}
+      <div className="space-y-5">
+        {/* 3. Chomu Hint Difficulty (Default: Subtle) */}
+        <Card className="bg-chomu-surface border-chomu-border p-4">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-chomu-purple" />
+              <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
+                Chomu Hint System
+              </span>
+            </div>
+          </div>
+
+          <div role="radiogroup" aria-label="Select hint difficulty" className="grid grid-cols-4 gap-1.5">
+            {(
+              [
+                { id: 'subtle', label: 'Subtle', desc: 'Indirect single word' },
+                { id: 'balanced', label: 'Balanced', desc: 'Clearer clue' },
+                { id: 'easy', label: 'Easier', desc: 'High context' },
+                { id: 'none', label: 'No Hint', desc: 'Blind mode' },
+              ] as const
+            ).map(diff => {
+              const isSelected = settings.hintDifficulty === diff.id;
+              return (
+                <button
+                  key={diff.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  aria-label={`${diff.label} hint: ${diff.desc}`}
+                  onClick={() =>
+                    dispatch({
+                      type: 'UPDATE_SETTINGS',
+                      settings: { hintDifficulty: diff.id as HintDifficulty },
+                    })
+                  }
+                  className={`min-h-[44px] p-2 rounded-xl border text-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                    isSelected
+                      ? 'bg-chomu-purple/15 border-chomu-purple text-chomu-text font-bold shadow-sm'
+                      : 'bg-chomu-bg border-chomu-border text-chomu-muted hover:border-chomu-muted/60'
+                  }`}
+                >
+                  <span className="text-xs font-bold block leading-tight mb-0.5">{diff.label}</span>
+                  <span className="text-[9px] text-chomu-muted block leading-none">{diff.desc}</span>
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* 4. Categories Selector (NATURAL PAGE SCROLL - NO NESTED OVERFLOW SCROLLBAR) */}
+        <Card className="bg-chomu-surface border-chomu-border p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold text-chomu-text uppercase tracking-wider">
+              Categories ({settings.selectedCategoryIds.length}/{allCategories.length})
+            </span>
+            <div className="flex items-center gap-1 text-xs">
+              <button
+                type="button"
+                onClick={handleSelectAllCategories}
+                aria-label="Select all categories"
+                className="min-h-[44px] px-3 py-2 inline-flex items-center text-chomu-purple hover:underline font-semibold rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+              >
+                All
               </button>
-            );
-          })}
-        </div>
-      </Card>
+              <span className="text-chomu-muted">&bull;</span>
+              <button
+                type="button"
+                onClick={handleClearAllCategories}
+                aria-label="Clear all categories"
+                className="min-h-[44px] px-3 py-2 inline-flex items-center text-chomu-muted hover:text-chomu-text font-medium rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+
+          {settings.selectedCategoryIds.length === 0 && (
+            <div className="bg-chomu-coral/10 border border-chomu-coral/20 text-chomu-coral text-xs p-2 rounded-xl mb-3 flex items-center gap-1.5">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>Select at least one category to play.</span>
+            </div>
+          )}
+
+          {/* Natural page flow grid without nested scrollbar */}
+          <div className="grid grid-cols-2 gap-2">
+            {allCategories.map(cat => {
+              const isSelected = settings.selectedCategoryIds.includes(cat.id);
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => handleToggleCategory(cat.id)}
+                  className={`min-h-[44px] flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                    isSelected
+                      ? 'bg-chomu-elevated border-chomu-purple text-chomu-text shadow-sm'
+                      : 'bg-chomu-bg/70 border-chomu-border text-chomu-muted hover:border-chomu-muted/40'
+                  }`}
+                >
+                  <div
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                      isSelected ? 'bg-chomu-purple text-chomu-bg' : 'bg-chomu-surface text-chomu-muted'
+                    }`}
+                  >
+                    <CategoryVectorIcon id={cat.id} className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-xs font-bold truncate block">{cat.name}</span>
+                    <span className="text-[10px] text-chomu-muted block">{cat.words.length} words</span>
+                  </div>
+                  {isSelected && <Check className="w-4 h-4 text-chomu-purple shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+    </div>
 
       {/* 5. Sticky Bottom Action Bar with 3-Player Gating */}
       <div
         className="fixed bottom-0 left-0 right-0 px-4 pt-3.5 bg-chomu-bg/95 backdrop-blur-md border-t border-chomu-border z-30"
         style={{ paddingBottom: 'calc(0.875rem + env(safe-area-inset-bottom, 0px))' }}
       >
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md md:max-w-4xl lg:max-w-5xl mx-auto">
           <Button
             variant="primary"
             size="xl"

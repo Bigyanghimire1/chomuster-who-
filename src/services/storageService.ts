@@ -1,4 +1,5 @@
 import { Category, GameSettings, Player, PlayerAvatarId } from '../types/game';
+import { HostSecretState, StoredPlayerSession } from '../types/multiplayer';
 
 const KEYS = {
   ROSTER: 'chomu_who_roster',
@@ -135,5 +136,157 @@ export const storageService = {
     const reset = players.map(p => ({ ...p, score: 0 }));
     this.savePlayers(reset);
     return reset;
+  },
+};
+
+const SESSION_KEYS = {
+  PRIMARY: 'chomu_multiplayer_session',
+  FALLBACK: 'chomu_session',
+  HOST_SECRETS: 'chomu_host_secrets',
+  PERSISTENT_PLAYER_ID: 'chomu_session_player_id',
+} as const;
+
+export const sessionService = {
+  /**
+   * Generates or retrieves a persistent player identifier for the current browser session.
+   */
+  getOrCreateSessionPlayerId(): string {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const existing = window.sessionStorage.getItem(SESSION_KEYS.PERSISTENT_PLAYER_ID);
+        if (existing && existing.trim().length > 0) {
+          return existing.trim();
+        }
+        const generated =
+          typeof crypto !== 'undefined' && crypto.randomUUID
+            ? crypto.randomUUID()
+            : `sess_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+        window.sessionStorage.setItem(SESSION_KEYS.PERSISTENT_PLAYER_ID, generated);
+        return generated;
+      }
+    } catch {
+      // In-memory fallback if sessionStorage is inaccessible
+    }
+    return `sess_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+  },
+
+  /**
+   * Saves player session into sessionStorage with dual-key fallback.
+   */
+  saveSession(session: StoredPlayerSession): void {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const serialized = JSON.stringify(session);
+        window.sessionStorage.setItem(SESSION_KEYS.PRIMARY, serialized);
+        window.sessionStorage.setItem(SESSION_KEYS.FALLBACK, serialized);
+      }
+    } catch {
+      // Ignore quota or security errors
+    }
+  },
+
+  /**
+   * Loads player session from sessionStorage (checking primary key then fallback).
+   */
+  loadSession(): StoredPlayerSession | null {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const raw =
+          window.sessionStorage.getItem(SESSION_KEYS.PRIMARY) ||
+          window.sessionStorage.getItem(SESSION_KEYS.FALLBACK);
+        if (!raw) return null;
+
+        const parsed = JSON.parse(raw);
+        if (
+          parsed &&
+          typeof parsed.roomCode === 'string' &&
+          parsed.roomCode.trim().length > 0 &&
+          typeof parsed.sessionPlayerId === 'string' &&
+          typeof parsed.playerName === 'string'
+        ) {
+          const avatar = AVATAR_LIST.includes(parsed.avatar) ? parsed.avatar : 'sleuth';
+          return {
+            roomCode: parsed.roomCode.trim().toUpperCase(),
+            sessionPlayerId: parsed.sessionPlayerId,
+            playerName: parsed.playerName.trim() || 'Player',
+            avatar,
+            savedAt: typeof parsed.savedAt === 'number' ? parsed.savedAt : Date.now(),
+          };
+        }
+      }
+    } catch {
+      // Ignore parse errors
+    }
+    return null;
+  },
+
+  /**
+   * Clears stored player session from sessionStorage.
+   */
+  clearSession(): void {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        window.sessionStorage.removeItem(SESSION_KEYS.PRIMARY);
+        window.sessionStorage.removeItem(SESSION_KEYS.FALLBACK);
+      }
+    } catch {
+      // Ignore
+    }
+  },
+
+  /**
+   * Caches the host's private secret state so a momentary page refresh can recover it.
+   */
+  saveHostSecrets(roomCode: string, secrets: HostSecretState): void {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const payload = {
+          roomCode: roomCode.trim().toUpperCase(),
+          secrets,
+          savedAt: Date.now(),
+        };
+        window.sessionStorage.setItem(SESSION_KEYS.HOST_SECRETS, JSON.stringify(payload));
+      }
+    } catch {
+      // Ignore
+    }
+  },
+
+  /**
+   * Loads cached host secret state for a given room.
+   */
+  loadHostSecrets(roomCode: string): HostSecretState | null {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const raw = window.sessionStorage.getItem(SESSION_KEYS.HOST_SECRETS);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (
+          parsed &&
+          parsed.roomCode === roomCode.trim().toUpperCase() &&
+          parsed.secrets &&
+          Array.isArray(parsed.secrets.chomuIds) &&
+          typeof parsed.secrets.secretWord === 'string'
+        ) {
+          return parsed.secrets as HostSecretState;
+        }
+      }
+    } catch {
+      // Ignore
+    }
+    return null;
+  },
+
+  /**
+   * Clears cached host secrets.
+   */
+  clearHostSecrets(): void {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        window.sessionStorage.removeItem(SESSION_KEYS.HOST_SECRETS);
+      }
+    } catch {
+      // Ignore
+    }
   },
 };

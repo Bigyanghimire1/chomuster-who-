@@ -1,10 +1,11 @@
 import { Category, PlayerAvatarId } from '../../types/game';
 import {
   ActionMessage,
+  BaseEnvelope,
   ChatMessage,
   HeartbeatMessage,
   HostSecretState,
-  JoinMessage,
+  JoinPayload,
   OnlinePlayer,
   OnlineSecretState,
   OnlineSettings,
@@ -13,10 +14,10 @@ import {
   RoomState,
   SyncMessage,
 } from '../../types/multiplayer';
-import { assignRoles, clampImposterCount } from '../roleAssignment';
+import { assignRoles } from '../roleAssignment';
 import { selectSecretWord } from '../wordSelector';
 import { assignUniqueImposterHints, WordEntry } from '../../data/wordDatabase';
-import { RandomSource } from '../random';
+import { RandomSource, secureShuffle } from '../random';
 
 /**
  * Creates default online room settings.
@@ -74,6 +75,11 @@ export function createInitialRoomState(
     winner: null,
     chomuIds: null,
     secretWord: null,
+    currentTurnPlayerId: null,
+    turnOrder: [hostPeerId],
+    turnStartTime: null,
+    turnDurationSeconds: settings.roundDurationSeconds || 30,
+    hostGracePeriodEnd: null,
   };
 }
 
@@ -167,6 +173,12 @@ export function sanitizeRoomStateForPeer(
       ? (hostSecretState ? hostSecretState.secretWord : fullRoomState.secretWord)
       : null,
     votingResult: isRevealPhase ? fullRoomState.votingResult : null,
+    winner: isRevealPhase ? fullRoomState.winner : null,
+    currentTurnPlayerId: fullRoomState.currentTurnPlayerId,
+    turnOrder: [...(fullRoomState.turnOrder || [])],
+    turnStartTime: fullRoomState.turnStartTime,
+    turnDurationSeconds: fullRoomState.turnDurationSeconds,
+    hostGracePeriodEnd: fullRoomState.hostGracePeriodEnd ?? null,
   };
 
   // Targeted private secret for this specific peer
@@ -179,31 +191,177 @@ export function sanitizeRoomStateForPeer(
 }
 
 // ============================================================================
-// Host Authoritative State Transition Engine
+// Host Authoritative State Transition Engine & Re-binding Helpers
 // ============================================================================
 
 /**
- * Handles player join or reconnection.
+ * Locates an existing player slot eligible for re-binding to an incoming peer.
+ * Checks sessionPlayerId first, then disconnected slot with matching name.
+ */
+export function findReboundPeerId(
+  players: Record<string, OnlinePlayer>,
+  sessionPlayerId?: string,
+  fallbackName?: string
+): string | null {
+  if (sessionPlayerId && sessionPlayerId.trim().length > 0) {
+    for (const [id, player] of Object.entries(players)) {
+      if (player.sessionPlayerId === sessionPlayerId) {
+        return id;
+      }
+    }
+  }
+  if (fallbackName && fallbackName.trim().length > 0) {
+    const targetName = fallbackName.trim().toLowerCase();
+    for (const [id, player] of Object.entries(players)) {
+      if (!player.isConnected && player.name.trim().toLowerCase() === targetName) {
+        return id;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Rebinds host secret state keys when a player's peer ID changes upon reconnection.
+ */
+export function rebindHostSecretState(
+  hostSecretState: HostSecretState,
+  oldPeerId: string,
+  newPeerId: string
+): HostSecretState {
+  if (oldPeerId === newPeerId) return hostSecretState;
+
+  const chomuIds = hostSecretState.chomuIds.map(id => (id === oldPeerId ? newPeerId : id));
+  const imposterHints = { ...hostSecretState.imposterHints };
+  if (oldPeerId in imposterHints) {
+    imposterHints[newPeerId] = imposterHints[oldPeerId];
+    delete imposterHints[oldPeerId];
+  }
+
+  const playerSecrets = { ...hostSecretState.playerSecrets };
+  if (oldPeerId in playerSecrets) {
+    playerSecrets[newPeerId] = playerSecrets[oldPeerId];
+    delete playerSecrets[oldPeerId];
+  }
+
+  return {
+    ...hostSecretState,
+    chomuIds,
+    imposterHints,
+    playerSecrets,
+  };
+}
+
+/**
+ * Deterministically elects the next host by sorting connected player IDs via localeCompare.
+ */
+export function electNextHost(
+  players: Record<string, OnlinePlayer>,
+  excludePeerId?: string
+): string | null {
+  const connected = Object.values(players).filter(
+    p => p.isConnected && p.id !== excludePeerId
+  );
+  if (connected.length === 0) return null;
+  connected.sort((a, b) => a.id.localeCompare(b.id));
+  return connected[0].id;
+}
+
+/**
+ * Handles player join or reconnection with atomic session re-binding.
  */
 export function handlePlayerJoin(
   state: RoomState,
   peerId: string,
   name: string,
-  avatar: PlayerAvatarId
+  avatar: PlayerAvatarId,
+  sessionPlayerId?: string
 ): RoomState {
-  const existingPlayer = state.players[peerId];
-  const isHost = peerId === state.hostPeerId || Object.keys(state.players).length === 0;
+  // 1. Direct match on existing peer ID
+  const existingDirect = state.players[peerId];
+  if (existingDirect) {
+    return {
+      ...state,
+      players: {
+        ...state.players,
+        [peerId]: {
+          ...existingDirect,
+          name: name.trim() || existingDirect.name,
+          avatar: avatar || existingDirect.avatar,
+          isConnected: true,
+          lastSeen: Date.now(),
+          sessionPlayerId: sessionPlayerId || existingDirect.sessionPlayerId,
+        },
+      },
+    };
+  }
 
+  // 2. Check for slot re-binding via persistent sessionPlayerId or disconnected matching slot
+  const reboundPeerId = findReboundPeerId(state.players, sessionPlayerId, name);
+  if (reboundPeerId && reboundPeerId !== peerId) {
+    const existingPlayer = state.players[reboundPeerId];
+    const updatedPlayers = { ...state.players };
+    delete updatedPlayers[reboundPeerId];
+
+    const isHost = existingPlayer.isHost || reboundPeerId === state.hostPeerId;
+    updatedPlayers[peerId] = {
+      id: peerId,
+      name: name.trim() || existingPlayer.name,
+      avatar: avatar || existingPlayer.avatar,
+      isHost,
+      isReady: existingPlayer.isReady,
+      isConnected: true,
+      score: existingPlayer.score,
+      hasSeenRole: existingPlayer.hasSeenRole,
+      votedForId: existingPlayer.votedForId,
+      isSpeaking: false,
+      lastSeen: Date.now(),
+      sessionPlayerId: sessionPlayerId || existingPlayer.sessionPlayerId,
+    };
+
+    // Re-bind other players' votes if they voted for old peer ID
+    for (const [pId, p] of Object.entries(updatedPlayers)) {
+      if (p.votedForId === reboundPeerId) {
+        updatedPlayers[pId] = { ...p, votedForId: peerId };
+      }
+    }
+
+    // Re-bind spotlight fields
+    const currentTurnPlayerId =
+      state.currentTurnPlayerId === reboundPeerId ? peerId : state.currentTurnPlayerId;
+    const turnOrder = (state.turnOrder || []).map(id => (id === reboundPeerId ? peerId : id));
+    const hostPeerId = state.hostPeerId === reboundPeerId ? peerId : state.hostPeerId;
+
+    return {
+      ...state,
+      hostPeerId,
+      players: updatedPlayers,
+      currentTurnPlayerId,
+      turnOrder,
+    };
+  }
+
+  // 3. Brand new player join
+  // Phase guard: new joins are rejected outside LOBBY if not re-binding
+  if (state.phase !== 'LOBBY') {
+    return state;
+  }
+
+  const isHost = peerId === state.hostPeerId || Object.keys(state.players).length === 0;
   const player: OnlinePlayer = {
     id: peerId,
     name: name.trim() || `Player ${Object.keys(state.players).length + 1}`,
     avatar,
     isHost,
-    isReady: existingPlayer ? existingPlayer.isReady : false,
+    isReady: isHost,
     isConnected: true,
-    score: existingPlayer ? existingPlayer.score : 0,
+    score: 0,
     lastSeen: Date.now(),
+    sessionPlayerId,
   };
+
+  const turnOrder = state.turnOrder || [];
+  const updatedTurnOrder = turnOrder.includes(peerId) ? turnOrder : [...turnOrder, peerId];
 
   return {
     ...state,
@@ -212,6 +370,7 @@ export function handlePlayerJoin(
       ...state.players,
       [peerId]: player,
     },
+    turnOrder: updatedTurnOrder,
   };
 }
 
@@ -229,22 +388,32 @@ export function handlePlayerLeave(state: RoomState, peerId: string): RoomState {
   };
 
   let nextHostPeerId = state.hostPeerId;
-  // If host disconnected, migrate host status to the first connected player
+  // If host disconnected, migrate host status deterministically
   if (peerId === state.hostPeerId) {
-    const nextConnected = Object.values(updatedPlayers).find(p => p.isConnected && p.id !== peerId);
-    if (nextConnected) {
-      nextHostPeerId = nextConnected.id;
-      updatedPlayers[nextConnected.id] = {
-        ...nextConnected,
+    const nextConnectedId = electNextHost(updatedPlayers, peerId);
+    if (nextConnectedId) {
+      nextHostPeerId = nextConnectedId;
+      updatedPlayers[nextConnectedId] = {
+        ...updatedPlayers[nextConnectedId],
         isHost: true,
       };
     }
+  }
+
+  // Turn management if leaving player is the active turn player during ROUND
+  let nextTurnPlayerId = state.currentTurnPlayerId;
+  const nextTurnOrder = (state.turnOrder || []).filter(id => id !== peerId);
+  if (state.phase === 'ROUND' && state.currentTurnPlayerId === peerId) {
+    const remainingConnected = nextTurnOrder.filter(id => updatedPlayers[id]?.isConnected);
+    nextTurnPlayerId = remainingConnected[0] || null;
   }
 
   return {
     ...state,
     hostPeerId: nextHostPeerId,
     players: updatedPlayers,
+    currentTurnPlayerId: nextTurnPlayerId,
+    turnOrder: nextTurnOrder,
   };
 }
 
@@ -252,8 +421,9 @@ export function handlePlayerLeave(state: RoomState, peerId: string): RoomState {
  * Handles player ready toggle in lobby.
  */
 export function handleSetReady(state: RoomState, peerId: string, isReady: boolean): RoomState {
+  if (state.phase !== 'LOBBY') return state;
   const player = state.players[peerId];
-  if (!player) return state;
+  if (!player || player.isReady === isReady) return state;
 
   return {
     ...state,
@@ -274,9 +444,8 @@ export function handleUpdateSettings(
   state: RoomState,
   newSettings: Partial<OnlineSettings>
 ): RoomState {
-  const playerCount = Object.values(state.players).filter(p => p.isConnected).length;
   const requestedChomu = newSettings.chomuCount ?? state.settings.chomuCount;
-  const clampedChomu = clampImposterCount(playerCount || 3, requestedChomu);
+  const clampedChomu = Math.min(3, Math.max(1, requestedChomu));
 
   const updatedSettings: OnlineSettings = {
     ...state.settings,
@@ -348,6 +517,9 @@ export function handleStartGame(
     };
   }
 
+  // 6. Build turn order for round spotlight
+  const turnOrder = secureShuffle(activePlayers.map(p => p.id), randomSource);
+
   const nextState: RoomState = {
     ...state,
     phase: 'ROLE_REVEAL',
@@ -359,6 +531,11 @@ export function handleStartGame(
     winner: null,
     chomuIds: null,
     secretWord: null,
+    currentTurnPlayerId: null,
+    turnOrder,
+    turnStartTime: null,
+    turnDurationSeconds: state.settings.roundDurationSeconds || 30,
+    hostGracePeriodEnd: null,
   };
 
   return { nextState, hostSecretState, updatedUsedWords };
@@ -369,8 +546,9 @@ export function handleStartGame(
  * Automatically advances to 'ROUND' phase once all connected players acknowledge.
  */
 export function handleRoleAcknowledged(state: RoomState, peerId: string): RoomState {
+  if (state.phase !== 'ROLE_REVEAL') return state;
   const player = state.players[peerId];
-  if (!player) return state;
+  if (!player || player.hasSeenRole) return state;
 
   const updatedPlayers = {
     ...state.players,
@@ -385,11 +563,18 @@ export function handleRoleAcknowledged(state: RoomState, peerId: string): RoomSt
   const allAcknowledged = connectedPlayers.length > 0 && connectedPlayers.every(p => p.hasSeenRole);
 
   if (allAcknowledged) {
+    const turnOrder = (state.turnOrder && state.turnOrder.length > 0)
+      ? state.turnOrder.filter(id => updatedPlayers[id]?.isConnected)
+      : Object.keys(updatedPlayers).filter(id => updatedPlayers[id].isConnected);
+
     return {
       ...state,
       phase: 'ROUND',
       players: updatedPlayers,
       roundStartTime: Date.now(),
+      currentTurnPlayerId: turnOrder[0] || null,
+      turnOrder,
+      turnStartTime: Date.now(),
     };
   }
 
@@ -403,10 +588,47 @@ export function handleRoleAcknowledged(state: RoomState, peerId: string): RoomSt
  * Manually starts the discussion round.
  */
 export function handleStartRound(state: RoomState): RoomState {
+  if (state.phase !== 'ROLE_REVEAL' && state.phase !== 'ROUND') return state;
+  const turnOrder = (state.turnOrder && state.turnOrder.length > 0)
+    ? state.turnOrder.filter(id => state.players[id]?.isConnected)
+    : Object.keys(state.players).filter(id => state.players[id].isConnected);
+
   return {
     ...state,
     phase: 'ROUND',
-    roundStartTime: Date.now(),
+    roundStartTime: state.roundStartTime || Date.now(),
+    currentTurnPlayerId: state.currentTurnPlayerId || turnOrder[0] || null,
+    turnOrder,
+    turnStartTime: state.turnStartTime || Date.now(),
+  };
+}
+
+/**
+ * Advances the active turn spotlight to the next player, or advances to VOTING if all finished.
+ */
+export function handleNextTurn(state: RoomState): RoomState {
+  if (state.phase !== 'ROUND') return state;
+  const connectedTurnOrder = (state.turnOrder || []).filter(
+    id => state.players[id] && state.players[id].isConnected
+  );
+
+  if (connectedTurnOrder.length === 0) {
+    return handleStartVoting(state);
+  }
+
+  const currentIdx = state.currentTurnPlayerId
+    ? connectedTurnOrder.indexOf(state.currentTurnPlayerId)
+    : -1;
+
+  if (currentIdx === -1 || currentIdx >= connectedTurnOrder.length - 1) {
+    return handleStartVoting(state);
+  }
+
+  const nextPlayerId = connectedTurnOrder[currentIdx + 1];
+  return {
+    ...state,
+    currentTurnPlayerId: nextPlayerId,
+    turnStartTime: Date.now(),
   };
 }
 
@@ -414,6 +636,7 @@ export function handleStartRound(state: RoomState): RoomState {
  * Transitions from round to voting phase.
  */
 export function handleStartVoting(state: RoomState): RoomState {
+  if (state.phase !== 'ROUND') return state;
   const resetVotePlayers: Record<string, OnlinePlayer> = {};
   for (const [id, player] of Object.entries(state.players)) {
     resetVotePlayers[id] = {
@@ -427,19 +650,24 @@ export function handleStartVoting(state: RoomState): RoomState {
     phase: 'VOTING',
     players: resetVotePlayers,
     votingStartTime: Date.now(),
+    currentTurnPlayerId: null,
+    turnStartTime: null,
   };
 }
 
 /**
  * Records a player's vote during the voting phase.
  */
-export function handleCastVote(
-  state: RoomState,
+export function handleCastVote<T extends RoomState = RoomState>(
+  state: T,
   voterId: string,
   targetPlayerId: string
-): RoomState {
+): T {
+  if (state.phase !== 'VOTING') return state;
   const voter = state.players[voterId];
-  if (!voter) return state;
+  const target = state.players[targetPlayerId];
+  if (!voter || !target) return state;
+  if (voter.votedForId === targetPlayerId) return state;
 
   return {
     ...state,
@@ -460,6 +688,11 @@ export function handleCalculateResults(
   state: RoomState,
   hostSecretState: HostSecretState
 ): RoomState {
+  // Guard against redundant calculation to protect scores from multiplying
+  if (state.phase === 'RESULTS' || state.votingResult !== null) {
+    return state;
+  }
+
   const connectedPlayers = Object.values(state.players).filter(p => p.isConnected);
   const votes: Record<string, string> = {};
   const voteCounts: Record<string, number> = {};
@@ -522,6 +755,40 @@ export function handleCalculateResults(
     winner,
     chomuIds: [...hostSecretState.chomuIds],
     secretWord: hostSecretState.secretWord,
+    currentTurnPlayerId: null,
+    turnStartTime: null,
+  };
+}
+
+/**
+ * Aborts an active round and safely returns all participants to the LOBBY.
+ */
+export function handleAbortRoundToLobby(state: RoomState, _reason?: string): RoomState {
+  const resetPlayers: Record<string, OnlinePlayer> = {};
+  for (const [id, player] of Object.entries(state.players)) {
+    resetPlayers[id] = {
+      ...player,
+      isReady: false,
+      hasSeenRole: false,
+      votedForId: null,
+      isSpeaking: false,
+    };
+  }
+
+  return {
+    ...state,
+    phase: 'LOBBY',
+    players: resetPlayers,
+    secretCategory: null,
+    roundStartTime: null,
+    votingStartTime: null,
+    votingResult: null,
+    winner: null,
+    chomuIds: null,
+    secretWord: null,
+    currentTurnPlayerId: null,
+    turnStartTime: null,
+    hostGracePeriodEnd: null,
   };
 }
 
@@ -552,6 +819,9 @@ export function handleNextRound(state: RoomState): RoomState {
     winner: null,
     chomuIds: null,
     secretWord: null,
+    currentTurnPlayerId: null,
+    turnStartTime: null,
+    hostGracePeriodEnd: null,
   };
 }
 
@@ -584,8 +854,9 @@ export function handleKickPlayer(state: RoomState, targetPlayerId: string): Room
 export function createJoinRequestMessage(
   senderId: string,
   name: string,
-  avatar: PlayerAvatarId
-): JoinMessage {
+  avatar: PlayerAvatarId,
+  sessionPlayerId?: string
+): BaseEnvelope<'JOIN', Extract<JoinPayload, { kind: 'JOIN_REQUEST' }>> {
   return {
     type: 'JOIN',
     senderId,
@@ -594,6 +865,7 @@ export function createJoinRequestMessage(
       kind: 'JOIN_REQUEST',
       name,
       avatar,
+      sessionPlayerId,
     },
   };
 }
@@ -603,8 +875,9 @@ export function createJoinAckMessage(
   accepted: boolean,
   roomCode: string,
   reason?: string,
-  assignedId?: string
-): JoinMessage {
+  assignedId?: string,
+  sessionPlayerId?: string
+): BaseEnvelope<'JOIN', Extract<JoinPayload, { kind: 'JOIN_ACK' }>> {
   return {
     type: 'JOIN',
     senderId,
@@ -615,6 +888,7 @@ export function createJoinAckMessage(
       roomCode,
       reason,
       assignedId,
+      sessionPlayerId,
     },
   };
 }
@@ -669,7 +943,8 @@ export function createHeartbeatMessage(
   senderId: string,
   kind: 'PING' | 'PONG',
   clientTimestamp: number,
-  serverTimestamp?: number
+  serverTimestamp?: number,
+  isReconcile?: boolean
 ): HeartbeatMessage {
   return {
     type: 'HEARTBEAT',
@@ -679,6 +954,7 @@ export function createHeartbeatMessage(
       kind,
       clientTimestamp,
       serverTimestamp,
+      isReconcile,
     },
   };
 }

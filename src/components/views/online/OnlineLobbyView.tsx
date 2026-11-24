@@ -147,7 +147,7 @@ export const OnlineLobbyView: React.FC = () => {
     typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
   return (
-    <div className="flex flex-col flex-1 max-w-2xl mx-auto w-full px-4 py-4 select-none animate-fade-in space-y-4">
+    <div className="flex flex-col flex-1 max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 select-none animate-fade-in space-y-4 pb-28 sm:pb-24">
       {/* Top Navigation & Leave */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -185,8 +185,9 @@ export const OnlineLobbyView: React.FC = () => {
               </span>
               <button
                 onClick={handleCopyCode}
-                className="p-1.5 rounded-xl bg-chomu-elevated hover:bg-chomu-border text-chomu-muted hover:text-chomu-text transition-colors"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-chomu-elevated hover:bg-chomu-border text-chomu-muted hover:text-chomu-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
                 title="Copy Room Code"
+                aria-label="Copy Room Code"
               >
                 {copiedCode ? (
                   <Check className="w-4 h-4 text-chomu-lime" />
@@ -252,16 +253,17 @@ export const OnlineLobbyView: React.FC = () => {
         {isHost && (
           <button
             onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
-            className="text-xs font-bold text-chomu-purple hover:text-chomu-text flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-chomu-surface border border-chomu-border hover:bg-chomu-elevated transition-colors"
+            aria-label="Toggle Room Settings"
+            className="text-xs font-bold text-chomu-purple hover:text-chomu-text flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-chomu-surface border border-chomu-border hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
           >
-            <Settings2 className="w-3.5 h-3.5" />
+            <Settings2 className="w-4 h-4" />
             <span>Room Settings</span>
           </button>
         )}
       </div>
 
-      {/* Players Grid with Video Tiles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+      {/* Players Grid with Video Tiles (Responsive 1-4 columns) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {players.map((p) => {
           const isMe = p.id === myPlayerId;
           const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
@@ -281,10 +283,11 @@ export const OnlineLobbyView: React.FC = () => {
                   isHost && !p.isHost && p.id !== myPlayerId ? (
                     <button
                       onClick={() => kickPlayer(p.id)}
-                      className="p-1 text-chomu-muted hover:text-chomu-coral hover:bg-chomu-coral/20 rounded-lg transition-colors"
+                      className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-chomu-muted hover:text-chomu-coral hover:bg-chomu-coral/20 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral"
                       title="Kick player"
+                      aria-label={`Kick ${p.name}`}
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-4 h-4" />
                     </button>
                   ) : null
                 }
@@ -364,15 +367,19 @@ export const OnlineLobbyView: React.FC = () => {
               <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
                 Chomus (Imposters)
               </label>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div role="radiogroup" aria-label="Select Chomu count" className="grid grid-cols-3 gap-1.5">
                 {[1, 2, 3].map((count) => {
                   const isSelected = currentSettings.chomuCount === count;
                   return (
                     <button
                       key={count}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      aria-label={`${count} Chomus`}
                       disabled={!isHost}
                       onClick={() => handleChomuCountChange(count)}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-black border transition-all ${
+                      className={`min-h-[44px] py-1.5 px-2 rounded-xl text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral ${
                         isSelected
                           ? 'bg-chomu-coral text-chomu-bg border-chomu-coral shadow-md'
                           : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'
@@ -390,7 +397,7 @@ export const OnlineLobbyView: React.FC = () => {
               <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
                 Round Duration
               </label>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div role="radiogroup" aria-label="Select round duration" className="grid grid-cols-3 gap-1.5">
                 {[
                   { label: '2m', sec: 120 },
                   { label: '3m', sec: 180 },
@@ -400,9 +407,13 @@ export const OnlineLobbyView: React.FC = () => {
                   return (
                     <button
                       key={d.sec}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      aria-label={`${d.label} round duration`}
                       disabled={!isHost}
                       onClick={() => handleRoundDurationChange(d.sec)}
-                      className={`py-1.5 px-2 rounded-xl text-xs font-black border transition-all ${
+                      className={`min-h-[44px] py-1.5 px-2 rounded-xl text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-lime ${
                         isSelected
                           ? 'bg-chomu-lime text-chomu-bg border-chomu-lime shadow-md'
                           : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'
@@ -420,15 +431,19 @@ export const OnlineLobbyView: React.FC = () => {
               <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
                 Chomu Hint
               </label>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div role="radiogroup" aria-label="Select hint difficulty" className="grid grid-cols-2 gap-1.5">
                 {(['subtle', 'balanced', 'easy', 'none'] as HintDifficulty[]).map((h) => {
                   const isSelected = currentSettings.hintDifficulty === h;
                   return (
                     <button
                       key={h}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      aria-label={`${h} hint difficulty`}
                       disabled={!isHost}
                       onClick={() => handleHintDifficultyChange(h)}
-                      className={`py-1 px-1.5 rounded-xl text-[11px] font-black border capitalize transition-all ${
+                      className={`min-h-[44px] py-1 px-1.5 rounded-xl text-[11px] font-black border capitalize transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
                         isSelected
                           ? 'bg-chomu-purple text-chomu-bg border-chomu-purple shadow-md'
                           : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'

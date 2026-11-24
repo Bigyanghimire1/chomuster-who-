@@ -24,6 +24,7 @@ export interface OnlinePlayer {
   votedForId?: string | null;
   score: number;
   lastSeen?: number; // Timestamp for heartbeat & drop detection
+  sessionPlayerId?: string; // Persistent session identifier across page refreshes
 }
 export type PlayerState = OnlinePlayer;
 
@@ -96,6 +97,27 @@ export interface RoomState {
   // Strictly null during active game, revealed ONLY in 'RESULTS' phase.
   chomuIds: string[] | null;
   secretWord: string | null;
+
+  // Authoritative Spotlight & Turn Fields
+  currentTurnPlayerId: string | null;
+  turnOrder: string[];
+  turnStartTime: number | null;
+  turnDurationSeconds: number;
+
+  // Host migration grace period (null or timestamp when grace period ends)
+  hostGracePeriodEnd?: number | null;
+}
+
+/**
+ * Session storage persistence contract for seamless page refresh recovery.
+ * Stored under 'chomu_multiplayer_session' (with 'chomu_session' fallback).
+ */
+export interface StoredPlayerSession {
+  roomCode: string;
+  sessionPlayerId: string; // Persistent UUID/token
+  playerName: string;
+  avatar: PlayerAvatarId;
+  savedAt: number;
 }
 
 /**
@@ -129,6 +151,7 @@ export type JoinPayload =
       kind: 'JOIN_REQUEST';
       name: string;
       avatar: PlayerAvatarId;
+      sessionPlayerId?: string;
     }
   | {
       kind: 'JOIN_ACK';
@@ -136,6 +159,7 @@ export type JoinPayload =
       roomCode: string;
       reason?: string;
       assignedId?: string;
+      sessionPlayerId?: string;
     };
 
 export type JoinMessage = BaseEnvelope<'JOIN', JoinPayload>;
@@ -163,7 +187,11 @@ export type RoomAction =
   | { type: 'RESET_LOBBY' }
   | { type: 'UPDATE_SETTINGS'; settings: Partial<OnlineSettings> }
   | { type: 'KICK_PLAYER'; targetPlayerId: string }
-  | { type: 'UPDATE_SPEAKING'; isSpeaking: boolean };
+  | { type: 'UPDATE_SPEAKING'; isSpeaking: boolean }
+  | { type: 'NEXT_TURN' }
+  | { type: 'ABORT_ROUND_TO_LOBBY'; reason?: string }
+  | { type: 'REVEAL_SECRET_FOR_RESULTS'; secret: OnlineSecretState }
+  | { type: 'HOST_LEAVE'; nextHostId?: string };
 
 export type ActionMessage = BaseEnvelope<'ACTION', RoomAction>;
 
@@ -182,6 +210,7 @@ export interface HeartbeatPayload {
   kind: 'PING' | 'PONG';
   clientTimestamp: number;
   serverTimestamp?: number;
+  isReconcile?: boolean;
 }
 
 export type HeartbeatMessage = BaseEnvelope<'HEARTBEAT', HeartbeatPayload>;

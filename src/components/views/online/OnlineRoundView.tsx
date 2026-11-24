@@ -83,7 +83,7 @@ export const OnlineRoundView: React.FC = () => {
   const fallbackTurnPlayer = players[fallbackTurnIndex] || players[0];
 
   const currentTurnPlayerId =
-    (roomState as any)?.currentTurnPlayerId || fallbackTurnPlayer?.id;
+    roomState?.currentTurnPlayerId || fallbackTurnPlayer?.id;
   const spotlightPlayer =
     players.find((p) => p.id === currentTurnPlayerId) || fallbackTurnPlayer || players[0];
   const otherPlayers = players.filter((p) => p.id !== spotlightPlayer?.id);
@@ -156,6 +156,12 @@ export const OnlineRoundView: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
+        <div className="bg-amber-500/20 border border-amber-500/40 text-amber-200 px-4 py-2 rounded-2xl text-xs font-bold text-center animate-pulse">
+          Host connection interrupted. Waiting for reconnection (10s grace period)...
+        </div>
+      )}
 
       {/* Live Voice Activity Status Strip */}
       <Card className="bg-gradient-to-r from-chomu-elevated via-chomu-surface to-chomu-elevated border-2 border-chomu-purple/40 p-3 flex items-center justify-between shadow-lg">

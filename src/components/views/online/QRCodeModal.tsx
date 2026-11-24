@@ -92,7 +92,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-chomu-surface border border-chomu-border rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-5 text-center animate-scale-in"
+        className="bg-chomu-surface border border-chomu-border rounded-3xl max-w-sm sm:max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 text-center animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -112,7 +112,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-elevated transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-chomu-muted hover:text-chomu-text hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />

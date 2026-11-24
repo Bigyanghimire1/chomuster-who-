@@ -98,6 +98,12 @@ export const OnlineVotingView: React.FC = () => {
         </div>
       </div>
 
+      {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
+        <div className="bg-amber-500/20 border border-amber-500/40 text-amber-200 px-4 py-2 rounded-2xl text-xs font-bold text-center animate-pulse">
+          Host connection interrupted. Waiting for reconnection (10s grace period)...
+        </div>
+      )}
+
       {/* Voting Progress Status */}
       <Card className="bg-chomu-surface/80 border border-chomu-border p-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
