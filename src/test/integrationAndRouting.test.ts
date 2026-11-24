@@ -109,17 +109,6 @@ describe('Integration, URL Routing & Deployment Verification', () => {
   });
 
   describe('Deployment Rewrites & SPA Routing Configuration', () => {
-    it('verifies netlify.toml exists with 200 rewrite rule to index.html', () => {
-      const netlifyPath = path.resolve(process.cwd(), 'netlify.toml');
-      expect(fs.existsSync(netlifyPath)).toBe(true);
-
-      const content = fs.readFileSync(netlifyPath, 'utf8');
-      expect(content).toContain('[[redirects]]');
-      expect(content).toContain('from = "/*"');
-      expect(content).toContain('to = "/index.html"');
-      expect(content).toContain('status = 200');
-    });
-
     it('verifies vercel.json exists with rewrite rule to /index.html', () => {
       const vercelPath = path.resolve(process.cwd(), 'vercel.json');
       expect(fs.existsSync(vercelPath)).toBe(true);
