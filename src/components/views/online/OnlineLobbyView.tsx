@@ -10,7 +10,6 @@ import {
   LogOut,
   X,
   Clock,
-  Sparkles,
 } from 'lucide-react';
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
@@ -73,9 +72,7 @@ export const OnlineLobbyView: React.FC = () => {
       audioService.playButtonTap();
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
-    } catch {
-      // Ignore clipboard error
-    }
+    } catch {}
   };
 
   const handleCopyCode = async () => {
@@ -87,23 +84,19 @@ export const OnlineLobbyView: React.FC = () => {
       audioService.playButtonTap();
       setCopiedCode(true);
       setTimeout(() => setCopiedCode(false), 2000);
-    } catch {
-      // Ignore clipboard error
-    }
+    } catch {}
   };
 
   const handleShare = async () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Join my Chomu Who room!',
-          text: `Join our party game of Chomu Who! Room code: ${roomCode}`,
+          title: 'Join my Chomu Who room',
+          text: `Join our game of Chomu Who. Room code: ${roomCode}`,
           url: inviteUrl,
         });
         audioService.playButtonTap();
-      } catch {
-        // Share cancelled or rejected
-      }
+      } catch {}
     } else {
       handleCopyLink();
     }
@@ -118,7 +111,7 @@ export const OnlineLobbyView: React.FC = () => {
     const prev = currentSettings.categoryIds || [];
     let next: string[];
     if (prev.includes(catId)) {
-      if (prev.length <= 1) return; // Must keep at least one category
+      if (prev.length <= 1) return;
       next = prev.filter((id) => id !== catId);
     } else {
       next = [...prev, catId];
@@ -147,68 +140,65 @@ export const OnlineLobbyView: React.FC = () => {
     typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
   return (
-    <div className="flex flex-col flex-1 max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 select-none animate-fade-in space-y-4 pb-28 sm:pb-24">
-      {/* Top Navigation & Leave */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-5">
+      {/* Top Bar */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
           <Badge variant="purple" size="md">
-            ONLINE MULTIPLAYER
+            Online lobby
           </Badge>
-          <span className="text-xs text-chomu-muted font-bold">
-            {players.length} {players.length === 1 ? 'Player' : 'Players'}
+          <span className="text-xs font-mono text-chomu-secondary tabular-nums">
+            {players.length} {players.length === 1 ? 'player' : 'players'}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={leaveRoom}
-            leftIcon={<LogOut className="w-3.5 h-3.5 text-chomu-muted" />}
-          >
-            Leave
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={leaveRoom}
+          leftIcon={<LogOut className="w-4 h-4" strokeWidth={1.5} />}
+        >
+          Leave room
+        </Button>
       </div>
 
-      {/* Room Code & Invite Share Card */}
-      <Card className="bg-gradient-to-br from-chomu-surface via-chomu-surface to-chomu-elevated border-2 border-chomu-purple/40 p-4 sm:p-5 relative overflow-hidden shadow-2xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* Room Code Display */}
-          <div className="text-center sm:text-left space-y-1">
-            <span className="text-[11px] font-black uppercase tracking-widest text-chomu-muted">
-              Room Code
+      {/* Room Code & Invite Dossier Card */}
+      <Card className="p-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-chomu-muted block">
+              Room code
             </span>
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <span className="text-3xl sm:text-4xl font-mono font-black text-chomu-lime tracking-[0.2em] drop-shadow-md">
+            <div className="flex items-center gap-2.5">
+              <span className="text-3xl font-mono font-semibold text-chomu-text tracking-[0.2em] tabular-nums">
                 {roomCode || '----'}
               </span>
               <button
+                type="button"
                 onClick={handleCopyCode}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-chomu-elevated hover:bg-chomu-border text-chomu-muted hover:text-chomu-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
-                title="Copy Room Code"
-                aria-label="Copy Room Code"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[10px] bg-chomu-elevated border border-white/[0.08] text-chomu-secondary hover:text-chomu-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+                title="Copy room code"
+                aria-label="Copy room code"
               >
                 {copiedCode ? (
-                  <Check className="w-4 h-4 text-chomu-lime" />
+                  <Check className="w-4 h-4 text-chomu-lime" strokeWidth={1.5} />
                 ) : (
-                  <Copy className="w-4 h-4" />
+                  <Copy className="w-4 h-4" strokeWidth={1.5} />
                 )}
               </button>
             </div>
-            <p className="text-[11px] text-chomu-muted font-medium">
+            <p className="text-xs text-chomu-secondary">
               Share this code or invite link with your friends
             </p>
           </div>
 
-          {/* Quick Actions: Share, Copy Link, QR Code */}
-          <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2">
             {isWebShareSupported && (
               <Button
                 variant="primary"
                 size="md"
                 onClick={handleShare}
-                leftIcon={<Share2 className="w-4 h-4" />}
+                leftIcon={<Share2 className="w-4 h-4" strokeWidth={1.5} />}
               >
                 Share
               </Button>
@@ -220,218 +210,228 @@ export const OnlineLobbyView: React.FC = () => {
               onClick={handleCopyLink}
               leftIcon={
                 copiedLink ? (
-                  <Check className="w-4 h-4 text-chomu-lime" />
+                  <Check className="w-4 h-4" strokeWidth={1.5} />
                 ) : (
-                  <Copy className="w-4 h-4 text-chomu-muted" />
+                  <Copy className="w-4 h-4" strokeWidth={1.5} />
                 )
               }
             >
-              {copiedLink ? 'Copied!' : 'Copy Link'}
+              {copiedLink ? 'Link copied' : 'Copy link'}
             </Button>
 
             <Button
               variant="secondary"
               size="md"
               onClick={() => setIsQrOpen(true)}
-              leftIcon={<QrCode className="w-4 h-4 text-chomu-muted" />}
+              leftIcon={<QrCode className="w-4 h-4" strokeWidth={1.5} />}
             >
-              QR Code
+              QR code
             </Button>
           </div>
         </div>
       </Card>
 
-      {/* Players Section Header */}
-      <div className="flex items-center justify-between pt-1">
-        <div className="flex items-center gap-2">
-          <Users className="w-4 h-4 text-chomu-purple" />
-          <h2 className="text-sm font-black text-chomu-text uppercase tracking-wider">
-            Joined Players ({players.length})
-          </h2>
-        </div>
-
-        {isHost && (
-          <button
-            onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
-            aria-label="Toggle Room Settings"
-            className="text-xs font-bold text-chomu-purple hover:text-chomu-text flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-chomu-surface border border-chomu-border hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
-          >
-            <Settings2 className="w-4 h-4" />
-            <span>Room Settings</span>
-          </button>
-        )}
-      </div>
-
-      {/* Players Grid with Video Tiles (Responsive 1-4 columns) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {players.map((p) => {
-          const isMe = p.id === myPlayerId;
-          const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
-          const stream = isMe ? localStream : peerStreams[p.id] || null;
-
-          return (
-            <div
-              key={p.id}
-              className="relative aspect-video min-h-[160px] sm:min-h-[180px]"
-            >
-              <VideoCard
-                player={p}
-                stream={stream}
-                isSpeaking={isPeerSpeaking}
-                isLocal={isMe}
-                actionSlot={
-                  isHost && !p.isHost && p.id !== myPlayerId ? (
-                    <button
-                      onClick={() => kickPlayer(p.id)}
-                      className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-chomu-muted hover:text-chomu-coral hover:bg-chomu-coral/20 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral"
-                      title="Kick player"
-                      aria-label={`Kick ${p.name}`}
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  ) : null
-                }
-              />
-
-              {/* Ready / Waiting Badge Overlay */}
-              <div className="absolute top-2 right-2 z-10 pointer-events-none">
-                {p.isReady ? (
-                  <Badge variant="lime" size="sm" className="shadow-md">
-                    <Check className="w-3 h-3 inline mr-0.5" /> Ready
-                  </Badge>
-                ) : (
-                  <Badge variant="muted" size="sm" className="shadow-md">
-                    <Clock className="w-3 h-3 inline mr-0.5" /> Waiting
-                  </Badge>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Host Settings Section (Collapsible Drawer / Card) */}
-      {(isHost || showSettingsDrawer) && (
-        <Card className="bg-chomu-surface/90 border border-chomu-border p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-chomu-border/60 pb-2.5">
+      {/* Main Content Grid: Players & Settings */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start flex-1">
+        {/* Left: Players Grid */}
+        <div className={`${isHost || showSettingsDrawer ? 'lg:col-span-7' : 'lg:col-span-12'} space-y-3`}>
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Settings2 className="w-4 h-4 text-chomu-lime" />
-              <h3 className="text-sm font-black text-chomu-text uppercase tracking-wider">
-                {isHost ? 'Host Game Settings' : 'Room Rules & Settings'}
-              </h3>
-            </div>
-            {isHost && (
-              <span className="text-[10px] text-chomu-lime font-bold uppercase tracking-wider">
-                Host Editable
+              <Users className="w-4 h-4 text-chomu-secondary" strokeWidth={1.5} />
+              <h2 className="text-sm font-semibold text-chomu-text">
+                Players in lobby
+              </h2>
+              <span className="text-xs font-mono text-chomu-muted tabular-nums">
+                ({players.length})
               </span>
+            </div>
+
+            {!isHost && (
+              <button
+                type="button"
+                onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
+                aria-label="Toggle room settings"
+                className="text-xs font-medium text-chomu-secondary hover:text-chomu-text flex items-center gap-1.5 min-h-[44px] px-3 rounded-[10px] bg-chomu-surface border border-white/[0.08] hover:bg-chomu-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+              >
+                <Settings2 className="w-4 h-4" strokeWidth={1.5} />
+                <span>{showSettingsDrawer ? 'Hide settings' : 'Room settings'}</span>
+              </button>
             )}
           </div>
 
-          {/* 1. Category Selector */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider flex items-center justify-between">
-              <span>Categories ({currentSettings.categoryIds.length} Selected)</span>
-              <span className="text-[10px] text-chomu-muted font-normal lowercase">
-                at least 1 required
-              </span>
-            </label>
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 ${
+              isHost || showSettingsDrawer ? 'xl:grid-cols-2' : 'md:grid-cols-3 lg:grid-cols-4'
+            } gap-3`}
+          >
+            {players.map((p) => {
+              const isMe = p.id === myPlayerId;
+              const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
+              const stream = isMe ? localStream : peerStreams[p.id] || null;
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {DEFAULT_CATEGORIES.map((cat) => {
-                const isSelected = currentSettings.categoryIds.includes(cat.id);
-                return (
-                  <button
-                    key={cat.id}
-                    disabled={!isHost}
-                    onClick={() => handleCategoryToggle(cat.id)}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
-                      isSelected
-                        ? 'bg-chomu-purple/20 border-chomu-purple text-chomu-text shadow-sm'
-                        : 'bg-chomu-bg/60 border-chomu-border/60 text-chomu-muted hover:border-chomu-border'
-                    } ${!isHost ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black truncate">{cat.name}</span>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-chomu-purple" />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+              return (
+                <div
+                  key={p.id}
+                  className="relative aspect-video min-h-[160px]"
+                >
+                  <VideoCard
+                    player={p}
+                    stream={stream}
+                    isSpeaking={isPeerSpeaking}
+                    isLocal={isMe}
+                    actionSlot={
+                      <div className="flex items-center gap-1.5">
+                        {p.isReady ? (
+                          <Badge variant="lime" size="sm">
+                            <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+                            <span>Ready</span>
+                          </Badge>
+                        ) : (
+                          <Badge variant="muted" size="sm">
+                            <Clock className="w-3.5 h-3.5" strokeWidth={1.5} />
+                            <span>Waiting</span>
+                          </Badge>
+                        )}
+                        {isHost && !p.isHost && p.id !== myPlayerId && (
+                          <button
+                            type="button"
+                            onClick={() => kickPlayer(p.id)}
+                            className="min-w-[44px] min-h-[44px] -my-2 -mr-2 flex items-center justify-center text-chomu-secondary hover:text-chomu-coral hover:bg-chomu-bgSecondary/90 rounded-[10px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral"
+                            title="Remove player"
+                            aria-label={`Remove ${p.name}`}
+                          >
+                            <X className="w-4 h-4" strokeWidth={1.5} />
+                          </button>
+                        )}
+                      </div>
+                    }
+                  />
+                </div>
+              );
+            })}
           </div>
+        </div>
 
-          {/* 2. Round Duration & Chomu Count Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-            {/* Chomu Count */}
-            <div>
-              <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
-                Chomus (Imposters)
-              </label>
-              <div role="radiogroup" aria-label="Select Chomu count" className="grid grid-cols-3 gap-1.5">
-                {[1, 2, 3].map((count) => {
-                  const isSelected = currentSettings.chomuCount === count;
+        {/* Right: Host Settings */}
+        {(isHost || showSettingsDrawer) && (
+          <Card className="lg:col-span-5 p-5 space-y-5">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+              <div className="flex items-center gap-2">
+                <Settings2 className="w-4 h-4 text-chomu-secondary" strokeWidth={1.5} />
+                <h2 className="text-sm font-semibold text-chomu-text">
+                  {isHost ? 'Game settings' : 'Room settings'}
+                </h2>
+              </div>
+              <span className="text-xs text-chomu-muted">
+                {isHost ? 'Host controls' : 'Read only'}
+              </span>
+            </div>
+
+            {/* Category Selector */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-chomu-secondary">
+                  Categories ({currentSettings.categoryIds.length} selected)
+                </span>
+                <span className="text-xs text-chomu-muted">
+                  Min 1
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {DEFAULT_CATEGORIES.map((cat) => {
+                  const isSelected = currentSettings.categoryIds.includes(cat.id);
                   return (
                     <button
-                      key={count}
+                      key={cat.id}
                       type="button"
-                      role="radio"
-                      aria-checked={isSelected}
-                      aria-label={`${count} Chomus`}
                       disabled={!isHost}
-                      onClick={() => handleChomuCountChange(count)}
-                      className={`min-h-[44px] py-1.5 px-2 rounded-xl text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral ${
+                      onClick={() => handleCategoryToggle(cat.id)}
+                      className={`min-h-[44px] px-3 py-2 rounded-[10px] border text-left transition-colors flex items-center justify-between gap-2 ${
                         isSelected
-                          ? 'bg-chomu-coral text-chomu-bg border-chomu-coral shadow-md'
-                          : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'
-                      } ${!isHost ? 'cursor-default' : 'cursor-pointer active:scale-95'}`}
+                          ? 'bg-chomu-elevated border-chomu-purple text-chomu-text'
+                          : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
+                      } ${!isHost ? 'cursor-default opacity-80' : 'cursor-pointer'}`}
                     >
-                      {count}
+                      <span className="text-xs font-medium truncate">{cat.name}</span>
+                      {isSelected && <Check className="w-3.5 h-3.5 text-chomu-purple shrink-0" strokeWidth={1.5} />}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Round Duration */}
-            <div>
-              <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
-                Round Duration
-              </label>
-              <div role="radiogroup" aria-label="Select round duration" className="grid grid-cols-3 gap-1.5">
-                {[
-                  { label: '2m', sec: 120 },
-                  { label: '3m', sec: 180 },
-                  { label: '4m', sec: 240 },
-                ].map((d) => {
-                  const isSelected = currentSettings.roundDurationSeconds === d.sec;
-                  return (
-                    <button
-                      key={d.sec}
-                      type="button"
-                      role="radio"
-                      aria-checked={isSelected}
-                      aria-label={`${d.label} round duration`}
-                      disabled={!isHost}
-                      onClick={() => handleRoundDurationChange(d.sec)}
-                      className={`min-h-[44px] py-1.5 px-2 rounded-xl text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-lime ${
-                        isSelected
-                          ? 'bg-chomu-lime text-chomu-bg border-chomu-lime shadow-md'
-                          : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'
-                      } ${!isHost ? 'cursor-default' : 'cursor-pointer active:scale-95'}`}
-                    >
-                      {d.label}
-                    </button>
-                  );
-                })}
+            {/* Chomu Count & Round Duration */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-chomu-secondary block mb-1.5">
+                  Chomus
+                </label>
+                <div role="radiogroup" aria-label="Select Chomu count" className="grid grid-cols-3 gap-1.5">
+                  {[1, 2, 3].map((count) => {
+                    const isSelected = currentSettings.chomuCount === count;
+                    return (
+                      <button
+                        key={count}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        aria-label={`${count} ${count === 1 ? 'Chomu' : 'Chomas'}`}
+                        disabled={!isHost}
+                        onClick={() => handleChomuCountChange(count)}
+                        className={`min-h-[44px] rounded-[10px] text-xs font-mono font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral ${
+                          isSelected
+                            ? 'bg-chomu-coral/15 text-chomu-coral border-chomu-coral'
+                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.08] hover:text-chomu-text'
+                        } ${!isHost ? 'cursor-default' : 'cursor-pointer'}`}
+                      >
+                        {count}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-chomu-secondary block mb-1.5">
+                  Round timer
+                </label>
+                <div role="radiogroup" aria-label="Select round duration" className="grid grid-cols-3 gap-1.5">
+                  {[
+                    { label: '2m', sec: 120 },
+                    { label: '3m', sec: 180 },
+                    { label: '4m', sec: 240 },
+                  ].map((d) => {
+                    const isSelected = currentSettings.roundDurationSeconds === d.sec;
+                    return (
+                      <button
+                        key={d.sec}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        aria-label={`${d.label} round duration`}
+                        disabled={!isHost}
+                        onClick={() => handleRoundDurationChange(d.sec)}
+                        className={`min-h-[44px] rounded-[10px] text-xs font-mono font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                          isSelected
+                            ? 'bg-chomu-elevated text-chomu-text border-chomu-purple'
+                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.08] hover:text-chomu-text'
+                        } ${!isHost ? 'cursor-default' : 'cursor-pointer'}`}
+                      >
+                        {d.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             {/* Hint Difficulty */}
             <div>
-              <label className="text-xs font-bold text-chomu-muted uppercase tracking-wider block mb-1.5">
-                Chomu Hint
+              <label className="text-xs font-medium text-chomu-secondary block mb-1.5">
+                Chomu hint
               </label>
-              <div role="radiogroup" aria-label="Select hint difficulty" className="grid grid-cols-2 gap-1.5">
+              <div role="radiogroup" aria-label="Select hint difficulty" className="grid grid-cols-4 gap-1.5">
                 {(['subtle', 'balanced', 'easy', 'none'] as HintDifficulty[]).map((h) => {
                   const isSelected = currentSettings.hintDifficulty === h;
                   return (
@@ -443,11 +443,11 @@ export const OnlineLobbyView: React.FC = () => {
                       aria-label={`${h} hint difficulty`}
                       disabled={!isHost}
                       onClick={() => handleHintDifficultyChange(h)}
-                      className={`min-h-[44px] py-1 px-1.5 rounded-xl text-[11px] font-black border capitalize transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                      className={`min-h-[44px] px-2 rounded-[10px] text-xs font-medium border capitalize transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
                         isSelected
-                          ? 'bg-chomu-purple text-chomu-bg border-chomu-purple shadow-md'
-                          : 'bg-chomu-bg/60 text-chomu-muted border-chomu-border/60 hover:text-chomu-text'
-                      } ${!isHost ? 'cursor-default' : 'cursor-pointer active:scale-95'}`}
+                          ? 'bg-chomu-elevated text-chomu-text border-chomu-purple'
+                          : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.08] hover:text-chomu-text'
+                      } ${!isHost ? 'cursor-default' : 'cursor-pointer'}`}
                     >
                       {h}
                     </button>
@@ -455,69 +455,53 @@ export const OnlineLobbyView: React.FC = () => {
                 })}
               </div>
             </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Bottom Sticky Action Bar */}
-      <div className="pt-2 sticky bottom-4 z-20">
-        <Card className="bg-chomu-surface/95 backdrop-blur-md border border-chomu-border p-3.5 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
-          {/* Ready Button for all players */}
-          <div className="w-full sm:w-auto flex items-center gap-2">
-            <Button
-              variant={myPlayer?.isReady ? 'lime' : 'secondary'}
-              size="lg"
-              fullWidth
-              className="sm:w-44"
-              onClick={handleToggleReady}
-              leftIcon={
-                myPlayer?.isReady ? (
-                  <Check className="w-4 h-4 text-chomu-bg" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-chomu-lime" />
-                )
-              }
-            >
-              {myPlayer?.isReady ? "YOU'RE READY" : 'SET READY'}
-            </Button>
-          </div>
-
-          {/* Start Game (Host only) or Waiting Status (Non-host) */}
-          <div className="w-full sm:w-auto flex-1 sm:text-right">
-            {isHost ? (
-              <div className="space-y-1">
-                <Button
-                  variant="primary"
-                  size="xl"
-                  fullWidth
-                  className="sm:w-60"
-                  disabled={!canStartGame}
-                  onClick={startGame}
-                  leftIcon={<Play className="w-5 h-5 fill-current" />}
-                >
-                  START GAME
-                </Button>
-                {players.length < 3 && (
-                  <p className="text-[11px] text-chomu-coral font-bold text-center sm:text-right">
-                    Need at least 3 players to start ({players.length}/3)
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="text-center sm:text-right px-2">
-                <span className="text-xs font-black text-chomu-lime block">
-                  Lobby Ready
-                </span>
-                <span className="text-[11px] text-chomu-muted font-medium block">
-                  Waiting for host to start the game...
-                </span>
-              </div>
-            )}
-          </div>
-        </Card>
+          </Card>
+        )}
       </div>
 
-      {/* QR Code Modal */}
+      {/* Bottom Action Bar in natural flow (sits cleanly above docked VoiceControls HUD) */}
+      <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="w-full sm:w-auto">
+          <Button
+            variant={myPlayer?.isReady ? 'lime' : 'secondary'}
+            size="lg"
+            fullWidth
+            className="sm:w-44"
+            onClick={handleToggleReady}
+            leftIcon={<Check className="w-4 h-4" strokeWidth={1.5} />}
+          >
+            {myPlayer?.isReady ? 'Ready' : 'Mark ready'}
+          </Button>
+        </div>
+
+        <div className="w-full sm:w-auto flex flex-col sm:items-end gap-1">
+          {isHost ? (
+            <>
+              <Button
+                variant="primary"
+                size="lg"
+                fullWidth
+                className="sm:w-56"
+                disabled={!canStartGame}
+                onClick={startGame}
+                leftIcon={<Play className="w-4 h-4" strokeWidth={1.5} />}
+              >
+                Start game
+              </Button>
+              {players.length < 3 && (
+                <p className="text-xs text-chomu-coral text-center sm:text-right tabular-nums">
+                  Needs at least 3 players to start ({players.length}/3)
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-xs text-chomu-secondary text-center sm:text-right">
+              Waiting for the host to start the game
+            </p>
+          )}
+        </div>
+      </Card>
+
       {roomCode && (
         <QRCodeModal
           isOpen={isQrOpen}

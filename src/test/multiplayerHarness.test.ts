@@ -353,7 +353,7 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
         })
       );
       expect(localHtml).toContain('-scale-x-100');
-      expect(localHtml).toContain('SPOTLIGHT');
+      expect(localHtml).toContain('Spotlight');
 
       const remoteHtml = renderToStaticMarkup(
         React.createElement(VideoCard, {
@@ -860,7 +860,7 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
           isSpeaking: false,
         })
       );
-      expect(bobTile).toContain('SPOTLIGHT');
+      expect(bobTile).toContain('Spotlight');
       expect(bobTile).not.toContain('border-chomu-lime');
 
       // Charlie's tile: In thumbnail strip with active speaking lime halo
@@ -872,7 +872,7 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
           audioLevel: 0.8,
         })
       );
-      expect(charlieTile).not.toContain('SPOTLIGHT');
+      expect(charlieTile).not.toContain('Spotlight');
       expect(charlieTile).toContain('border-chomu-lime');
 
       // Advance turn to Charlie

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wifi, PlusCircle, BookOpen, Smartphone } from 'lucide-react';
+import { Wifi, PlusCircle, BookOpen, Smartphone, ArrowRight } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { HeroIllustration } from '../illustrations/HeroIllustration';
@@ -12,70 +12,87 @@ export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
   const { dispatch } = useGame();
 
   return (
-    <div className="flex flex-col justify-between flex-1 w-full max-w-md md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 animate-fade-in">
-      {/* 2-Column Responsive Grid on md+ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center my-auto w-full">
-        {/* Left Column: Hero Brand & Illustration */}
-        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <HeroIllustration className="mb-4 max-w-[260px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px]" />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-chomu-text mb-2">
-            CHOMU <span className="text-chomu-purple">WHO?</span>
+    <div className="flex flex-col justify-between flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 lg:py-12 animate-fade-in">
+      {/* Split Hero: Left brand & artwork, Right game modes */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center my-auto w-full">
+        {/* Left Column: Hero Illustration & Product Statement */}
+        <div className="md:col-span-6 flex flex-col items-center md:items-start text-center md:text-left">
+          <HeroIllustration className="mb-6 max-w-[260px] sm:max-w-[300px] md:max-w-[340px]" />
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.08] text-chomu-text mb-3">
+            Chomu <span className="text-chomu-purple">Who?</span>
           </h1>
-          <p className="text-sm sm:text-base text-chomu-muted font-medium max-w-[360px] leading-relaxed">
-            One word. Hidden identities. Zero trust. The ultimate multiplayer social deduction party game.
+          <p className="text-base text-chomu-secondary font-normal max-w-[400px] leading-6">
+            One secret word, hidden roles, and zero trust. Talk over live video or pass one phone around to spot the Chomu.
           </p>
         </div>
 
-        {/* Right Column: Game Mode Selection Cards */}
-        <div className="w-full space-y-4 max-w-md mx-auto md:max-w-none">
+        {/* Right Column: Mode Cards & Secondary Links */}
+        <div className="md:col-span-6 w-full space-y-3 max-w-md mx-auto md:ml-auto md:mr-0">
           {/* Mode 1: Pass & Play (Offline Party) */}
-          <Button
-            variant="primary"
-            size="xl"
-            fullWidth
-            leftIcon={<Smartphone className="w-6 h-6 flex-shrink-0" />}
+          <button
+            type="button"
             onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
-            className="flex-col py-4 px-5 items-start text-left shadow-xl shadow-chomu-purple/20 border border-chomu-purple/40 hover:scale-[1.01] transition-transform"
+            className="w-full text-left p-5 rounded-xl bg-chomu-surface border border-white/[0.1] hover:border-chomu-purple/60 hover:bg-chomu-elevated active:scale-[0.99] transition-[background-color,border-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple group"
           >
-            <div className="flex items-center justify-between w-full">
-              <span className="text-lg font-black tracking-tight text-chomu-bg">Pass &amp; Play</span>
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-chomu-bg/30 text-chomu-bg">
-                Offline Party
-              </span>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-[10px] bg-chomu-elevated border border-white/[0.08] flex items-center justify-center text-chomu-secondary group-hover:text-chomu-purple shrink-0 mt-0.5 transition-colors">
+                  <Smartphone className="w-4 h-4" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold text-chomu-text">
+                      Pass &amp; Play
+                    </span>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-chomu-elevated text-chomu-secondary border border-white/[0.08]">
+                      Offline Party
+                    </span>
+                  </div>
+                  <p className="text-sm text-chomu-secondary mt-1 leading-5">
+                    One shared phone for 3 to 15 players in the same room
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-chomu-muted group-hover:text-chomu-text shrink-0 mt-1 transition-colors" strokeWidth={1.5} />
             </div>
-            <span className="text-xs font-semibold text-chomu-bg/85 tracking-normal mt-1">
-              One shared device &bull; 3 to 15 players
-            </span>
-          </Button>
+          </button>
 
           {/* Mode 2: Play Online (With Friends) */}
-          <Button
-            variant="lime"
-            size="xl"
-            fullWidth
-            leftIcon={<Wifi className="w-6 h-6 flex-shrink-0" />}
+          <button
+            type="button"
             onClick={() => onPlayOnline?.()}
-            className="flex-col py-4 px-5 items-start text-left shadow-xl shadow-chomu-lime/20 border border-chomu-lime/40 hover:scale-[1.01] transition-transform"
+            className="w-full text-left p-5 rounded-xl bg-chomu-text text-chomu-bg hover:bg-white active:scale-[0.99] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] group"
           >
-            <div className="flex items-center justify-between w-full">
-              <span className="text-lg font-black tracking-tight text-chomu-bg">Play Online</span>
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-chomu-bg/30 text-chomu-bg">
-                With Friends
-              </span>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-[10px] bg-chomu-bg/10 flex items-center justify-center text-chomu-bg shrink-0 mt-0.5">
+                  <Wifi className="w-4 h-4" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold text-chomu-bg">
+                      Play Online
+                    </span>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-chomu-bg/10 text-chomu-bg">
+                      With Friends
+                    </span>
+                  </div>
+                  <p className="text-sm text-chomu-bg/75 mt-1 leading-5">
+                    Private room links, individual secret cards, live voice &amp; video
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-chomu-bg/70 group-hover:text-chomu-bg shrink-0 mt-1 transition-colors" strokeWidth={1.5} />
             </div>
-            <span className="text-xs font-semibold text-chomu-bg/85 tracking-normal mt-1">
-              P2P rooms &bull; Secret cards &bull; Voice chat
-            </span>
-          </Button>
+          </button>
 
           {/* Secondary Navigation */}
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="grid grid-cols-2 gap-3 pt-1">
             <Button
               variant="secondary"
               size="md"
-              leftIcon={<PlusCircle className="w-4 h-4 text-chomu-lime" />}
+              leftIcon={<PlusCircle className="w-4 h-4" strokeWidth={1.5} />}
               onClick={() => dispatch({ type: 'SET_PHASE', phase: 'CUSTOM_CATEGORIES' })}
-              className="min-h-[44px]"
             >
               Custom Words
             </Button>
@@ -83,9 +100,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
             <Button
               variant="secondary"
               size="md"
-              leftIcon={<BookOpen className="w-4 h-4 text-chomu-purple" />}
+              leftIcon={<BookOpen className="w-4 h-4" strokeWidth={1.5} />}
               onClick={() => dispatch({ type: 'SET_PHASE', phase: 'RULES' })}
-              className="min-h-[44px]"
             >
               How to Play
             </Button>
@@ -94,8 +110,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
       </div>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-chomu-muted font-medium py-3 mt-4">
-        <span>Pass &amp; Play &bull; Online Multiplayer &bull; Voice Chat</span>
+      <footer className="text-center text-xs text-chomu-muted py-4 mt-6 border-t border-white/[0.06]">
+        <span>Pass &amp; Play &bull; Online rooms &bull; Peer-to-peer voice &amp; video</span>
       </footer>
     </div>
   );

@@ -24,14 +24,12 @@ export const FinalRevealView: React.FC = () => {
     audioService.playImposterReveal();
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 70,
+        spread: 65,
         origin: { y: 0.6 },
-        colors: ['#9275FF', '#FF6987', '#C5EF75', '#68D9E7'],
+        colors: ['#9275FF', '#E85D75', '#A8D664', '#5EB1C2'],
       });
-    } catch {
-      // Ignore if canvas-confetti fails
-    }
+    } catch {}
   }, []);
 
   const handlePlayAgain = () => {
@@ -43,75 +41,75 @@ export const FinalRevealView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-5 select-none animate-fade-in text-center space-y-4">
-      {/* 1. Header */}
-      <div className="w-full">
-        <FinalRevealArtwork className="mx-auto mb-2" />
-        <h1 className="text-2xl sm:text-3xl font-black text-chomu-coral tracking-tight uppercase mb-1">
-          {imposterPlayers.length === 1 ? 'THE CHOMU WAS...' : 'THE CHOMAS WERE...'}
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in text-center space-y-5">
+      {/* Header */}
+      <div className="w-full space-y-1">
+        <FinalRevealArtwork className="mx-auto mb-3" />
+        <h1 className="text-2xl sm:text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
+          {imposterPlayers.length === 1 ? 'The Chomu was' : 'The Chomas were'}
         </h1>
-        <p className="text-xs text-chomu-muted font-medium">
-          The secrets are out. Did your group spot them?
+        <p className="text-sm text-chomu-secondary">
+          Did your group spot who was bluffing?
         </p>
       </div>
 
-      {/* 2. Imposter Cards */}
-      <div className="w-full space-y-2 max-w-[320px]">
+      {/* Chomu Reveal Cards */}
+      <div className="w-full space-y-2 max-w-sm">
         {imposterPlayers.map(p => {
           const hint = hints[p.id];
           return (
             <Card
               key={p.id}
-              className="bg-gradient-to-r from-[#2B1424] via-chomu-surface to-chomu-surface border-2 border-chomu-coral p-3.5 flex items-center justify-between shadow-xl"
+              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-3 text-left">
                 <PlayerAvatar id={p.avatar} size="md" isImposterStyle={true} />
                 <div>
-                  <h3 className="text-base font-black text-chomu-text leading-tight">
+                  <h2 className="text-base font-semibold text-chomu-text leading-tight">
                     {p.name}
-                  </h3>
+                  </h2>
                   {hint ? (
-                    <span className="text-[11px] text-chomu-muted font-medium block">
-                      Hint: <strong className="text-chomu-coral font-bold">"{hint}"</strong>
+                    <span className="text-xs text-chomu-secondary block mt-0.5">
+                      Hint: <span className="text-chomu-coral font-medium">&ldquo;{hint}&rdquo;</span>
                     </span>
                   ) : (
-                    <span className="text-[10px] text-chomu-muted font-medium block">
+                    <span className="text-xs text-chomu-muted block mt-0.5">
                       No hint given
                     </span>
                   )}
                 </div>
               </div>
               <Badge variant="coral" size="sm">
-                CHOMU
+                Chomu
               </Badge>
             </Card>
           );
         })}
       </div>
 
-      {/* 3. Secret Word Reveal Card */}
-      <Card className="w-full max-w-[320px] bg-chomu-surface border border-chomu-border p-4 text-center">
-        <span className="text-[10px] font-bold text-chomu-muted uppercase tracking-widest block mb-1">
+      {/* Secret Word Reveal Card */}
+      <Card className="w-full max-w-sm bg-chomu-surface p-5 text-center space-y-1">
+        <span className="text-xs text-chomu-muted block">
           {secretCategory}
         </span>
-        <span className="text-[10px] font-black text-chomu-purple uppercase tracking-widest block mb-1">
-          THE SECRET WORD
+        <span className="text-xs font-medium text-chomu-purple block">
+          Secret word
         </span>
-        <h2 className="text-3xl sm:text-4xl font-black text-chomu-text tracking-tight drop-shadow-md">
+        <h2 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
           {secretWord}
         </h2>
       </Card>
 
-      {/* 4. Civilians list summary */}
-      <div className="w-full max-w-[320px] bg-chomu-bg/60 border border-chomu-border/60 rounded-2xl p-2.5">
-        <span className="text-[10px] font-bold text-chomu-lime uppercase tracking-wider block mb-1.5">
+      {/* Civilians Summary */}
+      <div className="w-full max-w-sm bg-chomu-bgSecondary border border-white/[0.08] rounded-xl p-3.5">
+        <span className="text-xs font-medium text-chomu-lime block mb-2">
           Civilians ({civilianPlayers.length})
         </span>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {civilianPlayers.map(p => (
             <div
               key={p.id}
-              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-chomu-surface border border-chomu-border text-xs text-chomu-text font-semibold"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-chomu-surface border border-white/[0.08] text-xs text-chomu-text font-medium"
             >
               <PlayerAvatar id={p.avatar} size="sm" />
               <span>{p.name}</span>
@@ -120,26 +118,26 @@ export const FinalRevealView: React.FC = () => {
         </div>
       </div>
 
-      {/* 5. Action Buttons */}
-      <div className="w-full max-w-[300px] space-y-2.5 pt-2">
+      {/* Actions */}
+      <div className="w-full max-w-sm space-y-2.5 pt-1">
         <Button
           variant="primary"
-          size="xl"
+          size="lg"
           fullWidth
-          leftIcon={<RotateCcw className="w-5 h-5" />}
+          leftIcon={<RotateCcw className="w-4 h-4" strokeWidth={1.5} />}
           onClick={handlePlayAgain}
         >
-          PLAY AGAIN
+          Play again
         </Button>
 
         <Button
           variant="secondary"
           size="md"
           fullWidth
-          leftIcon={<Sliders className="w-4 h-4 text-chomu-muted" />}
+          leftIcon={<Sliders className="w-4 h-4" strokeWidth={1.5} />}
           onClick={handleNewGame}
         >
-          NEW GAME
+          New game
         </Button>
       </div>
     </div>

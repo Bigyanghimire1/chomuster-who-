@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Check, ArrowRight } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { PlayerAvatar } from '../illustrations/PlayerAvatar';
@@ -10,7 +11,6 @@ export type RevealState = 'HIDDEN' | 'HOLDING' | 'REVEALED' | 'SEEN';
 export const RoleRevealView: React.FC = () => {
   const { state, dispatch } = useGame();
 
-  // Deterministic 4-state lifecycle model: HIDDEN -> HOLDING -> REVEALED -> SEEN
   const [revealState, setRevealState] = useState<RevealState>('HIDDEN');
 
   const cardElementRef = useRef<HTMLDivElement | null>(null);
@@ -20,10 +20,8 @@ export const RoleRevealView: React.FC = () => {
   const cleanupWindowListenersRef = useRef<(() => void) | null>(null);
   const hasEverSeenRef = useRef<boolean>(false);
 
-  // Minimum valid hold duration to prevent accidental brush-taps
   const minHoldThresholdMs = 300;
 
-  // Player identity determined from the randomized revealOrder sequence
   const revealOrder = state.secret?.revealOrder || state.players.map(p => p.id);
   const activePlayerId = revealOrder[state.currentRevealIndex] || state.players[0]?.id;
   const activePlayer = state.players.find(p => p.id === activePlayerId) || {
@@ -45,7 +43,6 @@ export const RoleRevealView: React.FC = () => {
   const isActivelyHolding = revealState === 'HOLDING' || revealState === 'REVEALED';
   const isSecretVisible = isActivelyHolding;
 
-  // Cleanup helper for all active listeners & timers
   const cleanupActiveInteraction = useCallback(() => {
     if (holdTimerRef.current !== null) {
       window.clearTimeout(holdTimerRef.current);
@@ -57,7 +54,6 @@ export const RoleRevealView: React.FC = () => {
     }
   }, []);
 
-  // End interaction handler: completely idempotent and bulletproof against WebKit quirks
   const handleEndInteraction = useCallback((pointerId: number, _isCancelled: boolean) => {
     if (activePointerIdRef.current === null || pointerId !== activePointerIdRef.current) {
       return;
@@ -65,39 +61,28 @@ export const RoleRevealView: React.FC = () => {
 
     cleanupActiveInteraction();
 
-    // Safely release pointer capture if element still has it
     if (cardElementRef.current && pointerId >= 0) {
       try {
         if (cardElementRef.current.hasPointerCapture(pointerId)) {
           cardElementRef.current.releasePointerCapture(pointerId);
         }
-      } catch {
-        // Ignored if capture was already released by WebKit
-      }
+      } catch {}
     }
 
     const duration = Date.now() - holdStartRef.current;
     const passedThreshold = duration >= minHoldThresholdMs;
-
     activePointerIdRef.current = null;
 
     if (passedThreshold) {
-      // Valid hold completed! Secret was viewed
       hasEverSeenRef.current = true;
       setRevealState('SEEN');
+    } else if (hasEverSeenRef.current) {
+      setRevealState('SEEN');
     } else {
-      // Held for less than minimum threshold
-      if (hasEverSeenRef.current) {
-        // If the player had already viewed their card before and was just peeking again, stay SEEN
-        setRevealState('SEEN');
-      } else {
-        // Accidental brief brush or cancelled before threshold: return to HIDDEN so player can retry
-        setRevealState('HIDDEN');
-      }
+      setRevealState('HIDDEN');
     }
   }, [cleanupActiveInteraction, minHoldThresholdMs]);
 
-  // Reset local reveal state whenever currentRevealIndex changes (next player receives device)
   useEffect(() => {
     cleanupActiveInteraction();
     activePointerIdRef.current = null;
@@ -105,7 +90,6 @@ export const RoleRevealView: React.FC = () => {
     setRevealState('HIDDEN');
   }, [state.currentRevealIndex, cleanupActiveInteraction]);
 
-  // Safety trigger: immediately conceal secret on window blur or tab visibility change
   useEffect(() => {
     const handleSafetyConceal = () => {
       if (activePointerIdRef.current !== null) {
@@ -131,9 +115,7 @@ export const RoleRevealView: React.FC = () => {
   }, [handleEndInteraction, cleanupActiveInteraction]);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    // 1. Only accept a single primary pointer (reject second fingers)
     if (activePointerIdRef.current !== null) return;
-    // 2. Reject non-primary mouse clicks (e.g. right-click)
     if (e.pointerType === 'mouse' && e.button !== 0) return;
 
     e.preventDefault();
@@ -141,14 +123,10 @@ export const RoleRevealView: React.FC = () => {
     activePointerIdRef.current = pid;
     holdStartRef.current = Date.now();
 
-    // 3. Capture pointer on the stable card container element
     try {
       e.currentTarget.setPointerCapture(pid);
-    } catch {
-      // Ignored if pointer capture is unsupported
-    }
+    } catch {}
 
-    // 4. Begin holding state and schedule threshold timer
     setRevealState('HOLDING');
     cleanupActiveInteraction();
 
@@ -158,16 +136,11 @@ export const RoleRevealView: React.FC = () => {
 
     audioService.playCardReveal();
 
-    // 5. Bulletproof window-level release listeners as fallback for iOS Safari WebKit
     const onWindowPointerUp = (we: PointerEvent) => {
-      if (we.pointerId === pid) {
-        handleEndInteraction(pid, false);
-      }
+      if (we.pointerId === pid) handleEndInteraction(pid, false);
     };
     const onWindowPointerCancel = (we: PointerEvent) => {
-      if (we.pointerId === pid) {
-        handleEndInteraction(pid, true);
-      }
+      if (we.pointerId === pid) handleEndInteraction(pid, true);
     };
 
     window.addEventListener('pointerup', onWindowPointerUp);
@@ -188,7 +161,6 @@ export const RoleRevealView: React.FC = () => {
   };
 
   const handleLostPointerCapture = (e: React.PointerEvent<HTMLDivElement>) => {
-    // Idempotent fallback when WebKit drops pointer capture
     if (activePointerIdRef.current === e.pointerId) {
       handleEndInteraction(e.pointerId, false);
     }
@@ -198,7 +170,7 @@ export const RoleRevealView: React.FC = () => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       if (activePointerIdRef.current === null && !isActivelyHolding) {
-        activePointerIdRef.current = -1; // special ID for keyboard
+        activePointerIdRef.current = -1;
         holdStartRef.current = Date.now();
         setRevealState('HOLDING');
         cleanupActiveInteraction();
@@ -235,23 +207,23 @@ export const RoleRevealView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-5 select-none animate-fade-in">
-      {/* 1. Header: Pass Device directly with Player Name */}
-      <div className="w-full text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-surface border border-chomu-border text-xs font-bold text-chomu-muted mb-2">
-          <span>PLAYER {state.currentRevealIndex + 1} OF {totalPlayers}</span>
-        </div>
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in">
+      {/* Header */}
+      <div className="w-full text-center space-y-2">
+        <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-chomu-surface border border-white/[0.08] text-xs font-mono text-chomu-secondary tabular-nums">
+          Player {state.currentRevealIndex + 1} of {totalPlayers}
+        </span>
 
-        <div className="flex items-center justify-center gap-2 mb-1">
+        <div className="flex items-center justify-center gap-2.5">
           <PlayerAvatar id={activePlayer.avatar} size="sm" />
-          <h2 className="text-xl sm:text-2xl font-black text-chomu-text tracking-tight uppercase">
-            PASS TO {activePlayer.name}
-          </h2>
+          <h1 className="text-2xl font-semibold text-chomu-text tracking-[-0.02em]">
+            Pass to {activePlayer.name}
+          </h1>
         </div>
       </div>
 
-      {/* 2. Interactive Secret Card Surface (Stable container, pointer-events-none on children) */}
-      <div className="w-full max-w-[280px] my-auto">
+      {/* Interactive Secret Card Surface */}
+      <div className="w-full max-w-[280px] my-auto py-4">
         <div
           ref={cardElementRef}
           role="button"
@@ -270,82 +242,78 @@ export const RoleRevealView: React.FC = () => {
             WebkitUserSelect: 'none',
             WebkitTouchCallout: 'none',
           }}
-          className={`relative min-h-[360px] rounded-3xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg ${
+          className={`relative min-h-[360px] rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-[border-color,background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg ${
             isSecretVisible
               ? isImposter
-                ? 'bg-gradient-to-b from-[#33141E] via-chomu-surface to-chomu-bg border-2 border-chomu-coral shadow-chomu-coral/20 scale-[1.02]'
-                : 'bg-gradient-to-b from-[#1C1838] via-chomu-surface to-chomu-bg border-2 border-chomu-purple shadow-chomu-purple/20 scale-[1.02]'
-              : 'bg-chomu-surface border border-chomu-border hover:border-chomu-border/80 active:scale-[0.99]'
+                ? 'bg-chomu-elevated border-2 border-chomu-coral'
+                : 'bg-chomu-elevated border-2 border-chomu-lime'
+              : 'bg-chomu-surface border border-white/[0.1] hover:border-white/[0.18] active:scale-[0.99]'
           }`}
         >
           {isSecretVisible ? (
-            /* ACTIVE SECRET DISPLAY (Pointer events none to protect gesture tracking) */
             <div className="w-full p-6 animate-fade-in space-y-4 pointer-events-none select-none">
               {isImposter ? (
-                /* CHOMU CARD */
                 <>
-                  <div className="w-14 h-14 rounded-2xl bg-chomu-coral/15 border border-chomu-coral/30 flex items-center justify-center mx-auto">
+                  <div className="w-14 h-14 rounded-xl bg-chomu-coral/15 border border-chomu-coral/30 flex items-center justify-center mx-auto">
                     <PlayerAvatar id="shadow" size="md" isImposterStyle={true} />
                   </div>
 
                   <div>
-                    <span className="text-[11px] font-black tracking-widest uppercase text-chomu-coral block mb-1">
-                      YOU ARE THE
+                    <span className="text-xs font-medium text-chomu-coral block mb-1">
+                      You are the
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-black text-chomu-coral tracking-tight">
-                      CHOMU
-                    </h3>
+                    <h2 className="text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
+                      Chomu
+                    </h2>
                   </div>
 
                   {imposterHint ? (
-                    <div className="bg-chomu-bg/90 border border-chomu-coral/30 rounded-2xl p-4 shadow-inner">
-                      <span className="text-[10px] font-bold text-chomu-coral/80 uppercase tracking-widest block mb-1">
-                        YOUR HINT
+                    <div className="bg-chomu-bgSecondary border border-chomu-coral/30 rounded-xl p-4">
+                      <span className="text-xs font-medium text-chomu-muted block mb-1">
+                        Your hint
                       </span>
-                      <p className="text-xl font-black text-chomu-text tracking-wide">
+                      <p className="text-xl font-semibold text-chomu-text">
                         {imposterHint}
                       </p>
                     </div>
                   ) : (
-                    <div className="bg-chomu-bg/90 border border-chomu-border rounded-xl p-3">
-                      <span className="text-xs text-chomu-muted">No hint available this round.</span>
+                    <div className="bg-chomu-bgSecondary border border-white/[0.08] rounded-xl p-3">
+                      <span className="text-xs text-chomu-muted">No hint for this round</span>
                     </div>
                   )}
 
-                  <p className="text-xs text-chomu-coral/80 font-medium">
-                    Blend in. Act like you know the word.
+                  <p className="text-xs text-chomu-secondary">
+                    Blend in and act like you know the word
                   </p>
                 </>
               ) : (
-                /* CIVILIAN CARD */
                 <>
-                  <div className="w-14 h-14 rounded-2xl bg-chomu-purple/15 border border-chomu-purple/30 flex items-center justify-center mx-auto">
+                  <div className="w-14 h-14 rounded-xl bg-chomu-lime/15 border border-chomu-lime/30 flex items-center justify-center mx-auto">
                     <PlayerAvatar id={activePlayer.avatar} size="md" />
                   </div>
 
                   <div>
-                    <span className="text-[11px] font-black tracking-widest uppercase text-chomu-lime block mb-1">
-                      CIVILIAN
+                    <span className="text-xs font-medium text-chomu-lime block mb-1">
+                      Civilian
                     </span>
-                    <span className="text-[10px] text-chomu-muted block uppercase tracking-wider mb-2">
+                    <span className="text-xs text-chomu-muted block mb-3">
                       {secretCategory}
                     </span>
-                    <span className="text-[10px] font-bold text-chomu-muted block uppercase tracking-widest">
-                      SECRET WORD
+                    <span className="text-xs text-chomu-secondary block mb-1">
+                      Secret word
                     </span>
-                    <h3 className="text-3xl sm:text-4xl font-black text-chomu-text tracking-tight drop-shadow-md">
+                    <h2 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
                       {secretWord}
-                    </h3>
+                    </h2>
                   </div>
 
-                  <p className="text-xs text-chomu-muted font-medium pt-2">
-                    Keep it subtle.
+                  <p className="text-xs text-chomu-secondary pt-1">
+                    Keep your clue subtle
                   </p>
                 </>
               )}
             </div>
           ) : (
-            /* HIDDEN CARD BACK (Pointer events none so card container receives all touches) */
             <div className="w-full h-full flex flex-col items-center justify-center p-3 pointer-events-none select-none">
               <SecretCardBack isHolding={isSecretVisible} />
             </div>
@@ -353,28 +321,30 @@ export const RoleRevealView: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Post-Reveal Actions & Status */}
-      <div className="w-full max-w-[280px] space-y-2.5">
+      {/* Post-Reveal Actions & Status */}
+      <div className="w-full max-w-[280px] space-y-3">
         <div className="h-6 flex items-center justify-center">
           {revealState === 'SEEN' && !isActivelyHolding ? (
-            <span className="inline-flex items-center gap-1.5 text-xs font-black text-chomu-lime bg-chomu-lime/10 border border-chomu-lime/30 px-3 py-0.5 rounded-full animate-fade-in">
-              SEEN ✓
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-chomu-lime bg-chomu-lime/10 border border-chomu-lime/25 px-3 py-1 rounded-md animate-fade-in">
+              <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Viewed</span>
             </span>
           ) : (
-            <span className="text-[11px] text-chomu-muted font-medium">
-              {isActivelyHolding ? 'Keep holding to view...' : 'Press and hold card to reveal'}
+            <span className="text-xs text-chomu-muted">
+              {isActivelyHolding ? 'Keep holding to view' : 'Press and hold card to reveal'}
             </span>
           )}
         </div>
 
         <Button
           variant="primary"
-          size="xl"
+          size="lg"
           fullWidth
           disabled={revealState !== 'SEEN' || isActivelyHolding}
           onClick={handleAdvance}
+          rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={1.5} />}
         >
-          {isLastPlayer ? 'START ROUND →' : 'NEXT PLAYER →'}
+          {isLastPlayer ? 'Start round' : 'Next player'}
         </Button>
       </div>
     </div>

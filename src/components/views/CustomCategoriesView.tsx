@@ -3,6 +3,8 @@ import { Plus, Trash2, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
+import { Badge } from '../common/Badge';
+import { ConfirmModal } from '../common/ConfirmModal';
 
 export const CustomCategoriesView: React.FC = () => {
   const { customCategories, addCustomCategory, deleteCustomCategory, dispatch } = useGame();
@@ -10,12 +12,13 @@ export const CustomCategoriesView: React.FC = () => {
   const [name, setName] = useState('');
   const [wordsRaw, setWordsRaw] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = name.trim();
     if (!trimmedName) {
-      setError('Please provide a category name.');
+      setError('Enter a category name');
       return;
     }
 
@@ -25,7 +28,7 @@ export const CustomCategoriesView: React.FC = () => {
       .filter(w => w.length > 0);
 
     if (words.length < 4) {
-      setError('Please add at least 4 words.');
+      setError('Add at least 4 words');
       return;
     }
 
@@ -43,137 +46,160 @@ export const CustomCategoriesView: React.FC = () => {
   };
 
   return (
-    <div
-      className="max-w-md mx-auto px-4 py-5 space-y-5 animate-fade-in"
-      style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom, 0px))' }}
-    >
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => dispatch({ type: 'SET_PHASE', phase: 'HOME' })}
-          className="flex items-center gap-1.5 text-xs text-chomu-muted hover:text-chomu-text transition-colors min-h-[44px] py-2 px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-lg"
-          aria-label="Return to Home"
-        >
-          <ArrowLeft className="w-4 h-4" /> Home
-        </button>
-        <span className="text-xs font-bold text-chomu-muted px-2.5 py-0.5 rounded-full bg-chomu-surface border border-chomu-border">
-          {customCategories.length} Custom {customCategories.length === 1 ? 'Pack' : 'Packs'}
-        </span>
-      </div>
+    <>
+      <div
+        className="max-w-lg mx-auto w-full px-4 py-6 space-y-5 animate-fade-in"
+        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom, 0px))' }}
+      >
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'HOME' })}
+            className="inline-flex items-center gap-1.5 text-sm text-chomu-secondary hover:text-chomu-text transition-colors min-h-[44px] px-2 -ml-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-[10px]"
+            aria-label="Return to Home"
+          >
+            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+            <span>Home</span>
+          </button>
+          <Badge variant="muted" size="sm">
+            <span className="tabular-nums">{customCategories.length}</span>{' '}
+            {customCategories.length === 1 ? 'pack' : 'packs'}
+          </Badge>
+        </div>
 
-      <div>
-        <h2 className="text-2xl font-black text-chomu-text tracking-tight">
-          Custom Word Packs
-        </h2>
-        <p className="text-xs text-chomu-muted font-medium">
-          Create packs for friend groups, party themes, or inside jokes.
-        </p>
-      </div>
+        <div>
+          <h1 className="text-2xl font-semibold text-chomu-text tracking-[-0.02em]">
+            Custom word packs
+          </h1>
+          <p className="text-sm text-chomu-secondary mt-1">
+            Create packs for inside jokes or local party themes
+          </p>
+        </div>
 
-      {isCreating ? (
-        <Card className="bg-chomu-surface border-chomu-border p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs font-bold text-chomu-text uppercase tracking-wider">
-              New Custom Category
-            </h3>
-            <button
-              onClick={() => {
-                setIsCreating(false);
-                setError(null);
-              }}
-              className="text-xs text-chomu-muted hover:text-chomu-text"
-            >
-              Cancel
-            </button>
-          </div>
-
-          <form onSubmit={handleSave} className="space-y-3">
-            <div>
-              <label className="text-[11px] font-bold text-chomu-muted uppercase tracking-wider block mb-1">
-                Category Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., College Friends, Office Trivia..."
-                value={name}
-                maxLength={28}
-                onChange={e => setName(e.target.value)}
-                className="w-full bg-chomu-bg border border-chomu-border rounded-xl px-3 py-2 text-xs text-chomu-text placeholder-chomu-muted/50 focus:outline-none focus:border-chomu-purple"
-              />
+        {isCreating ? (
+          <Card className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-chomu-text">
+                New custom category
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsCreating(false);
+                  setError(null);
+                }}
+                className="text-xs text-chomu-secondary hover:text-chomu-text min-h-[44px] px-2"
+              >
+                Cancel
+              </button>
             </div>
 
-            <div>
-              <label className="text-[11px] font-bold text-chomu-muted uppercase tracking-wider block mb-1">
-                Words (comma or newline separated)
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Word 1, Word 2, Word 3, Word 4..."
-                value={wordsRaw}
-                onChange={e => setWordsRaw(e.target.value)}
-                className="w-full bg-chomu-bg border border-chomu-border rounded-xl px-3 py-2 text-xs text-chomu-text placeholder-chomu-muted/50 focus:outline-none focus:border-chomu-purple"
-              />
-              <span className="text-[10px] text-chomu-muted block mt-1">
-                Minimum 4 words required.
-              </span>
-            </div>
-
-            {error && (
-              <div className="flex items-center gap-1.5 text-chomu-coral text-xs bg-chomu-coral/10 p-2 rounded-xl border border-chomu-coral/20">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <Button type="submit" variant="primary" size="md" fullWidth>
-              Save Custom Pack
-            </Button>
-          </form>
-        </Card>
-      ) : (
-        <Button
-          variant="secondary"
-          size="md"
-          fullWidth
-          leftIcon={<Plus className="w-4 h-4 text-chomu-lime" />}
-          onClick={() => setIsCreating(true)}
-        >
-          Create New Category
-        </Button>
-      )}
-
-      {/* Category List */}
-      <div className="space-y-2">
-        {customCategories.length === 0 ? (
-          <div className="text-center py-8 text-chomu-muted text-xs">
-            No custom categories yet. Tap above to create your first pack!
-          </div>
-        ) : (
-          customCategories.map(cat => (
-            <Card
-              key={cat.id}
-              className="bg-chomu-surface border-chomu-border p-3.5 flex items-center justify-between"
-            >
+            <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <h4 className="text-sm font-bold text-chomu-text">{cat.name}</h4>
-                <span className="text-[11px] text-chomu-muted">
-                  {cat.words.length} words
+                <label className="text-xs font-medium text-chomu-secondary block mb-1.5">
+                  Category name
+                </label>
+                <input
+                  type="text"
+                  placeholder="College Friends, Office Trivia"
+                  value={name}
+                  maxLength={28}
+                  onChange={e => setName(e.target.value)}
+                  className="w-full bg-chomu-bgSecondary border border-white/[0.1] rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple min-h-[44px]"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-chomu-secondary block mb-1.5">
+                  Words (comma or newline separated)
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Word 1, Word 2, Word 3, Word 4"
+                  value={wordsRaw}
+                  onChange={e => setWordsRaw(e.target.value)}
+                  className="w-full bg-chomu-bgSecondary border border-white/[0.1] rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple"
+                />
+                <span className="text-xs text-chomu-muted block mt-1">
+                  Minimum 4 words required
                 </span>
               </div>
-              <button
-                onClick={() => {
-                  if (window.confirm(`Delete category "${cat.name}"?`)) {
-                    deleteCustomCategory(cat.id);
-                  }
-                }}
-                className="text-chomu-muted hover:text-chomu-coral p-1.5 transition-colors"
-                title="Delete category"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </Card>
-          ))
+
+              {error && (
+                <div className="flex items-center gap-2 text-chomu-coral text-xs bg-chomu-coral/10 p-3 rounded-[10px] border border-chomu-coral/25">
+                  <AlertCircle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <Button type="submit" variant="primary" size="md" fullWidth>
+                Save custom pack
+              </Button>
+            </form>
+          </Card>
+        ) : (
+          <Button
+            variant="secondary"
+            size="md"
+            fullWidth
+            leftIcon={<Plus className="w-4 h-4" strokeWidth={1.5} />}
+            onClick={() => setIsCreating(true)}
+          >
+            Create new category
+          </Button>
         )}
+
+        <div className="space-y-2">
+          {customCategories.length === 0 ? (
+            <div className="text-center py-8 text-chomu-muted text-sm border border-dashed border-white/[0.08] rounded-xl bg-chomu-bgSecondary">
+              No custom categories yet
+            </div>
+          ) : (
+            customCategories.map(cat => (
+              <Card
+                key={cat.id}
+                className="p-4 flex items-center justify-between"
+              >
+                <div>
+                  <h3 className="text-sm font-medium text-chomu-text">{cat.name}</h3>
+                  <span className="text-xs font-mono text-chomu-muted tabular-nums">
+                    {cat.words.length} words
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPendingDelete({ id: cat.id, name: cat.name })}
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-chomu-muted hover:text-chomu-coral rounded-[10px] hover:bg-chomu-elevated transition-colors"
+                  title="Delete category"
+                  aria-label={`Delete category ${cat.name}`}
+                >
+                  <Trash2 className="w-4 h-4" strokeWidth={1.5} />
+                </button>
+              </Card>
+            ))
+          )}
+        </div>
       </div>
-    </div>
+
+      <ConfirmModal
+        isOpen={pendingDelete !== null}
+        title="Delete category"
+        description={
+          pendingDelete
+            ? `Remove "${pendingDelete.name}" from your custom word packs?`
+            : ''
+        }
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        destructive={true}
+        onConfirm={() => {
+          if (pendingDelete) {
+            deleteCustomCategory(pendingDelete.id);
+          }
+          setPendingDelete(null);
+        }}
+        onCancel={() => setPendingDelete(null)}
+      />
+    </>
   );
 };

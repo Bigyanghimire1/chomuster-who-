@@ -426,7 +426,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       expect(html).toContain('block');
       expect(html).not.toContain('Camera off');
       expect(html).toContain('Alice');
-      expect(html).toContain('HOST');
+      expect(html).toContain('Host');
     });
 
     it('renders avatar fallback with "Camera off" badge when stream is null or has no active video', () => {
@@ -445,7 +445,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       expect(html).toContain('Alice');
     });
 
-    it('renders pulsing lime halo and LIVE audio badge when isSpeaking is true', () => {
+    it('renders crisp lime speaking border and Live audio badge when isSpeaking is true', () => {
       const htmlSpeaking = renderToStaticMarkup(
         React.createElement(VideoCard, {
           player: mockPlayer,
@@ -455,10 +455,10 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
         })
       );
 
-      // Speaking halo styles
+      // Speaking border styles (clean ring without neon glow)
       expect(htmlSpeaking).toContain('border-chomu-lime');
-      expect(htmlSpeaking).toContain('shadow-[0_0_20px_rgba(197,239,117,0.4)]');
-      expect(htmlSpeaking).toContain('LIVE');
+      expect(htmlSpeaking).toContain('ring-2 ring-chomu-lime/40');
+      expect(htmlSpeaking).toContain('Live');
 
       const htmlSilent = renderToStaticMarkup(
         React.createElement(VideoCard, {
@@ -469,12 +469,12 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
         })
       );
 
-      // Default non-speaking styles
-      expect(htmlSilent).toContain('border-chomu-border/80');
-      expect(htmlSilent).not.toContain('LIVE');
+      // Default non-speaking hairline styles
+      expect(htmlSilent).toContain('border-white/[0.08]');
+      expect(htmlSilent).not.toContain('>Live<');
     });
 
-    it('renders spotlight styling and SPOTLIGHT badge when isSpotlight is true', () => {
+    it('renders spotlight styling and Spotlight badge when isSpotlight is true', () => {
       const htmlSpotlight = renderToStaticMarkup(
         React.createElement(VideoCard, {
           player: mockPlayer,
@@ -484,7 +484,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       );
 
       expect(htmlSpotlight).toContain('min-h-[260px]');
-      expect(htmlSpotlight).toContain('SPOTLIGHT');
+      expect(htmlSpotlight).toContain('Spotlight');
 
       const htmlNormal = renderToStaticMarkup(
         React.createElement(VideoCard, {
@@ -495,7 +495,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       );
 
       expect(htmlNormal).toContain('min-h-[140px]');
-      expect(htmlNormal).not.toContain('SPOTLIGHT');
+      expect(htmlNormal).not.toContain('Spotlight');
     });
 
     it('mirrors local video with -scale-x-100 and shows (You) badge when isLocal is true', () => {
@@ -581,14 +581,14 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       const html = renderToStaticMarkup(React.createElement(OnlineRoundView));
 
       // Secret card displayed alongside local video
-      expect(html).toContain('YOUR TURN TO SPEAK!');
-      expect(html).toContain('SECRET WORD');
+      expect(html).toContain('Your turn to speak');
+      expect(html).toContain('Secret word');
       expect(html).toContain('Pizza');
       expect(html).toContain('Category: Food');
       expect(html).toContain('Filmstrip Tray (3)');
     });
 
-    it('displays imposter clue card with hint when local player is the Chomu on their turn', () => {
+    it('displays chomu clue card with hint when local player is the Chomu on their turn', () => {
       mockMultiplayerContextState.players = players;
       mockMultiplayerContextState.myPlayerId = 'p-bob';
       mockMultiplayerContextState.roomState = {
@@ -605,11 +605,11 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
 
       const html = renderToStaticMarkup(React.createElement(OnlineRoundView));
 
-      expect(html).toContain('YOUR TURN TO SPEAK!');
-      expect(html).toContain('YOU ARE THE CHOMU!');
-      expect(html).toContain('IMPOSTER CLUE');
-      expect(html).toContain('Your Imposter Hint');
-      expect(html).toContain('&quot;Planetary&quot;');
+      expect(html).toContain('Your turn to speak');
+      expect(html).toContain('You are the Chomu');
+      expect(html).toContain('Chomu clue');
+      expect(html).toContain('Your Chomu hint');
+      expect(html).toContain('“Planetary”');
       expect(html).toContain('Blend in with the category');
 
       // Also verify no-hint fallback behavior
@@ -619,7 +619,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
         hint: '',
       };
       const htmlNoHint = renderToStaticMarkup(React.createElement(OnlineRoundView));
-      expect(htmlNoHint).toContain('No hint provided. Bluff with confidence!');
+      expect(htmlNoHint).toContain('No hint provided. Bluff with confidence');
     });
 
     it('renders Google Meet / Zoom style view mode switcher button', () => {

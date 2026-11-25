@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Volume2, VolumeX, BookOpen, Home } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useMultiplayer } from '../../context/MultiplayerContext';
 import { ChomuLogo } from '../illustrations/ChomuLogo';
+import { ConfirmModal } from './ConfirmModal';
 import { audioService } from '../../services/audioService';
 
 export const Header: React.FC = () => {
   const { state, dispatch, toggleSound } = useGame();
-  
+  const [confirmTarget, setConfirmTarget] = useState<'online' | 'local' | null>(null);
+
   // Safely consume MultiplayerContext if mounted
   let roomState: any = null;
   let leaveRoom: (() => Promise<void>) | null = null;
@@ -23,21 +25,27 @@ export const Header: React.FC = () => {
   const isPlaying = state.phase === 'PASS_DEVICE' || state.phase === 'ROUND_IN_PROGRESS';
   const isInOnlineRoom = Boolean(roomState && roomState.roomCode);
 
-  const handleHomeClick = async () => {
+  const handleHomeClick = () => {
     audioService.playNav();
     if (isInOnlineRoom && leaveRoom) {
-      if (window.confirm('Leave current online room and return to home screen?')) {
-        await leaveRoom();
-        dispatch({ type: 'RESET_TO_HOME' });
-      }
+      setConfirmTarget('online');
       return;
     }
     if (isPlaying) {
-      if (window.confirm('Leave current game and return to home screen?')) {
-        dispatch({ type: 'RESET_TO_HOME' });
-      }
-    } else {
-      dispatch({ type: 'SET_PHASE', phase: 'HOME' });
+      setConfirmTarget('local');
+      return;
+    }
+    dispatch({ type: 'SET_PHASE', phase: 'HOME' });
+  };
+
+  const handleConfirmLeave = async () => {
+    const target = confirmTarget;
+    setConfirmTarget(null);
+    if (target === 'online' && leaveRoom) {
+      await leaveRoom();
+      dispatch({ type: 'RESET_TO_HOME' });
+    } else if (target === 'local') {
+      dispatch({ type: 'RESET_TO_HOME' });
     }
   };
 
@@ -47,76 +55,94 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header
-      className="w-full border-b border-chomu-border bg-chomu-bg/95 backdrop-blur-md sticky top-0 z-40 app-header transition-all"
-      style={{
-        paddingTop: 'env(safe-area-inset-top, 0px)',
-        minHeight: 'calc(56px + env(safe-area-inset-top, 0px))',
-      }}
-    >
-      <div className="w-full max-w-md md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-        <button
-          onClick={handleHomeClick}
-          aria-label="Chomu Who? Return to home screen"
-          className="flex items-center gap-2.5 cursor-pointer group select-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-xl px-1 text-left"
-        >
-          <ChomuLogo size="sm" />
-          <div className="flex items-baseline gap-1.5 leading-none">
-            <span className="font-black text-chomu-text text-base tracking-tight group-hover:text-chomu-purple transition-colors">
-              CHOMU
-            </span>
-            <span className="font-black text-chomu-purple text-base tracking-tight">
-              WHO?
-            </span>
-          </div>
-        </button>
-
-        <div className="flex items-center gap-1">
-          {isInOnlineRoom && roomState?.roomCode && (
-            <span className="text-[11px] font-mono font-black px-2 py-0.5 rounded-full bg-chomu-lime/20 text-chomu-lime border border-chomu-lime/30 mr-1">
-              {roomState.roomCode}
-            </span>
-          )}
-
-          {(state.phase !== 'HOME' || isInOnlineRoom) && (
-            <button
-              onClick={handleHomeClick}
-              title="Home"
-              aria-label="Home"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
-            >
-              <Home className="w-4 h-4" />
-            </button>
-          )}
-
+    <>
+      <header
+        className="w-full border-b border-white/[0.08] bg-chomu-bg sticky top-0 z-40 app-header"
+        style={{
+          paddingTop: 'env(safe-area-inset-top, 0px)',
+          minHeight: 'calc(56px + env(safe-area-inset-top, 0px))',
+        }}
+      >
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <button
-            onClick={handleRulesClick}
-            title="Game Rules"
-            aria-label="Game Rules"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+            type="button"
+            onClick={handleHomeClick}
+            aria-label="Chomu Who, return to home"
+            className="flex items-center gap-2.5 cursor-pointer group select-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple rounded-[10px] px-1 text-left"
           >
-            <BookOpen className="w-4 h-4" />
+            <ChomuLogo size="sm" />
+            <span className="font-semibold text-chomu-text text-base tracking-[-0.01em] group-hover:text-chomu-purple transition-colors">
+              Chomu Who
+            </span>
           </button>
 
-          <button
-            onClick={() => {
-              toggleSound();
-              if (!state.settings.soundEnabled) {
-                setTimeout(() => audioService.playButtonTap(), 40);
-              }
-            }}
-            title={state.settings.soundEnabled ? 'Mute Sounds' : 'Unmute Sounds'}
-            aria-label={state.settings.soundEnabled ? 'Mute Sounds' : 'Unmute Sounds'}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-muted hover:text-chomu-text rounded-xl hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
-          >
-            {state.settings.soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-chomu-purple" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-chomu-muted/50" />
+          <div className="flex items-center gap-1">
+            {isInOnlineRoom && roomState?.roomCode && (
+              <span className="text-xs font-mono font-medium tabular-nums px-2.5 py-1 rounded-md bg-chomu-surface text-chomu-secondary border border-white/[0.08] mr-1">
+                {roomState.roomCode}
+              </span>
             )}
-          </button>
+
+            {(state.phase !== 'HOME' || isInOnlineRoom) && (
+              <button
+                type="button"
+                onClick={handleHomeClick}
+                title="Home"
+                aria-label="Home"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-secondary hover:text-chomu-text rounded-[10px] hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+              >
+                <Home className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={handleRulesClick}
+              title="How to play"
+              aria-label="How to play"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 text-chomu-secondary hover:text-chomu-text rounded-[10px] hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+            >
+              <BookOpen className="w-4 h-4" strokeWidth={1.5} />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                toggleSound();
+                if (!state.settings.soundEnabled) {
+                  setTimeout(() => audioService.playButtonTap(), 40);
+                }
+              }}
+              title={state.settings.soundEnabled ? 'Mute sound effects' : 'Unmute sound effects'}
+              aria-label={state.settings.soundEnabled ? 'Mute sound effects' : 'Unmute sound effects'}
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-[10px] hover:bg-chomu-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                state.settings.soundEnabled ? 'text-chomu-text' : 'text-chomu-muted'
+              }`}
+            >
+              {state.settings.soundEnabled ? (
+                <Volume2 className="w-4 h-4" strokeWidth={1.5} />
+              ) : (
+                <VolumeX className="w-4 h-4" strokeWidth={1.5} />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <ConfirmModal
+        isOpen={confirmTarget !== null}
+        title={confirmTarget === 'online' ? 'Leave online room' : 'Leave active game'}
+        description={
+          confirmTarget === 'online'
+            ? 'You will disconnect from voice chat and leave the current room.'
+            : 'Current round progress will be cleared if you return home.'
+        }
+        confirmLabel="Leave"
+        cancelLabel="Stay"
+        destructive={true}
+        onConfirm={handleConfirmLeave}
+        onCancel={() => setConfirmTarget(null)}
+      />
+    </>
   );
 };

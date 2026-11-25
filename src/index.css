@@ -5,19 +5,31 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --chomu-bg-deep: #07080d;
+    --chomu-bg: #0b0d14;
+    --chomu-surface: #11141c;
+    --chomu-elevated: #1a1e28;
+    --chomu-hairline: rgba(238, 240, 245, 0.08);
+    --chomu-text: #eef0f5;
+    --chomu-secondary: #a3a9b8;
+    --chomu-muted: #7a8296;
+    --chomu-accent: #9275ff;
+    --chomu-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   body {
-    background-color: #101225;
-    color: #F6F5FC;
+    background-color: var(--chomu-bg);
+    color: var(--chomu-text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
   }
 
-  input, textarea {
+  input,
+  textarea {
     user-select: text;
     -webkit-user-select: text;
   }
@@ -31,6 +43,17 @@
       font-size: 16px !important;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
@@ -40,6 +63,12 @@
   }
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  .dossier-hairline {
+    border-color: rgba(238, 240, 245, 0.08);
   }
   .pt-safe {
     padding-top: env(safe-area-inset-top, 0px);
@@ -55,19 +84,19 @@
 
 /* Custom subtle scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #101323;
+  background: var(--chomu-bg-deep);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2B3450;
+  background: #262b38;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #384366;
+  background: #363d50;
 }

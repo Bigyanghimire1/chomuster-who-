@@ -14,31 +14,31 @@ export const RoundInProgressView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto px-4 py-6 select-none animate-fade-in text-center">
-      {/* 1. Header Banner */}
-      <div className="w-full">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-surface border border-chomu-border text-xs font-bold text-chomu-purple mb-3">
-          <HelpCircle className="w-3.5 h-3.5" />
-          <span>CATEGORY: {categoryName.toUpperCase()}</span>
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in text-center">
+      {/* Header Banner */}
+      <div className="w-full space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-chomu-surface border border-white/[0.08] text-xs font-medium text-chomu-secondary">
+          <HelpCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
+          <span>{categoryName}</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-black text-chomu-text tracking-tight uppercase mb-2">
-          THE ROUND IS ON
+        <h1 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
+          The round is on
         </h1>
-        <p className="text-sm text-chomu-muted font-medium max-w-[280px] mx-auto">
-          Everyone has seen their secret. Give your clues and let the accusations begin!
+        <p className="text-sm text-chomu-secondary max-w-[300px] mx-auto leading-5">
+          Give your clues around the circle and spot the Chomu
         </p>
       </div>
 
-      {/* 2. Central Artwork */}
-      <div className="my-auto py-4">
+      {/* Central Artwork */}
+      <div className="my-auto py-6">
         <RoundInProgressArtwork />
       </div>
 
-      {/* 3. Action Call to Action */}
-      <div className="w-full max-w-[300px] space-y-2.5">
-        <Card className="bg-chomu-surface/60 border-chomu-border py-2 px-3 text-center mb-1">
-          <span className="text-xs text-chomu-muted font-semibold">
+      {/* Action Call to Action */}
+      <div className="w-full max-w-[320px] space-y-3">
+        <Card className="bg-chomu-surface py-2.5 px-4 text-center">
+          <span className="text-xs text-chomu-secondary font-mono tabular-nums">
             {state.players.length} players &bull; {state.settings.imposterCount}{' '}
             {state.settings.imposterCount === 1 ? 'Chomu' : 'Chomas'} hidden
           </span>
@@ -46,16 +46,16 @@ export const RoundInProgressView: React.FC = () => {
 
         <Button
           variant="primary"
-          size="xl"
+          size="lg"
           fullWidth
-          leftIcon={<Eye className="w-5 h-5 fill-current" />}
+          leftIcon={<Eye className="w-4 h-4" strokeWidth={1.5} />}
           onClick={handleRevealImposters}
         >
-          REVEAL CHOMAS
+          Reveal Chomas
         </Button>
 
-        <p className="text-xs text-chomu-muted font-medium">
-          Tap only after your group has voted.
+        <p className="text-xs text-chomu-muted">
+          Tap only after your group has voted
         </p>
       </div>
     </div>

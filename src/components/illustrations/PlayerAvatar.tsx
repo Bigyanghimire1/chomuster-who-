@@ -104,8 +104,8 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
             <circle cx="32" cy="32" r="16" fill="#EAD4B9" />
             {/* Sleek lower face bandana / scarf */}
             <path d="M20 37 L 44 37 L 32 50 Z" fill="#9177FF" />
-            <circle cx="26" cy="30" rx="2" ry="2" fill="#101323" />
-            <circle cx="38" cy="30" rx="2" ry="2" fill="#101323" />
+            <circle cx="26" cy="30" r="2" fill="#101323" />
+            <circle cx="38" cy="30" r="2" fill="#101323" />
           </g>
         );
 

@@ -25,7 +25,6 @@ export const OnlineRoleRevealView: React.FC = () => {
     roomState,
   } = useMultiplayer();
 
-  // Anti-peek state: isCardRevealed is true while holding or toggled
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const [hasAcknowledged, setHasAcknowledged] = useState<boolean>(false);
   const holdStartRef = useRef<number>(0);
@@ -36,7 +35,6 @@ export const OnlineRoleRevealView: React.FC = () => {
   const secretWord = mySecret?.word || '';
   const hint = mySecret?.hint || '';
 
-  // Calculate how many players have acknowledged their role
   const totalPlayers = players.length;
   const readyPlayersCount = players.filter((p) => p.hasSeenRole || p.isReady).length;
 
@@ -50,7 +48,6 @@ export const OnlineRoleRevealView: React.FC = () => {
   const handlePointerUp = useCallback(() => {
     if (!isHoldingRef.current) return;
     isHoldingRef.current = false;
-    // Keep revealed briefly or re-hide
     setIsRevealed(false);
   }, []);
 
@@ -76,132 +73,125 @@ export const OnlineRoleRevealView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-4 select-none animate-fade-in text-center space-y-4">
-      {/* Top Banner */}
-      <div className="w-full">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-surface border border-chomu-border text-xs font-bold text-chomu-purple mb-2">
-          <HelpCircle className="w-3.5 h-3.5" />
-          <span>CATEGORY: {categoryName.toUpperCase()}</span>
+    <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in text-center space-y-5">
+      {/* Header */}
+      <div className="w-full space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-chomu-surface border border-white/[0.08] text-xs font-medium text-chomu-secondary">
+          <HelpCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
+          <span>{categoryName}</span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-black text-chomu-text tracking-tight uppercase">
-          YOUR SECRET IDENTITY
+        <h1 className="text-2xl font-semibold text-chomu-text tracking-[-0.02em]">
+          Your secret role
         </h1>
-        <p className="text-xs text-chomu-muted font-medium max-w-[280px] mx-auto">
-          Hold or tap to reveal. Make sure nobody next to you is peeking!
+        <p className="text-sm text-chomu-secondary max-w-[300px] mx-auto leading-5">
+          Hold or toggle the card to view privately
         </p>
       </div>
 
-      {/* Central Secret Card with Anti-Peek Cover */}
+      {/* Central Secret Card */}
       <div className="relative w-full max-w-[260px] aspect-[3/4] flex items-center justify-center my-auto">
         {!isRevealed ? (
-          /* Cover State: Hold / Tap to Peek */
           <div
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
-            className="w-full h-full cursor-pointer transition-transform active:scale-95 touch-none relative rounded-3xl overflow-hidden shadow-2xl border-2 border-chomu-purple/40 bg-chomu-surface flex flex-col items-center justify-center p-4 group"
+            className="w-full h-full cursor-pointer transition-transform active:scale-[0.99] touch-none relative rounded-2xl overflow-hidden border border-white/[0.12] bg-chomu-surface flex flex-col items-center justify-center p-4"
           >
             <SecretCardBack isHolding={false} />
 
             <div className="absolute inset-x-0 bottom-4 flex flex-col items-center gap-1 pointer-events-none">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-purple text-chomu-bg text-xs font-black shadow-lg">
-                <Eye className="w-3.5 h-3.5" /> PRESS & HOLD
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-chomu-text text-chomu-bg text-xs font-medium">
+                <Eye className="w-3.5 h-3.5" strokeWidth={1.5} />
+                <span>Press and hold</span>
               </span>
-              <span className="text-[10px] text-chomu-muted font-medium">
-                or tap below to toggle
+              <span className="text-xs text-chomu-muted">
+                or toggle below
               </span>
             </div>
           </div>
         ) : (
-          /* Revealed Secret State */
           <div
             onPointerUp={handlePointerUp}
-            className={`w-full h-full rounded-3xl p-5 flex flex-col items-center justify-between shadow-2xl border-2 transition-all animate-scale-in ${
-              isChomu
-                ? 'bg-gradient-to-b from-[#2B1424] via-chomu-surface to-chomu-surface border-chomu-coral'
-                : 'bg-gradient-to-b from-[#162725] via-chomu-surface to-chomu-surface border-chomu-lime'
+            className={`w-full h-full rounded-2xl p-5 flex flex-col items-center justify-between border-2 animate-scale-in bg-chomu-elevated ${
+              isChomu ? 'border-chomu-coral' : 'border-chomu-lime'
             }`}
           >
-            {/* Top Identity Tag */}
             <div className="w-full flex items-center justify-between">
               <Badge variant={isChomu ? 'coral' : 'lime'} size="sm">
-                {isChomu ? 'IMPOSTER' : 'CIVILIAN'}
+                {isChomu ? 'Chomu' : 'Civilian'}
               </Badge>
               <button
+                type="button"
                 onClick={handleToggleReveal}
-                className="p-1 rounded-lg bg-chomu-bg/60 text-chomu-muted hover:text-chomu-text transition-colors"
-                title="Hide Secret"
+                className="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center rounded-[10px] text-chomu-secondary hover:text-chomu-text transition-colors"
+                title="Hide secret"
+                aria-label="Hide secret"
               >
-                <EyeOff className="w-4 h-4" />
+                <EyeOff className="w-4 h-4" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* Secret Content */}
-            <div className="my-auto space-y-2">
+            <div className="my-auto space-y-2.5">
               {isChomu ? (
                 <>
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-chomu-coral/20 flex items-center justify-center mb-1">
+                  <div className="w-16 h-16 mx-auto rounded-xl bg-chomu-coral/15 border border-chomu-coral/30 flex items-center justify-center">
                     <PlayerAvatar
                       id={myPlayer?.avatar || 'shadow'}
                       size="lg"
                       isImposterStyle={true}
                     />
                   </div>
-                  <span className="text-[10px] font-black tracking-widest text-chomu-coral uppercase block">
-                    YOU ARE THE
+                  <span className="text-xs font-medium text-chomu-coral block">
+                    You are the
                   </span>
-                  <h2 className="text-3xl font-black text-chomu-coral tracking-tight uppercase drop-shadow-md">
-                    CHOMU
+                  <h2 className="text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
+                    Chomu
                   </h2>
 
                   {hint ? (
-                    <Card className="bg-chomu-bg/80 border border-chomu-coral/40 p-2.5 text-center mt-2">
-                      <span className="text-[10px] font-bold text-chomu-muted uppercase block">
-                        Your Secret Hint
+                    <Card className="bg-chomu-bgSecondary border border-chomu-coral/30 p-3 text-center mt-2">
+                      <span className="text-xs text-chomu-muted block mb-0.5">
+                        Your hint
                       </span>
-                      <span className="text-lg font-black text-chomu-text">
-                        "{hint}"
+                      <span className="text-lg font-semibold text-chomu-text">
+                        &ldquo;{hint}&rdquo;
                       </span>
                     </Card>
                   ) : (
-                    <p className="text-[11px] text-chomu-muted font-medium pt-1">
-                      No hint given. Blend in and listen closely!
+                    <p className="text-xs text-chomu-secondary pt-1">
+                      No hint given. Listen closely and blend in
                     </p>
                   )}
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-chomu-lime/20 flex items-center justify-center mb-1">
+                  <div className="w-16 h-16 mx-auto rounded-xl bg-chomu-lime/15 border border-chomu-lime/30 flex items-center justify-center">
                     <PlayerAvatar
                       id={myPlayer?.avatar || 'sleuth'}
                       size="lg"
                     />
                   </div>
-                  <span className="text-[10px] font-black tracking-widest text-chomu-lime uppercase block">
-                    THE SECRET WORD
+                  <span className="text-xs font-medium text-chomu-lime block">
+                    Secret word
                   </span>
-                  <h2 className="text-3xl font-black text-chomu-text tracking-tight drop-shadow-md">
-                    {secretWord || 'Loading...'}
+                  <h2 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
+                    {secretWord || 'Loading'}
                   </h2>
-                  <p className="text-[11px] text-chomu-muted font-medium pt-1">
-                    Find the Chomu who doesn't know this word!
+                  <p className="text-xs text-chomu-secondary pt-1">
+                    Spot the Chomu who does not know this word
                   </p>
                 </>
               )}
             </div>
 
-            {/* Bottom reminder */}
-            <div className="w-full pt-1">
-              <span className="text-[10px] text-chomu-muted font-semibold">
-                Tap card or EyeOff to re-hide
-              </span>
-            </div>
+            <span className="text-xs text-chomu-muted">
+              Release or toggle to hide
+            </span>
           </div>
         )}
       </div>
 
-      {/* Alternative Tap Toggle Button */}
       <div className="w-full max-w-[280px]">
         <Button
           variant="secondary"
@@ -210,33 +200,32 @@ export const OnlineRoleRevealView: React.FC = () => {
           onClick={handleToggleReveal}
           leftIcon={
             isRevealed ? (
-              <EyeOff className="w-3.5 h-3.5 text-chomu-muted" />
+              <EyeOff className="w-4 h-4" strokeWidth={1.5} />
             ) : (
-              <Eye className="w-3.5 h-3.5 text-chomu-purple" />
+              <Eye className="w-4 h-4" strokeWidth={1.5} />
             )
           }
         >
-          {isRevealed ? 'Hide Secret (Anti-Peek)' : 'Toggle Card Open'}
+          {isRevealed ? 'Hide secret' : 'Toggle card open'}
         </Button>
       </div>
 
-      {/* Action / Ready Confirmation */}
-      <div className="w-full max-w-[300px] space-y-2 pt-1">
+      <div className="w-full max-w-[300px] space-y-2.5">
         {!hasAcknowledged ? (
           <Button
             variant="primary"
-            size="xl"
+            size="lg"
             fullWidth
             onClick={handleConfirmRole}
-            leftIcon={<Check className="w-5 h-5" />}
+            leftIcon={<Check className="w-4 h-4" strokeWidth={1.5} />}
           >
-            I KNOW MY ROLE
+            I know my role
           </Button>
         ) : (
-          <div className="space-y-2">
-            <div className="p-3 rounded-2xl bg-chomu-lime/15 border border-chomu-lime/30 text-chomu-lime flex items-center justify-center gap-2 text-xs font-black">
-              <Check className="w-4 h-4" />
-              <span>You're ready! Waiting for others ({readyPlayersCount}/{totalPlayers})</span>
+          <div className="space-y-2.5">
+            <div className="p-3 rounded-[10px] bg-chomu-lime/10 border border-chomu-lime/25 text-chomu-lime flex items-center justify-center gap-2 text-xs font-medium tabular-nums">
+              <Check className="w-4 h-4" strokeWidth={1.5} />
+              <span>Ready ({readyPlayersCount}/{totalPlayers})</span>
             </div>
 
             {isHost && (
@@ -245,16 +234,16 @@ export const OnlineRoleRevealView: React.FC = () => {
                 size="lg"
                 fullWidth
                 onClick={handleStartRound}
-                leftIcon={<Play className="w-4 h-4 fill-current" />}
+                leftIcon={<Play className="w-4 h-4" strokeWidth={1.5} />}
               >
-                START ROUND NOW
+                Start round now
               </Button>
             )}
           </div>
         )}
 
-        <p className="text-[11px] text-chomu-muted font-medium">
-          Once everyone is ready, the round will begin automatically.
+        <p className="text-xs text-chomu-muted">
+          The round begins automatically once everyone confirms
         </p>
       </div>
     </div>

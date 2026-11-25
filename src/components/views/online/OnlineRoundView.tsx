@@ -9,7 +9,6 @@ import {
   Radio,
   LayoutGrid,
   Minimize2,
-  Sparkles,
 } from 'lucide-react';
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
@@ -19,12 +18,7 @@ import { VideoCard } from '../../common/VideoCard';
 import { audioService } from '../../../services/audioService';
 
 /**
- * OnlineRoundView — Google Meet / Zoom style dynamic video round view.
- * Features:
- * - State-driven spotlight stage: player whose turn it is is enlarged in the main viewport.
- * - When local player's turn, secret clue/word card is clearly displayed alongside their video.
- * - Smooth bottom/side filmstrip tray for other players.
- * - Toggle for full gallery grid view vs spotlight stage.
+ * OnlineRoundView — Synchronized active-player spotlight and gallery layout.
  */
 export const OnlineRoundView: React.FC = () => {
   const {
@@ -50,7 +44,6 @@ export const OnlineRoundView: React.FC = () => {
   const isChomu = !!mySecret?.isChomu;
   const hint = mySecret?.hint || '';
 
-  // Format timer MM:SS
   const minutes = Math.floor(timerRemaining / 60);
   const seconds = timerRemaining % 60;
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
@@ -60,7 +53,6 @@ export const OnlineRoundView: React.FC = () => {
   const isLowTime = timerRemaining <= 30 && timerRemaining > 0;
   const isCriticalTime = timerRemaining <= 10 && timerRemaining > 0;
 
-  // Find currently speaking player(s)
   const activeSpeakerIds = Object.entries(speakingPeers)
     .filter(([_, isSpeaking]) => isSpeaking)
     .map(([id]) => id);
@@ -69,7 +61,6 @@ export const OnlineRoundView: React.FC = () => {
     .map((id) => players.find((p) => p.id === id)?.name)
     .filter(Boolean);
 
-  // Turn index rotation calculation with roomState.currentTurnPlayerId priority
   const totalDuration = roomState?.roundDurationSeconds || 180;
   const elapsed = Math.max(0, totalDuration - timerRemaining);
   const turnDuration = Math.max(
@@ -104,31 +95,29 @@ export const OnlineRoundView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 max-w-4xl mx-auto w-full px-4 py-4 select-none animate-fade-in space-y-4">
-      {/* Category Banner & Timer Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-chomu-surface/90 border border-chomu-border rounded-3xl p-4 shadow-xl">
-        <div className="text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-bg border border-chomu-border text-xs font-bold text-chomu-purple mb-1">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>CATEGORY: {categoryName.toUpperCase()}</span>
+    <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-4">
+      {/* Header Bar */}
+      <Card className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-xs font-medium text-chomu-secondary mb-1">
+            <HelpCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <span>Category: {categoryName}</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-chomu-text tracking-tight uppercase">
-            ROUND IN PROGRESS
+          <h1 className="text-xl sm:text-2xl font-semibold text-chomu-text tracking-[-0.02em]">
+            Round in progress
           </h1>
         </div>
 
-        {/* View Toggle & Synced Countdown Timer Badge */}
-        <div className="flex items-center gap-2">
-          {/* Google Meet style View Mode Toggle */}
+        <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <Button
             variant="secondary"
             size="sm"
             onClick={() => setIsGalleryView(!isGalleryView)}
             leftIcon={
               isGalleryView ? (
-                <Minimize2 className="w-4 h-4 text-chomu-purple" />
+                <Minimize2 className="w-4 h-4" strokeWidth={1.5} />
               ) : (
-                <LayoutGrid className="w-4 h-4 text-chomu-purple" />
+                <LayoutGrid className="w-4 h-4" strokeWidth={1.5} />
               )
             }
           >
@@ -136,95 +125,77 @@ export const OnlineRoundView: React.FC = () => {
           </Button>
 
           <div
-            className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-[10px] border ${
               isCriticalTime
-                ? 'bg-chomu-coral/20 border-chomu-coral text-chomu-coral animate-pulse'
+                ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral'
                 : isLowTime
-                ? 'bg-chomu-yellow/20 border-chomu-yellow text-chomu-yellow'
-                : 'bg-chomu-bg border-chomu-border text-chomu-lime'
+                  ? 'bg-chomu-yellow/15 border-chomu-yellow text-chomu-yellow'
+                  : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-text'
             }`}
           >
-            <Clock className="w-5 h-5 shrink-0" />
-            <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-wider block leading-none">
-                Time Left
-              </span>
-              <span className="text-2xl font-mono font-black tracking-wider leading-tight">
-                {formattedTime}
-              </span>
-            </div>
+            <Clock className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+            <span className="text-lg font-mono font-semibold tabular-nums leading-none">
+              {formattedTime}
+            </span>
           </div>
         </div>
-      </div>
+      </Card>
 
       {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
-        <div className="bg-amber-500/20 border border-amber-500/40 text-amber-200 px-4 py-2 rounded-2xl text-xs font-bold text-center animate-pulse">
-          Host connection interrupted. Waiting for reconnection (10s grace period)...
+        <div className="bg-chomu-yellow/10 border border-chomu-yellow/30 text-chomu-yellow px-4 py-2.5 rounded-[10px] text-xs font-medium text-center">
+          Host connection interrupted. Waiting for reconnection (10s grace period)
         </div>
       )}
 
-      {/* Live Voice Activity Status Strip */}
-      <Card className="bg-gradient-to-r from-chomu-elevated via-chomu-surface to-chomu-elevated border-2 border-chomu-purple/40 p-3 flex items-center justify-between shadow-lg">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-chomu-purple/20 border border-chomu-purple/40 flex items-center justify-center shrink-0">
-            {activeSpeakerNames.length > 0 ? (
-              <Radio className="w-4 h-4 text-chomu-lime animate-pulse" />
-            ) : (
-              <Mic className="w-4 h-4 text-chomu-purple" />
-            )}
-          </div>
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-chomu-muted block">
-              Active Audio
+      {/* Active Audio & Turn Summary Strip */}
+      <div className="px-4 py-2.5 rounded-xl bg-chomu-surface border border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          {activeSpeakerNames.length > 0 ? (
+            <Radio className="w-4 h-4 text-chomu-lime shrink-0" strokeWidth={1.5} />
+          ) : (
+            <Mic className="w-4 h-4 text-chomu-secondary shrink-0" strokeWidth={1.5} />
+          )}
+          {activeSpeakerNames.length > 0 ? (
+            <span className="text-xs font-medium text-chomu-lime">
+              {activeSpeakerNames.join(', ')} speaking
             </span>
-            <div className="flex items-center gap-2">
-              {activeSpeakerNames.length > 0 ? (
-                <span className="text-xs font-black text-chomu-lime flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-chomu-lime animate-ping" />
-                  {activeSpeakerNames.join(', ')} speaking...
-                </span>
-              ) : (
-                <span className="text-xs text-chomu-muted font-medium">
-                  Listening to players...
-                </span>
-              )}
-            </div>
-          </div>
+          ) : (
+            <span className="text-xs text-chomu-secondary">
+              Listening for clues
+            </span>
+          )}
         </div>
 
         {spotlightPlayer && !isGalleryView && (
-          <div className="flex items-center gap-2 bg-chomu-bg/70 px-3 py-1 rounded-xl border border-chomu-border/60">
-            <span className="text-[11px] font-bold text-chomu-muted">
-              Current speaker:
-            </span>
-            <span className="text-xs font-black text-chomu-purple">
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-chomu-muted">Current speaker:</span>
+            <span className="font-medium text-chomu-text">
               {spotlightPlayer.name} {isMyTurn ? '(You)' : ''}
             </span>
           </div>
         )}
-      </Card>
+      </div>
 
-      {/* Main View Area: Spotlight Stage vs Gallery Grid View */}
+      {/* Main View Area: Spotlight Stage vs Gallery Grid */}
       {isGalleryView ? (
-        /* Full Gallery Grid View (Google Meet / Zoom style) */
-        <div className="space-y-2">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-black uppercase tracking-wider text-chomu-muted">
-              Gallery Grid ({players.length} Players)
+        <div className="space-y-3 flex-1">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-chomu-secondary">
+              Gallery grid ({players.length} players)
             </span>
-            <span className="text-[11px] text-chomu-muted font-medium">
-              Halos pulse when speaking
+            <span className="text-xs text-chomu-muted">
+              Green border marks active speaker
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {players.map((p) => {
               const isMe = p.id === myPlayerId;
               const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
               const isTurn = p.id === spotlightPlayer?.id;
 
               return (
-                <div key={p.id} className="relative aspect-video min-h-[140px] sm:min-h-[160px]">
+                <div key={p.id} className="relative aspect-video min-h-[140px]">
                   <VideoCard
                     player={p}
                     stream={getPlayerStream(p.id)}
@@ -233,9 +204,9 @@ export const OnlineRoundView: React.FC = () => {
                     isSpotlight={isTurn}
                   />
                   {isTurn && (
-                    <div className="absolute top-2 left-2 z-20 pointer-events-none">
-                      <Badge variant="purple" size="sm" className="shadow-md">
-                        CLUE TURN
+                    <div className="absolute top-2.5 right-2.5 z-20 pointer-events-none">
+                      <Badge variant="purple" size="sm">
+                        Clue turn
                       </Badge>
                     </div>
                   )}
@@ -245,14 +216,10 @@ export const OnlineRoundView: React.FC = () => {
           </div>
         </div>
       ) : (
-        /* State-Driven Spotlight Stage */
-        <div className="space-y-4">
-          {/* Spotlight Stage Viewport */}
+        <div className="space-y-4 flex-1">
           {isMyTurn ? (
-            /* Local Player's Turn: Enlarged video alongside secret clue/word card */
-            <div className="flex flex-col md:flex-row gap-4 w-full">
-              {/* Local Video Card */}
-              <div className="flex-1 w-full min-h-[260px] sm:min-h-[320px]">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 w-full">
+              <div className="md:col-span-7 min-h-[260px] sm:min-h-[320px]">
                 <VideoCard
                   player={spotlightPlayer}
                   stream={localStream}
@@ -262,70 +229,70 @@ export const OnlineRoundView: React.FC = () => {
                 />
               </div>
 
-              {/* Secret Clue / Word Card Alongside Video */}
-              <div className="flex-1 w-full bg-gradient-to-br from-chomu-surface via-chomu-surface to-chomu-elevated border-2 border-chomu-purple/60 rounded-2xl p-5 shadow-2xl flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
+              {/* Confidential Clue Card */}
+              <Card className="md:col-span-5 p-5 border-chomu-purple/40 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2">
                     <Badge variant={isChomu ? 'coral' : 'lime'} size="md">
-                      {isChomu ? 'IMPOSTER CLUE' : 'SECRET WORD'}
+                      {isChomu ? 'Chomu clue' : 'Secret word'}
                     </Badge>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-chomu-lime animate-pulse flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" /> YOUR TURN TO SPEAK!
+                    <span className="text-xs font-medium text-chomu-lime">
+                      Your turn to speak
                     </span>
                   </div>
 
                   {isChomu ? (
                     <div className="space-y-3">
-                      <h3 className="text-2xl font-black text-chomu-coral tracking-tight">
-                        YOU ARE THE CHOMU!
-                      </h3>
+                      <h2 className="text-2xl font-semibold text-chomu-coral tracking-[-0.02em]">
+                        You are the Chomu
+                      </h2>
                       {hint ? (
-                        <div className="p-3.5 rounded-xl bg-chomu-bg/90 border border-chomu-coral/40">
-                          <span className="text-[10px] font-bold text-chomu-muted uppercase tracking-widest block mb-1">
-                            Your Imposter Hint
+                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-chomu-coral/30">
+                          <span className="text-xs text-chomu-muted block mb-1">
+                            Your Chomu hint
                           </span>
-                          <span className="text-2xl font-black text-chomu-coral tracking-wide block">
-                            "{hint}"
+                          <span className="text-2xl font-semibold text-chomu-text block">
+                            &ldquo;{hint}&rdquo;
                           </span>
                         </div>
                       ) : (
-                        <div className="p-3.5 rounded-xl bg-chomu-bg/90 border border-chomu-coral/40">
-                          <p className="text-sm font-bold text-chomu-muted">
-                            No hint provided. Bluff with confidence!
+                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-white/[0.08]">
+                          <p className="text-sm text-chomu-secondary">
+                            No hint provided. Bluff with confidence
                           </p>
                         </div>
                       )}
-                      <p className="text-xs text-chomu-muted leading-relaxed">
-                        Blend in with the category <strong className="text-chomu-text">{categoryName}</strong>. Give a clue believable enough so fellow players won't suspect you!
+                      <p className="text-xs text-chomu-secondary leading-5">
+                        Blend in with the category <strong className="text-chomu-text font-medium">{categoryName}</strong> so others suspect someone else.
                       </p>
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className="p-3.5 rounded-xl bg-chomu-bg/90 border border-chomu-lime/40">
-                        <span className="text-[10px] font-bold text-chomu-lime uppercase tracking-widest block mb-1">
+                      <div className="p-4 rounded-[10px] bg-chomu-bgSecondary border border-chomu-lime/30">
+                        <span className="text-xs text-chomu-lime block mb-1">
                           Category: {categoryName}
                         </span>
-                        <span className="text-3xl sm:text-4xl font-black text-chomu-lime tracking-wide block drop-shadow-sm">
+                        <span className="text-3xl font-semibold text-chomu-text tracking-[-0.02em] block">
                           {secretWord}
                         </span>
                       </div>
-                      <p className="text-xs text-chomu-muted leading-relaxed">
-                        Say your clue out loud now. Civilians know this secret word — give a clue subtle enough that Chomu won't guess the word!
+                      <p className="text-xs text-chomu-secondary leading-5">
+                        Give a single-word clue that civilians recognize without giving away the word to the Chomu.
                       </p>
                     </div>
                   )}
                 </div>
 
-                <div className="pt-3 mt-3 border-t border-chomu-border/60 flex items-center justify-between text-[11px] text-chomu-muted font-medium">
-                  <span>Confidential • Visible only to you</span>
-                  <span className="text-chomu-lime font-bold flex items-center gap-1">
-                    <Mic className="w-3.5 h-3.5" /> Mic Ready
+                <div className="pt-3 mt-4 border-t border-white/[0.08] flex items-center justify-between text-xs text-chomu-muted">
+                  <span>Visible only to you</span>
+                  <span className="text-chomu-lime inline-flex items-center gap-1 font-medium">
+                    <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    <span>Mic ready</span>
                   </span>
                 </div>
-              </div>
+              </Card>
             </div>
           ) : (
-            /* Another Player's Turn: Enlarged Spotlight Viewport */
             <div className="w-full relative min-h-[260px] sm:min-h-[340px]">
               <VideoCard
                 player={spotlightPlayer}
@@ -337,26 +304,26 @@ export const OnlineRoundView: React.FC = () => {
                 isSpotlight={true}
               />
               <div className="absolute top-3 right-3 z-20 pointer-events-none">
-                <Badge variant="purple" size="md" className="shadow-lg">
-                  {spotlightPlayer.name}'s Clue Turn
+                <Badge variant="purple" size="md">
+                  {spotlightPlayer.name}&apos;s Clue Turn
                 </Badge>
               </div>
             </div>
           )}
 
-          {/* Smooth Bottom Filmstrip Tray for Other Players */}
+          {/* Filmstrip Tray */}
           {otherPlayers.length > 0 && (
-            <div className="w-full pt-1">
-              <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-black uppercase tracking-wider text-chomu-muted">
+            <div className="w-full space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-chomu-secondary tabular-nums">
                   Filmstrip Tray ({otherPlayers.length})
                 </span>
-                <span className="text-[11px] text-chomu-muted font-medium">
+                <span className="text-xs text-chomu-muted">
                   Other participants
                 </span>
               </div>
 
-              <div className="flex gap-3 overflow-x-auto pb-2 pt-1 px-1 scrollbar-thin snap-x">
+              <div className="flex gap-3 overflow-x-auto pb-1 snap-x">
                 {otherPlayers.map((p) => {
                   const isMe = p.id === myPlayerId;
                   const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
@@ -382,52 +349,49 @@ export const OnlineRoundView: React.FC = () => {
       )}
 
       {/* Secret Word Quick Peek Drawer */}
-      <Card className="bg-chomu-surface/90 border border-chomu-border p-3">
+      <Card className="p-3.5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsSecretPeekOpen(!isSecretPeekOpen)}
-              className="p-1.5 rounded-xl bg-chomu-bg border border-chomu-border hover:bg-chomu-elevated text-chomu-purple transition-colors"
-            >
-              {isSecretPeekOpen ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
-            </button>
-            <span className="text-xs font-black text-chomu-text">
-              {isSecretPeekOpen ? 'Hide My Secret' : 'Peek My Secret'}
-            </span>
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsSecretPeekOpen(!isSecretPeekOpen)}
+            className="inline-flex items-center gap-2 min-h-[44px] px-2 -ml-1 rounded-[10px] text-xs font-medium text-chomu-text hover:bg-chomu-elevated transition-colors"
+          >
+            {isSecretPeekOpen ? (
+              <EyeOff className="w-4 h-4 text-chomu-secondary" strokeWidth={1.5} />
+            ) : (
+              <Eye className="w-4 h-4 text-chomu-purple" strokeWidth={1.5} />
+            )}
+            <span>{isSecretPeekOpen ? 'Hide my secret' : 'Peek my secret'}</span>
+          </button>
 
-          <span className="text-[10px] text-chomu-muted font-medium">
+          <span className="text-xs text-chomu-muted">
             Confidential
           </span>
         </div>
 
         {isSecretPeekOpen && (
-          <div className="mt-3 pt-3 border-t border-chomu-border/60 animate-scale-in text-center">
+          <div className="mt-3 pt-3 border-t border-white/[0.08] animate-fade-in text-center">
             {isChomu ? (
-              <div className="p-3 rounded-2xl bg-chomu-coral/15 border border-chomu-coral/30 space-y-1">
+              <div className="p-3 rounded-[10px] bg-chomu-coral/10 border border-chomu-coral/25 space-y-1">
                 <Badge variant="coral" size="sm">
-                  YOU ARE THE CHOMU
+                  You are the Chomu
                 </Badge>
                 {hint ? (
-                  <p className="text-sm font-black text-chomu-text">
-                    Your Clue: <strong className="text-chomu-coral">"{hint}"</strong>
+                  <p className="text-sm font-medium text-chomu-text">
+                    Your clue: <span className="text-chomu-coral">&ldquo;{hint}&rdquo;</span>
                   </p>
                 ) : (
-                  <p className="text-xs text-chomu-muted font-medium">
-                    No hint given. Blend in!
+                  <p className="text-xs text-chomu-secondary">
+                    No hint given
                   </p>
                 )}
               </div>
             ) : (
-              <div className="p-3 rounded-2xl bg-chomu-lime/15 border border-chomu-lime/30 space-y-1">
-                <span className="text-[10px] font-bold text-chomu-lime uppercase tracking-widest block">
-                  Secret Word
+              <div className="p-3 rounded-[10px] bg-chomu-lime/10 border border-chomu-lime/25 space-y-1">
+                <span className="text-xs text-chomu-lime block">
+                  Secret word
                 </span>
-                <span className="text-2xl font-black text-chomu-text tracking-wide block">
+                <span className="text-xl font-semibold text-chomu-text block">
                   {secretWord}
                 </span>
               </div>
@@ -436,39 +400,36 @@ export const OnlineRoundView: React.FC = () => {
         )}
       </Card>
 
-      {/* Host Controls & Actions */}
-      <div className="pt-2 sticky bottom-4 z-20">
-        <Card className="bg-chomu-surface/95 backdrop-blur-md border border-chomu-border p-3.5 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-center sm:text-left">
-            <span className="text-xs font-black text-chomu-text block">
-              Give your clues and find the imposter!
-            </span>
-            <p className="text-[11px] text-chomu-muted font-medium">
-              {isHost
-                ? 'Ready to accuse? End the round to initiate voting.'
-                : 'The host will trigger voting once everyone has spoken.'}
-            </p>
-          </div>
+      {/* Bottom Round Action Bar (natural flow, sits cleanly above VoiceControls dock) */}
+      <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="text-center sm:text-left">
+          <span className="text-sm font-medium text-chomu-text block">
+            Give your clues and spot the Chomu
+          </span>
+          <p className="text-xs text-chomu-secondary mt-0.5">
+            {isHost
+              ? 'Ready to accuse? End the round to start voting.'
+              : 'The host will open voting once everyone has spoken.'}
+          </p>
+        </div>
 
-          {isHost ? (
-            <Button
-              variant="coral"
-              size="lg"
-              fullWidth
-              className="sm:w-60"
-              onClick={handleEndRound}
-              leftIcon={<Vote className="w-5 h-5" />}
-            >
-              START VOTING
-            </Button>
-          ) : (
-            <div className="flex items-center gap-1.5 text-xs text-chomu-muted font-bold">
-              <Clock className="w-4 h-4 text-chomu-purple animate-spin" />
-              <span>Awaiting Host Accusation</span>
-            </div>
-          )}
-        </Card>
-      </div>
+        {isHost ? (
+          <Button
+            variant="coral"
+            size="lg"
+            fullWidth
+            className="sm:w-56"
+            onClick={handleEndRound}
+            leftIcon={<Vote className="w-4 h-4" strokeWidth={1.5} />}
+          >
+            Start voting
+          </Button>
+        ) : (
+          <span className="text-xs text-chomu-muted font-medium">
+            Awaiting host vote trigger
+          </span>
+        )}
+      </Card>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const RulesView = lazy(() =>
 
 const ViewLoadingFallback: React.FC = () => (
   <div className="flex-1 flex items-center justify-center min-h-[50vh]">
-    <div className="w-8 h-8 rounded-full border-2 border-chomu-purple border-t-transparent animate-spin" />
+    <div className="w-6 h-6 rounded-full border-2 border-chomu-purple border-t-transparent animate-spin" />
   </div>
 );
 
@@ -127,9 +127,9 @@ const GameRouter: React.FC = () => {
   }, [localGameState.phase, isInOnlineRoom, roomState?.phase]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-chomu-bg text-chomu-text selection:bg-chomu-purple selection:text-chomu-bg relative">
+    <div className="min-h-dvh flex flex-col bg-chomu-bg text-chomu-text selection:bg-chomu-purple selection:text-chomu-bg relative">
       <Header />
-      <main className="flex-1 w-full flex flex-col pb-[env(safe-area-inset-bottom,0px)]">
+      <main className="flex-1 w-full flex flex-col">
         <Suspense fallback={<ViewLoadingFallback />}>
           {isInOnlineRoom ? (
             <>
@@ -164,8 +164,8 @@ const GameRouter: React.FC = () => {
         </Suspense>
       </main>
 
-      {/* Floating WebRTC Voice Controls HUD while in an online room */}
-      {isInOnlineRoom && <VoiceControls variant="floating" />}
+      {/* Non-overlapping docked WebRTC Voice & Media HUD while in an online room */}
+      {isInOnlineRoom && <VoiceControls variant="dock" />}
 
       {/* Online Join / Create Room Modal */}
       <OnlineJoinModal
