@@ -570,5 +570,103 @@ describe('Voice & Audio System Unit Tests', () => {
       const insecureMsg = formatMediaError(rawWebKit, iosChromeUa, false);
       expect(insecureMsg).toContain('HTTPS');
     });
+
+    it('tracks autoplay-blocked remote audio and resumes playback via resumeRemoteAudio()', async () => {
+      let allowPlayback = false;
+      const playMock = vi.fn().mockImplementation(async () => {
+        if (!allowPlayback) {
+          const err = new Error('play() failed because the user didn\'t interact with the document first.');
+          err.name = 'NotAllowedError';
+          throw err;
+        }
+      });
+
+      const mockAudioEl = {
+        autoplay: false,
+        muted: false,
+        volume: 1,
+        srcObject: null as MediaStream | null,
+        setAttribute: vi.fn(),
+        style: { display: '' },
+        play: playMock,
+        pause: vi.fn(),
+        parentNode: null,
+      };
+
+      vi.stubGlobal('document', {
+        createElement: vi.fn().mockReturnValue(mockAudioEl),
+        body: { appendChild: vi.fn() },
+        addEventListener: vi.fn(),
+        visibilityState: 'visible',
+      });
+
+      const vm = new VoiceManager();
+      const mockTrack = { kind: 'audio', enabled: true, readyState: 'live', addEventListener: vi.fn(), removeEventListener: vi.fn() };
+      const mockStream = {
+        getAudioTracks: () => [mockTrack],
+        getVideoTracks: () => [],
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      } as unknown as MediaStream;
+
+      vm.addRemoteStream('peer_ios', mockStream);
+      // Wait a microtask for attemptPeerAudioPlay promise rejection
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(vm.getState().playbackBlocked).toBe(true);
+
+      allowPlayback = true;
+      await vm.resumeRemoteAudio();
+      expect(vm.getState().playbackBlocked).toBe(false);
+      expect(playMock).toHaveBeenCalledTimes(2);
+
+      vm.destroy();
+      vi.unstubAllGlobals();
+    });
+
+    it('attaches AudioAnalyser dynamically when an audio track is added later via addtrack', () => {
+      const addTrackHandlers: Array<(evt: any) => void> = [];
+      let audioTracks: any[] = [];
+      const createMediaStreamSource = vi.fn().mockReturnValue({
+        connect: vi.fn(),
+        disconnect: vi.fn(),
+      });
+
+      class MockAudioContext {
+        state = 'running';
+        resume = vi.fn().mockResolvedValue(undefined);
+        close = vi.fn().mockResolvedValue(undefined);
+        createAnalyser = vi.fn().mockReturnValue({
+          fftSize: 512,
+          smoothingTimeConstant: 0.3,
+          disconnect: vi.fn(),
+        });
+        createMediaStreamSource = createMediaStreamSource;
+      }
+
+      vi.stubGlobal('window', { AudioContext: MockAudioContext, addEventListener: vi.fn() });
+
+      const mockStream = {
+        getAudioTracks: () => audioTracks,
+        addEventListener: vi.fn((evt: string, cb: (e: any) => void) => {
+          if (evt === 'addtrack') addTrackHandlers.push(cb);
+        }),
+        removeEventListener: vi.fn(),
+      } as unknown as MediaStream;
+
+      const analyser = new AudioAnalyser(mockStream);
+      expect(createMediaStreamSource).not.toHaveBeenCalled();
+
+      // Simulate WebRTC remote audio track arriving later
+      const lateTrack = { kind: 'audio', addEventListener: vi.fn(), removeEventListener: vi.fn() };
+      audioTracks = [lateTrack];
+      addTrackHandlers.forEach((cb) => cb({ track: lateTrack }));
+
+      expect(createMediaStreamSource).toHaveBeenCalledWith(mockStream);
+
+      analyser.destroy();
+      vi.unstubAllGlobals();
+    });
   });
 });

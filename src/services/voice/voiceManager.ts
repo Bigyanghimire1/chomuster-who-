@@ -8,7 +8,7 @@
  * 5. P2P room stream integration (e.g., Trystero / WebRTC).
  */
 
-import { AudioAnalyser, AudioAnalysisResult } from './audioAnalyser';
+import { AudioAnalyser, AudioAnalysisResult, unlockSharedAudioContext } from './audioAnalyser';
 import { useState, useEffect } from 'react';
 
 export interface RemotePeerVoice {
@@ -17,6 +17,7 @@ export interface RemotePeerVoice {
   audioElement: HTMLAudioElement;
   analyser?: AudioAnalyser | null;
   volume: number;
+  cleanup?: () => void;
 }
 
 export interface VoiceState {
@@ -33,6 +34,7 @@ export interface VoiceState {
   peerLevels: Record<string, number>;
   activePeerIds: string[];
   error: string | null;
+  playbackBlocked: boolean;
   isCameraOn: boolean;
   peerStreams: Record<string, MediaStream>;
 }
@@ -63,6 +65,7 @@ export class VoiceManager {
   private wasMutedBeforeDeafen: boolean = false;
   private listeners: Set<VoiceStateListener> = new Set();
   private mediaListeners: Set<MediaUpdateListener> = new Set();
+  private gestureUnlockCleanup: (() => void) | null = null;
 
   private state: VoiceState = {
     isSupported:
@@ -81,12 +84,45 @@ export class VoiceManager {
     peerLevels: {},
     activePeerIds: [],
     error: null,
+    playbackBlocked: false,
     isCameraOn: false,
     peerStreams: {},
   };
 
   constructor() {
     this.checkSupport();
+    this.bindGesturePlaybackUnlock();
+  }
+
+  private bindGesturePlaybackUnlock(): void {
+    if (
+      this.gestureUnlockCleanup ||
+      typeof window === 'undefined' ||
+      typeof window.addEventListener !== 'function'
+    ) {
+      return;
+    }
+
+    const onUserGesture = () => {
+      unlockSharedAudioContext().catch(() => {});
+      if (this.remotePeers.size > 0 && !this.state.isDeafened) {
+        this.resumeRemoteAudio().catch(() => {});
+      }
+    };
+
+    window.addEventListener('pointerdown', onUserGesture, { passive: true });
+    window.addEventListener('touchstart', onUserGesture, { passive: true });
+    window.addEventListener('keydown', onUserGesture, { passive: true });
+    window.addEventListener('click', onUserGesture, { passive: true });
+
+    this.gestureUnlockCleanup = () => {
+      try {
+        window.removeEventListener('pointerdown', onUserGesture);
+        window.removeEventListener('touchstart', onUserGesture);
+        window.removeEventListener('keydown', onUserGesture);
+        window.removeEventListener('click', onUserGesture);
+      } catch {}
+    };
   }
 
   private checkSupport(): void {
@@ -260,14 +296,16 @@ export class VoiceManager {
         this.localStream = stream;
       }
 
-      // Apply current mute state to newly acquired tracks
-      if (this.state.isMuted || this.state.isDeafened) {
-        if (typeof this.localStream.getAudioTracks === 'function') {
-          this.localStream.getAudioTracks().forEach((track) => {
-            track.enabled = false;
-          });
-        }
+      // Apply current mute state explicitly to newly acquired audio tracks
+      if (typeof this.localStream.getAudioTracks === 'function') {
+        const shouldEnable = !(this.state.isMuted || this.state.isDeafened);
+        this.localStream.getAudioTracks().forEach((track) => {
+          track.enabled = shouldEnable;
+        });
       }
+
+      unlockSharedAudioContext().catch(() => {});
+      this.resumeRemoteAudio().catch(() => {});
 
       // Initialize analyser for speaking detection
       this.localAnalyser = new AudioAnalyser(this.localStream, {
@@ -530,6 +568,10 @@ export class VoiceManager {
       isLocalSpeaking: muted ? false : this.state.isLocalSpeaking,
       localLevel: muted ? 0 : this.state.localLevel,
     });
+
+    if (!muted) {
+      this.resumeRemoteAudio().catch(() => {});
+    }
   }
 
   /**
@@ -569,6 +611,10 @@ export class VoiceManager {
     this.updateState({
       isDeafened: deafened,
     });
+
+    if (!deafened) {
+      this.resumeRemoteAudio().catch(() => {});
+    }
   }
 
   /**
@@ -576,6 +622,62 @@ export class VoiceManager {
    */
   public toggleDeafen(): void {
     this.setDeafened(!this.state.isDeafened);
+  }
+
+  /**
+   * Attempt to play a remote peer's audio element, tracking autoplay-policy blocks
+   * so user gestures or explicit unmute clicks can resume playback cleanly.
+   */
+  private async attemptPeerAudioPlay(peer: RemotePeerVoice): Promise<boolean> {
+    const audio = peer.audioElement;
+    audio.muted = this.state.isDeafened;
+    audio.volume = peer.volume;
+
+    if (this.state.isDeafened) return true;
+
+    try {
+      const playPromise = typeof audio.play === 'function' ? audio.play() : undefined;
+      if (playPromise && typeof playPromise.then === 'function') {
+        await playPromise;
+      }
+      return true;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? `${e.name} ${e.message}` : String(e || '');
+      if (/NotAllowedError|interact|autoplay|user agent|gesture/i.test(msg)) {
+        if (!this.state.playbackBlocked) {
+          this.updateState({ playbackBlocked: true });
+        }
+      } else {
+        console.warn(`[VoiceManager] Audio play warning for peer ${peer.peerId}:`, e);
+      }
+      return false;
+    }
+  }
+
+  /**
+   * Retry playback on all un-deafened remote peer audio elements and unlock shared Web Audio.
+   */
+  public async resumeRemoteAudio(): Promise<void> {
+    unlockSharedAudioContext().catch(() => {});
+
+    if (this.state.isDeafened || this.remotePeers.size === 0) {
+      if (this.state.playbackBlocked) {
+        this.updateState({ playbackBlocked: false });
+      }
+      return;
+    }
+
+    let anyBlocked = false;
+    for (const peer of Array.from(this.remotePeers.values())) {
+      const ok = await this.attemptPeerAudioPlay(peer);
+      if (!ok) {
+        anyBlocked = true;
+      }
+    }
+
+    if (this.state.playbackBlocked !== anyBlocked) {
+      this.updateState({ playbackBlocked: anyBlocked });
+    }
   }
 
   /**
@@ -594,6 +696,7 @@ export class VoiceManager {
       audio = document.createElement('audio');
       audio.autoplay = true;
       audio.setAttribute('playsinline', 'true');
+      audio.setAttribute('webkit-playsinline', 'true');
       audio.style.display = 'none';
       document.body.appendChild(audio);
     } else {
@@ -607,18 +710,9 @@ export class VoiceManager {
       } as unknown as HTMLAudioElement;
     }
 
-    audio.srcObject = stream;
     audio.muted = this.state.isDeafened;
     audio.volume = 1.0;
-
-    try {
-      const playPromise = audio.play();
-      if (playPromise && typeof playPromise.catch === 'function') {
-        playPromise.catch((e) => {
-          console.warn(`[VoiceManager] Autoplay prevented for peer ${peerId}:`, e);
-        });
-      }
-    } catch {}
+    audio.srcObject = stream;
 
     const analyser = new AudioAnalyser(stream, {
       threshold: 0.02,
@@ -639,13 +733,54 @@ export class VoiceManager {
       }
     });
 
+    const cleanups: Array<() => void> = [];
     const peerVoice: RemotePeerVoice = {
       peerId,
       stream,
       audioElement: audio,
       analyser,
       volume: 1.0,
+      cleanup: () => {
+        while (cleanups.length > 0) {
+          try {
+            cleanups.pop()?.();
+          } catch {}
+        }
+      },
     };
+
+    const retriggerPlayback = () => {
+      if (audio.srcObject !== stream) {
+        audio.srcObject = stream;
+      }
+      this.attemptPeerAudioPlay(peerVoice).then((ok) => {
+        if (ok && this.state.playbackBlocked) {
+          this.resumeRemoteAudio().catch(() => {});
+        }
+      });
+    };
+
+    if (typeof stream.addEventListener === 'function') {
+      stream.addEventListener('addtrack', retriggerPlayback);
+      cleanups.push(() => {
+        try {
+          stream.removeEventListener('addtrack', retriggerPlayback);
+        } catch {}
+      });
+    }
+
+    if (typeof stream.getAudioTracks === 'function') {
+      stream.getAudioTracks().forEach((track) => {
+        if (typeof track.addEventListener === 'function') {
+          track.addEventListener('unmute', retriggerPlayback);
+          cleanups.push(() => {
+            try {
+              track.removeEventListener('unmute', retriggerPlayback);
+            } catch {}
+          });
+        }
+      });
+    }
 
     this.remotePeers.set(peerId, peerVoice);
     this._peerStreams[peerId] = stream;
@@ -653,6 +788,12 @@ export class VoiceManager {
     this.updateState({
       activePeerIds: Array.from(this.remotePeers.keys()),
       peerStreams: { ...this._peerStreams },
+    });
+
+    this.attemptPeerAudioPlay(peerVoice).then((ok) => {
+      if (ok && this.state.playbackBlocked) {
+        this.resumeRemoteAudio().catch(() => {});
+      }
     });
 
     return audio;
@@ -674,6 +815,7 @@ export class VoiceManager {
     }
 
     try {
+      peer.cleanup?.();
       peer.audioElement.pause();
       peer.audioElement.srcObject = null;
       if (peer.audioElement.parentNode) {
@@ -698,6 +840,7 @@ export class VoiceManager {
       peerLevels: updatedLevels,
       activePeerIds: Array.from(this.remotePeers.keys()),
       peerStreams: { ...this._peerStreams },
+      playbackBlocked: this.remotePeers.size === 0 ? false : this.state.playbackBlocked,
     });
   }
 
@@ -883,6 +1026,8 @@ export class VoiceManager {
    * Clean up all audio tracks, video tracks, elements, and analyzers.
    */
   public destroy(): void {
+    this.gestureUnlockCleanup?.();
+    this.gestureUnlockCleanup = null;
     this.disableCamera();
     this.stopMicrophone();
     this.detachRoom();
@@ -918,6 +1063,7 @@ export const useVoiceState = (manager: VoiceManager = voiceManager) => {
     toggleMute: () => manager.toggleMute(),
     toggleDeafen: () => manager.toggleDeafen(),
     clearError: () => manager.clearError(),
+    resumeRemoteAudio: () => manager.resumeRemoteAudio(),
     setPeerVolume: (peerId: string, volume: number) => manager.setPeerVolume(peerId, volume),
     isPeerSpeaking: (peerId: string) => manager.isPeerSpeaking(peerId),
     getPeerLevel: (peerId: string) => manager.getPeerLevel(peerId),

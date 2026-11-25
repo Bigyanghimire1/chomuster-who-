@@ -32,6 +32,7 @@ type AudioContextCtor = typeof AudioContext;
 
 let sharedAudioCtx: AudioContext | null = null;
 let sharedAudioCtxCtor: AudioContextCtor | null = null;
+let unlockListenersAttached = false;
 
 function getAudioContextConstructor(): AudioContextCtor | null {
   if (typeof window === 'undefined') return null;
@@ -43,13 +44,57 @@ function getAudioContextConstructor(): AudioContextCtor | null {
 }
 
 /**
- * Reuse one shared AudioContext across AudioAnalyser instances so mobile
- * browsers (especially iOS Safari/Chrome WKWebView, capped around 4-6 contexts)
- * do not exhaust hardware audio contexts in multi-player rooms.
+ * Resume the shared AudioContext if suspended or interrupted (common on iOS Safari/Chrome
+ * after getUserMedia AVAudioSession switches or tab backgrounding).
+ */
+export async function unlockSharedAudioContext(): Promise<AudioContext | null> {
+  const ctx = getSharedAudioContext();
+  if (!ctx) return null;
+
+  if (ctx.state !== 'running' && ctx.state !== 'closed' && typeof ctx.resume === 'function') {
+    try {
+      await ctx.resume();
+    } catch {
+      // Ignore if called outside an active gesture; listener will retry on next tap
+    }
+  }
+  return ctx;
+}
+
+function attachSharedContextUnlockListeners(): void {
+  if (unlockListenersAttached || typeof window === 'undefined') return;
+  if (typeof window.addEventListener !== 'function') return;
+
+  unlockListenersAttached = true;
+  const resumeIfNeeded = () => {
+    if (sharedAudioCtx && sharedAudioCtx.state !== 'running' && sharedAudioCtx.state !== 'closed') {
+      sharedAudioCtx.resume?.().catch(() => {});
+    }
+  };
+
+  window.addEventListener('pointerdown', resumeIfNeeded, { passive: true });
+  window.addEventListener('touchstart', resumeIfNeeded, { passive: true });
+  window.addEventListener('keydown', resumeIfNeeded, { passive: true });
+
+  if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        resumeIfNeeded();
+      }
+    });
+  }
+}
+
+/**
+ * Reuse one shared AudioContext across AudioAnalyser and AudioService instances so mobile
+ * browsers (especially iOS Safari/Chrome WKWebView, capped around 4-6 contexts and sensitive
+ * to competing AVAudioSessions) never exhaust or conflict on hardware audio contexts.
  */
 export function getSharedAudioContext(): AudioContext | null {
   const AudioCtx = getAudioContextConstructor();
   if (!AudioCtx) return null;
+
+  attachSharedContextUnlockListeners();
 
   if (sharedAudioCtx && sharedAudioCtxCtor === AudioCtx && sharedAudioCtx.state !== 'closed') {
     return sharedAudioCtx;
@@ -68,6 +113,8 @@ export class AudioAnalyser {
   private analyserNode: AnalyserNode | null = null;
   private timeData: Uint8Array | null = null;
   private floatData: Float32Array | null = null;
+  private streamCleanups: Array<() => void> = [];
+  private attachedStream: MediaStream | null = null;
 
   private threshold: number;
   private holdTimeMs: number;
@@ -98,7 +145,52 @@ export class AudioAnalyser {
     if (this.isDestroyed) return;
     this.cleanupNodes();
 
+    this.attachedStream = stream;
+
     if (typeof window === 'undefined') return;
+
+    // Wait for audio tracks if the stream initially arrived video-only (e.g. camera before mic)
+    const audioTracks =
+      typeof stream.getAudioTracks === 'function' ? stream.getAudioTracks() : null;
+
+    if (typeof stream.addEventListener === 'function') {
+      const onTrackAdded = (evt: Event) => {
+        const track = (evt as MediaStreamTrackEvent).track;
+        if (!track || track.kind === 'audio') {
+          if (!this.sourceNode && this.attachedStream === stream && !this.isDestroyed) {
+            this.attachStream(stream, options);
+          }
+        }
+      };
+      stream.addEventListener('addtrack', onTrackAdded);
+      this.streamCleanups.push(() => {
+        try {
+          stream.removeEventListener('addtrack', onTrackAdded);
+        } catch {}
+      });
+    }
+
+    if (audioTracks && audioTracks.length === 0) {
+      return;
+    }
+
+    if (audioTracks) {
+      audioTracks.forEach((track) => {
+        if (typeof track.addEventListener === 'function') {
+          const onUnmute = () => {
+            if (this.ctx && this.ctx.state !== 'running' && this.ctx.state !== 'closed') {
+              this.ctx.resume?.().catch(() => {});
+            }
+          };
+          track.addEventListener('unmute', onUnmute);
+          this.streamCleanups.push(() => {
+            try {
+              track.removeEventListener('unmute', onUnmute);
+            } catch {}
+          });
+        }
+      });
+    }
 
     try {
       if (options.audioContext) {
@@ -116,8 +208,8 @@ export class AudioAnalyser {
 
       if (!this.ctx) return;
 
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume().catch(() => {});
+      if (this.ctx.state !== 'running' && this.ctx.state !== 'closed') {
+        this.ctx.resume?.().catch(() => {});
       }
 
       const fftSize = options.fftSize ?? 512;
@@ -298,6 +390,13 @@ export class AudioAnalyser {
    */
   private cleanupNodes(): void {
     this.stopLoop();
+
+    while (this.streamCleanups.length > 0) {
+      const cleanup = this.streamCleanups.pop();
+      try {
+        cleanup?.();
+      } catch {}
+    }
 
     if (this.sourceNode) {
       try {

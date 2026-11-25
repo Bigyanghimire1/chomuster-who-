@@ -93,11 +93,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
     isInitializing,
     isCameraOn,
     error,
+    playbackBlocked,
     toggleMute,
     toggleDeafen,
     toggleCamera,
     startMicrophone,
     clearError,
+    resumeRemoteAudio,
   } = useVoiceState(manager);
 
   const shouldShowMeter =
@@ -137,6 +139,9 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
     } catch {}
 
     toggleDeafen();
+    if (isDeafened) {
+      resumeRemoteAudio().catch(() => {});
+    }
     if (onDeafenToggle) onDeafenToggle(!isDeafened);
   };
 
@@ -488,6 +493,19 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
             </button>
           </div>
         </div>
+
+        {playbackBlocked && !isDeafened && (
+          <button
+            type="button"
+            onClick={() => {
+              resumeRemoteAudio().catch(() => {});
+            }}
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-chomu-yellow/15 hover:bg-chomu-yellow/20 border border-chomu-yellow/35 rounded-lg text-xs font-medium text-chomu-yellow transition-colors text-left"
+          >
+            <span>Browser paused incoming voice audio — tap here to unmute teammates</span>
+            <Volume2 className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+          </button>
+        )}
 
         {error && (
           <div

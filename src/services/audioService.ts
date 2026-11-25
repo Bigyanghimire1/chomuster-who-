@@ -1,22 +1,21 @@
+import { getSharedAudioContext, unlockSharedAudioContext } from './voice/audioAnalyser';
+
 /**
  * AudioService — Clean, Soft, Modern Procedural Sound Effects for Chomu Who?
  * Uses Web Audio API with carefully shaped sine/triangle oscillators and gentle envelopes.
- * Completely eliminates harsh arcade sounds, loud buzzes, and square/sawtooth beeps.
+ * Shares a single unlocked AudioContext with Voice/AudioAnalyser to avoid iOS WebKit
+ * AVAudioSession conflicts when voice chat is active.
  */
 class AudioService {
-  private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
   private isUnlocked: boolean = false;
 
   constructor() {
     // Lazy unlock on first genuine user interaction
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
       const unlock = () => {
         if (!this.isUnlocked) {
-          const ctx = this.getContext();
-          if (ctx && ctx.state === 'suspended') {
-            ctx.resume().catch(() => {});
-          }
+          unlockSharedAudioContext().catch(() => {});
           this.isUnlocked = true;
         }
         window.removeEventListener('pointerdown', unlock);
@@ -28,19 +27,11 @@ class AudioService {
   }
 
   private getContext(): AudioContext | null {
-    if (typeof window === 'undefined') return null;
-    if (!this.ctx) {
-      const AudioCtx =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      if (AudioCtx) {
-        this.ctx = new AudioCtx();
-      }
+    const ctx = getSharedAudioContext();
+    if (ctx && ctx.state !== 'running' && ctx.state !== 'closed') {
+      ctx.resume?.().catch(() => {});
     }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume().catch(() => {});
-    }
-    return this.ctx;
+    return ctx;
   }
 
   public setMuted(muted: boolean): void {
