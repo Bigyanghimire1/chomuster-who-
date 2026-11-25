@@ -8,6 +8,7 @@ export interface VideoCardProps {
   player: OnlinePlayer;
   stream?: MediaStream | null;
   isSpotlight?: boolean;
+  compact?: boolean;
   isSpeaking?: boolean;
   isLocal?: boolean;
   audioLevel?: number;
@@ -24,6 +25,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   player,
   stream,
   isSpotlight = false,
+  compact = false,
   isSpeaking = false,
   isLocal = false,
   audioLevel = 0,
@@ -98,14 +100,18 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       ? 'border-chomu-purple/50'
       : 'border-white/[0.08] hover:border-white/[0.16]';
 
-  const spotlightStyles = isSpotlight
+  const sizeStyles = isSpotlight
     ? 'min-h-[260px] sm:min-h-[320px] md:min-h-[360px]'
-    : 'min-h-[140px] sm:min-h-[160px]';
+    : compact
+      ? 'h-full min-h-0'
+      : 'min-h-[140px] sm:min-h-[172px]';
+
+  const avatarSize = isSpotlight ? 'xl' : compact ? 'sm' : 'md';
 
   return (
     <div
       onClick={onClick}
-      className={`relative overflow-hidden rounded-xl bg-chomu-surface border transition-[border-color,transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center select-none ${borderStyles} ${spotlightStyles} ${className} ${
+      className={`relative overflow-hidden rounded-xl bg-chomu-surface border transition-[border-color,transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center select-none ${borderStyles} ${sizeStyles} ${className} ${
         onClick ? 'cursor-pointer' : ''
       }`}
     >
@@ -120,31 +126,32 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         } ${isLocal ? '-scale-x-100' : ''}`}
       />
 
-      {/* Avatar Fallback when camera is off */}
+      {/* Avatar Fallback when camera is off — spaced cleanly away from top badges & bottom name bar */}
       {!hasActiveVideo && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-0 bg-chomu-surface">
-          <div className="mb-2">
-            <PlayerAvatar id={player.avatar} size={isSpotlight ? 'xl' : 'lg'} />
-          </div>
-          <span className="text-sm font-medium text-chomu-text truncate max-w-[90%] text-center">
-            {player.name}
-          </span>
-          <span className="text-xs text-chomu-muted flex items-center gap-1.5 mt-1">
-            <VideoOff className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span>Camera off</span>
-          </span>
+        <div
+          className={`absolute inset-0 flex flex-col items-center justify-center z-0 bg-chomu-surface ${
+            compact ? 'pt-6 pb-8 px-2' : 'pt-8 pb-11 px-4'
+          }`}
+        >
+          <PlayerAvatar id={player.avatar} size={avatarSize} />
+          {!compact && (
+            <span className="text-xs text-chomu-muted inline-flex items-center gap-1.5 mt-2">
+              <VideoOff className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+              <span>Camera off</span>
+            </span>
+          )}
         </div>
       )}
 
-      {/* Top Overlay: Spotlight & Host Tag */}
-      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
-        <div className="flex items-center gap-1.5">
+      {/* Top Overlay: Spotlight, Host & Action Slot */}
+      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none z-10">
+        <div className="flex items-center gap-1.5 min-w-0">
           {isSpotlight && (
             <Badge variant="purple" size="sm">
               Spotlight
             </Badge>
           )}
-          {player.isHost && (
+          {player.isHost && !compact && (
             <Badge variant="yellow" size="sm">
               <Crown className="w-3.5 h-3.5" strokeWidth={1.5} />
               <span>Host</span>
@@ -152,12 +159,12 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           )}
         </div>
 
-        {actionSlot && <div className="pointer-events-auto">{actionSlot}</div>}
+        {actionSlot && <div className="pointer-events-auto shrink-0">{actionSlot}</div>}
       </div>
 
-      {/* Bottom Badge: Player Name & Live Audio */}
-      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-white/[0.08] text-xs font-medium text-chomu-text truncate max-w-[80%]">
+      {/* Bottom Bar: Single Player Name & Live Audio */}
+      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none z-10">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-white/[0.08] text-xs font-medium text-chomu-text min-w-0 max-w-full">
           <span
             className={`w-2 h-2 rounded-full shrink-0 ${
               isSpeaking ? 'bg-chomu-lime' : 'bg-chomu-muted/50'
@@ -169,12 +176,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({
               (You)
             </span>
           )}
+          {compact && !hasActiveVideo && (
+            <VideoOff className="w-3 h-3 text-chomu-muted shrink-0 ml-0.5" strokeWidth={1.5} aria-label="Camera off" />
+          )}
         </div>
 
         {isSpeaking && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-chomu-lime/30 text-chomu-lime text-xs font-medium">
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-chomu-lime/30 text-chomu-lime text-xs font-medium shrink-0">
             <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span>Live</span>
+            {!compact && <span>Live</span>}
             {audioLevel > 0 && (
               <span
                 className="w-1 rounded-full bg-chomu-lime transition-[height] duration-75"

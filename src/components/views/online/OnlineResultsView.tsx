@@ -136,16 +136,16 @@ export const OnlineResultsView: React.FC = () => {
           return (
             <Card
               key={p.id}
-              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between text-left"
+              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between gap-3 text-left"
             >
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
                 <PlayerAvatar id={p.avatar} size="lg" isImposterStyle={true} />
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <h2 className="text-base font-semibold text-chomu-text leading-tight truncate">
                     {p.name}
                   </h2>
                   {hintText ? (
-                    <span className="text-xs text-chomu-secondary block mt-0.5">
+                    <span className="text-xs text-chomu-secondary block mt-0.5 truncate">
                       Hint: <span className="text-chomu-coral font-medium">&ldquo;{hintText}&rdquo;</span>
                     </span>
                   ) : (
@@ -159,7 +159,7 @@ export const OnlineResultsView: React.FC = () => {
                 </div>
               </div>
 
-              <Badge variant="coral" size="sm">
+              <Badge variant="coral" size="sm" className="shrink-0">
                 Chomu
               </Badge>
             </Card>
@@ -200,18 +200,18 @@ export const OnlineResultsView: React.FC = () => {
             return (
               <div
                 key={voter.id}
-                className="flex items-center justify-between text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-white/[0.06]"
+                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-white/[0.06]"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
                   <PlayerAvatar id={voter.avatar} size="sm" />
-                  <span className="font-medium text-chomu-text">{voter.name}</span>
+                  <span className="font-medium text-chomu-text truncate">{voter.name}</span>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <span className="text-chomu-muted">voted for</span>
+                <div className="flex items-center gap-1.5 shrink-0 max-w-[55%]">
+                  <span className="text-chomu-muted shrink-0">voted for</span>
                   {targetPlayer ? (
                     <span
-                      className={`font-medium ${
+                      className={`font-medium truncate ${
                         targetIsChomu ? 'text-chomu-coral' : 'text-chomu-text'
                       }`}
                     >

@@ -201,15 +201,16 @@ export const OnlineRoundView: React.FC = () => {
                     stream={getPlayerStream(p.id)}
                     isSpeaking={isPeerSpeaking}
                     isLocal={isMe}
-                    isSpotlight={isTurn}
+                    compact={true}
+                    className={isTurn ? 'border-chomu-purple/60' : undefined}
+                    actionSlot={
+                      isTurn ? (
+                        <Badge variant="purple" size="sm">
+                          Clue turn
+                        </Badge>
+                      ) : undefined
+                    }
                   />
-                  {isTurn && (
-                    <div className="absolute top-2.5 right-2.5 z-20 pointer-events-none">
-                      <Badge variant="purple" size="sm">
-                        Clue turn
-                      </Badge>
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -302,12 +303,12 @@ export const OnlineRoundView: React.FC = () => {
                 }
                 isLocal={spotlightPlayer.id === myPlayerId}
                 isSpotlight={true}
+                actionSlot={
+                  <Badge variant="purple" size="md">
+                    {spotlightPlayer.name}&apos;s Clue Turn
+                  </Badge>
+                }
               />
-              <div className="absolute top-3 right-3 z-20 pointer-events-none">
-                <Badge variant="purple" size="md">
-                  {spotlightPlayer.name}&apos;s Clue Turn
-                </Badge>
-              </div>
             </div>
           )}
 
@@ -331,13 +332,14 @@ export const OnlineRoundView: React.FC = () => {
                   return (
                     <div
                       key={p.id}
-                      className="w-36 sm:w-44 h-24 sm:h-28 shrink-0 snap-start"
+                      className="w-40 sm:w-48 h-28 sm:h-32 shrink-0 snap-start"
                     >
                       <VideoCard
                         player={p}
                         stream={getPlayerStream(p.id)}
                         isSpeaking={isPeerSpeaking}
                         isLocal={isMe}
+                        compact={true}
                       />
                     </div>
                   );

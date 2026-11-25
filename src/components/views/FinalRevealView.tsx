@@ -60,16 +60,16 @@ export const FinalRevealView: React.FC = () => {
           return (
             <Card
               key={p.id}
-              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between"
+              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between gap-3"
             >
-              <div className="flex items-center gap-3 text-left">
+              <div className="flex items-center gap-3 text-left min-w-0 flex-1">
                 <PlayerAvatar id={p.avatar} size="md" isImposterStyle={true} />
-                <div>
-                  <h2 className="text-base font-semibold text-chomu-text leading-tight">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-semibold text-chomu-text leading-tight truncate">
                     {p.name}
                   </h2>
                   {hint ? (
-                    <span className="text-xs text-chomu-secondary block mt-0.5">
+                    <span className="text-xs text-chomu-secondary block mt-0.5 truncate">
                       Hint: <span className="text-chomu-coral font-medium">&ldquo;{hint}&rdquo;</span>
                     </span>
                   ) : (
@@ -79,7 +79,7 @@ export const FinalRevealView: React.FC = () => {
                   )}
                 </div>
               </div>
-              <Badge variant="coral" size="sm">
+              <Badge variant="coral" size="sm" className="shrink-0">
                 Chomu
               </Badge>
             </Card>

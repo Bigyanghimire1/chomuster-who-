@@ -155,7 +155,7 @@ export const OnlineVotingView: React.FC = () => {
                 </SpeakingIndicator>
               </div>
 
-              <div className="space-y-1 w-full">
+              <div className="space-y-1 w-full min-w-0 px-2">
                 <span className="text-sm font-semibold text-chomu-text truncate block">
                   {p.name} {isMe && '(You)'}
                 </span>
