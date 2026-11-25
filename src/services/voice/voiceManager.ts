@@ -101,6 +101,82 @@ export class VoiceManager {
     }
   }
 
+  private isInsecureContext(): boolean {
+    return typeof window !== 'undefined' && window.isSecureContext === false;
+  }
+
+  private formatCapturedError(err: unknown, fallback: string): string {
+    if (err instanceof Error) {
+      const name = err.name && err.name !== 'Error' ? err.name : '';
+      const msg = err.message || fallback;
+      if (name && !msg.includes(name)) {
+        return `${name}: ${msg}`;
+      }
+      return msg;
+    }
+    return fallback;
+  }
+
+  private shouldRetryWithFallback(err: unknown): boolean {
+    if (!err || typeof err !== 'object') return false;
+    const name = 'name' in err ? String((err as { name?: unknown }).name || '') : '';
+    const message = 'message' in err ? String((err as { message?: unknown }).message || '') : '';
+    if (
+      name === 'NotAllowedError' ||
+      name === 'PermissionDeniedError' ||
+      name === 'SecurityError' ||
+      name === 'NotFoundError' ||
+      name === 'DevicesNotFoundError'
+    ) {
+      return false;
+    }
+    return (
+      name === 'OverconstrainedError' ||
+      name === 'ConstraintNotSatisfiedError' ||
+      name === 'TypeError' ||
+      name === 'NotReadableError' ||
+      name === 'AbortError' ||
+      /constraint|overconstrained|notreadable/i.test(message)
+    );
+  }
+
+  /**
+   * Call navigator.mediaDevices.getUserMedia synchronously on the initial attempt
+   * to preserve strict user-gesture activation on iOS Safari and iOS Chrome (WKWebView),
+   * falling back to looser constraints if the device rejects strict constraints.
+   */
+  private async requestUserMediaWithFallback(
+    primary: MediaStreamConstraints,
+    fallbacks: MediaStreamConstraints[]
+  ): Promise<MediaStream> {
+    try {
+      return await navigator.mediaDevices.getUserMedia(primary);
+    } catch (primaryErr: unknown) {
+      if (!this.shouldRetryWithFallback(primaryErr)) {
+        throw primaryErr;
+      }
+
+      let lastErr: unknown = primaryErr;
+      for (const fallbackConstraints of fallbacks) {
+        try {
+          return await navigator.mediaDevices.getUserMedia(fallbackConstraints);
+        } catch (fallbackErr: unknown) {
+          lastErr = fallbackErr;
+          if (!this.shouldRetryWithFallback(fallbackErr)) {
+            throw fallbackErr;
+          }
+        }
+      }
+      throw lastErr;
+    }
+  }
+
+  public clearError(): void {
+    if (this.state.error !== null) {
+      this.updateState({ error: null });
+    }
+  }
+
   public get isMicOn(): boolean {
     return this.state.isMicActive && !this.state.isMuted;
   }
@@ -125,6 +201,13 @@ export class VoiceManager {
    * Acquire local microphone with echo cancellation, noise suppression, and auto gain control.
    */
   public async startMicrophone(constraints?: MediaTrackConstraints): Promise<MediaStream | null> {
+    if (this.isInsecureContext()) {
+      this.updateState({
+        error: 'SecurityError: Microphone access requires a secure HTTPS connection.',
+      });
+      return null;
+    }
+
     this.checkSupport();
     if (!this.state.isSupported) {
       this.updateState({ error: 'Audio capture is not supported on this device/browser.' });
@@ -140,20 +223,23 @@ export class VoiceManager {
       return this.localStream;
     }
 
-    this.updateState({ isInitializing: true, error: null });
+    const audioConstraints: MediaTrackConstraints = {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+      ...constraints,
+    };
 
     try {
-      const audioConstraints: MediaTrackConstraints = {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-        ...constraints,
-      };
+      // Invoke getUserMedia synchronously before state updates/renders to keep iOS/WebKit user activation
+      const mediaPromise = this.requestUserMediaWithFallback(
+        { audio: audioConstraints, video: false },
+        [{ audio: true, video: false }]
+      );
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: audioConstraints,
-        video: false,
-      });
+      this.updateState({ isInitializing: true, error: null });
+
+      const stream = await mediaPromise;
 
       const audioTrack = typeof stream.getAudioTracks === 'function' ? stream.getAudioTracks()[0] : null;
 
@@ -220,7 +306,7 @@ export class VoiceManager {
 
       return this.localStream;
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to access microphone';
+      const message = this.formatCapturedError(err, 'Failed to access microphone');
       console.error('[VoiceManager] getUserMedia error:', err);
       this.updateState({
         hasPermission: false,
@@ -285,6 +371,14 @@ export class VoiceManager {
    * Enable video camera with standard WebRTC constraints.
    */
   public async enableCamera(constraints?: MediaTrackConstraints): Promise<MediaStream | null> {
+    if (this.isInsecureContext()) {
+      this.updateState({
+        isCameraOn: false,
+        error: 'SecurityError: Camera access requires a secure HTTPS connection.',
+      });
+      return null;
+    }
+
     this.checkSupport();
     if (!this.state.isSupported) {
       this.updateState({ error: 'Media capture is not supported on this device/browser.' });
@@ -300,18 +394,21 @@ export class VoiceManager {
       return this.localStream;
     }
 
-    try {
-      const videoConstraints: MediaTrackConstraints = {
-        width: { ideal: 480 },
-        height: { ideal: 360 },
-        frameRate: { max: 20 },
-        ...constraints,
-      };
+    const videoConstraints: MediaTrackConstraints = {
+      width: { ideal: 480 },
+      height: { ideal: 360 },
+      frameRate: { max: 20 },
+      ...constraints,
+    };
 
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: videoConstraints,
-        audio: false,
-      });
+    try {
+      const mediaStream = await this.requestUserMediaWithFallback(
+        { video: videoConstraints, audio: false },
+        [
+          { video: { facingMode: 'user' }, audio: false },
+          { video: true, audio: false },
+        ]
+      );
 
       const videoTrack =
         typeof mediaStream.getVideoTracks === 'function' ? mediaStream.getVideoTracks()[0] : null;
@@ -354,7 +451,7 @@ export class VoiceManager {
 
       return this.localStream;
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to access camera';
+      const message = this.formatCapturedError(err, 'Failed to access camera');
       console.error('[VoiceManager] enableCamera error:', err);
       this.updateState({
         isCameraOn: false,
@@ -820,6 +917,7 @@ export const useVoiceState = (manager: VoiceManager = voiceManager) => {
     setDeafened: (deafened: boolean) => manager.setDeafened(deafened),
     toggleMute: () => manager.toggleMute(),
     toggleDeafen: () => manager.toggleDeafen(),
+    clearError: () => manager.clearError(),
     setPeerVolume: (peerId: string, volume: number) => manager.setPeerVolume(peerId, volume),
     isPeerSpeaking: (peerId: string) => manager.isPeerSpeaking(peerId),
     getPeerLevel: (peerId: string) => manager.getPeerLevel(peerId),

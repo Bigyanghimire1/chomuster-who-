@@ -28,9 +28,42 @@ export interface AudioAnalysisResult {
 
 export type AudioAnalysisListener = (result: AudioAnalysisResult) => void;
 
+type AudioContextCtor = typeof AudioContext;
+
+let sharedAudioCtx: AudioContext | null = null;
+let sharedAudioCtxCtor: AudioContextCtor | null = null;
+
+function getAudioContextConstructor(): AudioContextCtor | null {
+  if (typeof window === 'undefined') return null;
+  return (
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext?: AudioContextCtor }).webkitAudioContext ||
+    null
+  );
+}
+
+/**
+ * Reuse one shared AudioContext across AudioAnalyser instances so mobile
+ * browsers (especially iOS Safari/Chrome WKWebView, capped around 4-6 contexts)
+ * do not exhaust hardware audio contexts in multi-player rooms.
+ */
+export function getSharedAudioContext(): AudioContext | null {
+  const AudioCtx = getAudioContextConstructor();
+  if (!AudioCtx) return null;
+
+  if (sharedAudioCtx && sharedAudioCtxCtor === AudioCtx && sharedAudioCtx.state !== 'closed') {
+    return sharedAudioCtx;
+  }
+
+  sharedAudioCtx = new AudioCtx();
+  sharedAudioCtxCtor = AudioCtx;
+  return sharedAudioCtx;
+}
+
 export class AudioAnalyser {
   private ctx: AudioContext | null = null;
   private isExternalCtx: boolean = false;
+  private isSharedCtx: boolean = false;
   private sourceNode: MediaStreamAudioSourceNode | null = null;
   private analyserNode: AnalyserNode | null = null;
   private timeData: Uint8Array | null = null;
@@ -71,13 +104,13 @@ export class AudioAnalyser {
       if (options.audioContext) {
         this.ctx = options.audioContext;
         this.isExternalCtx = true;
-      } else if (!this.ctx) {
-        const AudioCtx =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        if (AudioCtx) {
-          this.ctx = new AudioCtx();
+        this.isSharedCtx = false;
+      } else if (!this.ctx || this.ctx.state === 'closed') {
+        const shared = getSharedAudioContext();
+        if (shared) {
+          this.ctx = shared;
           this.isExternalCtx = false;
+          this.isSharedCtx = true;
         }
       }
 
@@ -280,13 +313,17 @@ export class AudioAnalyser {
       this.analyserNode = null;
     }
 
-    if (this.ctx && !this.isExternalCtx) {
-      try {
-        if (this.ctx.state !== 'closed') {
-          this.ctx.close().catch(() => {});
-        }
-      } catch {}
+    if (this.ctx) {
+      if (!this.isExternalCtx && !this.isSharedCtx) {
+        try {
+          if (this.ctx.state !== 'closed') {
+            this.ctx.close().catch(() => {});
+          }
+        } catch {}
+      }
       this.ctx = null;
+      this.isExternalCtx = false;
+      this.isSharedCtx = false;
     }
 
     this.currentRms = 0;

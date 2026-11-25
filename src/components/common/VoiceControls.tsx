@@ -1,7 +1,62 @@
 import React from 'react';
-import { Mic, MicOff, Volume2, VolumeX, Video, VideoOff } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Video, VideoOff, X } from 'lucide-react';
 import { useVoiceState, voiceManager, VoiceManager } from '../../services/voice/voiceManager';
 import { audioService } from '../../services/audioService';
+
+/**
+ * Translate raw browser/WebKit media exceptions into concise, actionable
+ * cross-device instructions while gracefully handling unknown error messages.
+ */
+export function formatMediaError(
+  rawError: string,
+  userAgent?: string,
+  isSecureContext?: boolean
+): string {
+  const ua = userAgent ?? (typeof navigator !== 'undefined' ? navigator.userAgent : '');
+  const secure =
+    isSecureContext ?? (typeof window !== 'undefined' ? window.isSecureContext !== false : true);
+  const lower = rawError.toLowerCase();
+
+  if (!secure || lower.includes('securityerror') || lower.includes('https')) {
+    return 'Microphone & camera require a secure HTTPS connection.';
+  }
+
+  if (/(FBAN|FBAV|Instagram|WhatsApp|Line|MicroMessenger|Snapchat)/i.test(ua)) {
+    return 'In-app browser blocked mic/camera access. Open this link in Safari or Chrome to use voice and video.';
+  }
+
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isIOSChrome = /CriOS/i.test(ua);
+  const isPermissionError =
+    lower.includes('notallowederror') ||
+    lower.includes('permission') ||
+    lower.includes('not allowed by the user agent') ||
+    lower.includes('platform in the current context');
+
+  if (isPermissionError) {
+    if (isIOSChrome) {
+      return 'Mic/camera blocked on iOS Chrome. Check iPhone Settings -> Chrome -> Microphone & Camera are enabled, allow access for this site, and tap again.';
+    }
+    if (isIOS) {
+      return 'Mic/camera blocked on iOS. Check iPhone Settings -> Safari -> Microphone & Camera (or open in Safari) and tap Allow when prompted.';
+    }
+    return 'Mic/camera permission denied. Click the lock or site settings icon in your browser address bar to allow access, then try again.';
+  }
+
+  if (lower.includes('notfounderror') || lower.includes('requested device not found')) {
+    return 'No microphone or camera found. Check that a device is connected and enabled.';
+  }
+
+  if (
+    lower.includes('notreadableerror') ||
+    lower.includes('trackstarterror') ||
+    lower.includes('could not start')
+  ) {
+    return 'Mic or camera is busy in another app or tab. Close the other app and try again.';
+  }
+
+  return rawError;
+}
 
 export interface VoiceControlsProps {
   /** Display variant: 'dock' (non-overlapping bottom bar), 'floating', 'header', 'compact', or 'inline' */
@@ -42,32 +97,38 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
     toggleDeafen,
     toggleCamera,
     startMicrophone,
+    clearError,
   } = useVoiceState(manager);
 
   const shouldShowMeter =
     showLevelMeter ?? (variant === 'dock' || variant === 'floating' || variant === 'compact');
 
   const handleMicClick = async () => {
-    try {
-      audioService.playButtonTap();
-    } catch {}
-
+    // Call startMicrophone immediately inside click gesture without prior AudioContext sound playback
+    // so strict mobile engines (iOS Safari/Chrome WKWebView) preserve transient user activation.
     if (!isMicActive) {
-      await startMicrophone();
-      if (onMuteToggle) onMuteToggle(false);
+      const stream = await startMicrophone();
+      if (stream && onMuteToggle) onMuteToggle(false);
     } else {
+      try {
+        audioService.playButtonTap();
+      } catch {}
       await toggleMute();
       if (onMuteToggle) onMuteToggle(!isMuted);
     }
   };
 
   const handleCameraClick = async () => {
-    try {
-      audioService.playButtonTap();
-    } catch {}
+    if (isCameraOn) {
+      try {
+        audioService.playButtonTap();
+      } catch {}
+    }
 
     await toggleCamera();
-    if (onCameraToggle) onCameraToggle(!isCameraOn);
+    if (onCameraToggle) {
+      onCameraToggle(manager.getState().isCameraOn);
+    }
   };
 
   const handleDeafenClick = () => {
@@ -429,8 +490,19 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         </div>
 
         {error && (
-          <div className="px-3 py-1.5 bg-chomu-coral/10 border border-chomu-coral/25 rounded-lg text-xs text-chomu-coral">
-            {error}
+          <div
+            role="alert"
+            className="flex items-start justify-between gap-2 px-3 py-2 bg-chomu-coral/10 border border-chomu-coral/25 rounded-lg text-xs text-chomu-coral leading-snug"
+          >
+            <span>{formatMediaError(error)}</span>
+            <button
+              type="button"
+              onClick={clearError}
+              aria-label="Dismiss error"
+              className="shrink-0 p-0.5 rounded hover:bg-chomu-coral/15 text-chomu-coral/80 hover:text-chomu-coral transition-colors"
+            >
+              <X className="w-3.5 h-3.5" strokeWidth={1.75} />
+            </button>
           </div>
         )}
       </div>

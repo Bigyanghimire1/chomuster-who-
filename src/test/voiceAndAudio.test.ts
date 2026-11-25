@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { AudioAnalyser } from '../services/voice/audioAnalyser';
+import { AudioAnalyser, getSharedAudioContext } from '../services/voice/audioAnalyser';
 import { VoiceManager, voiceManager } from '../services/voice/voiceManager';
 import { P2PRealtimeService } from '../services/multiplayer/p2pRealtimeService';
+import { formatMediaError } from '../components/common/VoiceControls';
 
 describe('Voice & Audio System Unit Tests', () => {
   describe('AudioAnalyser — RMS Audio Energy & Speaking Detection', () => {
@@ -448,6 +449,126 @@ describe('Voice & Audio System Unit Tests', () => {
       expect(content).toContain('isMicOn,');
       expect(content).toContain('localStream,');
       expect(content).toContain('peerStreams,');
+    });
+
+    it('invokes getUserMedia before emitting isInitializing updates and falls back on OverconstrainedError', async () => {
+      const vm = new VoiceManager();
+      const events: string[] = [];
+
+      const unsub = vm.subscribe((s) => {
+        if (s.isInitializing) {
+          events.push('isInitializing');
+        }
+      });
+
+      const mockTrack = { kind: 'audio', enabled: true, readyState: 'live', stop: vi.fn(), onended: null };
+      const mockStream = {
+        getTracks: () => [mockTrack],
+        getAudioTracks: () => [mockTrack],
+        getVideoTracks: () => [],
+      } as unknown as MediaStream;
+
+      let callCount = 0;
+      const getUserMediaMock = vi.fn().mockImplementation(async (constraints: MediaStreamConstraints) => {
+        events.push(`getUserMedia:${typeof constraints.audio === 'boolean' ? 'basic' : 'constraints'}`);
+        callCount += 1;
+        if (callCount === 1) {
+          const err = new Error('Overconstrained');
+          err.name = 'OverconstrainedError';
+          throw err;
+        }
+        return mockStream;
+      });
+
+      vi.stubGlobal('navigator', {
+        mediaDevices: { getUserMedia: getUserMediaMock },
+      });
+      vi.stubGlobal('window', { isSecureContext: true });
+
+      const result = await vm.startMicrophone();
+      expect(result).toBe(mockStream);
+      expect(getUserMediaMock).toHaveBeenCalledTimes(2);
+      expect(events[0]).toBe('getUserMedia:constraints');
+      expect(events[1]).toBe('isInitializing');
+      expect(vm.getState().isMicActive).toBe(true);
+      expect(vm.getState().error).toBeNull();
+
+      unsub();
+      vm.destroy();
+      vi.unstubAllGlobals();
+    });
+
+    it('preserves WebKit error name on NotAllowedError and supports clearError()', async () => {
+      const vm = new VoiceManager();
+      const webKitErr = new Error(
+        'The request is not allowed by the user agent or the platform in the current context, possibly because the user denied permission.'
+      );
+      webKitErr.name = 'NotAllowedError';
+
+      vi.stubGlobal('navigator', {
+        mediaDevices: {
+          getUserMedia: vi.fn().mockRejectedValue(webKitErr),
+        },
+      });
+      vi.stubGlobal('window', { isSecureContext: true });
+
+      const res = await vm.startMicrophone();
+      expect(res).toBeNull();
+      expect(vm.getState().error).toContain('NotAllowedError');
+
+      vm.clearError();
+      expect(vm.getState().error).toBeNull();
+
+      vm.destroy();
+      vi.unstubAllGlobals();
+    });
+
+    it('reuses a single shared AudioContext across AudioAnalyser instances', () => {
+      let ctorCalls = 0;
+      class MockAudioContext {
+        state = 'running';
+        resume = vi.fn().mockResolvedValue(undefined);
+        close = vi.fn().mockResolvedValue(undefined);
+        createAnalyser = vi.fn().mockReturnValue({
+          fftSize: 512,
+          smoothingTimeConstant: 0.3,
+          disconnect: vi.fn(),
+        });
+        createMediaStreamSource = vi.fn().mockReturnValue({
+          connect: vi.fn(),
+          disconnect: vi.fn(),
+        });
+        constructor() {
+          ctorCalls += 1;
+        }
+      }
+
+      vi.stubGlobal('window', { AudioContext: MockAudioContext });
+
+      const ctx1 = getSharedAudioContext();
+      const ctx2 = getSharedAudioContext();
+      expect(ctx1).toBe(ctx2);
+      expect(ctorCalls).toBe(1);
+
+      vi.unstubAllGlobals();
+    });
+
+    it('formats raw WebKit iOS Chrome and permission errors into actionable device guidance', () => {
+      const rawWebKit =
+        'NotAllowedError: The request is not allowed by the user agent or the platform in the current context, possibly because the user denied permission.';
+      const iosChromeUa =
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/120.0.6099.119 Mobile/15E148 Safari/604.1';
+      const whatsappUa =
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 WhatsApp/2.24';
+
+      const iosMsg = formatMediaError(rawWebKit, iosChromeUa, true);
+      expect(iosMsg).toContain('Settings -> Chrome -> Microphone');
+
+      const inAppMsg = formatMediaError(rawWebKit, whatsappUa, true);
+      expect(inAppMsg).toContain('Safari or Chrome');
+
+      const insecureMsg = formatMediaError(rawWebKit, iosChromeUa, false);
+      expect(insecureMsg).toContain('HTTPS');
     });
   });
 });
