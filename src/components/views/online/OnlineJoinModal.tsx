@@ -3,6 +3,11 @@ import { X, Users, Crown, RefreshCw, Loader2, ArrowRight, AlertCircle } from 'lu
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
 import { PlayerAvatar } from '../../illustrations/PlayerAvatar';
+import {
+  AVATAR_CATEGORIES,
+  AvatarCategory,
+  getAvatarMeta,
+} from '../../illustrations/avatarRegistry';
 import { PlayerAvatarId } from '../../../types/game';
 import { AVATAR_LIST, storageService } from '../../../services/storageService';
 import {
@@ -32,7 +37,10 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
   const [roomCodeInput, setRoomCodeInput] = useState<string>('');
   const [generatedCode, setGeneratedCode] = useState<string>('');
   const [playerName, setPlayerName] = useState<string>('');
-  const [selectedAvatar, setSelectedAvatar] = useState<PlayerAvatarId>('sleuth');
+  const [selectedAvatar, setSelectedAvatar] = useState<PlayerAvatarId>(
+    () => AVATAR_LIST[Math.floor(Math.random() * AVATAR_LIST.length)]
+  );
+  const [avatarFilter, setAvatarFilter] = useState<'All' | AvatarCategory>('All');
   const [localError, setLocalError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -55,6 +63,8 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
     const savedAvatar = localStorage.getItem(STORAGE_KEY_AVATAR) as PlayerAvatarId;
     if (savedAvatar && AVATAR_LIST.includes(savedAvatar)) {
       setSelectedAvatar(savedAvatar);
+    } else {
+      setSelectedAvatar(AVATAR_LIST[Math.floor(Math.random() * AVATAR_LIST.length)]);
     }
 
     setGeneratedCode(generateRoomCode());
@@ -156,7 +166,7 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full sm:max-w-lg bg-chomu-surface border-t sm:border border-white/[0.1] rounded-t-2xl sm:rounded-2xl p-5 sm:p-6 shadow-[0_16px_48px_rgba(0,0,0,0.5)] max-h-[92dvh] flex flex-col animate-slide-up"
+        className="relative w-full sm:max-w-lg bg-chomu-surface border-t sm:border border-white/[0.1] rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-[0_16px_48px_rgba(0,0,0,0.5)] max-h-[92dvh] flex flex-col animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -183,20 +193,20 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
         <div
           role="tablist"
           aria-label="Online game mode tabs"
-          className="grid grid-cols-2 gap-1.5 p-1 mt-4 mb-4 bg-chomu-bgSecondary rounded-xl border border-white/[0.08]"
+          className="grid grid-cols-2 gap-1.5 p-1.5 mt-4 mb-4 bg-chomu-bgSecondary rounded-full border border-white/[0.08]"
         >
           <button
             type="button"
             role="tab"
             aria-selected={activeTab === 'create'}
             onClick={() => handleTabSwitch('create')}
-            className={`min-h-[44px] flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+            className={`min-h-[44px] flex items-center justify-center gap-2 py-2 rounded-full font-semibold text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
               activeTab === 'create'
-                ? 'bg-chomu-elevated text-chomu-text border border-white/[0.1]'
+                ? 'bg-chomu-teal text-chomu-bg border border-transparent'
                 : 'text-chomu-secondary hover:text-chomu-text border border-transparent'
             }`}
           >
-            <Crown className="w-4 h-4" strokeWidth={1.5} />
+            <Crown className="w-4 h-4" strokeWidth={1.75} />
             <span>Create room</span>
           </button>
           <button
@@ -204,13 +214,13 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
             role="tab"
             aria-selected={activeTab === 'join'}
             onClick={() => handleTabSwitch('join')}
-            className={`min-h-[44px] flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+            className={`min-h-[44px] flex items-center justify-center gap-2 py-2 rounded-full font-semibold text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
               activeTab === 'join'
-                ? 'bg-chomu-elevated text-chomu-text border border-white/[0.1]'
+                ? 'bg-chomu-teal text-chomu-bg border border-transparent'
                 : 'text-chomu-secondary hover:text-chomu-text border border-transparent'
             }`}
           >
-            <Users className="w-4 h-4" strokeWidth={1.5} />
+            <Users className="w-4 h-4" strokeWidth={1.75} />
             <span>Join room</span>
           </button>
         </div>
@@ -283,33 +293,61 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
 
           {/* Avatar Picker */}
           <div>
-            <label className="block text-xs font-medium text-chomu-secondary mb-2">
-              Choose avatar
-            </label>
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <label className="text-xs font-medium text-chomu-secondary">
+                Choose Avatar
+              </label>
+              <span className="text-[11px] text-chomu-teal font-medium truncate">
+                {getAvatarMeta(selectedAvatar).label}
+              </span>
+            </div>
+
+            {/* Personality Group Filter */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-1">
+              {(['All', ...AVATAR_CATEGORIES] as const).map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setAvatarFilter(cat)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 border transition-colors ${
+                    avatarFilter === cat
+                      ? 'bg-chomu-teal/15 border-chomu-teal text-chomu-teal'
+                      : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
             <div
               role="radiogroup"
               aria-label="Select player avatar"
-              className="grid grid-cols-4 gap-2"
+              className="grid grid-cols-4 gap-2 max-h-[210px] overflow-y-auto pr-1"
             >
-              {AVATAR_LIST.map((avatarId) => {
+              {AVATAR_LIST.filter(
+                (avatarId) => avatarFilter === 'All' || getAvatarMeta(avatarId).category === avatarFilter
+              ).map((avatarId) => {
                 const isSelected = selectedAvatar === avatarId;
+                const meta = getAvatarMeta(avatarId);
                 return (
                   <button
                     key={avatarId}
                     type="button"
                     role="radio"
                     aria-checked={isSelected}
-                    aria-label={`Select avatar ${avatarId}`}
+                    aria-label={`Select avatar ${meta.label}`}
+                    title={meta.tagline}
                     onClick={() => handleSelectAvatar(avatarId)}
-                    className={`relative min-h-[60px] min-w-[44px] p-2 rounded-[10px] flex flex-col items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                    className={`relative min-h-[68px] min-w-[44px] p-1.5 rounded-2xl flex flex-col items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                       isSelected
-                        ? 'bg-chomu-elevated border border-chomu-purple text-chomu-text'
+                        ? 'bg-chomu-elevated border-2 border-chomu-teal text-chomu-text'
                         : 'bg-chomu-bgSecondary border border-white/[0.08] text-chomu-secondary hover:bg-chomu-elevated'
                     }`}
                   >
                     <PlayerAvatar id={avatarId} size="md" />
-                    <span className="text-xs capitalize font-medium mt-1 truncate max-w-full">
-                      {avatarId}
+                    <span className="text-[11px] font-medium mt-1 truncate max-w-full">
+                      {meta.label}
                     </span>
                   </button>
                 );

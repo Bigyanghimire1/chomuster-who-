@@ -45,7 +45,7 @@ export const FinalRevealView: React.FC = () => {
       {/* Header */}
       <div className="w-full space-y-1">
         <FinalRevealArtwork className="mx-auto mb-3" />
-        <h1 className="text-2xl sm:text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
+        <h1 className="text-2xl sm:text-3xl font-bold text-chomu-coral tracking-[-0.025em]">
           {imposterPlayers.length === 1 ? 'The Chomu was' : 'The Chomas were'}
         </h1>
         <p className="text-sm text-chomu-secondary">

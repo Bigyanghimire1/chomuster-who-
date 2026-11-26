@@ -106,12 +106,12 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       ? 'h-full min-h-0'
       : 'min-h-[140px] sm:min-h-[172px]';
 
-  const avatarSize = isSpotlight ? 'xl' : compact ? 'sm' : 'md';
+  const avatarSize = isSpotlight ? 'xl' : compact ? 'md' : 'xl';
 
   return (
     <div
       onClick={onClick}
-      className={`relative overflow-hidden rounded-xl bg-chomu-surface border transition-[border-color,transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center select-none ${borderStyles} ${sizeStyles} ${className} ${
+      className={`relative overflow-hidden rounded-3xl bg-chomu-surface border-2 transition-[border-color,transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center select-none shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] ${borderStyles} ${sizeStyles} ${className} ${
         onClick ? 'cursor-pointer' : ''
       }`}
     >
@@ -121,7 +121,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         autoPlay
         playsInline
         muted={isLocal}
-        className={`w-full h-full object-cover rounded-xl ${
+        className={`w-full h-full object-cover rounded-3xl ${
           hasActiveVideo ? 'block' : 'hidden'
         } ${isLocal ? '-scale-x-100' : ''}`}
       />
@@ -164,7 +164,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
 
       {/* Bottom Bar: Single Player Name & Live Audio */}
       <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none z-10">
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-white/[0.08] text-xs font-medium text-chomu-text min-w-0 max-w-full">
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-bgSecondary/90 border border-white/[0.1] text-xs font-medium text-chomu-text min-w-0 max-w-full">
           <span
             className={`w-2 h-2 rounded-full shrink-0 ${
               isSpeaking ? 'bg-chomu-lime' : 'bg-chomu-muted/50'
@@ -182,7 +182,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         </div>
 
         {isSpeaking && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-chomu-bgSecondary/90 border border-chomu-lime/30 text-chomu-lime text-xs font-medium shrink-0">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-chomu-bgSecondary/90 border border-chomu-lime/30 text-chomu-lime text-xs font-medium shrink-0">
             <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
             {!compact && <span>Live</span>}
             {audioLevel > 0 && (

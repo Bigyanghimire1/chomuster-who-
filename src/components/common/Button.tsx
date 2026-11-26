@@ -2,7 +2,7 @@ import React from 'react';
 import { audioService } from '../../services/audioService';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'accent' | 'coral' | 'crimson' | 'danger' | 'lime' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'teal' | 'accent' | 'coral' | 'crimson' | 'danger' | 'lime' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
@@ -29,27 +29,29 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium rounded-[10px] transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] select-none active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none disabled:active:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg min-h-[44px] min-w-[44px]';
+    'relative inline-flex items-center justify-center font-semibold rounded-full transition-[background-color,border-color,color,transform,box-shadow] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] select-none active:translate-y-[2px] disabled:opacity-40 disabled:pointer-events-none disabled:active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg min-h-[44px] min-w-[44px]';
 
   const variants = {
     primary:
-      'bg-chomu-text hover:bg-white active:bg-[#DDE1EC] text-chomu-bg font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] border border-transparent',
+      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]',
+    teal:
+      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]',
     accent:
-      'bg-chomu-purple hover:bg-chomu-purpleHover active:bg-chomu-purpleActive text-chomu-bg font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] border border-transparent',
+      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]',
     coral:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-chomu-bg font-semibold border border-transparent',
+      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
     crimson:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-chomu-bg font-semibold border border-transparent',
+      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
     danger:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-chomu-bg font-semibold border border-transparent',
+      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
     lime:
-      'bg-chomu-lime hover:bg-chomu-limeHover active:bg-chomu-limeActive text-chomu-bg font-semibold border border-transparent',
+      'bg-chomu-lime hover:bg-chomu-limeHover active:bg-chomu-limeActive text-chomu-bg font-bold border border-chomu-lime border-b-[4px] border-b-[#1F8A63] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.38)]',
     secondary:
-      'bg-chomu-elevated hover:bg-[#222735] text-chomu-text border border-white/[0.08] font-medium',
+      'bg-chomu-elevated hover:bg-[#202C40] text-chomu-text border border-white/[0.14] border-b-[4px] border-b-[#090F1A] active:border-b-[2px] font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
     outline:
-      'bg-transparent hover:bg-chomu-elevated text-chomu-text border border-white/[0.12] font-medium',
+      'bg-chomu-surface/60 hover:bg-chomu-elevated text-chomu-text border border-white/[0.18] border-b-[4px] border-b-white/[0.1] active:border-b-[2px] font-semibold',
     ghost:
-      'bg-transparent hover:bg-chomu-surface text-chomu-secondary hover:text-chomu-text font-medium',
+      'bg-transparent hover:bg-chomu-surface text-chomu-secondary hover:text-chomu-text font-medium active:translate-y-0',
   };
 
   const sizes = {

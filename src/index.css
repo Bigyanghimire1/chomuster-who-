@@ -5,15 +5,15 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --chomu-bg-deep: #07080d;
-    --chomu-bg: #0b0d14;
-    --chomu-surface: #11141c;
-    --chomu-elevated: #1a1e28;
-    --chomu-hairline: rgba(238, 240, 245, 0.08);
-    --chomu-text: #eef0f5;
-    --chomu-secondary: #a3a9b8;
-    --chomu-muted: #7a8296;
-    --chomu-accent: #9275ff;
+    --chomu-bg-deep: #05080e;
+    --chomu-bg: #070b12;
+    --chomu-surface: #111824;
+    --chomu-elevated: #182233;
+    --chomu-hairline: rgba(245, 247, 250, 0.08);
+    --chomu-text: #f5f7fa;
+    --chomu-secondary: #9aa8be;
+    --chomu-muted: #6e7d96;
+    --chomu-accent: #1ce8c6;
     --chomu-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 

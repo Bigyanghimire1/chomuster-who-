@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wifi, PlusCircle, BookOpen, Smartphone, ArrowRight } from 'lucide-react';
+import { Wifi, PlusCircle, BookOpen, Smartphone, Users, Video } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { Button } from '../common/Button';
 import { HeroIllustration } from '../illustrations/HeroIllustration';
@@ -12,105 +12,114 @@ export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
   const { dispatch } = useGame();
 
   return (
-    <div className="flex flex-col justify-between flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 lg:py-12 animate-fade-in">
-      {/* Split Hero: Left brand & artwork, Right game modes */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center my-auto w-full">
-        {/* Left Column: Hero Illustration & Product Statement */}
-        <div className="md:col-span-6 flex flex-col items-center md:items-start text-center md:text-left">
-          <HeroIllustration className="mb-6 max-w-[260px] sm:max-w-[300px] md:max-w-[340px]" />
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.08] text-chomu-text mb-3">
-            Chomu <span className="text-chomu-purple">Who?</span>
-          </h1>
-          <p className="text-base text-chomu-secondary font-normal max-w-[400px] leading-6">
-            One secret word, hidden roles, and zero trust. Talk over live video or pass one phone around to spot the Chomu.
-          </p>
-        </div>
+    <div className="flex flex-col justify-between flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-10 animate-fade-in">
+      {/* Main Hero Stage */}
+      <div className="my-auto w-full rounded-3xl bg-chomu-bgSecondary border border-white/[0.1] border-b-[4px] border-b-[#04070D] p-6 sm:p-9 lg:p-12 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_20px_56px_rgba(0,0,0,0.48)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left: Brand Headline, Single Clear Mode Launchers & Utility Pills */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5">
+            <div className="space-y-3">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] leading-[1.04] text-chomu-text">
+                Chomu <span className="text-chomu-teal">Who?</span>
+              </h1>
 
-        {/* Right Column: Mode Cards & Secondary Links */}
-        <div className="md:col-span-6 w-full space-y-3 max-w-md mx-auto md:ml-auto md:mr-0">
-          {/* Mode 1: Pass & Play (Offline Party) */}
-          <button
-            type="button"
-            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
-            className="w-full text-left p-5 rounded-xl bg-chomu-surface border border-white/[0.1] hover:border-chomu-purple/60 hover:bg-chomu-elevated active:scale-[0.99] transition-[background-color,border-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple group"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-[10px] bg-chomu-elevated border border-white/[0.08] flex items-center justify-center text-chomu-secondary group-hover:text-chomu-purple shrink-0 mt-0.5 transition-colors">
-                  <Smartphone className="w-4 h-4" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base font-semibold text-chomu-text">
-                      Pass &amp; Play
-                    </span>
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-chomu-elevated text-chomu-secondary border border-white/[0.08]">
-                      Offline Party
-                    </span>
-                  </div>
-                  <p className="text-sm text-chomu-secondary mt-1 leading-5">
-                    One shared phone for 3 to 15 players in the same room
-                  </p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-chomu-muted group-hover:text-chomu-text shrink-0 mt-1 transition-colors" strokeWidth={1.5} />
+              <p className="text-lg sm:text-xl font-medium text-chomu-text/95 leading-snug">
+                Find the{' '}
+                <span className="inline-flex items-center px-3 py-0.5 rounded-full bg-chomu-yellow text-chomu-bg font-bold shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]">
+                  Chomu
+                </span>{' '}
+                among your friends!
+              </p>
+
+              <p className="text-sm sm:text-base text-chomu-secondary max-w-[440px] mx-auto lg:mx-0 leading-6">
+                One secret word, hidden roles, and zero trust. Bluff over live video or pass one phone around to catch the liar.
+              </p>
             </div>
-          </button>
 
-          {/* Mode 2: Play Online (With Friends) */}
-          <button
-            type="button"
-            onClick={() => onPlayOnline?.()}
-            className="w-full text-left p-5 rounded-xl bg-chomu-text text-chomu-bg hover:bg-white active:scale-[0.99] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] group"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-[10px] bg-chomu-bg/10 flex items-center justify-center text-chomu-bg shrink-0 mt-0.5">
-                  <Wifi className="w-4 h-4" strokeWidth={1.5} />
+            {/* Primary Game Mode Launchers (no duplicate Play buttons) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg pt-1">
+              <button
+                type="button"
+                onClick={() => onPlayOnline?.()}
+                className="text-left p-4 rounded-3xl bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white border border-chomu-coral border-b-[4px] border-b-[#B83237] active:translate-y-[2px] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal group"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="inline-flex items-center gap-2 text-base font-bold">
+                    <Wifi className="w-4 h-4 shrink-0" strokeWidth={2.2} />
+                    <span>Play Online</span>
+                  </span>
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-black/20">
+                    With Friends
+                  </span>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base font-semibold text-chomu-bg">
-                      Play Online
-                    </span>
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-chomu-bg/10 text-chomu-bg">
-                      With Friends
-                    </span>
-                  </div>
-                  <p className="text-sm text-chomu-bg/75 mt-1 leading-5">
-                    Private room links, individual secret cards, live voice &amp; video
-                  </p>
+                <p className="text-xs text-white/85 leading-4">
+                  Private room links with friends anywhere
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
+                className="text-left p-4 rounded-3xl bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:translate-y-[2px] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal group"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="inline-flex items-center gap-2 text-base font-bold">
+                    <Smartphone className="w-4 h-4 shrink-0" strokeWidth={2.2} />
+                    <span>Pass &amp; Play</span>
+                  </span>
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-black/15">
+                    Offline Party
+                  </span>
                 </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-chomu-bg/70 group-hover:text-chomu-bg shrink-0 mt-1 transition-colors" strokeWidth={1.5} />
+                <p className="text-xs text-chomu-bg/85 font-medium leading-4">
+                  Pass one device around the room
+                </p>
+              </button>
             </div>
-          </button>
 
-          {/* Secondary Navigation */}
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <Button
-              variant="secondary"
-              size="md"
-              leftIcon={<PlusCircle className="w-4 h-4" strokeWidth={1.5} />}
-              onClick={() => dispatch({ type: 'SET_PHASE', phase: 'CUSTOM_CATEGORIES' })}
-            >
-              Custom Words
-            </Button>
+            {/* Secondary Utility Pills */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1">
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<PlusCircle className="w-4 h-4 text-chomu-teal" strokeWidth={1.75} />}
+                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'CUSTOM_CATEGORIES' })}
+              >
+                Custom Words
+              </Button>
 
-            <Button
-              variant="secondary"
-              size="md"
-              leftIcon={<BookOpen className="w-4 h-4" strokeWidth={1.5} />}
-              onClick={() => dispatch({ type: 'SET_PHASE', phase: 'RULES' })}
-            >
-              How to Play
-            </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<BookOpen className="w-4 h-4 text-chomu-yellow" strokeWidth={1.75} />}
+                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'RULES' })}
+              >
+                How to Play
+              </Button>
+            </div>
+
+            {/* Feature Strip */}
+            <div className="w-full pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs font-medium text-chomu-secondary">
+              <span className="inline-flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-chomu-teal" strokeWidth={1.75} />
+                <span>3 – 15 Players</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Video className="w-3.5 h-3.5 text-chomu-coral" strokeWidth={1.75} />
+                <span>Live Video &amp; Voice</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Flagship Chomu Mascot Centerpiece */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <HeroIllustration className="max-w-[270px] sm:max-w-[320px] lg:max-w-[350px]" />
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-chomu-muted py-4 mt-6 border-t border-white/[0.06]">
+      <footer className="text-center text-xs text-chomu-muted py-4 mt-4">
         <span>Pass &amp; Play &bull; Online rooms &bull; Peer-to-peer voice &amp; video</span>
       </footer>
     </div>

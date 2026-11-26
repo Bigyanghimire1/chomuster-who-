@@ -51,7 +51,10 @@ export const SetupView: React.FC = () => {
       return;
     }
 
-    const nextAvatar = AVATAR_LIST[players.length % AVATAR_LIST.length];
+    const usedAvatars = new Set(players.map(p => p.avatar));
+    const availableAvatars = AVATAR_LIST.filter(id => !usedAvatars.has(id));
+    const pool = availableAvatars.length > 0 ? availableAvatars : AVATAR_LIST;
+    const nextAvatar = pool[Math.floor(Math.random() * pool.length)];
     const newP: Player = {
       id: `p_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       name: trimmed,
@@ -407,9 +410,9 @@ export const SetupView: React.FC = () => {
                         audioService.playButtonTap();
                         dispatch({ type: 'UPDATE_SETTINGS', settings: { imposterCount: count } });
                       }}
-                      className={`min-h-[48px] py-2 px-3 rounded-[10px] border flex flex-col items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                      className={`min-h-[48px] py-2 px-3 rounded-full border border-b-[3px] flex flex-col items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                         isSelected && isAvailable
-                          ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral font-semibold'
+                          ? 'bg-chomu-teal border-chomu-teal text-chomu-bg font-semibold'
                           : isAvailable
                             ? 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
                             : 'bg-chomu-bgSecondary/40 border-white/[0.04] text-chomu-muted/40 cursor-not-allowed'
@@ -459,9 +462,9 @@ export const SetupView: React.FC = () => {
                           settings: { hintDifficulty: diff.id as HintDifficulty },
                         })
                       }
-                      className={`min-h-[52px] p-2.5 rounded-[10px] border text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                      className={`min-h-[52px] p-2.5 rounded-2xl border border-b-[3px] text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                         isSelected
-                          ? 'bg-chomu-elevated border-chomu-purple text-chomu-text'
+                          ? 'bg-chomu-teal/15 border-chomu-teal text-chomu-text'
                           : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
                       }`}
                     >
@@ -518,7 +521,7 @@ export const SetupView: React.FC = () => {
                       key={cat.id}
                       type="button"
                       onClick={() => handleToggleCategory(cat.id)}
-                      className={`min-h-[48px] flex items-center gap-2.5 p-2.5 rounded-[10px] border text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                      className={`min-h-[48px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-full border border-b-[3px] text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
                         isSelected
                           ? 'bg-chomu-elevated border-chomu-purple text-chomu-text'
                           : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
@@ -561,12 +564,12 @@ export const SetupView: React.FC = () => {
                 : `${players.length} players ready`}
           </p>
           <Button
-            variant="primary"
+            variant="coral"
             size="lg"
             className="w-full sm:w-56"
             disabled={!canStart}
             onClick={handleStartGame}
-            leftIcon={<Play className="w-4 h-4" strokeWidth={1.5} />}
+            leftIcon={<Play className="w-4 h-4 fill-current" strokeWidth={1.5} />}
           >
             Start game
           </Button>

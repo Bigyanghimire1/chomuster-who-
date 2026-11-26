@@ -125,16 +125,16 @@ export const OnlineRoundView: React.FC = () => {
           </Button>
 
           <div
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-[10px] border ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-full border ${
               isCriticalTime
                 ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral'
                 : isLowTime
-                  ? 'bg-chomu-yellow/15 border-chomu-yellow text-chomu-yellow'
-                  : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-text'
+                  ? 'bg-chomu-yellow/20 border-chomu-yellow text-chomu-yellow'
+                  : 'bg-chomu-yellow/10 border-chomu-yellow/40 text-chomu-yellow'
             }`}
           >
-            <Clock className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-            <span className="text-lg font-mono font-semibold tabular-nums leading-none">
+            <Clock className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+            <span className="text-base font-mono font-bold tabular-nums leading-none">
               {formattedTime}
             </span>
           </div>
@@ -269,11 +269,11 @@ export const OnlineRoundView: React.FC = () => {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className="p-4 rounded-[10px] bg-chomu-bgSecondary border border-chomu-lime/30">
-                        <span className="text-xs text-chomu-lime block mb-1">
-                          Category: {categoryName}
+                      <div className="p-4 rounded-xl bg-chomu-bgSecondary border border-chomu-yellow/50 text-center">
+                        <span className="text-xs text-chomu-secondary block mb-2">
+                          Give a hint for the word:
                         </span>
-                        <span className="text-3xl font-semibold text-chomu-text tracking-[-0.02em] block">
+                        <span className="inline-block px-5 py-1.5 rounded-full border-2 border-chomu-yellow bg-chomu-surface text-2xl sm:text-3xl font-bold text-chomu-text tracking-[-0.02em]">
                           {secretWord}
                         </span>
                       </div>

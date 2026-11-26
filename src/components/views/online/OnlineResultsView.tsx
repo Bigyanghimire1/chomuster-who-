@@ -92,8 +92,8 @@ export const OnlineResultsView: React.FC = () => {
                 <span>Civilians win</span>
               </Badge>
             </div>
-            <h1 className="text-3xl font-semibold text-chomu-lime tracking-[-0.02em]">
-              Chomu caught
+            <h1 className="text-3xl sm:text-4xl font-bold text-chomu-text tracking-[-0.025em]">
+              Chomu Caught!
             </h1>
             <p className="text-sm text-chomu-secondary">
               The group identified the Chomu and protected the secret
@@ -107,14 +107,45 @@ export const OnlineResultsView: React.FC = () => {
                 <span>Chomu wins</span>
               </Badge>
             </div>
-            <h1 className="text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
-              The Chomu escaped
+            <h1 className="text-3xl sm:text-4xl font-bold text-chomu-coral tracking-[-0.025em]">
+              The Chomu Escaped!
             </h1>
             <p className="text-sm text-chomu-secondary">
               The Chomu deceived the circle and avoided detection
             </p>
           </div>
         )}
+      </div>
+
+      {/* Side-by-side Word & Chomu Summary Cards */}
+      <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+        <Card className="bg-chomu-surface border-chomu-teal/40 p-4 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-chomu-teal/15 text-chomu-teal flex items-center justify-center shrink-0">
+            <Trophy className="w-4 h-4" strokeWidth={1.75} />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-chomu-secondary block">
+              Word Was
+            </span>
+            <span className="text-base font-bold text-chomu-text truncate block">
+              {secretWord || '—'}
+            </span>
+          </div>
+        </Card>
+
+        <Card className="bg-chomu-surface border-chomu-coral/40 p-4 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-chomu-coral/15 text-chomu-coral flex items-center justify-center shrink-0">
+            <ShieldAlert className="w-4 h-4" strokeWidth={1.75} />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-chomu-secondary block">
+              {chomuPlayers.length === 1 ? 'The Chomu' : 'The Chomas'}
+            </span>
+            <span className="text-base font-bold text-chomu-coral truncate block">
+              {chomuPlayers.map((p) => p.name).join(', ') || '—'}
+            </span>
+          </div>
+        </Card>
       </div>
 
       {/* Chomu Reveal Cards */}

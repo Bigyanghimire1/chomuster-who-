@@ -113,8 +113,8 @@ export const OnlineRoleRevealView: React.FC = () => {
         ) : (
           <div
             onPointerUp={handlePointerUp}
-            className={`w-full h-full rounded-2xl p-5 flex flex-col items-center justify-between border-2 animate-scale-in bg-chomu-elevated ${
-              isChomu ? 'border-chomu-coral' : 'border-chomu-lime'
+            className={`w-full h-full rounded-2xl p-5 flex flex-col items-center justify-between border-2 animate-scale-in bg-chomu-surface ${
+              isChomu ? 'border-chomu-coral' : 'border-chomu-teal'
             }`}
           >
             <div className="w-full flex items-center justify-between">
@@ -135,19 +135,19 @@ export const OnlineRoleRevealView: React.FC = () => {
             <div className="my-auto space-y-2.5">
               {isChomu ? (
                 <>
-                  <div className="w-16 h-16 mx-auto rounded-xl bg-chomu-coral/15 border border-chomu-coral/30 flex items-center justify-center">
+                  <div className="w-20 h-20 mx-auto rounded-2xl bg-chomu-coral/15 border border-chomu-coral/40 flex items-center justify-center">
                     <PlayerAvatar
                       id={myPlayer?.avatar || 'shadow'}
-                      size="lg"
+                      size="xl"
                       isImposterStyle={true}
                     />
                   </div>
-                  <span className="text-xs font-medium text-chomu-coral block">
+                  <span className="text-xs font-medium text-chomu-secondary block">
                     You are the
                   </span>
-                  <h2 className="text-3xl font-semibold text-chomu-coral tracking-[-0.02em]">
-                    Chomu
-                  </h2>
+                  <div className="inline-flex items-center px-4 py-1 rounded-full bg-chomu-yellow text-chomu-bg text-xl font-bold tracking-[-0.02em]">
+                    Chomu!
+                  </div>
 
                   {hint ? (
                     <Card className="bg-chomu-bgSecondary border border-chomu-coral/30 p-3 text-center mt-2">
@@ -213,13 +213,13 @@ export const OnlineRoleRevealView: React.FC = () => {
       <div className="w-full max-w-[300px] space-y-2.5">
         {!hasAcknowledged ? (
           <Button
-            variant="primary"
+            variant={isChomu ? 'coral' : 'teal'}
             size="lg"
             fullWidth
             onClick={handleConfirmRole}
-            leftIcon={<Check className="w-4 h-4" strokeWidth={1.5} />}
+            leftIcon={<Check className="w-4 h-4" strokeWidth={1.75} />}
           >
-            I know my role
+            Got it!
           </Button>
         ) : (
           <div className="space-y-2.5">

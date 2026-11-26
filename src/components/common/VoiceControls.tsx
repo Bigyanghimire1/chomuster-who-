@@ -432,12 +432,12 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               disabled={isInitializing}
               aria-label={micLabel}
               title={micLabel}
-              className={`min-w-[44px] min-h-[44px] px-3 rounded-[10px] border text-xs font-medium inline-flex items-center justify-center gap-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                 !isMicActive
-                  ? 'bg-chomu-elevated border-white/[0.08] text-chomu-secondary hover:text-chomu-text hover:bg-[#222735]'
+                  ? 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
                   : isMuted
-                    ? 'bg-chomu-coral/15 border-chomu-coral/30 text-chomu-coral hover:bg-chomu-coral/20'
-                    : 'bg-chomu-lime/15 border-chomu-lime/30 text-chomu-lime hover:bg-chomu-lime/20'
+                    ? 'bg-chomu-coral/20 border-chomu-coral/40 border-b-chomu-coral/70 text-chomu-coral hover:bg-chomu-coral/25'
+                    : 'bg-chomu-lime/20 border-chomu-lime/40 border-b-chomu-lime/70 text-chomu-lime hover:bg-chomu-lime/25'
               }`}
             >
               {isMuted || !isMicActive ? (
@@ -455,10 +455,10 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               onClick={handleCameraClick}
               aria-label={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
               title={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
-              className={`min-w-[44px] min-h-[44px] px-3 rounded-[10px] border text-xs font-medium inline-flex items-center justify-center gap-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                 isCameraOn
-                  ? 'bg-chomu-cyan/15 border-chomu-cyan/30 text-chomu-cyan hover:bg-chomu-cyan/20'
-                  : 'bg-chomu-elevated border-white/[0.08] text-chomu-secondary hover:text-chomu-text hover:bg-[#222735]'
+                  ? 'bg-chomu-teal/20 border-chomu-teal/40 border-b-chomu-teal/70 text-chomu-teal hover:bg-chomu-teal/25'
+                  : 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
               }`}
             >
               {isCameraOn ? (
@@ -476,10 +476,10 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               onClick={handleDeafenClick}
               aria-label={isDeafened ? 'Undeafen audio' : 'Deafen audio'}
               title={isDeafened ? 'Undeafen voice audio' : 'Deafen voice audio'}
-              className={`min-w-[44px] min-h-[44px] px-3 rounded-[10px] border text-xs font-medium inline-flex items-center justify-center gap-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                 isDeafened
-                  ? 'bg-chomu-coral/15 border-chomu-coral/30 text-chomu-coral hover:bg-chomu-coral/20'
-                  : 'bg-chomu-elevated border-white/[0.08] text-chomu-secondary hover:text-chomu-text hover:bg-[#222735]'
+                  ? 'bg-chomu-coral/20 border-chomu-coral/40 border-b-chomu-coral/70 text-chomu-coral hover:bg-chomu-coral/25'
+                  : 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
               }`}
             >
               {isDeafened ? (

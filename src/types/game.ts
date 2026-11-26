@@ -18,7 +18,15 @@ export type PlayerAvatarId =
   | 'whiz'
   | 'maverick'
   | 'whisperer'
-  | 'detective';
+  | 'detective'
+  | 'gremlin'
+  | 'sleepy'
+  | 'fang'
+  | 'nerd'
+  | 'diva'
+  | 'goblin'
+  | 'whiskers'
+  | 'clown';
 
 export interface Player {
   id: string;

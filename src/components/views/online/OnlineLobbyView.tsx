@@ -170,13 +170,20 @@ export const OnlineLobbyView: React.FC = () => {
               Room code
             </span>
             <div className="flex items-center gap-2.5">
-              <span className="text-3xl font-mono font-semibold text-chomu-text tracking-[0.2em] tabular-nums">
-                {roomCode || '----'}
-              </span>
+              <div className="flex items-center gap-1.5" aria-label={`Room code ${roomCode || '----'}`}>
+                {(roomCode || '----').split('').map((char, idx) => (
+                  <span
+                    key={idx}
+                    className="w-10 h-11 rounded-2xl bg-chomu-bgSecondary border border-white/[0.12] border-b-[3px] border-b-[#05080E] flex items-center justify-center text-2xl font-mono font-bold text-chomu-teal tabular-nums shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[10px] bg-chomu-elevated border border-white/[0.08] text-chomu-secondary hover:text-chomu-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-chomu-elevated border border-white/[0.12] border-b-[3px] border-b-[#0B111C] active:translate-y-[1px] active:border-b-[1px] text-chomu-secondary hover:text-chomu-text transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal"
                 title="Copy room code"
                 aria-label="Copy room code"
               >
@@ -347,11 +354,11 @@ export const OnlineLobbyView: React.FC = () => {
                       type="button"
                       disabled={!isHost}
                       onClick={() => handleCategoryToggle(cat.id)}
-                      className={`min-h-[44px] px-3 py-2 rounded-[10px] border text-left transition-colors flex items-center justify-between gap-2 ${
+                      className={`min-h-[44px] px-4 py-2 rounded-full border border-b-[3px] text-left transition-all flex items-center justify-between gap-2 active:translate-y-[1px] ${
                         isSelected
-                          ? 'bg-chomu-elevated border-chomu-purple text-chomu-text'
-                          : 'bg-chomu-bgSecondary border-white/[0.08] text-chomu-secondary hover:text-chomu-text'
-                      } ${!isHost ? 'cursor-default opacity-80' : 'cursor-pointer'}`}
+                          ? 'bg-chomu-teal/15 border-chomu-teal border-b-[#0E8F79] text-chomu-text font-semibold'
+                          : 'bg-chomu-bgSecondary border-white/[0.1] border-b-[#05080E] text-chomu-secondary hover:text-chomu-text'
+                      } ${!isHost ? 'cursor-default opacity-80 active:translate-y-0' : 'cursor-pointer'}`}
                     >
                       <span className="text-xs font-medium truncate">{cat.name}</span>
                       {isSelected && <Check className="w-3.5 h-3.5 text-chomu-purple shrink-0" strokeWidth={1.5} />}
@@ -379,11 +386,11 @@ export const OnlineLobbyView: React.FC = () => {
                         aria-label={`${count} ${count === 1 ? 'Chomu' : 'Chomas'}`}
                         disabled={!isHost}
                         onClick={() => handleChomuCountChange(count)}
-                        className={`min-h-[44px] rounded-[10px] text-xs font-mono font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral ${
+                        className={`min-h-[44px] rounded-full text-xs font-mono font-bold border border-b-[3px] active:translate-y-[1px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-coral ${
                           isSelected
-                            ? 'bg-chomu-coral/15 text-chomu-coral border-chomu-coral'
-                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.08] hover:text-chomu-text'
-                        } ${!isHost ? 'cursor-default' : 'cursor-pointer'}`}
+                            ? 'bg-chomu-coral/20 text-chomu-coral border-chomu-coral border-b-[#B83237]'
+                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.1] border-b-[#05080E] hover:text-chomu-text'
+                        } ${!isHost ? 'cursor-default active:translate-y-0' : 'cursor-pointer'}`}
                       >
                         {count}
                       </button>
@@ -412,11 +419,11 @@ export const OnlineLobbyView: React.FC = () => {
                         aria-label={`${d.label} round duration`}
                         disabled={!isHost}
                         onClick={() => handleRoundDurationChange(d.sec)}
-                        className={`min-h-[44px] rounded-[10px] text-xs font-mono font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+                        className={`min-h-[44px] rounded-full text-xs font-mono font-bold border border-b-[3px] active:translate-y-[1px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
                           isSelected
-                            ? 'bg-chomu-elevated text-chomu-text border-chomu-purple'
-                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.08] hover:text-chomu-text'
-                        } ${!isHost ? 'cursor-default' : 'cursor-pointer'}`}
+                            ? 'bg-chomu-teal/15 text-chomu-teal border-chomu-teal border-b-[#0E8F79]'
+                            : 'bg-chomu-bgSecondary text-chomu-secondary border-white/[0.1] border-b-[#05080E] hover:text-chomu-text'
+                        } ${!isHost ? 'cursor-default active:translate-y-0' : 'cursor-pointer'}`}
                       >
                         {d.label}
                       </button>

@@ -20,6 +20,14 @@ export const AVATAR_LIST: PlayerAvatarId[] = [
   'maverick',
   'whisperer',
   'detective',
+  'gremlin',
+  'sleepy',
+  'fang',
+  'nerd',
+  'diva',
+  'goblin',
+  'whiskers',
+  'clown',
 ];
 
 export const DEFAULT_PLAYERS: Player[] = [];
