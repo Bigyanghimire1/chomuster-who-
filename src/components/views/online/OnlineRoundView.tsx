@@ -188,7 +188,7 @@ export const OnlineRoundView: React.FC = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {players.map((p) => {
               const isMe = p.id === myPlayerId;
               const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;

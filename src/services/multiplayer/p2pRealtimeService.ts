@@ -376,6 +376,41 @@ export class P2PRealtimeService {
       throw err;
     }
 
+    // Align myPeerId with Trystero's wire peerId so local/remote video streams & speaking indicators match across all devices
+    if (this.room && typeof this.room.getSelf === 'function') {
+      try {
+        const selfInfo = await Promise.race([
+          this.room.getSelf(),
+          new Promise<null>((resolve) => setTimeout(() => resolve(null), 1500)),
+        ]);
+        const wirePeerId = selfInfo && typeof selfInfo.peerId === 'string' ? selfInfo.peerId : '';
+        if (wirePeerId && wirePeerId !== this.myPeerId) {
+          const oldId = this.myPeerId;
+          this.myPeerId = wirePeerId;
+          if (this.isHostPlayer && this.roomState && this.roomState.players[oldId]) {
+            const hostPlayer = { ...this.roomState.players[oldId], id: wirePeerId };
+            const updatedPlayers = { ...this.roomState.players };
+            delete updatedPlayers[oldId];
+            updatedPlayers[wirePeerId] = hostPlayer;
+            this.roomState = {
+              ...this.roomState,
+              hostPeerId: wirePeerId,
+              players: updatedPlayers,
+              turnOrder: (this.roomState.turnOrder || []).map((id) =>
+                id === oldId ? wirePeerId : id
+              ),
+              currentTurnPlayerId:
+                this.roomState.currentTurnPlayerId === oldId
+                  ? wirePeerId
+                  : this.roomState.currentTurnPlayerId,
+            };
+          }
+        }
+      } catch {
+        // Keep generated peerId if getSelf is unavailable
+      }
+    }
+
     // Initialize action channels
     this.joinChannel = normalizeAction<JoinMessage>(this.room.makeAction('room_join'));
     this.syncChannel = normalizeAction<SyncMessage>(this.room.makeAction('room_sync'));
@@ -529,6 +564,14 @@ export class P2PRealtimeService {
           }
         } else if (msg.payload.kind === 'JOIN_ACK') {
           if (!this.isHostPlayer && msg.payload.accepted) {
+            if (
+              typeof msg.payload.assignedId === 'string' &&
+              msg.payload.assignedId &&
+              msg.payload.assignedId !== this.myPeerId
+            ) {
+              this.myPeerId = msg.payload.assignedId;
+              this.notifyStateChange();
+            }
             if (this.backoffTimer) {
               clearTimeout(this.backoffTimer);
               this.backoffTimer = null;

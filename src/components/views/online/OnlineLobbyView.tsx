@@ -267,8 +267,10 @@ export const OnlineLobbyView: React.FC = () => {
           </div>
 
           <div
-            className={`grid grid-cols-1 sm:grid-cols-2 ${
-              isHost || showSettingsDrawer ? 'xl:grid-cols-2' : 'md:grid-cols-3 lg:grid-cols-4'
+            className={`grid grid-cols-2 ${
+              isHost || showSettingsDrawer
+                ? 'sm:grid-cols-2'
+                : 'sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
             } gap-3`}
           >
             {players.map((p) => {
@@ -279,7 +281,7 @@ export const OnlineLobbyView: React.FC = () => {
               return (
                 <div
                   key={p.id}
-                  className="relative aspect-video min-h-[160px]"
+                  className="relative aspect-[4/3] sm:aspect-video min-h-[132px] w-full"
                 >
                   <VideoCard
                     player={p}

@@ -35,6 +35,13 @@ export const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const videoTrackKey = stream
+    ? stream
+        .getVideoTracks()
+        .map((t) => `${t.id ?? ''}:${t.enabled}:${t.readyState}`)
+        .join('|')
+    : '';
+
   const [hasActiveVideo, setHasActiveVideo] = useState<boolean>(() => {
     if (!stream) return false;
     const tracks = stream.getVideoTracks();
@@ -56,26 +63,26 @@ export const VideoCard: React.FC<VideoCardProps> = ({
     if (!stream) return;
 
     const handleTrackChange = () => updateActiveVideo();
-    stream.addEventListener('addtrack', handleTrackChange);
-    stream.addEventListener('removetrack', handleTrackChange);
+    stream.addEventListener?.('addtrack', handleTrackChange);
+    stream.addEventListener?.('removetrack', handleTrackChange);
 
     const videoTracks = stream.getVideoTracks();
     videoTracks.forEach((track) => {
-      track.addEventListener('ended', handleTrackChange);
-      track.addEventListener('mute', handleTrackChange);
-      track.addEventListener('unmute', handleTrackChange);
+      track.addEventListener?.('ended', handleTrackChange);
+      track.addEventListener?.('mute', handleTrackChange);
+      track.addEventListener?.('unmute', handleTrackChange);
     });
 
     return () => {
-      stream.removeEventListener('addtrack', handleTrackChange);
-      stream.removeEventListener('removetrack', handleTrackChange);
+      stream.removeEventListener?.('addtrack', handleTrackChange);
+      stream.removeEventListener?.('removetrack', handleTrackChange);
       videoTracks.forEach((track) => {
-        track.removeEventListener('ended', handleTrackChange);
-        track.removeEventListener('mute', handleTrackChange);
-        track.removeEventListener('unmute', handleTrackChange);
+        track.removeEventListener?.('ended', handleTrackChange);
+        track.removeEventListener?.('mute', handleTrackChange);
+        track.removeEventListener?.('unmute', handleTrackChange);
       });
     };
-  }, [stream]);
+  }, [stream, videoTrackKey]);
 
   useEffect(() => {
     const videoEl = videoRef.current;
@@ -85,9 +92,18 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       if (videoEl.srcObject !== stream) {
         videoEl.srcObject = stream;
       }
-      const playPromise = videoEl.play?.();
-      if (playPromise && typeof playPromise.catch === 'function') {
-        playPromise.catch(() => {});
+      const startPlay = () => {
+        const playPromise = videoEl.play?.();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      };
+      startPlay();
+      if (typeof videoEl.addEventListener === 'function') {
+        videoEl.addEventListener('loadedmetadata', startPlay);
+        return () => {
+          videoEl.removeEventListener('loadedmetadata', startPlay);
+        };
       }
     } else if (videoEl.srcObject) {
       videoEl.srcObject = null;
@@ -101,10 +117,10 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       : 'border-white/[0.08] hover:border-white/[0.16]';
 
   const sizeStyles = isSpotlight
-    ? 'min-h-[260px] sm:min-h-[320px] md:min-h-[360px]'
+    ? 'w-full h-full min-h-[260px] sm:min-h-[320px] md:min-h-[360px]'
     : compact
-      ? 'h-full min-h-0'
-      : 'min-h-[140px] sm:min-h-[172px]';
+      ? 'w-full h-full min-h-0'
+      : 'w-full h-full min-h-[140px] sm:min-h-[172px]';
 
   const avatarSize = isSpotlight ? 'xl' : compact ? 'md' : 'xl';
 
@@ -115,13 +131,13 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         onClick ? 'cursor-pointer' : ''
       }`}
     >
-      {/* Persistent <video> Element */}
+      {/* Persistent <video> Element (muted always; VoiceManager handles remote audio playback cleanly) */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        muted={isLocal}
-        className={`w-full h-full object-cover rounded-3xl ${
+        muted={true}
+        className={`absolute inset-0 w-full h-full object-cover rounded-3xl ${
           hasActiveVideo ? 'block' : 'hidden'
         } ${isLocal ? '-scale-x-100' : ''}`}
       />

@@ -668,5 +668,32 @@ describe('Voice & Audio System Unit Tests', () => {
       analyser.destroy();
       vi.unstubAllGlobals();
     });
+
+    it('aligns P2PRealtimeService myPeerId with Trystero getSelf().peerId on createRoom', async () => {
+      const mockJoinRoom = () => ({
+        getSelf: async () => ({ peerId: 'trystero_wire_id_20ch' }),
+        makeAction: () => ({
+          send: async () => {},
+          onMessage: () => () => {},
+        }),
+        onPeerJoin: () => () => {},
+        onPeerLeave: () => () => {},
+        onPeerStream: () => () => {},
+        addStream: vi.fn(),
+        removeStream: vi.fn(),
+        leave: async () => {},
+      });
+
+      const service = new P2PRealtimeService();
+      await service.createRoom('ALGN', 'HostBob', 'sleuth', {
+        joinRoomFn: mockJoinRoom,
+      });
+
+      expect(service.getMyPeerId()).toBe('trystero_wire_id_20ch');
+      expect(service.getState()?.hostPeerId).toBe('trystero_wire_id_20ch');
+      expect(service.getState()?.players['trystero_wire_id_20ch']?.name).toBe('HostBob');
+
+      await service.leaveRoom();
+    });
   });
 });
