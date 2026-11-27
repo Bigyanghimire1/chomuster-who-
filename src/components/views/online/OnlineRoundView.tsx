@@ -141,7 +141,7 @@ export const OnlineRoundView: React.FC = () => {
     >
       <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-4">
         {/* Header Bar */}
-        <Card className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isDiscussion ? 'bg-[#141418] text-white border-[#FFDF00]' : ''}`}>
+        <Card className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isDiscussion ? '!bg-[#141418] !text-white !border-[#FFDF00]' : ''}`}>
           <div>
             <div className={`inline-flex items-center gap-1.5 text-xs font-extrabold mb-1 ${isDiscussion ? 'text-[#FFDF00]' : 'text-[#52555E]'}`}>
               <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.2} />
@@ -240,23 +240,23 @@ export const OnlineRoundView: React.FC = () => {
         {/* Main View Area: Spotlight Stage vs Gallery Grid */}
       {isGalleryView ? (
         <div className="space-y-3 flex-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-chomu-secondary">
+          <div className="flex items-center justify-between gap-2">
+            <span className={`text-xs font-bold ${isDiscussion ? 'text-white/90' : 'text-chomu-secondary'}`}>
               Gallery grid ({players.length} players)
             </span>
-            <span className="text-xs text-chomu-muted">
+            <span className={`text-xs ${isDiscussion ? 'text-white/65' : 'text-chomu-muted'}`}>
               Green border marks active speaker
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {players.map((p) => {
               const isMe = p.id === myPlayerId;
               const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
               const isTurn = p.id === spotlightPlayer?.id;
 
               return (
-                <div key={p.id} className="relative aspect-video min-h-[140px] min-w-0">
+                <div key={p.id} className="min-w-0">
                   <VideoCard
                     player={p}
                     stream={getPlayerStream(p.id)}

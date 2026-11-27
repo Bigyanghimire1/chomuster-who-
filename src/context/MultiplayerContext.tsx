@@ -393,13 +393,29 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const roomCode = roomState?.roomCode || null;
   const results = roomState?.votingResult || null;
 
+  // Clear stale transient errors whenever phase or turn changes
+  useEffect(() => {
+    setError(null);
+  }, [roomState?.phase, roomState?.currentTurnPlayerId]);
+
   // Actions
   const runSupabaseAction = useCallback(async (fn: () => Promise<void>) => {
     try {
       await fn();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Action failed';
-      setError(msg);
+      const isBenignRace =
+        /can only acknowledge role in role_reveal/i.test(msg) ||
+        /not your turn to acknowledge role/i.test(msg) ||
+        /can only advance turn in round phase/i.test(msg) ||
+        /only the current speaker, host, or an expired timer may advance the turn/i.test(msg) ||
+        /can only start voting from discussion phase/i.test(msg) ||
+        /voting can only be concluded during voting/i.test(msg) ||
+        /voting deadline has not expired yet/i.test(msg) ||
+        /play_again is only allowed in results phase/i.test(msg);
+      if (!isBenignRace) {
+        setError(msg);
+      }
     }
   }, []);
 
