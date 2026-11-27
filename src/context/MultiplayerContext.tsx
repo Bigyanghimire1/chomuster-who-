@@ -179,7 +179,11 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
               setIsConnected(true);
               const roomId = supabaseRoomTransport.getRoomId();
               if (roomId) {
-                await livekitMediaService.connect(roomId);
+                try {
+                  await livekitMediaService.connect(roomId);
+                } catch (mediaErr) {
+                  console.warn('[MultiplayerContext] LiveKit auto-recovery failed, continuing without media:', mediaErr);
+                }
               }
             }
           })

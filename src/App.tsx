@@ -87,7 +87,7 @@ export const getInviteCodeFromUrl = (
 
 const GameRouter: React.FC = () => {
   const { state: localGameState } = useGame();
-  const { roomState, phase: onlinePhase } = useMultiplayer();
+  const { roomState, phase: onlinePhase, isConnecting } = useMultiplayer();
 
   const [isJoinModalOpen, setIsJoinModalOpen] = useState<boolean>(false);
   const [inviteRoomCode, setInviteRoomCode] = useState<string | null>(null);
@@ -131,7 +131,14 @@ const GameRouter: React.FC = () => {
       <Header />
       <main className="flex-1 w-full flex flex-col">
         <Suspense fallback={<ViewLoadingFallback />}>
-          {isInOnlineRoom ? (
+          {isConnecting && !isInOnlineRoom ? (
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-3">
+              <div className="w-8 h-8 rounded-full border-3 border-[#050505] border-t-transparent animate-spin" />
+              <span className="text-sm font-extrabold text-[#050505]">
+                Reconnecting to your room...
+              </span>
+            </div>
+          ) : isInOnlineRoom ? (
             <>
               {/* Secondary modal views accessible while in an online room */}
               {localGameState.phase === 'RULES' && <RulesView />}

@@ -28,7 +28,7 @@ interface BankWord {
   };
 }
 
-const ROOM_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const ROOM_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ';
 const ALLOWED_TURN_DURATIONS = [0, 15, 20, 30] as const;
 const ALLOWED_DISCUSSION_DURATIONS = [30, 45, 60] as const;
 const ALLOWED_HINT_DIFFICULTIES: readonly HintDifficulty[] = ['subtle', 'balanced', 'easy', 'none'];
@@ -13127,7 +13127,7 @@ export function generateRoomCode(length = 4): string {
   globalThis.crypto.getRandomValues(bytes);
   let code = '';
   for (let i = 0; i < length; i++) {
-    code += ROOM_CODE_ALPHABET[bytes[i] & 31];
+    code += ROOM_CODE_ALPHABET[bytes[i] % ROOM_CODE_ALPHABET.length];
   }
   return code;
 }

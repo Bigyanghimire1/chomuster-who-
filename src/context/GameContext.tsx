@@ -17,6 +17,8 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
+const LOCAL_GAME_SESSION_KEY = 'chomu_local_game_state_v1';
+
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [initialPlayers] = useState(() => storageService.loadPlayers());
   const [initialSettings] = useState(() => storageService.loadSettings());
@@ -27,8 +29,34 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [state, dispatch] = useReducer(
     gameReducer,
     undefined,
-    () => initializeState(initialPlayers, initialSettings)
+    () => {
+      try {
+        const saved = sessionStorage.getItem(LOCAL_GAME_SESSION_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved) as GameState;
+          if (parsed && parsed.phase && parsed.phase !== 'HOME' && Array.isArray(parsed.players)) {
+            return parsed;
+          }
+        }
+      } catch {
+        // Ignore storage errors
+      }
+      return initializeState(initialPlayers, initialSettings);
+    }
   );
+
+  // Persist active local Pass & Play state across page refreshes
+  useEffect(() => {
+    try {
+      if (state.phase === 'HOME') {
+        sessionStorage.removeItem(LOCAL_GAME_SESSION_KEY);
+      } else {
+        sessionStorage.setItem(LOCAL_GAME_SESSION_KEY, JSON.stringify(state));
+      }
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [state]);
 
   // Sync audio mute state
   useEffect(() => {

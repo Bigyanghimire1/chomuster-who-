@@ -23,7 +23,6 @@ import { OnlineSettings } from '../../../types/multiplayer';
 import { AVATAR_LIST, storageService } from '../../../services/storageService';
 import {
   generateRoomCode,
-  isValidRoomCode,
   normalizeRoomCode,
 } from '../../../services/multiplayer/roomCodeGenerator';
 import { isSupabaseConfigured } from '../../../services/backendConfig';
@@ -128,7 +127,7 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
 
   const handleRoomCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
-    const clean = normalizeRoomCode(raw).slice(0, 4);
+    const clean = raw.trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
     setRoomCodeInput(clean);
     setLocalError(null);
     clearError();
@@ -186,13 +185,9 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
         await createRoom(codeToUse, trimmedName, selectedAvatar, hostSettings);
         onClose();
       } else {
-        const targetCode = normalizeRoomCode(roomCodeInput);
-        if (!targetCode || targetCode.length !== 4) {
-          setLocalError('Enter a 4-letter room code');
-          return;
-        }
-        if (!isValidRoomCode(targetCode)) {
-          setLocalError('Room code contains invalid letters (avoid I, L, O)');
+        const targetCode = roomCodeInput.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (!targetCode || !/^[A-Z0-9]{4}$/.test(targetCode)) {
+          setLocalError('Enter a 4-character room code');
           return;
         }
         await joinRoom(targetCode, trimmedName, selectedAvatar);

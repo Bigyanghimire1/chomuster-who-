@@ -187,6 +187,9 @@ function mapSecret(row: RawSecretRow | null, category: string | null): OnlineSec
 
 function getDefaultStorage(): Pick<Storage, 'getItem' | 'setItem' | 'removeItem'> | null {
   try {
+    if (typeof globalThis !== 'undefined' && 'localStorage' in globalThis && globalThis.localStorage) {
+      return globalThis.localStorage;
+    }
     if (typeof globalThis !== 'undefined' && 'sessionStorage' in globalThis && globalThis.sessionStorage) {
       return globalThis.sessionStorage;
     }
