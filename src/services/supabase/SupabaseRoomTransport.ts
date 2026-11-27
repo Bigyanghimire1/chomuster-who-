@@ -226,6 +226,22 @@ export class SupabaseRoomTransport {
   private chatListeners = new Set<ChatListener>();
   private errorListeners = new Set<ErrorListener>();
 
+  private readySeq = 0;
+  private inFlightReadyTarget: boolean | null = null;
+  private refreshInFlight: Promise<void> | null = null;
+  private refreshQueued = false;
+
+  private perfNow(): number {
+    return typeof performance !== 'undefined' ? performance.now() : Date.now();
+  }
+
+  private logPerf(op: string, startMs: number, extra?: string): void {
+    if (typeof import.meta !== 'undefined' && (import.meta as { env?: { DEV?: boolean } }).env?.DEV) {
+      const elapsed = Math.round(this.perfNow() - startMs);
+      console.info(`[ChomuPerf] ${op}: ${elapsed}ms${extra ? ` (${extra})` : ''}`);
+    }
+  }
+
   constructor(deps?: SupabaseRoomTransportDeps) {
     this.getClientFn = deps?.getClient ?? getSupabaseClient;
     this.ensureSessionFn = deps?.ensureSession ?? ensureAnonymousSession;
@@ -297,6 +313,7 @@ export class SupabaseRoomTransport {
     avatar: PlayerAvatarId,
     initialSettings?: Partial<OnlineSettings>,
   ): Promise<void> {
+    const t0 = this.perfNow();
     const client = this.getClientFn();
     this.userId = await this.ensureSessionFn(client);
 
@@ -321,8 +338,8 @@ export class SupabaseRoomTransport {
     this.roomId = res.room.id;
     this.connected = true;
     this.applyRoomAndPlayers(res.room, [res.player]);
-    await this.refreshPlayers(client, res.room.id, res.room);
-    await this.subscribeToRoom(client, res.room.id);
+    void this.subscribeToRoom(client, res.room.id);
+    this.logPerf('createRoom', t0);
   }
 
   public async joinRoom(
@@ -330,6 +347,7 @@ export class SupabaseRoomTransport {
     playerName: string,
     avatar: PlayerAvatarId,
   ): Promise<void> {
+    const t0 = this.perfNow();
     const client = this.getClientFn();
     this.userId = await this.ensureSessionFn(client);
 
@@ -358,10 +376,11 @@ export class SupabaseRoomTransport {
       this.applyRoomAndPlayers(res.room, res.players);
     } else {
       this.applyRoomAndPlayers(res.room, [res.player]);
-      await this.refreshPlayers(client, res.room.id, res.room);
+      void this.refreshPlayers(client, res.room.id, res.room);
     }
 
-    await this.subscribeToRoom(client, res.room.id);
+    void this.subscribeToRoom(client, res.room.id);
+    this.logPerf('joinRoom', t0);
   }
 
   public async tryRejoinRoom(): Promise<boolean> {
@@ -437,7 +456,50 @@ export class SupabaseRoomTransport {
   }
 
   public async setReady(isReady: boolean): Promise<void> {
-    await this.invokeRoomAction('SET_READY', { isReady });
+    const t0 = this.perfNow();
+    const seq = ++this.readySeq;
+    const prevReady = this.state?.players[this.userId]?.isReady ?? !isReady;
+    this.inFlightReadyTarget = isReady;
+
+    // Optimistic immediate UI update
+    if (this.state && this.userId && this.state.players[this.userId]) {
+      this.state = {
+        ...this.state,
+        players: {
+          ...this.state.players,
+          [this.userId]: {
+            ...this.state.players[this.userId],
+            isReady,
+          },
+        },
+      };
+      this.notifyStateListeners();
+    }
+
+    try {
+      await this.invokeRoomAction('SET_READY', { isReady });
+      this.logPerf('setReady', t0, String(isReady));
+    } catch (err) {
+      // Roll back optimistic state if no newer toggle superseded this request
+      if (seq === this.readySeq && this.state && this.userId && this.state.players[this.userId]) {
+        this.state = {
+          ...this.state,
+          players: {
+            ...this.state.players,
+            [this.userId]: {
+              ...this.state.players[this.userId],
+              isReady: prevReady,
+            },
+          },
+        };
+        this.notifyStateListeners();
+      }
+      throw err;
+    } finally {
+      if (seq === this.readySeq) {
+        this.inFlightReadyTarget = null;
+      }
+    }
   }
 
   public async updateSettings(settings: Partial<OnlineSettings>): Promise<void> {
@@ -521,7 +583,25 @@ export class SupabaseRoomTransport {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'room_players', filter: `room_id=eq.${roomId}` },
-        () => {
+        (payload) => {
+          const row = payload?.new as RawPlayerRow | undefined;
+          if (payload?.eventType === 'UPDATE' && row && this.state?.players[row.user_id]) {
+            const isLocalOptimistic =
+              row.user_id === this.userId && this.inFlightReadyTarget !== null;
+            const mapped = mapPlayers([row])[row.user_id];
+            if (isLocalOptimistic) {
+              mapped.isReady = this.inFlightReadyTarget!;
+            }
+            this.state = {
+              ...this.state,
+              players: {
+                ...this.state.players,
+                [row.user_id]: mapped,
+              },
+            };
+            this.notifyStateListeners();
+            return;
+          }
           void this.refreshRoomState(client, roomId);
         },
       )
@@ -573,48 +653,80 @@ export class SupabaseRoomTransport {
   }
 
   private async refreshRoomState(client: SupabaseClient, roomId: string): Promise<void> {
-    try {
-      const [{ data: roomData, error: roomErr }, { data: playersData, error: playersErr }] =
-        await Promise.all([
-          client.from('rooms').select('*').eq('id', roomId).maybeSingle(),
-          client.from('room_players').select('*').eq('room_id', roomId),
-        ]);
+    if (this.refreshInFlight) {
+      this.refreshQueued = true;
+      return this.refreshInFlight;
+    }
 
-      if (roomErr || playersErr || !roomData || !playersData) {
-        return;
-      }
+    const run = async () => {
+      const t0 = this.perfNow();
+      try {
+        const [{ data: roomData, error: roomErr }, { data: playersData, error: playersErr }] =
+          await Promise.all([
+            client.from('rooms').select('*').eq('id', roomId).maybeSingle(),
+            client.from('room_players').select('*').eq('room_id', roomId),
+          ]);
 
-      const roomRow = roomData as RawRoomRow;
-      const playerRows = playersData as RawPlayerRow[];
+        if (roomErr || playersErr || !roomData || !playersData) {
+          return;
+        }
 
-      if (roomRow.phase === 'LOBBY') {
-        this.secret = null;
-        this.secretRoundNumber = 0;
-      } else if (
-        roomRow.round_number > 0 &&
-        this.secretRoundNumber !== roomRow.round_number &&
-        this.userId
-      ) {
-        const { data: secretData } = await client
-          .from('player_secrets')
-          .select('id, room_id, user_id, round_number, is_chomu, role, secret_word, hint')
-          .eq('room_id', roomId)
-          .eq('user_id', this.userId)
-          .eq('round_number', roomRow.round_number)
-          .maybeSingle();
+        const roomRow = roomData as RawRoomRow;
+        const playerRows = playersData as RawPlayerRow[];
+        const turnOrder = Array.isArray(roomRow.turn_order) ? roomRow.turn_order : [];
+        const turnIdx = typeof roomRow.current_turn_index === 'number' ? roomRow.current_turn_index : 0;
+        const currentTurnPlayerId = turnOrder[turnIdx] ?? null;
 
-        if (secretData) {
-          this.secret = mapSecret(secretData as RawSecretRow, roomRow.secret_category);
-          this.secretRoundNumber = roomRow.round_number;
+        const isSecretEligible =
+          (roomRow.phase === 'ROLE_REVEAL' && currentTurnPlayerId === this.userId) ||
+          roomRow.phase === 'ROUND' ||
+          roomRow.phase === 'DISCUSSION' ||
+          roomRow.phase === 'VOTING' ||
+          roomRow.phase === 'VOTING_RUNOFF';
+
+        if (roomRow.phase === 'LOBBY') {
+          this.secret = null;
+          this.secretRoundNumber = 0;
+        } else if (
+          isSecretEligible &&
+          roomRow.round_number > 0 &&
+          this.secretRoundNumber !== roomRow.round_number &&
+          this.userId
+        ) {
+          const tSecret = this.perfNow();
+          const { data: secretData } = await client
+            .from('player_secrets')
+            .select('id, room_id, user_id, round_number, is_chomu, role, secret_word, hint')
+            .eq('room_id', roomId)
+            .eq('user_id', this.userId)
+            .eq('round_number', roomRow.round_number)
+            .maybeSingle();
+
+          if (secretData) {
+            this.secret = mapSecret(secretData as RawSecretRow, roomRow.secret_category);
+            this.secretRoundNumber = roomRow.round_number;
+            this.logPerf('fetchPlayerSecret', tSecret);
+          }
+        }
+
+        this.applyRoomAndPlayers(roomRow, playerRows);
+        this.logPerf('refreshRoomState', t0, roomRow.phase);
+      } catch (err) {
+        if (err instanceof Error) {
+          this.notifyErrorListeners(err);
         }
       }
+    };
 
-      this.applyRoomAndPlayers(roomRow, playerRows);
-    } catch (err) {
-      if (err instanceof Error) {
-        this.notifyErrorListeners(err);
+    this.refreshInFlight = run().finally(() => {
+      this.refreshInFlight = null;
+      if (this.refreshQueued) {
+        this.refreshQueued = false;
+        void this.refreshRoomState(client, roomId);
       }
-    }
+    });
+
+    return this.refreshInFlight;
   }
 
   private applyRoomAndPlayers(roomRow: RawRoomRow, playerRows: RawPlayerRow[]): void {

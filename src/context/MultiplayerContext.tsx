@@ -21,6 +21,7 @@ import { p2pRealtimeService } from '../services/multiplayer/p2pRealtimeService';
 import { voiceManager } from '../services/voice/voiceManager';
 import { getActiveMultiplayerBackend } from '../services/backendConfig';
 import { supabaseRoomTransport } from '../services/supabase/SupabaseRoomTransport';
+import { ensureAnonymousSession } from '../services/supabase/supabaseClient';
 import { livekitMediaService } from '../services/livekit/LiveKitMediaService';
 import { audioService } from '../services/audioService';
 import { sessionService } from '../services/storageService';
@@ -167,24 +168,24 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, [activeTransport]);
 
-  // Automatic session recovery across page refreshes
+  // Automatic session recovery + pre-warm anonymous Supabase session on mount
   useEffect(() => {
     if (isSupabaseBackend) {
       if (!supabaseRoomTransport.isConnected()) {
         setIsConnecting(true);
         supabaseRoomTransport
           .tryRejoinRoom()
-          .then(async (rejoined) => {
+          .then((rejoined) => {
             if (rejoined) {
               setIsConnected(true);
               const roomId = supabaseRoomTransport.getRoomId();
               if (roomId) {
-                try {
-                  await livekitMediaService.connect(roomId);
-                } catch (mediaErr) {
+                void livekitMediaService.connect(roomId).catch((mediaErr) => {
                   console.warn('[MultiplayerContext] LiveKit auto-recovery failed, continuing without media:', mediaErr);
-                }
+                });
               }
+            } else {
+              void ensureAnonymousSession().catch(() => {});
             }
           })
           .catch((err) => {
@@ -403,11 +404,9 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
           await supabaseRoomTransport.createRoom(playerName, avatar, initialSettings);
           const roomId = supabaseRoomTransport.getRoomId();
           if (roomId) {
-            try {
-              await livekitMediaService.connect(roomId);
-            } catch (mediaErr) {
+            void livekitMediaService.connect(roomId).catch((mediaErr) => {
               console.warn('[MultiplayerContext] LiveKit connect failed, continuing without media:', mediaErr);
-            }
+            });
           }
         } else {
           await p2pRealtimeService.createRoom(code, playerName, avatar);
@@ -440,11 +439,9 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
           await supabaseRoomTransport.joinRoom(code, playerName, avatar);
           const roomId = supabaseRoomTransport.getRoomId();
           if (roomId) {
-            try {
-              await livekitMediaService.connect(roomId);
-            } catch (mediaErr) {
+            void livekitMediaService.connect(roomId).catch((mediaErr) => {
               console.warn('[MultiplayerContext] LiveKit connect failed, continuing without media:', mediaErr);
-            }
+            });
           }
         } else {
           await p2pRealtimeService.joinRoom(code, playerName, avatar);

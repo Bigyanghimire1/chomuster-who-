@@ -138,13 +138,22 @@ export async function handleCreateRoom(req: Request, deps?: AuthDeps): Promise<R
   const rotatedAt = new Date(now).toISOString();
   const expiresAt = new Date(now + CREDENTIAL_TTL_MS).toISOString();
 
-  const { error: credErr } = await adminClient.from('room_player_credentials').insert({
-    player_id: player.id,
-    room_id: room.id,
-    rejoin_token_hash: tokenHash,
-    rotated_at: rotatedAt,
-    expires_at: expiresAt,
-  });
+  const [{ error: credErr }] = await Promise.all([
+    adminClient.from('room_player_credentials').insert({
+      player_id: player.id,
+      room_id: room.id,
+      rejoin_token_hash: tokenHash,
+      rotated_at: rotatedAt,
+      expires_at: expiresAt,
+    }),
+    adminClient.from('lobby_chat').insert({
+      room_id: room.id,
+      user_id: null,
+      sender_name: 'System',
+      message: `${displayName} created the room.`,
+      is_system: true,
+    }),
+  ]);
 
   if (credErr) {
     await adminClient.from('rooms').delete().eq('id', room.id);
@@ -154,14 +163,6 @@ export async function handleCreateRoom(req: Request, deps?: AuthDeps): Promise<R
       credErr.message || 'Failed to store rejoin credentials'
     );
   }
-
-  await adminClient.from('lobby_chat').insert({
-    room_id: room.id,
-    user_id: null,
-    sender_name: 'System',
-    message: `${displayName} created the room.`,
-    is_system: true,
-  });
 
   return jsonResponse({ room, player, rejoinToken }, 201);
 }

@@ -291,6 +291,15 @@ export async function handleRoomAction(
       if (!isHost) {
         return errorResponse(403, 'FORBIDDEN', 'Only the host can start the game');
       }
+      if (typedRoom.phase === 'ROLE_REVEAL' && typedRoom.round_number > 0) {
+        return jsonResponse({
+          ok: true,
+          phase: 'ROLE_REVEAL',
+          roundNumber: typedRoom.round_number,
+          stateVersion: typedRoom.state_version,
+          alreadyStarted: true,
+        });
+      }
       if (typedRoom.phase !== 'LOBBY') {
         return errorResponse(409, 'INVALID_STATE', 'Game can only be started from LOBBY');
       }
@@ -387,7 +396,7 @@ export async function handleRoomAction(
       }
 
       const nextVersion = typedRoom.state_version + 1;
-      const { error: startRoomErr } = await adminClient
+      const { data: startedRoom, error: startRoomErr } = await adminClient
         .from('rooms')
         .update({
           phase: 'ROLE_REVEAL',
@@ -403,10 +412,21 @@ export async function handleRoomAction(
           runoff_candidate_ids: [],
           state_version: nextVersion,
         })
-        .eq('id', roomId);
+        .eq('id', roomId)
+        .eq('state_version', typedRoom.state_version)
+        .select('id')
+        .maybeSingle();
 
       if (startRoomErr) {
         return errorResponse(500, 'INTERNAL_ERROR', 'Failed to transition room to ROLE_REVEAL', startRoomErr.message);
+      }
+      if (!startedRoom) {
+        return jsonResponse({
+          ok: true,
+          phase: 'ROLE_REVEAL',
+          roundNumber: nextRoundNumber,
+          alreadyStarted: true,
+        });
       }
 
       return jsonResponse({
@@ -422,43 +442,70 @@ export async function handleRoomAction(
         return errorResponse(409, 'INVALID_STATE', 'Can only acknowledge role in ROLE_REVEAL');
       }
 
-      const { error: ackErr } = await adminClient
-        .from('room_players')
-        .update({ has_seen_role: true, last_seen_at: nowIso })
-        .eq('room_id', roomId)
-        .eq('user_id', user.id);
+      const turnOrder: string[] = Array.isArray(typedRoom.turn_order)
+        ? (typedRoom.turn_order as string[])
+        : [];
+      const currentIndex =
+        typeof typedRoom.current_turn_index === 'number' ? typedRoom.current_turn_index : 0;
+      const currentSpeakerId = turnOrder[currentIndex];
 
-      if (ackErr) {
-        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to acknowledge role', ackErr.message);
-      }
-
-      const { data: playersAfterAck, error: listErr } = await adminClient
+      const { data: playersList, error: listErr } = await adminClient
         .from('room_players')
         .select('user_id, is_connected, has_seen_role')
         .eq('room_id', roomId);
 
       if (listErr) {
-        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to check role acknowledgements', listErr.message);
+        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to load room players', listErr.message);
       }
 
-      const connected = (playersAfterAck ?? []).filter(
-        (p: { is_connected: boolean }) => p.is_connected,
-      );
-      const allAcked =
-        connected.length > 0 &&
-        connected.every(
-          (p: { user_id: string; has_seen_role: boolean }) =>
-            p.user_id === user.id || p.has_seen_role,
+      const playersTyped = (playersList ?? []) as Array<{
+        user_id: string;
+        is_connected: boolean;
+        has_seen_role: boolean;
+      }>;
+      const byUserId = new Map(playersTyped.map((p) => [p.user_id, p]));
+      const activePlayer = currentSpeakerId ? byUserId.get(currentSpeakerId) : undefined;
+      const isCurrentSpeaker = currentSpeakerId === user.id;
+
+      // Only the active player can complete their reveal (or host if active player disconnected)
+      if (!isCurrentSpeaker && !(isHost && activePlayer && !activePlayer.is_connected)) {
+        return errorResponse(
+          403,
+          'FORBIDDEN',
+          'Only the active player can complete their private reveal',
         );
+      }
+
+      if (currentSpeakerId) {
+        const { error: ackErr } = await adminClient
+          .from('room_players')
+          .update({ has_seen_role: true, last_seen_at: nowIso })
+          .eq('room_id', roomId)
+          .eq('user_id', currentSpeakerId);
+
+        if (ackErr) {
+          return errorResponse(500, 'INTERNAL_ERROR', 'Failed to mark reveal complete', ackErr.message);
+        }
+      }
+
+      // Advance to the next connected player in turn_order
+      let nextIndex = currentIndex + 1;
+      while (nextIndex < turnOrder.length) {
+        const candidate = byUserId.get(turnOrder[nextIndex]);
+        if (candidate && candidate.is_connected && !candidate.has_seen_role) {
+          break;
+        }
+        nextIndex++;
+      }
 
       const nextVersion = typedRoom.state_version + 1;
 
-      if (allAcked) {
+      if (nextIndex >= turnOrder.length) {
         const turnSecs = Number(typedRoom.settings?.turnDurationSeconds ?? 20);
         const phaseDeadlineAt =
           turnSecs > 0 ? new Date(Date.now() + turnSecs * 1000).toISOString() : null;
 
-        const { error: roundErr } = await adminClient
+        const { data: updatedRound, error: roundErr } = await adminClient
           .from('rooms')
           .update({
             phase: 'ROUND',
@@ -466,29 +513,50 @@ export async function handleRoomAction(
             phase_deadline_at: phaseDeadlineAt,
             state_version: nextVersion,
           })
-          .eq('id', roomId);
+          .eq('id', roomId)
+          .eq('state_version', typedRoom.state_version)
+          .select('id')
+          .maybeSingle();
 
         if (roundErr) {
           return errorResponse(500, 'INTERNAL_ERROR', 'Failed to transition to ROUND', roundErr.message);
+        }
+        if (!updatedRound) {
+          return jsonResponse({ ok: true, alreadyTransitioned: true });
         }
 
         return jsonResponse({
           ok: true,
           phase: 'ROUND',
+          currentTurnIndex: 0,
           allAcked: true,
           phaseDeadlineAt,
           stateVersion: nextVersion,
         });
       }
 
-      await adminClient
+      const { data: updatedReveal, error: nextRevealErr } = await adminClient
         .from('rooms')
-        .update({ state_version: nextVersion })
-        .eq('id', roomId);
+        .update({
+          current_turn_index: nextIndex,
+          state_version: nextVersion,
+        })
+        .eq('id', roomId)
+        .eq('state_version', typedRoom.state_version)
+        .select('id')
+        .maybeSingle();
+
+      if (nextRevealErr) {
+        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to advance reveal turn', nextRevealErr.message);
+      }
+      if (!updatedReveal) {
+        return jsonResponse({ ok: true, alreadyTransitioned: true });
+      }
 
       return jsonResponse({
         ok: true,
         phase: 'ROLE_REVEAL',
+        currentTurnIndex: nextIndex,
         allAcked: false,
         stateVersion: nextVersion,
       });

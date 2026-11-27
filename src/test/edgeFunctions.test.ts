@@ -511,6 +511,48 @@ describe('Edge Functions auth, room lifecycle & voting security', () => {
     expect(db.rooms[0].phase).toBe('ROLE_REVEAL');
     expect(db.player_secrets).toHaveLength(3);
 
+    // Idempotent duplicate START_GAME does not fail or duplicate secrets
+    const startDup = await handleRoomAction(
+      makeJsonReq({ roomId: room.id, action: 'START_GAME' }),
+      makeMockDeps(db, hostId),
+    );
+    expect(startDup.status).toBe(200);
+    expect(db.player_secrets).toHaveLength(3);
+
+    // Sequential player-by-player private reveal
+    const turnOrder = db.rooms[0].turn_order as string[];
+    expect(turnOrder).toHaveLength(3);
+    const nonActiveId = turnOrder.find((id) => id !== turnOrder[0])!;
+    const outOfTurnAck = await handleRoomAction(
+      makeJsonReq({ roomId: room.id, action: 'ACK_ROLE' }),
+      makeMockDeps(db, nonActiveId),
+    );
+    expect(outOfTurnAck.status).toBe(403);
+
+    // Player 0 -> 1 -> 2 -> ROUND
+    const ack0 = await handleRoomAction(
+      makeJsonReq({ roomId: room.id, action: 'ACK_ROLE' }),
+      makeMockDeps(db, turnOrder[0]),
+    );
+    expect(ack0.status).toBe(200);
+    expect(db.rooms[0].phase).toBe('ROLE_REVEAL');
+    expect(db.rooms[0].current_turn_index).toBe(1);
+
+    await handleRoomAction(
+      makeJsonReq({ roomId: room.id, action: 'ACK_ROLE' }),
+      makeMockDeps(db, turnOrder[1]),
+    );
+    expect(db.rooms[0].phase).toBe('ROLE_REVEAL');
+    expect(db.rooms[0].current_turn_index).toBe(2);
+
+    const ackLast = await handleRoomAction(
+      makeJsonReq({ roomId: room.id, action: 'ACK_ROLE' }),
+      makeMockDeps(db, turnOrder[2]),
+    );
+    expect(ackLast.status).toBe(200);
+    expect(db.rooms[0].phase).toBe('ROUND');
+    expect(db.rooms[0].current_turn_index).toBe(0);
+
     // Move room to VOTING and test self-vote rejection
     db.rooms[0].phase = 'VOTING';
     const selfVote = await handleRoomAction(

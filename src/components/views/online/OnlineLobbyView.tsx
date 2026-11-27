@@ -30,6 +30,7 @@ export const OnlineLobbyView: React.FC = () => {
     myPlayer,
     isHost,
     roomState,
+    error: contextError,
     setReady,
     startGame,
     updateSettings,
@@ -47,6 +48,7 @@ export const OnlineLobbyView: React.FC = () => {
   const [draftSettings, setDraftSettings] = useState<OnlineSettings | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [isStarting, setIsStarting] = useState<boolean>(false);
 
   const currentSettings: OnlineSettings = roomState?.settings || {
     categoryIds: ['everyday_objects', 'food_drinks', 'animals'],
@@ -385,12 +387,23 @@ export const OnlineLobbyView: React.FC = () => {
                 size="lg"
                 fullWidth
                 className="sm:w-56"
-                disabled={!canStartGame}
-                onClick={startGame}
+                disabled={!canStartGame || isStarting}
+                onClick={() => {
+                  if (isStarting) return;
+                  setIsStarting(true);
+                  audioService.playGameStart();
+                  startGame();
+                  window.setTimeout(() => setIsStarting(false), 3000);
+                }}
                 leftIcon={<Play className="w-4 h-4" strokeWidth={2.5} />}
               >
-                Start game
+                {isStarting ? 'Starting...' : 'Start game'}
               </Button>
+              {contextError && (
+                <p className="text-xs font-bold text-chomu-errorText text-center sm:text-right">
+                  {contextError}
+                </p>
+              )}
               {players.length < 3 ? (
                 <p className="text-xs font-bold text-[#050505] text-center sm:text-right tabular-nums">
                   Needs at least 3 players to start ({players.length}/3)
