@@ -615,11 +615,14 @@ BEGIN
   v_next_index := v_room.current_turn_index + 1;
 
   IF v_next_index < (v_turn_count * v_clue_rounds) THEN
-    v_turn_secs := GREATEST(5, COALESCE((v_room.settings->>'turnDurationSeconds')::integer, 20));
+    v_turn_secs := COALESCE((v_room.settings->>'turnDurationSeconds')::integer, 20);
 
     UPDATE public.rooms
     SET current_turn_index = v_next_index,
-        phase_deadline_at = now() + make_interval(secs => v_turn_secs),
+        phase_deadline_at = CASE
+          WHEN v_turn_secs <= 0 THEN NULL
+          ELSE now() + make_interval(secs => GREATEST(5, v_turn_secs))
+        END,
         state_version = state_version + 1
     WHERE id = p_room_id
     RETURNING * INTO v_room;

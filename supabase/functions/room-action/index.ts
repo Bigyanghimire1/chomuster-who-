@@ -683,11 +683,27 @@ export async function handleRoomAction(
       }
 
       if (!isDeadlineExpired(typedRoom.phase_deadline_at)) {
-        return errorResponse(
-          409,
-          'INVALID_STATE',
-          'Voting deadline has not expired yet',
-        );
+        let canResolveEarly = false;
+        if (isHost) {
+          const { data: roomPlayersRows } = await adminClient
+            .from('room_players')
+            .select('is_connected, has_voted')
+            .eq('room_id', roomId);
+          const connectedPlayers = (roomPlayersRows ?? []).filter(
+            (p: { is_connected?: boolean }) => Boolean(p.is_connected),
+          );
+          canResolveEarly =
+            connectedPlayers.length > 0 &&
+            connectedPlayers.every((p: { has_voted?: boolean }) => Boolean(p.has_voted));
+        }
+
+        if (!canResolveEarly) {
+          return errorResponse(
+            409,
+            'INVALID_STATE',
+            'Voting deadline has not expired yet',
+          );
+        }
       }
 
       const isRunoff = typedRoom.phase === 'VOTING_RUNOFF';

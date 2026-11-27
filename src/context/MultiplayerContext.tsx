@@ -130,6 +130,8 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const previousPhaseRef = useRef<OnlinePhase | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
+  const lastAutoAdvanceKeyRef = useRef<string | null>(null);
+  const autoAdvanceInFlightRef = useRef<boolean>(false);
 
   // Subscribe to real-time service updates
   useEffect(() => {
@@ -292,12 +294,23 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
         if (remaining === 0 && supabaseRoomTransport.isHost()) {
           const rawPhase = supabaseRoomTransport.getRawPhase();
+          const advanceKey = `${rawPhase}:${roomState.currentTurnPlayerId ?? ''}:${roomState.currentClueRound ?? 1}:${deadlineIso}`;
+          if (autoAdvanceInFlightRef.current || lastAutoAdvanceKeyRef.current === advanceKey) {
+            return;
+          }
+          lastAutoAdvanceKeyRef.current = advanceKey;
+          autoAdvanceInFlightRef.current = true;
+          const finish = () => {
+            autoAdvanceInFlightRef.current = false;
+          };
           if (rawPhase === 'ROUND') {
-            void supabaseRoomTransport.nextTurn().catch(() => {});
+            void supabaseRoomTransport.nextTurn().catch(() => {}).finally(finish);
           } else if (rawPhase === 'DISCUSSION') {
-            void supabaseRoomTransport.startVoting().catch(() => {});
+            void supabaseRoomTransport.startVoting().catch(() => {}).finally(finish);
           } else if (rawPhase === 'VOTING' || rawPhase === 'VOTING_RUNOFF') {
-            void supabaseRoomTransport.concludeVoting().catch(() => {});
+            void supabaseRoomTransport.concludeVoting().catch(() => {}).finally(finish);
+          } else {
+            autoAdvanceInFlightRef.current = false;
           }
         }
         return;

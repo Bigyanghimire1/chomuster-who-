@@ -42,6 +42,9 @@ export const OnlineVotingView: React.FC = () => {
 
   const hasLockedVote = !!myPlayer?.votedForId;
   const lockedVoteTarget = players.find((p) => p.id === myPlayer?.votedForId);
+  const connectedPlayers = players.filter((p) => p.isConnected);
+  const allConnectedVoted =
+    connectedPlayers.length > 0 && connectedPlayers.every((p) => !!p.votedForId);
 
   const voteCounts: Record<string, number> = {};
   let totalVotesCast = 0;
@@ -272,14 +275,14 @@ export const OnlineVotingView: React.FC = () => {
                 <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
                 <span>Vote recorded</span>
               </Badge>
-              {isHost && (
+              {isHost && allConnectedVoted && (
                 <Button
-                  variant="secondary"
+                  variant="primary"
                   size="sm"
                   onClick={endRound}
                   className="w-full sm:w-auto"
                 >
-                  Resolve early
+                  Reveal Chomu
                 </Button>
               )}
             </div>

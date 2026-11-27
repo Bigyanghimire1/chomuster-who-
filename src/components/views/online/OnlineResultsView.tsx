@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import {
   RotateCcw,
   Trophy,
   HelpCircle,
-  Users,
   LogOut,
   Flame,
-  ShieldAlert,
+  ArrowLeft,
 } from 'lucide-react';
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
 import { Card } from '../../common/Card';
 import { Badge } from '../../common/Badge';
 import { PlayerAvatar } from '../../illustrations/PlayerAvatar';
-import { FinalRevealArtwork } from '../../illustrations/FinalRevealArtwork';
 import { audioService } from '../../../services/audioService';
 
 export const OnlineResultsView: React.FC = () => {
@@ -25,6 +23,8 @@ export const OnlineResultsView: React.FC = () => {
     playAgain,
     leaveRoom,
   } = useMultiplayer();
+
+  const [waitingInLobby, setWaitingInLobby] = useState<boolean>(false);
 
   const votingResult = roomState?.votingResult;
   const winner = roomState?.winner;
@@ -45,11 +45,9 @@ export const OnlineResultsView: React.FC = () => {
     'Mystery';
 
   const votes = votingResult?.votes || {};
-  const voteCounts = votingResult?.voteCounts || {};
   const hints = votingResult?.hints || {};
 
   const chomuPlayers = players.filter((p) => chomuIds.includes(p.id));
-  const civilianPlayers = players.filter((p) => !chomuIds.includes(p.id));
 
   const isCivilianVictory =
     winner === 'civilians' || votingResult?.chomusCaught === true;
@@ -73,220 +71,181 @@ export const OnlineResultsView: React.FC = () => {
     playAgain();
   };
 
-  return (
-    <div className="flex flex-col items-center flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 py-6 select-none animate-fade-in text-center space-y-5">
-      {/* Banner & Artwork */}
-      <div className="w-full space-y-2.5">
-        <FinalRevealArtwork className="mx-auto mb-1" />
+  if (!isHost && waitingInLobby) {
+    return (
+      <div className="flex flex-col items-center justify-center flex-1 max-w-md mx-auto w-full px-4 py-8 select-none animate-fade-in text-center space-y-4">
+        <Card className="w-full p-6 space-y-3">
+          <Badge variant="lime" size="md">
+            Lobby
+          </Badge>
+          <h1 className="text-2xl font-extrabold text-[#050505]">
+            Waiting for host
+          </h1>
+          <p className="text-xs font-medium text-chomu-secondary">
+            You&apos;ll automatically return to the lobby as soon as the host taps Play again.
+          </p>
+          <div className="pt-2 flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              size="md"
+              fullWidth
+              onClick={() => setWaitingInLobby(false)}
+              leftIcon={<ArrowLeft className="w-4 h-4" strokeWidth={2} />}
+            >
+              Back to results
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              fullWidth
+              onClick={leaveRoom}
+              leftIcon={<LogOut className="w-4 h-4" strokeWidth={1.75} />}
+            >
+              Leave room
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border-2 border-[#050505] shadow-[0_2px_0_#050505] text-xs font-extrabold text-[#050505]">
-          <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.25} />
-          <span>{categoryName}</span>
+  return (
+    <div className="flex flex-col items-center flex-1 max-w-xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in text-center space-y-4">
+      {/* First-Sight Hero Reveal: Big Player Name + "is a Chomu" */}
+      <Card className="w-full p-6 bg-white border-[3px] border-[#050505] shadow-[0_6px_0_#050505] space-y-4">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          {isCivilianVictory ? (
+            <Badge variant="lime" size="md">
+              <Trophy className="w-3.5 h-3.5" strokeWidth={2.25} />
+              <span>Civilians win</span>
+            </Badge>
+          ) : (
+            <Badge variant="coral" size="md">
+              <Flame className="w-3.5 h-3.5" strokeWidth={2} />
+              <span>Chomu wins</span>
+            </Badge>
+          )}
+
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF9CC] border-2 border-[#050505] text-xs font-extrabold text-[#050505]">
+            <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.25} />
+            <span>{categoryName}</span>
+          </span>
         </div>
 
-        {isCivilianVictory ? (
-          <div className="space-y-1.5">
-            <div>
-              <Badge variant="lime" size="md">
-                <Trophy className="w-3.5 h-3.5" strokeWidth={2.25} />
-                <span>Civilians win</span>
-              </Badge>
+        <div className="py-2 space-y-3">
+          {chomuPlayers.length > 0 ? (
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                {chomuPlayers.map((p) => (
+                  <PlayerAvatar key={p.id} id={p.avatar} size="xl" isImposterStyle={true} />
+                ))}
+              </div>
+              <div>
+                <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-[#050505] tracking-[-0.03em] leading-tight">
+                  {chomuPlayers.map((p) => p.name).join(' & ')}
+                </h1>
+                <p className="text-lg sm:text-xl font-extrabold text-chomu-errorText mt-0.5">
+                  {chomuPlayers.length === 1 ? 'is a Chomu' : 'are Chomus'}
+                </p>
+              </div>
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#050505] tracking-[-0.02em]">
-              Chomu Caught!
+          ) : (
+            <h1 className="font-display text-3xl font-extrabold text-[#050505]">
+              Round Complete
             </h1>
-            <p className="text-sm font-bold text-[#050505]/80">
-              The group identified the Chomu and protected the secret
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-1.5">
-            <div>
-              <Badge variant="coral" size="sm">
-                <Flame className="w-3.5 h-3.5" strokeWidth={1.5} />
-                <span>Chomu wins</span>
-              </Badge>
-            </div>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-chomu-errorText tracking-[-0.02em]">
-              The Chomu Escaped!
-            </h1>
-            <p className="text-sm font-medium text-chomu-secondary">
-              The Chomu deceived the circle and avoided detection
-            </p>
-          </div>
-        )}
-      </div>
+          )}
 
-      {/* Side-by-side Word & Chomu Summary Cards */}
-      <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-        <Card className="bg-white border-2 border-[#050505] p-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#E8FCEF] border-2 border-[#050505] text-chomu-successText flex items-center justify-center shrink-0">
-            <Trophy className="w-4 h-4" strokeWidth={2.2} />
-          </div>
-          <div className="min-w-0">
-            <span className="text-[11px] font-bold text-chomu-secondary block">
-              Word Was
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#050505] text-[#FFDF00] border-2 border-[#050505]">
+            <span className="text-xs font-bold uppercase tracking-wider text-stone-300">
+              Secret Word:
             </span>
-            <span className="text-base font-extrabold text-[#050505] truncate block">
+            <span className="text-base font-extrabold">
               {secretWord || '—'}
             </span>
           </div>
-        </Card>
-
-        <Card className="bg-white border-2 border-[#050505] p-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#FFE4E8] border-2 border-[#050505] text-chomu-errorText flex items-center justify-center shrink-0">
-            <ShieldAlert className="w-4 h-4" strokeWidth={2.2} />
-          </div>
-          <div className="min-w-0">
-            <span className="text-[11px] font-bold text-chomu-secondary block">
-              {chomuPlayers.length === 1 ? 'The Chomu' : 'The Chomas'}
-            </span>
-            <span className="text-base font-extrabold text-chomu-errorText truncate block">
-              {chomuPlayers.map((p) => p.name).join(', ') || '—'}
-            </span>
-          </div>
-        </Card>
-      </div>
-
-      {/* Chomu Reveal Cards */}
-      <div className="w-full max-w-md space-y-2.5">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-extrabold text-chomu-errorText flex items-center gap-1.5">
-            <ShieldAlert className="w-4 h-4" strokeWidth={2} />
-            <span>{chomuPlayers.length === 1 ? 'The Chomu was' : 'The Chomas were'}</span>
-          </span>
-          <span className="text-xs font-mono text-chomu-muted tabular-nums">
-            {chomuPlayers.length} {chomuPlayers.length === 1 ? 'Chomu' : 'Chomas'}
-          </span>
-        </div>
-
-        {chomuPlayers.map((p) => {
-          const hintText = hints[p.id];
-          const receivedVotes = voteCounts[p.id] || 0;
-
-          return (
-            <Card
-              key={p.id}
-              className="bg-white border-chomu-coral/50 p-4 flex items-center justify-between gap-3 text-left"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <PlayerAvatar id={p.avatar} size="lg" isImposterStyle={true} />
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-semibold text-chomu-text leading-tight truncate">
-                    {p.name}
-                  </h2>
-                  {hintText ? (
-                    <span className="text-xs text-chomu-secondary block mt-0.5 truncate">
-                      Hint: <span className="text-chomu-errorText font-bold">&ldquo;{hintText}&rdquo;</span>
-                    </span>
-                  ) : (
-                    <span className="text-xs text-chomu-muted block mt-0.5">
-                      No hint given
-                    </span>
-                  )}
-                  <span className="text-xs font-mono font-bold text-chomu-errorText tabular-nums block mt-0.5">
-                    {receivedVotes} {receivedVotes === 1 ? 'vote' : 'votes'}
-                  </span>
-                </div>
-              </div>
-
-              <Badge variant="coral" size="sm" className="shrink-0">
-                Chomu
-              </Badge>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Secret Word Card (Neo-Brutalist Dark Stage) */}
-      <div className="w-full max-w-md rounded-2xl bg-[#050505] text-white p-5 text-center space-y-1.5 border-[3px] border-[#050505] shadow-[0_6px_0_#050505]">
-        <span className="text-xs font-bold text-stone-400 block">
-          {categoryName}
-        </span>
-        <span className="text-xs font-extrabold text-[#FFDF00] uppercase tracking-wider block">
-          Secret word
-        </span>
-        <h2 className="text-3xl font-extrabold text-[#FFDF00] tracking-[-0.02em]">
-          {secretWord || 'Mystery Word'}
-        </h2>
-      </div>
-
-      {/* Vote Breakdown */}
-      <Card className="w-full max-w-md bg-white p-4 text-left space-y-3">
-        <div className="flex items-center justify-between border-b border-chomu-border pb-2.5">
-          <span className="text-xs font-semibold text-chomu-text">
-            Vote accusations breakdown
-          </span>
-          <span className="text-xs font-mono text-chomu-muted tabular-nums">
-            {Object.keys(votes).length} votes
-          </span>
-        </div>
-
-        <div className="space-y-2">
-          {players.map((voter) => {
-            const votedTargetId = votes[voter.id];
-            const targetPlayer = players.find((p) => p.id === votedTargetId);
-            const targetIsChomu = chomuIds.includes(votedTargetId);
-
-            return (
-              <div
-                key={voter.id}
-                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-chomu-border"
-              >
-                <div className="flex items-center gap-2 min-w-0 flex-1">
-                  <PlayerAvatar id={voter.avatar} size="sm" />
-                  <span className="font-medium text-chomu-text truncate">{voter.name}</span>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0 max-w-[55%]">
-                  <span className="text-chomu-muted shrink-0">voted for</span>
-                  {targetPlayer ? (
-                    <span
-                      className={`font-medium truncate ${
-                        targetIsChomu ? 'text-chomu-coral' : 'text-chomu-text'
-                      }`}
-                    >
-                      {targetPlayer.name}
-                    </span>
-                  ) : (
-                    <span className="text-chomu-muted">Skipped</span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
         </div>
       </Card>
 
-      {/* Civilians Roster */}
-      <div className="w-full max-w-md bg-white border-2 border-[#050505] rounded-2xl p-4 shadow-[0_4px_0_#050505]">
-        <div className="flex items-center gap-1.5 mb-2.5">
-          <Users className="w-4 h-4 text-chomu-successText" strokeWidth={2.2} />
-          <span className="text-xs font-extrabold text-chomu-successText tabular-nums">
-            Civilians ({civilianPlayers.length})
-          </span>
-        </div>
+      {/* Details Card: Chomu Hint & Who Voted Who */}
+      <Card className="w-full bg-white p-4 text-left space-y-4">
+        {/* Hint Given to Chomu */}
+        {chomuPlayers.length > 0 && (
+          <div className="pb-3 border-b border-chomu-border space-y-1.5">
+            <span className="text-xs font-extrabold uppercase tracking-wide text-chomu-secondary block">
+              Chomu Hint
+            </span>
+            {chomuPlayers.map((p) => {
+              const hintText = hints[p.id];
+              return (
+                <div
+                  key={p.id}
+                  className="flex items-center justify-between gap-2 text-xs px-3 py-2 rounded-xl bg-[#FFF5F6] border border-chomu-coral/30"
+                >
+                  <span className="font-bold text-[#050505] truncate">{p.name}</span>
+                  <span className="font-extrabold text-chomu-errorText shrink-0">
+                    {hintText ? `“${hintText}”` : 'No hint given'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {civilianPlayers.map((p) => (
-            <div
-              key={p.id}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-chomu-border text-xs text-chomu-text font-medium"
-            >
-              <PlayerAvatar id={p.avatar} size="sm" />
-              <span>{p.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+        {/* Who Voted Who */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold uppercase tracking-wide text-chomu-secondary">
+              Who Voted Who
+            </span>
+            <span className="text-xs font-mono text-chomu-muted tabular-nums">
+              {Object.keys(votes).length} votes
+            </span>
+          </div>
 
-      {/* Bottom Action Bar in natural flow (cleanly above VoiceControls dock) */}
-      <Card className="w-full max-w-md p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="space-y-1.5">
+            {players.map((voter) => {
+              const votedTargetId = votes[voter.id];
+              const targetPlayer = players.find((p) => p.id === votedTargetId);
+              const targetIsChomu = chomuIds.includes(votedTargetId);
+
+              return (
+                <div
+                  key={voter.id}
+                  className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-chomu-border"
+                >
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <PlayerAvatar id={voter.avatar} size="sm" />
+                    <span className="font-bold text-[#050505] truncate">{voter.name}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0 max-w-[55%]">
+                    <span className="text-chomu-muted shrink-0">&rarr;</span>
+                    {targetPlayer ? (
+                      <span
+                        className={`font-extrabold truncate ${
+                          targetIsChomu ? 'text-chomu-errorText' : 'text-[#050505]'
+                        }`}
+                      >
+                        {targetPlayer.name}
+                      </span>
+                    ) : (
+                      <span className="text-chomu-muted">Skipped</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Card>
+
+      {/* Bottom Action Bar */}
+      <Card className="sticky bottom-2 z-20 w-full p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-2.5">
         <Button
           variant="ghost"
           size="sm"
           onClick={leaveRoom}
-          leftIcon={<LogOut className="w-4 h-4" strokeWidth={1.5} />}
+          leftIcon={<LogOut className="w-4 h-4" strokeWidth={1.75} />}
         >
           Leave room
         </Button>
@@ -298,14 +257,20 @@ export const OnlineResultsView: React.FC = () => {
               size="lg"
               fullWidth
               onClick={handlePlayAgain}
-              leftIcon={<RotateCcw className="w-4 h-4" strokeWidth={1.5} />}
+              leftIcon={<RotateCcw className="w-4 h-4" strokeWidth={2} />}
             >
               Play again
             </Button>
           ) : (
-            <p className="text-xs text-chomu-secondary text-center sm:text-right">
-              Waiting for host to start the next round
-            </p>
+            <Button
+              variant="secondary"
+              size="md"
+              fullWidth
+              onClick={() => setWaitingInLobby(true)}
+              leftIcon={<RotateCcw className="w-4 h-4" strokeWidth={2} />}
+            >
+              Return to lobby
+            </Button>
           )}
         </div>
       </Card>
