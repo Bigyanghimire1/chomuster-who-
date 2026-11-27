@@ -99,6 +99,10 @@ export const VideoCard: React.FC<VideoCardProps> = ({
     if (!videoEl) return;
 
     if (stream && hasActiveVideo) {
+      videoEl.muted = true;
+      videoEl.playsInline = true;
+      videoEl.setAttribute?.('playsinline', '');
+      videoEl.setAttribute?.('webkit-playsinline', '');
       if (videoEl.srcObject !== stream) {
         videoEl.srcObject = stream;
       }
@@ -166,25 +170,26 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       )}
 
       {/* Top Zone: Spotlight, Host, Media & Connection Indicators */}
-      <div className="absolute top-2 left-2 right-2 flex items-center justify-between gap-1.5 pointer-events-none z-10">
-        <div className="flex items-center gap-1 min-w-0">
-          {isSpotlight && (
-            <Badge variant="purple" size="sm">
-              Spotlight
-            </Badge>
-          )}
-          {player.isHost && (
-            <span
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFDF00] border-2 border-[#050505] text-[10px] font-extrabold text-[#050505] shadow-[0_2px_0_#050505] shrink-0"
-              title="Room Host"
-            >
-              <Crown className="w-3 h-3" strokeWidth={2.25} />
-              {!compact && <span>Host</span>}
-            </span>
-          )}
-        </div>
+      <div className="absolute top-2 left-2 right-2 flex flex-col gap-1 pointer-events-none z-10">
+        <div className="flex items-center justify-between gap-1.5">
+          <div className="flex flex-wrap items-center gap-1 min-w-0">
+            {isSpotlight && (
+              <Badge variant="purple" size="sm">
+                Spotlight
+              </Badge>
+            )}
+            {player.isHost && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFDF00] border-2 border-[#050505] text-[10px] font-extrabold text-[#050505] shadow-[0_2px_0_#050505] shrink-0"
+                title="Room Host"
+              >
+                <Crown className="w-3 h-3" strokeWidth={2.25} />
+                {!compact && <span>Host</span>}
+              </span>
+            )}
+          </div>
 
-        <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
           {/* Connection status if offline */}
           {!player.isConnected && (
             <span
@@ -240,9 +245,13 @@ export const VideoCard: React.FC<VideoCardProps> = ({
               <VideoOff className="w-3 h-3" strokeWidth={2.25} />
             )}
           </span>
-
-          {actionSlot && <div className="pointer-events-auto shrink-0">{actionSlot}</div>}
+          </div>
         </div>
+        {actionSlot && (
+          <div className="flex items-center justify-start pointer-events-auto">
+            {actionSlot}
+          </div>
+        )}
       </div>
 
       {/* Bottom Zone: Player Name & Readiness / Live Status */}

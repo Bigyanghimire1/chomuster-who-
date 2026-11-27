@@ -62,7 +62,7 @@ export async function handleJoinRoom(req: Request, deps?: AuthDeps): Promise<Res
   }
 
   if (!room) {
-    return errorResponse(404, 'ROOM_NOT_FOUND', 'Room not found');
+    return errorResponse(404, 'ROOM_NOT_FOUND', 'Room doesn’t exist. Check the room code and try again.');
   }
 
   const { data: existingPlayer, error: existingErr } = await adminClient
@@ -135,8 +135,12 @@ export async function handleJoinRoom(req: Request, deps?: AuthDeps): Promise<Res
     return jsonResponse({ room, player: updatedPlayer, players: players ?? [], rejoinToken }, 200);
   }
 
+  if (room.phase === 'CANCELLED' || room.phase === 'CLOSED') {
+    return errorResponse(410, 'INVALID_STATE', 'This room is no longer available.');
+  }
+
   if (room.phase !== 'LOBBY') {
-    return errorResponse(409, 'INVALID_STATE', 'Game already in progress');
+    return errorResponse(409, 'INVALID_STATE', 'This room is already in a game and cannot be joined.');
   }
 
   const { data: currentPlayers, count, error: countErr } = await adminClient

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Eye, EyeOff, Hand, RotateCw } from 'lucide-react';
+import { Hand, RotateCw } from 'lucide-react';
 import { SecretCardBack } from '../illustrations/SecretCardArtwork';
 import { audioService } from '../../services/audioService';
 
@@ -330,25 +330,6 @@ export const InteractiveSecretCard: React.FC<InteractiveSecretCardProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Explicit Accessible Flip / Hide Toggle */}
-      <button
-        type="button"
-        onClick={handleToggleButton}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-[#FFF9CC] border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold text-[#050505] transition-all min-h-[40px]"
-      >
-        {isRevealed ? (
-          <>
-            <EyeOff className="w-4 h-4" strokeWidth={2.2} />
-            <span>Flip back to hide</span>
-          </>
-        ) : (
-          <>
-            <Eye className="w-4 h-4" strokeWidth={2.2} />
-            <span>Tap to flip card</span>
-          </>
-        )}
-      </button>
     </div>
   );
 };

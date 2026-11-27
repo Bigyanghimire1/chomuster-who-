@@ -551,17 +551,17 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       const html = renderToStaticMarkup(React.createElement(OnlineRoundView));
 
       // Bob's clue turn banner in spotlight
-      expect(html).toContain("Bob&#x27;s Clue Turn");
+      expect(html).toContain("Bob&#x27;s turn");
       expect(html).toContain('Current speaker:');
       expect(html).toContain('Bob');
 
       // Filmstrip tray containing other 3 players (Alice, Charlie, Diana)
-      expect(html).toContain('Filmstrip Tray (3)');
+      expect(html).toContain('Players (3)');
       expect(html).toContain('Charlie');
       expect(html).toContain('Diana');
     });
 
-    it('prominently renders secret clue card alongside local video when it is the local player\'s turn', () => {
+    it('prominently renders focused clue card without filmstrip clutter when it is the local player\'s turn', () => {
       // Alice is local player and it is Alice's turn
       mockMultiplayerContextState.players = players;
       mockMultiplayerContextState.myPlayerId = 'p-alice';
@@ -579,12 +579,12 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
 
       const html = renderToStaticMarkup(React.createElement(OnlineRoundView));
 
-      // Secret card displayed alongside local video
-      expect(html).toContain('Your turn to speak');
-      expect(html).toContain('Secret word');
+      // Focused clue card displayed without filmstrip clutter
+      expect(html).toContain('Your turn — Give a clue');
+      expect(html).toContain('Your Secret Word');
       expect(html).toContain('Pizza');
       expect(html).toContain('Category: Food');
-      expect(html).toContain('Filmstrip Tray (3)');
+      expect(html).not.toContain('Players (3)');
     });
 
     it('displays chomu clue card with hint when local player is the Chomu on their turn', () => {
@@ -604,12 +604,10 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
 
       const html = renderToStaticMarkup(React.createElement(OnlineRoundView));
 
-      expect(html).toContain('Your turn to speak');
+      expect(html).toContain('Your turn — Give a clue');
       expect(html).toContain('You are the Chomu');
-      expect(html).toContain('Chomu clue');
       expect(html).toContain('Your Chomu hint');
       expect(html).toContain('“Planetary”');
-      expect(html).toContain('Blend in with the category');
 
       // Also verify no-hint fallback behavior
       mockMultiplayerContextState.mySecret = {
@@ -618,7 +616,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
         hint: '',
       };
       const htmlNoHint = renderToStaticMarkup(React.createElement(OnlineRoundView));
-      expect(htmlNoHint).toContain('No hint provided. Bluff with confidence');
+      expect(htmlNoHint).toContain('No hint provided');
     });
 
     it('renders Google Meet / Zoom style view mode switcher button', () => {

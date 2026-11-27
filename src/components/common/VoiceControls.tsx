@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import { useVoiceState, voiceManager, VoiceManager } from '../../services/voice/voiceManager';
+import { livekitVoiceAdapter } from '../../services/livekit/LiveKitMediaService';
+import { getActiveMultiplayerBackend } from '../../services/backendConfig';
 import { audioService } from '../../services/audioService';
 
 /** Custom Neo-Brutalist thick-black-stroke media icons */
@@ -189,11 +191,17 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
   variant = 'dock',
   className = '',
   showLevelMeter,
-  manager = voiceManager,
+  manager,
   onMuteToggle,
   onDeafenToggle,
   onCameraToggle,
 }) => {
+  const resolvedManager =
+    manager ??
+    ((getActiveMultiplayerBackend() === 'supabase'
+      ? livekitVoiceAdapter
+      : voiceManager) as unknown as VoiceManager);
+
   const {
     isMicActive,
     isMuted,
@@ -210,7 +218,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
     startMicrophone,
     clearError,
     resumeRemoteAudio,
-  } = useVoiceState(manager);
+  } = useVoiceState(resolvedManager);
 
   const shouldShowMeter =
     showLevelMeter ?? (variant === 'dock' || variant === 'floating' || variant === 'compact');
@@ -270,7 +278,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
 
     await toggleCamera();
     if (onCameraToggle) {
-      onCameraToggle(manager.getState().isCameraOn);
+      onCameraToggle(resolvedManager.getState().isCameraOn);
     }
   };
 

@@ -220,8 +220,8 @@ export const OnlineVotingView: React.FC = () => {
         })}
       </div>
 
-      {/* Bottom Action Bar in natural flow (no collision with VoiceControls dock) */}
-      <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Sticky Bottom Action Bar — always sits cleanly above VoiceControls dock */}
+      <Card className="sticky bottom-2 z-20 p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-2.5">
         <div className="text-center sm:text-left">
           {hasLockedVote ? (
             <div>

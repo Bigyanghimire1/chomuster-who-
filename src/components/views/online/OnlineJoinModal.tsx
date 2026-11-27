@@ -194,8 +194,20 @@ export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({
         onClose();
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Unable to connect to room';
-      setLocalError(msg);
+      const code =
+        err && typeof err === 'object' && 'code' in err
+          ? String((err as { code?: unknown }).code)
+          : '';
+      const rawMsg = err instanceof Error ? err.message : 'Unable to connect to room';
+      if (code === 'ROOM_NOT_FOUND' || /room not found/i.test(rawMsg)) {
+        setLocalError('Room doesn’t exist. Check the room code and try again.');
+      } else if (code === 'INVALID_STATE' || /already in progress|already in a game/i.test(rawMsg)) {
+        setLocalError('This room is already in a game and cannot be joined.');
+      } else if (code === 'ROOM_CLOSED' || /no longer available|closed|cancelled/i.test(rawMsg)) {
+        setLocalError('This room is no longer available.');
+      } else {
+        setLocalError(rawMsg);
+      }
     }
   };
 

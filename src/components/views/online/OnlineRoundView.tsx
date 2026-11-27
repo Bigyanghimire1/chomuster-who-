@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Clock,
   Vote,
@@ -41,6 +41,36 @@ export const OnlineRoundView: React.FC = () => {
 
   const [isSecretPeekOpen, setIsSecretPeekOpen] = useState<boolean>(false);
   const [isGalleryView, setIsGalleryView] = useState<boolean>(false);
+  const [introCountdown, setIntroCountdown] = useState<number>(() => (isDiscussion ? 0 : 3));
+
+  useEffect(() => {
+    if (isDiscussion) {
+      setIntroCountdown(0);
+      return;
+    }
+
+    const startedAtMs = roomState?.roundStartTime;
+    let initial = 3;
+    if (typeof startedAtMs === 'number' && startedAtMs > 0) {
+      const elapsedSec = Math.floor((Date.now() - startedAtMs) / 1000);
+      initial = Math.max(0, Math.min(3, 3 - elapsedSec));
+    }
+
+    setIntroCountdown(initial);
+    if (initial <= 0) return;
+
+    const interval = window.setInterval(() => {
+      setIntroCountdown((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [isDiscussion, roomState?.roundStartTime]);
 
   const categoryName =
     mySecret?.category || roomState?.secretCategory || 'Mystery';
@@ -185,7 +215,22 @@ export const OnlineRoundView: React.FC = () => {
         )}
       </div>
 
-      {/* Main View Area: Spotlight Stage vs Gallery Grid */}
+        {!isDiscussion && introCountdown > 0 && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="px-4 py-3 rounded-2xl bg-[#FFDF00] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505] flex items-center justify-between gap-3 animate-scale-in"
+          >
+            <span className="text-sm sm:text-base font-extrabold text-[#050505]">
+              Clue round starting in...
+            </span>
+            <span className="w-9 h-9 rounded-full bg-[#050505] text-[#FFDF00] font-mono font-extrabold text-lg flex items-center justify-center shrink-0 tabular-nums">
+              {introCountdown}
+            </span>
+          </div>
+        )}
+
+        {/* Main View Area: Spotlight Stage vs Gallery Grid */}
       {isGalleryView ? (
         <div className="space-y-3 flex-1">
           <div className="flex items-center justify-between">
@@ -226,84 +271,68 @@ export const OnlineRoundView: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="space-y-4 flex-1">
-          {isMyTurn ? (
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 w-full">
-              <div className="md:col-span-7 min-h-[260px] sm:min-h-[320px]">
-                <VideoCard
-                  player={spotlightPlayer}
-                  stream={localStream}
-                  isSpeaking={!!speakingPeers[myPlayerId] || !!spotlightPlayer.isSpeaking}
-                  isLocal={true}
-                  isSpotlight={true}
-                />
+        <div className="space-y-3 flex-1">
+          {isMyTurn && !isDiscussion ? (
+            /* Focused Active-Speaker View — no giant self-video or clutter */
+            <Card className="p-5 sm:p-6 border-[2.5px] border-[#050505] max-w-lg mx-auto w-full flex flex-col justify-between space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <Badge variant={isChomu ? 'coral' : 'lime'} size="md">
+                  {isChomu ? 'You are the Chomu' : 'Your Secret Word'}
+                </Badge>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFDF00] border-2 border-[#050505] text-xs font-mono font-extrabold text-[#050505] tabular-nums">
+                  <Clock className="w-3.5 h-3.5" strokeWidth={2.4} />
+                  {formattedTime}
+                </span>
               </div>
 
-              {/* Confidential Clue Card */}
-              <Card className="md:col-span-5 p-5 border-chomu-purple/40 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <Badge variant={isChomu ? 'coral' : 'lime'} size="md">
-                      {isChomu ? 'Chomu clue' : 'Secret word'}
-                    </Badge>
-                    <span className="text-xs font-bold text-chomu-successText">
-                      Your turn to speak
-                    </span>
-                  </div>
-
-                  {isChomu ? (
-                    <div className="space-y-3">
-                      <h2 className="text-2xl font-extrabold text-chomu-errorText tracking-[-0.02em]">
-                        You are the Chomu
-                      </h2>
-                      {hint ? (
-                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-chomu-coral/30">
-                          <span className="text-xs text-chomu-muted block mb-1">
-                            Your Chomu hint
-                          </span>
-                          <span className="text-2xl font-semibold text-chomu-text block">
-                            &ldquo;{hint}&rdquo;
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-chomu-border">
-                          <p className="text-sm text-chomu-secondary">
-                            No hint provided. Bluff with confidence
-                          </p>
-                        </div>
-                      )}
-                      <p className="text-xs text-chomu-secondary leading-5">
-                        Blend in with the category <strong className="text-chomu-text font-medium">{categoryName}</strong> so others suspect someone else.
-                      </p>
+              <div className="text-center space-y-2 py-2">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#050505] tracking-[-0.02em]">
+                  Your turn &mdash; Give a clue
+                </h2>
+                {isChomu ? (
+                  hint ? (
+                    <div className="p-3.5 rounded-xl bg-[#FFF5F6] border-2 border-[#050505]">
+                      <span className="text-xs font-bold text-chomu-secondary block mb-1">
+                        Your Chomu hint
+                      </span>
+                      <span className="text-2xl font-extrabold text-[#050505] block">
+                        &ldquo;{hint}&rdquo;
+                      </span>
                     </div>
                   ) : (
-                    <div className="space-y-3">
-                      <div className="p-4 rounded-xl bg-chomu-bgSecondary border border-chomu-yellow/50 text-center">
-                        <span className="text-xs text-chomu-secondary block mb-2">
-                          Give a hint for the word:
-                        </span>
-                        <span className="inline-block px-5 py-1.5 rounded-full border-2 border-chomu-yellow bg-white text-2xl sm:text-3xl font-bold text-chomu-text tracking-[-0.02em]">
-                          {secretWord}
-                        </span>
-                      </div>
-                      <p className="text-xs text-chomu-secondary leading-5">
-                        Give a single-word clue that civilians recognize without giving away the word to the Chomu.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                    <p className="text-xs font-medium text-chomu-secondary">
+                      No hint provided &mdash; blend in with category <strong className="text-[#050505]">{categoryName}</strong>.
+                    </p>
+                  )
+                ) : (
+                  <div className="p-4 rounded-xl bg-[#FFF9CC] border-2 border-[#050505]">
+                    <span className="text-xs font-bold text-chomu-secondary block mb-1">
+                      Give a one-word clue for:
+                    </span>
+                    <span className="text-2xl sm:text-3xl font-extrabold text-[#050505] tracking-[-0.02em]">
+                      {secretWord}
+                    </span>
+                  </div>
+                )}
+              </div>
 
-                <div className="pt-3 mt-4 border-t border-chomu-border flex items-center justify-between text-xs text-chomu-muted">
-                  <span>Visible only to you</span>
-                  <span className="text-chomu-successText inline-flex items-center gap-1 font-bold">
-                    <Mic className="w-3.5 h-3.5" strokeWidth={2} />
-                    <span>Mic ready</span>
-                  </span>
-                </div>
-              </Card>
-            </div>
+              {nextTurn && (
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={() => {
+                    audioService.playButtonTap();
+                    nextTurn();
+                  }}
+                  rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
+                >
+                  Done
+                </Button>
+              )}
+            </Card>
           ) : (
-            <div className="w-full relative min-h-[260px] sm:min-h-[340px]">
+            <div className="w-full relative">
               <VideoCard
                 player={spotlightPlayer}
                 stream={getPlayerStream(spotlightPlayer.id)}
@@ -313,27 +342,27 @@ export const OnlineRoundView: React.FC = () => {
                 isLocal={spotlightPlayer.id === myPlayerId}
                 isSpotlight={true}
                 actionSlot={
-                  <Badge variant="purple" size="md">
-                    {spotlightPlayer.name}&apos;s Clue Turn
+                  <Badge variant="purple" size="sm">
+                    {isDiscussion ? 'Group Discussion' : `${spotlightPlayer.name}'s turn`}
                   </Badge>
                 }
               />
             </div>
           )}
 
-          {/* Filmstrip Tray */}
-          {otherPlayers.length > 0 && (
-            <div className="w-full space-y-2">
+          {/* Filmstrip Tray (hidden for active speaker during clue turn so screen stays focused) */}
+          {otherPlayers.length > 0 && (!isMyTurn || isDiscussion) && (
+            <div className="w-full space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-chomu-secondary tabular-nums">
-                  Filmstrip Tray ({otherPlayers.length})
+                <span className="text-xs font-extrabold text-[#050505] tabular-nums">
+                  Players ({otherPlayers.length})
                 </span>
-                <span className="text-xs text-chomu-muted">
+                <span className="text-xs font-bold text-[#050505]/75">
                   Other participants
                 </span>
               </div>
 
-              <div className="flex gap-3 overflow-x-auto pb-1 snap-x">
+              <div className="flex gap-3 overflow-x-auto px-0.5 pb-2 snap-x snap-mandatory">
                 {otherPlayers.map((p) => {
                   const isMe = p.id === myPlayerId;
                   const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
@@ -341,7 +370,7 @@ export const OnlineRoundView: React.FC = () => {
                   return (
                     <div
                       key={p.id}
-                      className="w-40 sm:w-48 h-28 sm:h-32 shrink-0 snap-start"
+                      className="w-36 sm:w-44 shrink-0 snap-start"
                     >
                       <VideoCard
                         player={p}
@@ -359,7 +388,8 @@ export const OnlineRoundView: React.FC = () => {
         </div>
       )}
 
-      {/* Secret Word Quick Peek Drawer */}
+      {/* Secret Word Quick Peek Drawer (for observers & discussion; active speaker already sees their word) */}
+      {(!isMyTurn || isDiscussion) && (
       <Card className="p-3.5">
         <div className="flex items-center justify-between">
           <button
@@ -380,74 +410,57 @@ export const OnlineRoundView: React.FC = () => {
           </span>
         </div>
 
-        {isSecretPeekOpen && (
-          <div className="mt-3 pt-3 border-t border-chomu-border animate-fade-in text-center">
-            {isChomu ? (
-              <div className="p-3 rounded-[10px] bg-chomu-coral/10 border border-chomu-coral/25 space-y-1">
-                <Badge variant="coral" size="sm">
-                  You are the Chomu
-                </Badge>
-                {hint ? (
-                  <p className="text-sm font-medium text-chomu-text">
-                    Your clue: <span className="text-chomu-errorText font-bold">&ldquo;{hint}&rdquo;</span>
-                  </p>
+            {isSecretPeekOpen ? (
+              <div className="mt-3 pt-3 border-t border-chomu-border animate-fade-in text-center">
+                {isChomu ? (
+                  <div className="p-3 rounded-[10px] bg-chomu-coral/10 border border-chomu-coral/25 space-y-1">
+                    <Badge variant="coral" size="sm">
+                      You are the Chomu
+                    </Badge>
+                    {hint ? (
+                      <p className="text-sm font-medium text-chomu-text">
+                        Your clue: <span className="text-chomu-errorText font-bold">&ldquo;{hint}&rdquo;</span>
+                      </p>
+                    ) : (
+                      <p className="text-xs text-chomu-secondary">
+                        No hint given
+                      </p>
+                    )}
+                  </div>
                 ) : (
-                  <p className="text-xs text-chomu-secondary">
-                    No hint given
-                  </p>
+                  <div className="p-3 rounded-[10px] bg-[#E8FCEF] border-2 border-[#050505] space-y-1">
+                    <span className="text-xs font-bold text-chomu-successText block">
+                      Secret word
+                    </span>
+                    <span className="text-xl font-extrabold text-[#050505] block">
+                      {secretWord}
+                    </span>
+                  </div>
                 )}
               </div>
-            ) : (
-              <div className="p-3 rounded-[10px] bg-[#E8FCEF] border-2 border-[#050505] space-y-1">
-                <span className="text-xs font-bold text-chomu-successText block">
-                  Secret word
-                </span>
-                <span className="text-xl font-extrabold text-[#050505] block">
-                  {secretWord}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-      </Card>
+            ) : null}
+          </Card>
+      )}
 
-      {/* Bottom Round Action Bar (active player drives turns; host only steps in for discussion/recovery) */}
-      <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Bottom Round Action Bar (shown for observers, discussion, or host recovery) */}
+      {(!isMyTurn || isDiscussion) && (
+      <Card className="sticky bottom-2 z-20 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-center sm:text-left">
           <span className="text-sm font-bold text-[#050505] block">
             {isDiscussion
               ? 'Group discussion — debate who sounded suspicious'
-              : isMyTurn
-                ? 'Your turn — give a one-word clue aloud'
-                : `${spotlightPlayer?.name || 'Player'}'s turn`}
+              : `${spotlightPlayer?.name || 'Player'}'s turn`}
           </span>
           <p className="text-xs font-medium text-chomu-secondary mt-0.5">
             {isDiscussion
               ? isHost
                 ? 'Open voting when everyone is ready to accuse.'
                 : 'Discussion ends automatically when the timer hits 00:00.'
-              : isMyTurn
-                ? 'Press Next when you finish your clue to pass the spotlight.'
-                : `Waiting for ${spotlightPlayer?.name || 'the active player'} to press Next.`}
+              : `Waiting for ${spotlightPlayer?.name || 'the active player'} to tap Done.`}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
-          {!isDiscussion && nextTurn && isMyTurn && (
-            <Button
-              variant="primary"
-              size="lg"
-              className="flex-1 sm:flex-none sm:w-44"
-              onClick={() => {
-                audioService.playButtonTap();
-                nextTurn();
-              }}
-              rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.4} />}
-            >
-              Next
-            </Button>
-          )}
-
           {/* Host recovery only when active player is disconnected or turn timer expired */}
           {!isDiscussion && isHost && !isMyTurn && nextTurn && (!spotlightPlayer?.isConnected || timerRemaining === 0) && (
             <Button
@@ -476,6 +489,7 @@ export const OnlineRoundView: React.FC = () => {
           )}
         </div>
       </Card>
+      )}
       </div>
     </div>
   );

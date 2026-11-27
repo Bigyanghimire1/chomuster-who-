@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Eye, HelpCircle } from 'lucide-react';
+import { ArrowRight, HelpCircle } from 'lucide-react';
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
 import { Card } from '../../common/Card';
@@ -68,119 +68,100 @@ export const OnlineRoleRevealView: React.FC = () => {
 
   return (
     <div className="flex-1 w-full bg-[#FFDF00] flex flex-col">
-      <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-4">
-        {/* Header */}
-        <Card className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-chomu-secondary mb-1">
-              <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.2} />
-              <span>Category: {categoryName}</span>
+      <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-4 select-none animate-fade-in space-y-3">
+        {/* Compact Header */}
+        <Card className="px-4 py-3 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold text-chomu-secondary">
+              <HelpCircle className="w-3.5 h-3.5 shrink-0" strokeWidth={2.2} />
+              <span className="truncate">Category: {categoryName}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#050505] tracking-[-0.03em]">
+            <h1 className="text-lg sm:text-2xl font-extrabold text-[#050505] tracking-[-0.03em] leading-tight">
               Private Role Reveal
             </h1>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="px-3.5 py-1.5 rounded-full bg-[#FFDF00] border-2 border-[#050505] shadow-[0_2px_0_#050505] text-xs font-extrabold text-[#050505] tabular-nums">
-              Player {Math.min(activeIndex + 1, Math.max(1, turnOrder.length))} of {Math.max(1, turnOrder.length)}
-            </span>
-          </div>
+          <span className="px-3 py-1 rounded-full bg-[#FFDF00] border-2 border-[#050505] shadow-[0_2px_0_#050505] text-xs font-extrabold text-[#050505] tabular-nums shrink-0">
+            Player {Math.min(activeIndex + 1, Math.max(1, turnOrder.length))} of {Math.max(1, turnOrder.length)}
+          </span>
         </Card>
 
-        {/* Main Spotlight Stage */}
+        {/* Main Stage */}
         {activePlayer && (
-          <div className="space-y-4 flex-1">
+          <div className="space-y-3 flex-1 flex flex-col justify-center">
             {isMyTurn ? (
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center w-full">
-                {/* Active Player Spotlight Video/Avatar */}
-                <div className="md:col-span-6 min-h-[240px] sm:min-h-[300px]">
+              /* Active Player Focused View — centered secret card, no giant self-video or participant grid */
+              <div className="w-full max-w-sm mx-auto flex flex-col items-center">
+                <InteractiveSecretCard
+                  isChomu={isChomu}
+                  categoryName={categoryName}
+                  secretWord={secretWord}
+                  hint={hint}
+                  playerName={activePlayer.name}
+                />
+              </div>
+            ) : (
+              <>
+                {/* Neutral Spotlight View for Observers — zero secret data */}
+                <div className="w-full relative">
                   <VideoCard
                     player={activePlayer}
-                    stream={localStream}
-                    isSpeaking={!!speakingPeers[myPlayerId] || !!activePlayer.isSpeaking}
-                    isLocal={true}
+                    stream={getPlayerStream(activePlayer.id)}
+                    isSpeaking={
+                      !!speakingPeers[activePlayer.id] || !!activePlayer.isSpeaking
+                    }
+                    isLocal={false}
                     isSpotlight={true}
                     actionSlot={
-                      <Badge variant="lime" size="md">
-                        <Eye className="w-3.5 h-3.5" strokeWidth={2.2} />
-                        <span>Your Card</span>
+                      <Badge variant="purple" size="sm">
+                        {activePlayer.name} is viewing their card
                       </Badge>
                     }
                   />
                 </div>
 
-                {/* Private Secret Card — ONLY rendered for the active player */}
-                <div className="md:col-span-6 flex flex-col items-center space-y-3">
-                  <InteractiveSecretCard
-                    isChomu={isChomu}
-                    categoryName={categoryName}
-                    secretWord={secretWord}
-                    hint={hint}
-                    playerName={activePlayer.name}
-                  />
-                </div>
-              </div>
-            ) : (
-              /* Neutral Spotlight View for All Other Players — zero secret data */
-              <div className="w-full relative min-h-[260px] sm:min-h-[340px]">
-                <VideoCard
-                  player={activePlayer}
-                  stream={getPlayerStream(activePlayer.id)}
-                  isSpeaking={
-                    !!speakingPeers[activePlayer.id] || !!activePlayer.isSpeaking
-                  }
-                  isLocal={false}
-                  isSpotlight={true}
-                  actionSlot={
-                    <Badge variant="purple" size="md">
-                      {activePlayer.name} is viewing their card
-                    </Badge>
-                  }
-                />
-              </div>
-            )}
+                {/* Compact Non-Clipped Horizontal Filmstrip */}
+                {otherPlayers.length > 0 && (
+                  <div className="w-full space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-[#050505] tabular-nums">
+                        Players ({otherPlayers.length})
+                      </span>
+                      <span className="text-xs font-bold text-[#050505]/75">
+                        Waiting in turn order
+                      </span>
+                    </div>
 
-            {/* Filmstrip of Other Players */}
-            {otherPlayers.length > 0 && (
-              <div className="w-full space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-[#050505] tabular-nums">
-                    Players ({otherPlayers.length})
-                  </span>
-                  <span className="text-xs font-bold text-[#050505]/75">
-                    Waiting in turn order
-                  </span>
-                </div>
+                    <div className="flex gap-3 overflow-x-auto px-0.5 pb-2 snap-x snap-mandatory">
+                      {otherPlayers.map((p) => {
+                        const isMe = p.id === myPlayerId;
+                        const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
 
-                <div className="flex gap-3 overflow-x-auto pb-1 snap-x">
-                  {otherPlayers.map((p) => {
-                    const isMe = p.id === myPlayerId;
-                    const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
-
-                    return (
-                      <div
-                        key={p.id}
-                        className="w-40 sm:w-48 h-28 sm:h-32 shrink-0 snap-start"
-                      >
-                        <VideoCard
-                          player={p}
-                          stream={getPlayerStream(p.id)}
-                          isSpeaking={isPeerSpeaking}
-                          isLocal={isMe}
-                          compact={true}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                        return (
+                          <div
+                            key={p.id}
+                            className="w-36 sm:w-44 shrink-0 snap-start"
+                          >
+                            <VideoCard
+                              player={p}
+                              stream={getPlayerStream(p.id)}
+                              isSpeaking={isPeerSpeaking}
+                              isLocal={isMe}
+                              compact={true}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
 
-        {/* Bottom Action Bar */}
-        <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Bottom Action Bar — always visible cleanly above VoiceControls */}
+        <Card className="sticky bottom-2 z-20 p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-2.5">
           <div className="text-center sm:text-left">
             <span className="text-sm font-extrabold text-[#050505] block">
               {isMyTurn
@@ -199,31 +180,33 @@ export const OnlineRoleRevealView: React.FC = () => {
             )}
           </div>
 
-          <div className="w-full sm:w-auto flex items-center justify-end gap-2">
-            {isMyTurn ? (
-              <Button
-                variant="primary"
-                size="lg"
-                fullWidth
-                className="sm:w-48"
-                disabled={isAdvancing}
-                onClick={handleNext}
-                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
-              >
-                {isAdvancing ? 'Advancing...' : 'Next'}
-              </Button>
-            ) : isHost && activePlayer && !activePlayer.isConnected ? (
-              <Button
-                variant="secondary"
-                size="md"
-                disabled={isAdvancing}
-                onClick={handleNext}
-                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
-              >
-                Skip disconnected player
-              </Button>
-            ) : null}
-          </div>
+          {(isMyTurn || (isHost && activePlayer && !activePlayer.isConnected)) && (
+            <div className="w-full sm:w-auto flex items-center justify-end gap-2">
+              {isMyTurn ? (
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  className="sm:w-48"
+                  disabled={isAdvancing}
+                  onClick={handleNext}
+                  rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
+                >
+                  {isAdvancing ? 'Advancing...' : 'Next'}
+                </Button>
+              ) : (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  disabled={isAdvancing}
+                  onClick={handleNext}
+                  rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
+                >
+                  Skip disconnected player
+                </Button>
+              )}
+            </div>
+          )}
         </Card>
       </div>
     </div>

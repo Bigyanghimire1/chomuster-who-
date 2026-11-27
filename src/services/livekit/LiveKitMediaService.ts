@@ -20,6 +20,9 @@ export interface LiveKitMediaState {
   peerStreams: Record<string, MediaStream>;
   isCameraOn: boolean;
   isMicOn: boolean;
+  isDeafened: boolean;
+  playbackBlocked: boolean;
+  localIdentity: string | null;
   speakingPeers: Record<string, boolean>;
   quotaExhausted: boolean;
   error: string | null;
@@ -52,6 +55,9 @@ function createInitialState(): LiveKitMediaState {
     peerStreams: {},
     isCameraOn: false,
     isMicOn: false,
+    isDeafened: false,
+    playbackBlocked: false,
+    localIdentity: null,
     speakingPeers: {},
     quotaExhausted: false,
     error: null,
@@ -157,6 +163,8 @@ export class LiveKitMediaService {
   private state: LiveKitMediaState = createInitialState();
   private listeners: Set<LiveKitMediaStateListener> = new Set();
   private room: Room | null = null;
+  private connectPromise: Promise<void> | null = null;
+  private remoteAudioElements: Map<string, HTMLMediaElement> = new Map();
   private readonly defaultMintTokenFn: MintTokenFn;
   private readonly roomFactory: RoomFactory;
 
@@ -194,71 +202,85 @@ export class LiveKitMediaService {
       await this.disconnect();
     }
 
-    this.setState({
-      isConnecting: true,
-      isConnected: false,
-      quotaExhausted: false,
-      error: null,
-    });
+    const runConnect = async () => {
+      this.setState({
+        isConnecting: true,
+        isConnected: false,
+        quotaExhausted: false,
+        error: null,
+      });
 
-    const tokenProvider = mintTokenFn ?? this.defaultMintTokenFn;
+      const tokenProvider = mintTokenFn ?? this.defaultMintTokenFn;
 
-    let token: string;
-    let url: string;
-    try {
-      const result = await tokenProvider(roomId);
-      token = result.token;
-      url = result.url;
-    } catch (err) {
-      const quota = isQuotaError(err);
-      if (quota.isQuota) {
+      let token: string;
+      let url: string;
+      try {
+        const result = await tokenProvider(roomId);
+        token = result.token;
+        url = result.url;
+      } catch (err) {
+        const quota = isQuotaError(err);
+        if (quota.isQuota) {
+          this.setState({
+            isConnecting: false,
+            isConnected: false,
+            quotaExhausted: true,
+            error: quota.message,
+          });
+          return;
+        }
+        const message = err instanceof Error ? err.message : String(err);
         this.setState({
           isConnecting: false,
           isConnected: false,
-          quotaExhausted: true,
-          error: quota.message,
+          error: message,
         });
-        return;
+        throw err;
       }
-      const message = err instanceof Error ? err.message : String(err);
-      this.setState({
-        isConnecting: false,
-        isConnected: false,
-        error: message,
-      });
-      throw err;
-    }
 
-    const room = this.roomFactory(BANDWIDTH_OPTIMIZED_ROOM_OPTIONS);
-    this.room = room;
-    this.registerRoomListeners(room);
+      const room = this.roomFactory(BANDWIDTH_OPTIMIZED_ROOM_OPTIONS);
+      this.room = room;
+      this.registerRoomListeners(room);
 
-    try {
-      await room.connect(url, token);
-      if (this.room !== room) {
-        return;
+      try {
+        await room.connect(url, token);
+        if (this.room !== room) {
+          return;
+        }
+        this.syncRemoteParticipants(room);
+        this.setState({
+          isConnected: true,
+          isConnecting: false,
+          localIdentity: room.localParticipant?.identity ?? null,
+          playbackBlocked: room.canPlaybackAudio === false,
+        });
+      } catch (err) {
+        if (this.room === room) {
+          this.room = null;
+        }
+        const message = err instanceof Error ? err.message : String(err);
+        this.setState({
+          isConnected: false,
+          isConnecting: false,
+          error: message,
+        });
+        throw err;
       }
-      this.setState({
-        isConnected: true,
-        isConnecting: false,
-      });
-    } catch (err) {
-      if (this.room === room) {
-        this.room = null;
+    };
+
+    const promise = runConnect().finally(() => {
+      if (this.connectPromise === promise) {
+        this.connectPromise = null;
       }
-      const message = err instanceof Error ? err.message : String(err);
-      this.setState({
-        isConnected: false,
-        isConnecting: false,
-        error: message,
-      });
-      throw err;
-    }
+    });
+    this.connectPromise = promise;
+    return promise;
   }
 
   public async disconnect(): Promise<void> {
     const activeRoom = this.room;
     this.room = null;
+    this.connectPromise = null;
 
     if (activeRoom) {
       this.stopLocalTracksOnRoom(activeRoom);
@@ -268,6 +290,16 @@ export class LiveKitMediaService {
         // Ignore disconnect errors during teardown
       }
     }
+
+    for (const el of this.remoteAudioElements.values()) {
+      try {
+        el.pause?.();
+        el.remove?.();
+      } catch {
+        // Ignore DOM cleanup errors
+      }
+    }
+    this.remoteAudioElements.clear();
 
     if (this.state.localStream) {
       for (const track of this.state.localStream.getTracks()) {
@@ -286,11 +318,17 @@ export class LiveKitMediaService {
       peerStreams: {},
       isCameraOn: false,
       isMicOn: false,
+      isDeafened: false,
+      playbackBlocked: false,
+      localIdentity: null,
       speakingPeers: {},
     });
   }
 
   public async enableCamera(constraints?: MediaTrackConstraints): Promise<MediaStream | null> {
+    if (!this.room && this.connectPromise) {
+      await this.connectPromise.catch(() => {});
+    }
     if (!this.room) {
       this.setState({ error: 'Not connected to a media room.' });
       return null;
@@ -334,6 +372,9 @@ export class LiveKitMediaService {
   }
 
   public async toggleMic(): Promise<void> {
+    if (!this.room && this.connectPromise) {
+      await this.connectPromise.catch(() => {});
+    }
     if (!this.room) {
       this.setState({ error: 'Not connected to a media room.' });
       return;
@@ -348,6 +389,59 @@ export class LiveKitMediaService {
         error: formatMediaError(err, 'microphone'),
       });
     }
+  }
+
+  public async setMicEnabled(enabled: boolean): Promise<MediaStream | null> {
+    if (!this.room && this.connectPromise) {
+      await this.connectPromise.catch(() => {});
+    }
+    if (!this.room) {
+      this.setState({ error: 'Not connected to a media room.' });
+      return null;
+    }
+
+    try {
+      await this.room.localParticipant.setMicrophoneEnabled(enabled);
+      this.syncLocalTracks({ fallbackMicOn: enabled });
+      return this.state.localStream;
+    } catch (err) {
+      this.setState({
+        error: formatMediaError(err, 'microphone'),
+      });
+      return null;
+    }
+  }
+
+  public setDeafened(deafened: boolean): void {
+    for (const el of this.remoteAudioElements.values()) {
+      el.muted = deafened;
+    }
+    this.setState({ isDeafened: deafened });
+  }
+
+  public toggleDeafen(): void {
+    this.setDeafened(!this.state.isDeafened);
+  }
+
+  public async resumeRemoteAudio(): Promise<void> {
+    if (this.room && typeof this.room.startAudio === 'function') {
+      try {
+        await this.room.startAudio();
+      } catch {
+        // Ignore if browser still requires another gesture
+      }
+    }
+    for (const el of this.remoteAudioElements.values()) {
+      el.muted = this.state.isDeafened;
+      try {
+        await el.play?.();
+      } catch {
+        // Ignore individual element play errors
+      }
+    }
+    this.setState({
+      playbackBlocked: this.room ? this.room.canPlaybackAudio === false : false,
+    });
   }
 
   private registerRoomListeners(room: Room): void {
@@ -393,9 +487,33 @@ export class LiveKitMediaService {
       this.syncLocalTracks();
     });
 
+    room.on(RoomEvent.TrackMuted, (_publication, participant) => {
+      if (this.room !== room) return;
+      if (participant === room.localParticipant) {
+        this.syncLocalTracks();
+      } else if ('trackPublications' in participant) {
+        this.syncRemoteParticipantStream(participant as RemoteParticipant);
+      }
+    });
+
+    room.on(RoomEvent.TrackUnmuted, (_publication, participant) => {
+      if (this.room !== room) return;
+      if (participant === room.localParticipant) {
+        this.syncLocalTracks();
+      } else if ('trackPublications' in participant) {
+        this.syncRemoteParticipantStream(participant as RemoteParticipant);
+      }
+    });
+
+    room.on(RoomEvent.AudioPlaybackStatusChanged, () => {
+      if (this.room !== room) return;
+      this.setState({ playbackBlocked: room.canPlaybackAudio === false });
+    });
+
     room.on(RoomEvent.Disconnected, () => {
       if (this.room !== room) return;
       this.room = null;
+      this.remoteAudioElements.clear();
       this.setState({
         isConnected: false,
         isConnecting: false,
@@ -403,6 +521,9 @@ export class LiveKitMediaService {
         peerStreams: {},
         isCameraOn: false,
         isMicOn: false,
+        isDeafened: false,
+        playbackBlocked: false,
+        localIdentity: null,
         speakingPeers: {},
       });
     });
@@ -418,13 +539,21 @@ export class LiveKitMediaService {
       typeof track.attach === 'function'
     ) {
       const el = track.attach();
+      el.muted = this.state.isDeafened;
+      const trackKey = track.sid || `${identity}:${track.mediaStreamTrack?.id ?? 'audio'}`;
+      this.remoteAudioElements.set(trackKey, el);
       el.play?.().catch(() => {
-        // Autoplay may be blocked until user gesture
+        this.setState({ playbackBlocked: true });
       });
     }
 
     const mediaTrack = track.mediaStreamTrack;
     if (!mediaTrack) return;
+
+    if (participant.trackPublications && participant.trackPublications.size > 0) {
+      this.syncRemoteParticipantStream(participant);
+      return;
+    }
 
     const existing = this.state.peerStreams[identity];
     const tracks = existing ? [...existing.getTracks()] : [];
@@ -448,6 +577,16 @@ export class LiveKitMediaService {
     const identity = participant.identity;
     if (!identity) return;
 
+    if (track.kind === Track.Kind.Audio) {
+      const trackKey = track.sid || `${identity}:${track.mediaStreamTrack?.id ?? 'audio'}`;
+      this.remoteAudioElements.delete(trackKey);
+    }
+
+    if (participant.trackPublications && participant.trackPublications.size > 0) {
+      this.syncRemoteParticipantStream(participant);
+      return;
+    }
+
     const existing = this.state.peerStreams[identity];
     if (!existing) return;
 
@@ -463,6 +602,34 @@ export class LiveKitMediaService {
       nextPeerStreams[identity] = createMediaStream(remainingTracks);
     }
 
+    this.setState({ peerStreams: nextPeerStreams });
+  }
+
+  private syncRemoteParticipants(room: Room): void {
+    if (!room.remoteParticipants) return;
+    for (const participant of room.remoteParticipants.values()) {
+      this.syncRemoteParticipantStream(participant);
+    }
+  }
+
+  private syncRemoteParticipantStream(participant: RemoteParticipant): void {
+    const identity = participant.identity;
+    if (!identity || !participant.trackPublications) return;
+
+    const tracks: MediaStreamTrack[] = [];
+    for (const pub of participant.trackPublications.values()) {
+      if (pub.isMuted || !pub.track?.mediaStreamTrack) {
+        continue;
+      }
+      tracks.push(pub.track.mediaStreamTrack);
+    }
+
+    const nextPeerStreams = { ...this.state.peerStreams };
+    if (tracks.length === 0) {
+      delete nextPeerStreams[identity];
+    } else {
+      nextPeerStreams[identity] = createMediaStream(tracks);
+    }
     this.setState({ peerStreams: nextPeerStreams });
   }
 
@@ -560,3 +727,53 @@ export class LiveKitMediaService {
 }
 
 export const livekitMediaService = new LiveKitMediaService();
+
+function toVoiceStateSnapshot(lk: LiveKitMediaState) {
+  const isLocalSpeaking = lk.localIdentity ? !!lk.speakingPeers[lk.localIdentity] : false;
+  return {
+    isSupported:
+      typeof navigator !== 'undefined' &&
+      'mediaDevices' in navigator &&
+      typeof navigator.mediaDevices?.getUserMedia === 'function',
+    hasPermission: lk.isMicOn || lk.isCameraOn,
+    isInitializing: lk.isConnecting,
+    isMicActive: lk.isMicOn,
+    isMicOn: lk.isMicOn,
+    isMuted: !lk.isMicOn,
+    isDeafened: lk.isDeafened,
+    isLocalSpeaking,
+    localLevel: isLocalSpeaking ? 0.65 : 0,
+    speakingPeers: lk.speakingPeers,
+    peerLevels: {},
+    activePeerIds: Object.keys(lk.peerStreams),
+    error: lk.error,
+    playbackBlocked: lk.playbackBlocked,
+    isCameraOn: lk.isCameraOn,
+    peerStreams: lk.peerStreams,
+  };
+}
+
+export const livekitVoiceAdapter = {
+  getState: () => toVoiceStateSnapshot(livekitMediaService.getState()),
+  subscribe: (listener: (state: ReturnType<typeof toVoiceStateSnapshot>) => void) =>
+    livekitMediaService.subscribe((lkState) => listener(toVoiceStateSnapshot(lkState))),
+  getLocalStream: () => livekitMediaService.getState().localStream,
+  startMicrophone: () => livekitMediaService.setMicEnabled(true),
+  stopMicrophone: () => {
+    void livekitMediaService.setMicEnabled(false);
+  },
+  enableCamera: (constraints?: MediaTrackConstraints) => livekitMediaService.enableCamera(constraints),
+  disableCamera: () => livekitMediaService.disableCamera(),
+  toggleCamera: () => livekitMediaService.toggleCamera(),
+  setMuted: (muted: boolean) => livekitMediaService.setMicEnabled(!muted),
+  setDeafened: (deafened: boolean) => livekitMediaService.setDeafened(deafened),
+  toggleMute: () => livekitMediaService.toggleMic(),
+  toggleDeafen: () => livekitMediaService.toggleDeafen(),
+  clearError: () => livekitMediaService.clearError(),
+  resumeRemoteAudio: () => livekitMediaService.resumeRemoteAudio(),
+  setPeerVolume: () => {},
+  isPeerSpeaking: (peerId: string) => !!livekitMediaService.getState().speakingPeers[peerId],
+  getPeerLevel: (peerId: string) =>
+    livekitMediaService.getState().speakingPeers[peerId] ? 0.65 : 0,
+  getPeerStream: (peerId: string) => livekitMediaService.getState().peerStreams[peerId] ?? null,
+};
