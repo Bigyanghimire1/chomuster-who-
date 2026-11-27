@@ -1,3 +1,4 @@
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import { errorResponse } from './cors.ts';
 
 export interface AuthDeps {
@@ -61,17 +62,13 @@ export function generateOpaqueToken(byteLength = 32): string {
   return bytesToBase64Url(bytes);
 }
 
-async function resolveCreateClient(
+function resolveCreateClient(
   deps?: AuthDeps,
-): Promise<(url: string, key: string, options?: unknown) => any> {
+): (url: string, key: string, options?: unknown) => any {
   if (deps?.createSupabaseClient) {
     return deps.createSupabaseClient;
   }
-  const supabaseModuleUrl = 'https://esm.sh/@supabase/supabase-js@2';
-  const mod = (await import(/* @vite-ignore */ supabaseModuleUrl)) as {
-    createClient: (url: string, key: string, options?: unknown) => any;
-  };
-  return mod.createClient;
+  return createClient as unknown as (url: string, key: string, options?: unknown) => any;
 }
 
 export async function authenticateCaller(
@@ -97,7 +94,7 @@ export async function authenticateCaller(
     return errorResponse(500, 'INTERNAL_ERROR', 'Missing Supabase environment configuration');
   }
 
-  const createSupabaseClient = await resolveCreateClient(deps);
+  const createSupabaseClient = resolveCreateClient(deps);
 
   const userClient = createSupabaseClient(supabaseUrl, supabaseAnonKey, {
     global: {

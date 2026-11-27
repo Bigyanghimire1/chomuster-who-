@@ -4,6 +4,11 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      'npm:@supabase/supabase-js@2': '@supabase/supabase-js',
+    },
+  },
   plugins: [
     react(),
     VitePWA({
