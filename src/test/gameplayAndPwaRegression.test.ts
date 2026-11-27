@@ -126,7 +126,7 @@ describe('PWA & Startup Performance Budget Suite', () => {
     expect(html).toContain('viewport-fit=cover');
     expect(html).toContain('apple-mobile-web-app-capable');
     expect(html).toContain('apple-mobile-web-app-status-bar-style');
-    expect(html).toContain('content="black-translucent"');
+    expect(html).toContain('content="default"');
     expect(html).toContain('theme-color');
     expect(html).toContain('Chomu Who?');
   });
@@ -156,7 +156,7 @@ describe('PWA & Startup Performance Budget Suite', () => {
     expect(content.name).toBe('Chomu Who?');
     expect(content.short_name).toBe('Chomu Who?');
     expect(content.display).toBe('standalone');
-    expect(content.theme_color).toBe('#101225');
+    expect(content.theme_color).toBe('#FFDF00');
   });
 
   it('validates all required PNG icon assets exist with correct dimensions', () => {

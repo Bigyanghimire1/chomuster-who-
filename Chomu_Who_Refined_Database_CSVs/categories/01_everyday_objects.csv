@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Everyday Objects,everyday_objects,obj_umbrella,Umbrella,Weather,Cloud,Street,Wind,Open,Handle,Rain,Wet,Dry
+Everyday Objects,everyday_objects,obj_toothbrush,Toothbrush,Morning,Night,Bathroom,Fresh,Mint,Wash,Teeth,Smile,Clean
+Everyday Objects,everyday_objects,obj_backpack,Backpack,Travel,Trip,Student,Shoulder,Pocket,Carry,School,Books,Bag
+Everyday Objects,everyday_objects,obj_sunglasses,Sunglasses,Summer,Vacation,Drive,Beach,Shade,Dark,Eyes,Sun,Bright
+Everyday Objects,everyday_objects,obj_headphones,Headphones,Quiet,Travel,Audio,Podcast,Volume,Wire,Music,Ears,Sound
+Everyday Objects,everyday_objects,obj_flashlight,Flashlight,Night,Camping,Dark,Battery,Hand,Beam,Glow,Bright,Lamp
+Everyday Objects,everyday_objects,obj_mirror,Mirror,Bathroom,Wall,Morning,Glass,Look,Silver,Face,Copy,See
+Everyday Objects,everyday_objects,obj_wallet,Wallet,Pocket,Shopping,Leather,Cards,Coins,Bill,Money,Cash,Pay
+Everyday Objects,everyday_objects,obj_alarm_clock,Alarm Clock,Bedroom,Night,Early,Morning,Loud,Ring,Wake,Time,Sleep
+Everyday Objects,everyday_objects,obj_scissors,Scissors,Craft,Desk,Barber,Metal,Sharp,Two,Cut,Paper,Hair
+Everyday Objects,everyday_objects,obj_pillow,Pillow,Night,Dream,Rest,Cotton,White,Cover,Bed,Soft,Head
+Everyday Objects,everyday_objects,obj_hammer,Hammer,Work,House,Fix,Wood,Heavy,Metal,Hit,Nail,Tool
+Everyday Objects,everyday_objects,obj_candle,Candle,Dinner,Birthday,Smell,Wax,Melt,Warm,Fire,Light,Flame
+Everyday Objects,everyday_objects,obj_keys,Keys,Pocket,Home,Metal,Car,Ring,Open,Door,Lock,Unlock
+Everyday Objects,everyday_objects,obj_coffee_mug,Coffee Mug,Morning,Desk,Office,Handle,Warm,Drink,Cup,Tea,Hot
+Everyday Objects,everyday_objects,obj_watch,Watch,Style,Fashion,Late,Strap,Round,Hand,Time,Clock,Hour
+Everyday Objects,everyday_objects,obj_water_bottle,Water Bottle,Gym,School,Sports,Plastic,Cap,Cold,Drink,Thirsty,Liquid
+Everyday Objects,everyday_objects,obj_notebook,Notebook,Student,Desk,Ideas,Lines,Pages,Pen,Write,Paper,Notes
+Everyday Objects,everyday_objects,obj_blanket,Blanket,Winter,Sofa,Night,Warm,Thick,Cloth,Bed,Cover,Sleep
+Everyday Objects,everyday_objects,obj_suitcase,Suitcase,Holiday,Hotel,Pack,Wheels,Handle,Clothes,Airport,Travel,Bag
+Everyday Objects,everyday_objects,obj_towel,Towel,Pool,Beach,Cotton,Shower,Bathroom,Soft,Dry,Wet,Bath
+Everyday Objects,everyday_objects,obj_comb,Comb,Morning,Mirror,Bathroom,Plastic,Teeth,Style,Hair,Brush,Head
+Everyday Objects,everyday_objects,obj_passport,Passport,Border,Trip,Official,Photo,Stamp,Book,Airport,Travel,Country
+Everyday Objects,everyday_objects,obj_calendar,Calendar,Wall,Desk,Plan,Month,Week,Numbers,Date,Year,Day
+Everyday Objects,everyday_objects,obj_camera,Camera,Vacation,Memory,Art,Flash,Lens,Click,Photo,Picture,Smile
+Everyday Objects,everyday_objects,obj_soap,Soap,Bathroom,Sink,Smell,Bubbles,Foam,Shower,Wash,Hands,Clean
+Everyday Objects,everyday_objects,obj_perfume,Perfume,Bottle,Gift,Party,Spray,Sweet,Flower,Smell,Nice,Scent
+Everyday Objects,everyday_objects,obj_shoes,Shoes,Street,Walk,Style,Laces,Pair,Run,Feet,Wear,Socks
+Everyday Objects,everyday_objects,obj_jacket,Jacket,Autumn,Street,Pocket,Zipper,Wear,Warm,Cold,Coat,Winter
+Everyday Objects,everyday_objects,obj_sponge,Sponge,Kitchen,Yellow,Soft,Soap,Foam,Sink,Wash,Dishes,Clean
+Everyday Objects,everyday_objects,obj_calculator,Calculator,Office,Exam,Desk,Buttons,Screen,Plus,Math,Numbers,Count
+Everyday Objects,everyday_objects,obj_compass,Compass,Map,Forest,Travel,Needle,Circle,Guide,North,South,Direction
+Everyday Objects,everyday_objects,obj_lighter,Lighter,Pocket,Click,Small,Gas,Spark,Heat,Fire,Flame,Burn
+Everyday Objects,everyday_objects,obj_broom,Broom,Corner,House,Dust,Handle,Floor,Long,Sweep,Clean,Dirt
+Everyday Objects,everyday_objects,obj_lock,Lock,Safe,Door,Metal,Close,Guard,Steel,Key,Secret,Open

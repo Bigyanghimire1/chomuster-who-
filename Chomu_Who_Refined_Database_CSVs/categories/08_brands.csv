@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Popular Brands,brands,brand_nike,Nike,Run,Fast,Win,Logo,Sport,Clothes,Shoes,Justdoit,Sneakers
+Popular Brands,brands,brand_apple,Apple,White,Simple,Rich,Logo,Fruit,Tech,iPhone,Mac,Computer
+Popular Brands,brands,brand_coca_cola,Coca-Cola,Party,Cold,Ice,Sweet,Bubbles,Bottle,Red,Drink,Soda
+Popular Brands,brands,brand_google,Google,Fast,Find,Blue,Map,Mail,Web,Search,Internet,Android
+Popular Brands,brands,brand_disney,Disney,Kids,Dream,Magic,Castle,Park,Mouse,Cartoon,Movies,Fun
+Popular Brands,brands,brand_lego,Lego,Kids,Color,Small,Blocks,Connect,Plastic,Toy,Build,Bricks
+Popular Brands,brands,brand_spotify,Spotify,Green,Play,App,List,Audio,Phone,Music,Songs,Listen
+Popular Brands,brands,brand_netflix,Netflix,Night,Sofa,Red,Watch,App,Series,Movies,Show,Stream
+Popular Brands,brands,brand_nintendo,Nintendo,Fun,Japan,Play,Mario,Switch,Console,Games,Gaming,Red
+Popular Brands,brands,brand_tesla,Tesla,Future,Quiet,Fast,Battery,Charge,Musk,Electric,Car,Auto
+Popular Brands,brands,brand_starbucks,Starbucks,Morning,Cup,Warm,Green,Cafe,Name,Coffee,Latte,Drink
+Popular Brands,brands,brand_ikea,Ikea,Home,Blue,Yellow,Build,Room,Box,Furniture,Sweden,Shop
+Popular Brands,brands,brand_adidas,Adidas,Sport,Run,Germany,Three,Lines,Clothes,Shoes,Stripes,Sneakers
+Popular Brands,brands,brand_mcdonalds,McDonalds,Fast,Yellow,Red,Happy,Meal,Drive,Burger,Fries,Food
+Popular Brands,brands,brand_amazon,Amazon,Box,Fast,Smile,Order,Prime,Delivery,Online,Shopping,Buy
+Popular Brands,brands,brand_playstation,PlayStation,Fun,Blue,Japan,Sony,Buttons,Screen,Game,Console,Controller
+Popular Brands,brands,brand_ferrari,Ferrari,Rich,Fast,Loud,Horse,Italy,Race,Red,Car,Speed
+Popular Brands,brands,brand_samsung,Samsung,Korea,Screen,Tech,Galaxy,TV,Smart,Phone,Android,Electronics
+Popular Brands,brands,brand_rolex,Rolex,Rich,Gold,Swiss,Crown,Luxury,Hand,Watch,Time,Expensive
+Popular Brands,brands,brand_gucci,Gucci,Rich,Italy,Style,Bag,Luxury,Logo,Fashion,Clothes,Designer
+Popular Brands,brands,brand_microsoft,Microsoft,Office,Work,Blue,Gates,System,Tech,Windows,Computer,Software
+Popular Brands,brands,brand_youtube,YouTube,Red,Play,Phone,Channel,Creator,Like,Video,Watch,Internet
+Popular Brands,brands,brand_instagram,Instagram,Photo,Like,Story,Filter,Follow,App,Social,Pictures,Phone
+Popular Brands,brands,brand_tiktok,TikTok,Short,Trend,Dance,Scroll,Viral,App,Video,Music,Phone
+Popular Brands,brands,brand_whatsapp,WhatsApp,Green,Call,Phone,Group,Voice,App,Chat,Message,Text
+Popular Brands,brands,brand_kfc,KFC,Red,Bucket,Fast,Crispy,Old,Man,Chicken,Fried,Food
+Popular Brands,brands,brand_pepsi,Pepsi,Cold,Sweet,Can,Blue,Bubbles,Red,Soda,Drink,Cola
+Popular Brands,brands,brand_toyota,Toyota,Road,Safe,Japan,Drive,Engine,Family,Car,Auto,Vehicle
+Popular Brands,brands,brand_bmw,BMW,Fast,Rich,Blue,Drive,Luxury,Germany,Car,Auto,Engine
+Popular Brands,brands,brand_mercedes,Mercedes,Rich,Star,Silver,Luxury,Germany,Drive,Car,Auto,Expensive
+Popular Brands,brands,brand_puma,Puma,Run,Sport,Jump,Cat,Logo,Clothes,Shoes,Sneakers,Fast
+Popular Brands,brands,brand_sony,Sony,Japan,Sound,Screen,Camera,TV,Music,Electronics,Tech,Games
+Popular Brands,brands,brand_red_bull,Red Bull,Fast,Sport,Blue,Wings,Can,Awake,Energy,Drink,Extreme
+Popular Brands,brands,brand_subway,Subway,Fresh,Green,Long,Bread,Fast,Eat,Sandwich,Food,Shop
+Popular Brands,brands,brand_visa,Visa,Wallet,Shop,Travel,Plastic,Bank,Number,Card,Pay,Money

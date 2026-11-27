@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Hobbies & Activities,hobbies,hobby_gardening,Gardening,Outside,Sun,Green,Water,Seeds,Dirt,Plants,Flowers,Grow
+Hobbies & Activities,hobbies,hobby_photography,Photography,Art,Travel,Memory,Lens,Light,Frame,Camera,Image,Picture
+Hobbies & Activities,hobbies,hobby_cooking,Cooking,Home,Heat,Smell,Pan,Taste,Recipe,Kitchen,Food,Make
+Hobbies & Activities,hobbies,hobby_baking,Baking,Sweet,Warm,Smell,Flour,Sugar,Mix,Oven,Cake,Bread
+Hobbies & Activities,hobbies,hobby_hiking,Hiking,Outside,Fresh,Boots,Path,Bag,Climb,Mountain,Walk,Nature
+Hobbies & Activities,hobbies,hobby_painting,Painting,Quiet,Art,Hands,Brush,Canvas,Draw,Color,Wall,Picture
+Hobbies & Activities,hobbies,hobby_drawing,Drawing,Quiet,Art,Hands,Sketch,Lines,Book,Pencil,Paper,Picture
+Hobbies & Activities,hobbies,hobby_reading,Reading,Quiet,Night,Mind,Pages,Story,Eyes,Book,Library,Words
+Hobbies & Activities,hobbies,hobby_writing,Writing,Quiet,Mind,Desk,Story,Pen,Notebook,Words,Paper,Book
+Hobbies & Activities,hobbies,hobby_yoga,Yoga,Calm,Morning,Quiet,Mat,Stretch,Breathe,Pose,Relax,Body
+Hobbies & Activities,hobbies,hobby_camping,Camping,Night,Stars,Woods,Fire,Bag,Outside,Tent,Forest,Nature
+Hobbies & Activities,hobbies,hobby_fishing,Fishing,Quiet,Morning,Wait,Hook,Line,River,Boat,Lake,Catch
+Hobbies & Activities,hobbies,hobby_dancing,Dancing,Party,Fun,Stage,Move,Rhythm,Steps,Music,Body,Dance
+Hobbies & Activities,hobbies,hobby_singing,Singing,Stage,Fun,Loud,Voice,Lyrics,Tune,Song,Music,Mouth
+Hobbies & Activities,hobbies,hobby_traveling,Traveling,World,Map,Fun,Bag,Flight,Hotel,Trip,Airport,Explore
+Hobbies & Activities,hobbies,hobby_cycling,Cycling,Road,Wind,Park,Wheels,Helmet,Pedal,Bike,Ride,Bicycle
+Hobbies & Activities,hobbies,hobby_running,Running,Morning,Park,Shoes,Fast,Sweat,Track,Jog,Exercise,Legs
+Hobbies & Activities,hobbies,hobby_gaming,Gaming,Screen,Night,Fun,Online,Play,Friends,Video,Controller,Game
+Hobbies & Activities,hobbies,hobby_karaoke,Karaoke,Night,Party,Friends,Screen,Words,Loud,Sing,Microphone,Music
+Hobbies & Activities,hobbies,hobby_origami,Origami,Japan,Quiet,Hands,Square,Bird,Shape,Paper,Fold,Craft
+Hobbies & Activities,hobbies,hobby_knitting,Knitting,Winter,Warm,Hands,Wool,Soft,Scarf,Yarn,Needles,Sweater
+Hobbies & Activities,hobbies,hobby_pottery,Pottery,Hands,Spin,Art,Wet,Shape,Bowl,Clay,Wheel,Mud
+Hobbies & Activities,hobbies,hobby_rock_climbing,Rock Climbing,High,Strong,Danger,Rope,Hands,Wall,Peak,Mountain,Cliff
+Hobbies & Activities,hobbies,hobby_magic_tricks,Magic Tricks,Stage,Fun,Surprise,Hat,Rabbit,Hide,Cards,Spell,Show
+Hobbies & Activities,hobbies,hobby_kite_flying,Kite Flying,Park,Sun,Up,String,Paper,Air,Wind,Sky,Fly
+Hobbies & Activities,hobbies,hobby_shopping,Shopping,Mall,Bags,Fun,Clothes,Store,Pay,Buy,Money,Market
+Hobbies & Activities,hobbies,hobby_meditation,Meditation,Calm,Peace,Mind,Sit,Breathe,Eyes,Quiet,Relax,Focus
+Hobbies & Activities,hobbies,hobby_board_games,Board Games,Table,Night,Family,Turn,Move,Win,Dice,Cards,Play
+Hobbies & Activities,hobbies,hobby_juggling,Juggling,Circus,Fun,Fast,Hands,Air,Drop,Balls,Throw,Catch
+Hobbies & Activities,hobbies,hobby_snorkeling,Snorkeling,Beach,Clear,Fish,Mask,Tube,Float,Ocean,Swim,Water
+Hobbies & Activities,hobbies,hobby_bird_watching,Bird Watching,Morning,Quiet,Trees,Look,Far,Nature,Wings,Sky,Forest
+Hobbies & Activities,hobbies,hobby_roller_skating,Roller Skating,Park,Fun,Fast,Boots,Spin,Balance,Wheels,Feet,Glide
+Hobbies & Activities,hobbies,hobby_woodworking,Woodworking,Shop,Dust,Hands,Saw,Hammer,Make,Tree,Build,Table
+Hobbies & Activities,hobbies,hobby_sudoku,Sudoku,Quiet,Mind,Pen,Box,Grid,Nine,Numbers,Puzzle,Logic
+Hobbies & Activities,hobbies,hobby_stargazing,Stargazing,Night,Dark,Quiet,Look,Moon,Clear,Stars,Sky,Space

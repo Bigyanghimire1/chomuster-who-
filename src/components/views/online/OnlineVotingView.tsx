@@ -26,7 +26,15 @@ export const OnlineVotingView: React.FC = () => {
     endRound,
     timerRemaining,
     speakingPeers,
+    rawPhase,
+    runoffCandidateIds = [],
+    mediaQuotaExhausted,
   } = useMultiplayer();
+
+  const isRunoff = rawPhase === 'VOTING_RUNOFF' && runoffCandidateIds.length > 0;
+  const votablePlayers = isRunoff
+    ? players.filter((p) => runoffCandidateIds.includes(p.id))
+    : players;
 
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(
     () => myPlayer?.votedForId || null
@@ -82,7 +90,7 @@ export const OnlineVotingView: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-chomu-bgSecondary border border-white/[0.08] text-chomu-text self-start sm:self-auto">
+        <div className="flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-chomu-bgSecondary border border-chomu-border text-chomu-text self-start sm:self-auto">
           <Clock className="w-4 h-4 shrink-0 text-chomu-secondary" strokeWidth={1.5} />
           <span className="text-lg font-mono font-semibold tabular-nums leading-none">
             {formattedTime}
@@ -96,8 +104,20 @@ export const OnlineVotingView: React.FC = () => {
         </div>
       )}
 
+      {isRunoff && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-900 px-4 py-2.5 rounded-xl text-xs font-semibold text-center">
+          Runoff Tie-Breaker: Vote between the tied suspects. A second tie awards the win to the Chomu.
+        </div>
+      )}
+
+      {mediaQuotaExhausted && (
+        <div className="bg-chomu-bgSecondary border border-chomu-border text-chomu-secondary px-4 py-2 rounded-xl text-xs text-center">
+          Live video/audio monthly quota reached — text chat and voting continue normally.
+        </div>
+      )}
+
       {/* Voting Progress Strip */}
-      <div className="px-4 py-2.5 rounded-xl bg-chomu-surface border border-white/[0.08] flex items-center justify-between">
+      <div className="px-4 py-2.5 rounded-xl bg-white border border-chomu-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Vote className="w-4 h-4 text-chomu-secondary" strokeWidth={1.5} />
           <span className="text-xs font-medium text-chomu-text tabular-nums">
@@ -118,9 +138,10 @@ export const OnlineVotingView: React.FC = () => {
       </div>
 
       {/* Players Card Grid for Voting */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 flex-1 items-start">
-        {players.map((p) => {
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 flex-1 items-start">
+        {votablePlayers.map((p) => {
           const isMe = p.id === myPlayerId;
+          const isDisabledTarget = hasLockedVote || (rawPhase !== null && rawPhase !== undefined && isMe);
           const isSelected = selectedPlayerId === p.id;
           const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
           const votesForThisPlayer = voteCounts[p.id] || 0;
@@ -129,18 +150,21 @@ export const OnlineVotingView: React.FC = () => {
           return (
             <Card
               key={p.id}
-              onClick={() => handleSelect(p.id)}
-              className={`p-4 flex flex-col items-center justify-between text-center relative ${
+              onClick={() => {
+                if (!isDisabledTarget) handleSelect(p.id);
+              }}
+              className={`p-4 flex flex-col items-center justify-between text-center relative min-w-0 ${
                 isSelected
-                  ? 'bg-chomu-elevated border-chomu-coral'
-                  : hasLockedVote
-                    ? 'bg-chomu-surface border-white/[0.08] cursor-default'
-                    : 'bg-chomu-surface border-white/[0.08] hover:border-chomu-purple/60 hover:bg-chomu-elevated cursor-pointer'
+                  ? 'bg-[#F28BCB] border-[2.5px] border-[#050505]'
+                  : isDisabledTarget
+                    ? 'bg-white border-[2.5px] border-[#050505] cursor-default opacity-75'
+                    : 'bg-white border-[2.5px] border-[#050505] hover:bg-[#FFF9CC] cursor-pointer'
               }`}
             >
               {isSelected && (
-                <div className="absolute top-3 right-3 w-6 h-6 rounded-md bg-chomu-coral text-chomu-bg flex items-center justify-center">
-                  <Check className="w-4 h-4" strokeWidth={2} />
+                <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-[#050505] text-white text-[10px] font-extrabold flex items-center gap-1">
+                  <Check className="w-3 h-3" strokeWidth={2.5} />
+                  <span>Suspect</span>
                 </div>
               )}
 
@@ -175,7 +199,7 @@ export const OnlineVotingView: React.FC = () => {
               </div>
 
               {hasLockedVote && (
-                <div className="mt-3 pt-2.5 border-t border-white/[0.08] w-full flex items-center justify-center gap-1.5">
+                <div className="mt-3 pt-2.5 border-t border-chomu-border w-full flex items-center justify-center gap-1.5">
                   <BarChart3 className="w-3.5 h-3.5 text-chomu-secondary" strokeWidth={1.5} />
                   <span className="text-xs font-mono font-medium text-chomu-text tabular-nums">
                     {votesForThisPlayer} {votesForThisPlayer === 1 ? 'vote' : 'votes'}
@@ -223,7 +247,7 @@ export const OnlineVotingView: React.FC = () => {
         <div className="w-full sm:w-auto">
           {!hasLockedVote ? (
             <Button
-              variant="coral"
+              variant="primary"
               size="lg"
               fullWidth
               className="sm:w-56"

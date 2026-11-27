@@ -1,8 +1,14 @@
 import React from 'react';
-import { Wifi, PlusCircle, BookOpen, Smartphone, Users, Video } from 'lucide-react';
+import {
+  Wifi,
+  PlusCircle,
+  BookOpen,
+  Smartphone,
+  Users,
+  Video,
+  ArrowRight,
+} from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { Button } from '../common/Button';
-import { HeroIllustration } from '../illustrations/HeroIllustration';
 
 interface HomeViewProps {
   onPlayOnline?: () => void;
@@ -12,115 +18,106 @@ export const HomeView: React.FC<HomeViewProps> = ({ onPlayOnline }) => {
   const { dispatch } = useGame();
 
   return (
-    <div className="flex flex-col justify-between flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-10 animate-fade-in">
-      {/* Main Hero Stage */}
-      <div className="my-auto w-full rounded-3xl bg-chomu-bgSecondary border border-white/[0.1] border-b-[4px] border-b-[#04070D] p-6 sm:p-9 lg:p-12 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_20px_56px_rgba(0,0,0,0.48)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Left: Brand Headline, Single Clear Mode Launchers & Utility Pills */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5">
-            <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] leading-[1.04] text-chomu-text">
-                Chomu <span className="text-chomu-teal">Who?</span>
-              </h1>
-
-              <p className="text-lg sm:text-xl font-medium text-chomu-text/95 leading-snug">
-                Find the{' '}
-                <span className="inline-flex items-center px-3 py-0.5 rounded-full bg-chomu-yellow text-chomu-bg font-bold shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]">
-                  Chomu
-                </span>{' '}
-                among your friends!
-              </p>
-
-              <p className="text-sm sm:text-base text-chomu-secondary max-w-[440px] mx-auto lg:mx-0 leading-6">
-                One secret word, hidden roles, and zero trust. Bluff over live video or pass one phone around to catch the liar.
-              </p>
-            </div>
-
-            {/* Primary Game Mode Launchers (no duplicate Play buttons) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg pt-1">
-              <button
-                type="button"
-                onClick={() => onPlayOnline?.()}
-                className="text-left p-4 rounded-3xl bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white border border-chomu-coral border-b-[4px] border-b-[#B83237] active:translate-y-[2px] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal group"
-              >
-                <div className="flex items-center justify-between gap-2 mb-1">
-                  <span className="inline-flex items-center gap-2 text-base font-bold">
-                    <Wifi className="w-4 h-4 shrink-0" strokeWidth={2.2} />
-                    <span>Play Online</span>
-                  </span>
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-black/20">
-                    With Friends
-                  </span>
-                </div>
-                <p className="text-xs text-white/85 leading-4">
-                  Private room links with friends anywhere
-                </p>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
-                className="text-left p-4 rounded-3xl bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:translate-y-[2px] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal group"
-              >
-                <div className="flex items-center justify-between gap-2 mb-1">
-                  <span className="inline-flex items-center gap-2 text-base font-bold">
-                    <Smartphone className="w-4 h-4 shrink-0" strokeWidth={2.2} />
-                    <span>Pass &amp; Play</span>
-                  </span>
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-black/15">
-                    Offline Party
-                  </span>
-                </div>
-                <p className="text-xs text-chomu-bg/85 font-medium leading-4">
-                  Pass one device around the room
-                </p>
-              </button>
-            </div>
-
-            {/* Secondary Utility Pills */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1">
-              <Button
-                variant="secondary"
-                size="sm"
-                leftIcon={<PlusCircle className="w-4 h-4 text-chomu-teal" strokeWidth={1.75} />}
-                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'CUSTOM_CATEGORIES' })}
-              >
-                Custom Words
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="sm"
-                leftIcon={<BookOpen className="w-4 h-4 text-chomu-yellow" strokeWidth={1.75} />}
-                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'RULES' })}
-              >
-                How to Play
-              </Button>
-            </div>
-
-            {/* Feature Strip */}
-            <div className="w-full pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs font-medium text-chomu-secondary">
-              <span className="inline-flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-chomu-teal" strokeWidth={1.75} />
-                <span>3 – 15 Players</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Video className="w-3.5 h-3.5 text-chomu-coral" strokeWidth={1.75} />
-                <span>Live Video &amp; Voice</span>
-              </span>
-            </div>
+    <div className="flex flex-col justify-between flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fade-in">
+      <div className="my-auto flex flex-col items-center text-center space-y-7 py-2">
+        {/* Playful Party Tag + Brand Wordmark */}
+        <div className="space-y-4 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border-[2.5px] border-[#050505] shadow-[0_3px_0_#050505] text-xs font-extrabold text-[#050505]">
+            <span>3–15 Players</span>
+            <span aria-hidden="true">&bull;</span>
+            <span>Social Bluffing Party Game</span>
           </div>
 
-          {/* Right: Flagship Chomu Mascot Centerpiece */}
-          <div className="lg:col-span-5 flex items-center justify-center">
-            <HeroIllustration className="max-w-[270px] sm:max-w-[320px] lg:max-w-[350px]" />
-          </div>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.02em] leading-[1.02] text-[#050505]">
+            Find the{' '}
+            <span className="inline-block px-4 py-0.5 rounded-2xl bg-[#FF5D73] text-[#050505] border-[3px] border-[#050505] shadow-[0_6px_0_#050505] -rotate-2">
+              Chomu
+            </span>{' '}
+            among your friends.
+          </h1>
+
+          <p className="text-base sm:text-lg font-bold text-[#26282E] max-w-[500px] leading-snug">
+            Everyone gets the secret word — except one friend who&apos;s faking it. Give clever clues, read faces, and vote out the liar.
+          </p>
+        </div>
+
+        {/* Oversized Primary & Complementary Game Mode Buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
+          <button
+            type="button"
+            onClick={() => onPlayOnline?.()}
+            className="group text-left p-5 sm:p-6 rounded-2xl bg-[#64E987] hover:bg-[#4DDA73] active:translate-y-[3px] active:shadow-[0_2px_0_#050505] text-[#050505] border-[3px] border-[#050505] shadow-[0_6px_0_#050505] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#050505]"
+          >
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <span className="w-11 h-11 rounded-xl bg-white border-2 border-[#050505] flex items-center justify-center">
+                <Wifi className="w-5 h-5" strokeWidth={2.6} />
+              </span>
+              <span className="inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-white border-2 border-[#050505]">
+                <Video className="w-3 h-3" strokeWidth={2.2} />
+                With Friends
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold leading-tight">Play Online</div>
+                <p className="text-xs font-bold text-[#26282E] mt-1">
+                  Room code &amp; live video
+                </p>
+              </div>
+              <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-0.5 transition-transform" strokeWidth={2.6} />
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'SETUP' })}
+            className="group text-left p-5 sm:p-6 rounded-2xl bg-white hover:bg-[#FFF9CC] active:translate-y-[3px] active:shadow-[0_2px_0_#050505] text-[#050505] border-[3px] border-[#050505] shadow-[0_6px_0_#050505] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#050505]"
+          >
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <span className="w-11 h-11 rounded-xl bg-[#A9E5F2] border-2 border-[#050505] flex items-center justify-center">
+                <Smartphone className="w-5 h-5" strokeWidth={2.6} />
+              </span>
+              <span className="inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-[#FFDF00] border-2 border-[#050505]">
+                <Users className="w-3 h-3" strokeWidth={2.2} />
+                Offline Party
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold leading-tight">Pass &amp; Play</div>
+                <p className="text-xs font-bold text-[#26282E] mt-1">
+                  One phone around the room
+                </p>
+              </div>
+              <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-0.5 transition-transform" strokeWidth={2.6} />
+            </div>
+          </button>
+        </div>
+
+        {/* Compact Utility Entries */}
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'CUSTOM_CATEGORIES' })}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#B68AF2] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold text-[#050505] transition-all min-h-[44px]"
+          >
+            <PlusCircle className="w-4 h-4" strokeWidth={2.4} />
+            <span>Custom Words</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => dispatch({ type: 'SET_PHASE', phase: 'RULES' })}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#A9E5F2] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold text-[#050505] transition-all min-h-[44px]"
+          >
+            <BookOpen className="w-4 h-4" strokeWidth={2.4} />
+            <span>How to Play</span>
+          </button>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="text-center text-xs text-chomu-muted py-4 mt-4">
-        <span>Pass &amp; Play &bull; Online rooms &bull; Peer-to-peer voice &amp; video</span>
+      <footer className="text-center text-xs font-bold text-[#050505]/75 py-2 mt-2">
+        <span>Chomu Who? &bull; Pass &amp; Play &amp; Live Video Party Rooms</span>
       </footer>
     </div>
   );

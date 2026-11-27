@@ -105,7 +105,7 @@ export const CustomCategoriesView: React.FC = () => {
                   value={name}
                   maxLength={28}
                   onChange={e => setName(e.target.value)}
-                  className="w-full bg-chomu-bgSecondary border border-white/[0.1] rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple min-h-[44px]"
+                  className="w-full bg-chomu-bgSecondary border border-chomu-border rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple min-h-[44px]"
                 />
               </div>
 
@@ -118,7 +118,7 @@ export const CustomCategoriesView: React.FC = () => {
                   placeholder="Word 1, Word 2, Word 3, Word 4"
                   value={wordsRaw}
                   onChange={e => setWordsRaw(e.target.value)}
-                  className="w-full bg-chomu-bgSecondary border border-white/[0.1] rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple"
+                  className="w-full bg-chomu-bgSecondary border border-chomu-border rounded-[10px] px-3.5 py-2.5 text-sm text-chomu-text placeholder-chomu-muted focus:outline-none focus:border-chomu-purple"
                 />
                 <span className="text-xs text-chomu-muted block mt-1">
                   Minimum 4 words required
@@ -151,7 +151,7 @@ export const CustomCategoriesView: React.FC = () => {
 
         <div className="space-y-2">
           {customCategories.length === 0 ? (
-            <div className="text-center py-8 text-chomu-muted text-sm border border-dashed border-white/[0.08] rounded-xl bg-chomu-bgSecondary">
+            <div className="text-center py-8 text-chomu-muted text-sm border border-dashed border-chomu-border rounded-xl bg-chomu-bgSecondary">
               No custom categories yet
             </div>
           ) : (

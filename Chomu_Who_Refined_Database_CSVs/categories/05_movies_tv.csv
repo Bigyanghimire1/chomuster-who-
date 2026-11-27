@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Movies & TV Shows,movies_tv,mov_titanic,Titanic,Ocean,Cold,Love,Ice,Big,Old,Ship,Sink,Romance
+Movies & TV Shows,movies_tv,mov_inception,Inception,Sleep,Mind,Spin,Layers,Time,Action,Dream,Movie,Maze
+Movies & TV Shows,movies_tv,mov_harry_potter,Harry Potter,Owl,Train,School,Wand,Scar,Glasses,Magic,Wizard,Boy
+Movies & TV Shows,movies_tv,mov_the_matrix,The Matrix,Green,Code,Glasses,Pill,Fight,Fake,Computer,World,Action
+Movies & TV Shows,movies_tv,mov_star_wars,Star Wars,Space,Dark,Father,Sword,Light,Force,Galaxy,War,Robots
+Movies & TV Shows,movies_tv,mov_jurassic_park,Jurassic Park,Island,Run,Jungle,Big,Teeth,Old,Dinosaurs,Monster,Science
+Movies & TV Shows,movies_tv,mov_shrek,Shrek,Swamp,Funny,Castle,Donkey,Princess,Big,Green,Ogre,Cartoon
+Movies & TV Shows,movies_tv,mov_the_lion_king,The Lion King,Africa,Sunrise,Sad,Cub,Pride,Animal,Roar,Royal,Disney
+Movies & TV Shows,movies_tv,mov_spider_man,Spider-Man,City,Bite,Jump,Mask,Red,Climb,Web,Hero,Marvel
+Movies & TV Shows,movies_tv,mov_stranger_things,Stranger Things,Bikes,Dark,Kids,Lights,Power,Town,Monster,Show,Netflix
+Movies & TV Shows,movies_tv,mov_finding_nemo,Finding Nemo,Lost,Father,Blue,Orange,Swim,Reef,Fish,Ocean,Cartoon
+Movies & TV Shows,movies_tv,mov_breaking_bad,Breaking Bad,Desert,Blue,Money,Teacher,Science,Crime,Drugs,Show,TV
+Movies & TV Shows,movies_tv,mov_avatar,Avatar,Forest,Tall,Nature,Alien,Planet,Fly,Blue,People,Movie
+Movies & TV Shows,movies_tv,mov_the_avengers,The Avengers,City,Fight,Power,Shield,Stone,Group,Heroes,Team,Marvel
+Movies & TV Shows,movies_tv,mov_game_of_thrones,Game of Thrones,Winter,Cold,War,Sword,King,Castle,Dragon,Crown,Show
+Movies & TV Shows,movies_tv,mov_interstellar,Interstellar,Time,Daughter,Far,Planet,Rocket,Cry,Space,Stars,Movie
+Movies & TV Shows,movies_tv,mov_the_dark_knight,The Dark Knight,Shadow,City,Rich,Clown,Car,Mask,Batman,Hero,Crime
+Movies & TV Shows,movies_tv,mov_the_office,The Office,Desk,Boss,Paper,Work,Funny,Camera,Comedy,Job,Show
+Movies & TV Shows,movies_tv,mov_toy_story,Toy Story,Room,Kids,Move,Cowboy,Space,Friends,Toys,Play,Cartoon
+Movies & TV Shows,movies_tv,mov_home_alone,Home Alone,Winter,House,Funny,Trap,Thief,Kid,Christmas,Boy,Left
+Movies & TV Shows,movies_tv,mov_friends,Friends,Coffee,Sofa,City,Six,Flat,Funny,Comedy,Newyork,Show
+Movies & TV Shows,movies_tv,mov_the_lord_of_the_rings,The Lord of the Rings,Walk,Dark,Mountain,Gold,Fire,Magic,Circle,Fantasy,Quest
+Movies & TV Shows,movies_tv,mov_squid_game,Squid Game,Green,Money,Run,Doll,Mask,Red,Korea,Play,Survival
+Movies & TV Shows,movies_tv,mov_pirates_of_the_caribbean,Pirates of the Caribbean,Gold,Sea,Compass,Captain,Sword,Hat,Ship,Treasure,Ocean
+Movies & TV Shows,movies_tv,mov_frozen,Frozen,Cold,Castle,Song,Snowman,Queen,Sister,Ice,Snow,Disney
+Movies & TV Shows,movies_tv,mov_up,Up,Old,Boy,Dog,Sky,Fly,Colors,House,Balloons,Cartoon
+Movies & TV Shows,movies_tv,mov_money_heist,Money Heist,Red,Mask,Plan,Bank,Gold,Spain,Robbery,Show,Netflix
+Movies & TV Shows,movies_tv,mov_kung_fu_panda,Kung Fu Panda,Noodles,Master,Funny,Dragon,Train,Fight,China,Cartoon,Bear
+Movies & TV Shows,movies_tv,mov_tom_and_jerry,Tom and Jerry,House,Run,Funny,Cheese,Trap,Chase,Cat,Mouse,Cartoon
+Movies & TV Shows,movies_tv,mov_pokemon,Pokemon,Travel,Boy,Ball,Yellow,Battle,Catch,Monsters,Anime,Cartoon
+Movies & TV Shows,movies_tv,mov_naruto,Naruto,Village,Orange,Run,Ninja,Fight,Power,Anime,Japan,Boy
+Movies & TV Shows,movies_tv,mov_one_piece,One Piece,Ocean,Hat,Dream,Crew,Treasure,Ship,Pirate,Anime,Sea
+Movies & TV Shows,movies_tv,mov_wednesday,Wednesday,Black,School,Dark,Dance,Hand,Girl,Gothic,Show,Netflix
+Movies & TV Shows,movies_tv,mov_barbie,Barbie,House,Car,Fun,Doll,Blonde,Fashion,Pink,Movie,Toy
+Movies & TV Shows,movies_tv,mov_oppenheimer,Oppenheimer,Desert,Fire,Loud,Science,War,Test,Bomb,History,Movie

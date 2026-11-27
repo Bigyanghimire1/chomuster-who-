@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Famous People,famous_people,fam_albert_einstein,Albert Einstein,Hair,Board,Math,Smart,Physics,Germany,Genius,Science,Brain
+Famous People,famous_people,fam_leonardo_da_vinci,Leonardo da Vinci,Italy,Old,Draw,Smile,Invent,Genius,Art,Painter,Museum
+Famous People,famous_people,fam_michael_jackson,Michael Jackson,Glove,Hat,Stage,Dance,Moon,King,Pop,Singer,Music
+Famous People,famous_people,fam_steve_jobs,Steve Jobs,Black,Stage,Design,Phone,Tech,Founder,Apple,iPhone,Computer
+Famous People,famous_people,fam_william_shakespeare,William Shakespeare,England,Old,Stage,Love,Play,Story,Writer,Theater,Books
+Famous People,famous_people,fam_cleopatra,Cleopatra,Ancient,Gold,River,Power,Beauty,Crown,Egypt,Queen,History
+Famous People,famous_people,fam_neil_armstrong,Neil Armstrong,Step,Flag,Suit,Rocket,First,Sky,Moon,Space,Astronaut
+Famous People,famous_people,fam_taylor_swift,Taylor Swift,Tour,Stage,Fans,Guitar,Songs,Blonde,Pop,Singer,Music
+Famous People,famous_people,fam_elon_musk,Elon Musk,Rich,Future,Mars,Rocket,Car,Tech,Tesla,Space,Billionaire
+Famous People,famous_people,fam_muhammad_ali,Muhammad Ali,Strong,Fast,Legend,Gloves,Ring,Fight,Boxing,Champion,Punch
+Famous People,famous_people,fam_nelson_mandela,Nelson Mandela,Freedom,Prison,Hope,Leader,Strong,Hero,Africa,President,Peace
+Famous People,famous_people,fam_stephen_hawking,Stephen Hawking,Chair,Voice,Smart,Stars,Time,Books,Space,Science,Genius
+Famous People,famous_people,fam_walt_disney,Walt Disney,Dream,Castle,Kids,Mouse,Park,Magic,Cartoon,Movies,Fun
+Famous People,famous_people,fam_vincent_van_gogh,Vincent van Gogh,Night,Stars,Yellow,Ear,Brush,Color,Art,Painter,Canvas
+Famous People,famous_people,fam_isaac_newton,Isaac Newton,Tree,Fall,Math,Physics,Law,England,Apple,Gravity,Science
+Famous People,famous_people,fam_bob_marley,Bob Marley,Peace,Hair,Island,Jamaica,Guitar,Chill,Music,Singer,Love
+Famous People,famous_people,fam_marie_curie,Marie Curie,Lab,Woman,Smart,Prize,Glow,Science,Chemistry,Nobel,First
+Famous People,famous_people,fam_lionel_messi,Lionel Messi,Short,Ten,Left,Cup,Argentina,Goal,Football,Soccer,Star
+Famous People,famous_people,fam_cristiano_ronaldo,Cristiano Ronaldo,Seven,Jump,Fast,Portugal,Goal,Strong,Football,Soccer,Star
+Famous People,famous_people,fam_beyonce,Beyonce,Stage,Power,Queen,Dance,Voice,Gold,Pop,Singer,Music
+Famous People,famous_people,fam_pablo_picasso,Pablo Picasso,Spain,Shapes,Face,Modern,Color,Canvas,Art,Painter,Museum
+Famous People,famous_people,fam_usain_bolt,Usain Bolt,Gold,Track,Smile,Jamaica,Speed,Olympic,Fast,Run,Runner
+Famous People,famous_people,fam_bill_gates,Bill Gates,Rich,Glasses,Give,Computer,Office,Tech,Windows,Microsoft,Software
+Famous People,famous_people,fam_michael_jordan,Michael Jordan,Shoes,Jump,Red,Air,Six,Legend,Basketball,Champion,Star
+Famous People,famous_people,fam_jackie_chan,Jackie Chan,Funny,Action,Jump,China,Stunt,Fight,Movie,Actor,Kungfu
+Famous People,famous_people,fam_bruce_lee,Bruce Lee,Yellow,Fast,Legend,Dragon,Kick,Strong,Fight,Kungfu,Actor
+Famous People,famous_people,fam_charlie_chaplin,Charlie Chaplin,Hat,Walk,Silent,Black,White,Funny,Comedy,Actor,Movie
+Famous People,famous_people,fam_mahatma_gandhi,Mahatma Gandhi,Peace,Glasses,Walk,Freedom,Simple,Leader,India,Nonviolence,Hero
+Famous People,famous_people,fam_barack_obama,Barack Obama,Speech,Hope,Suit,Leader,First,Whitehouse,America,President,Politics
+Famous People,famous_people,fam_nikola_tesla,Nikola Tesla,Spark,Genius,Future,Power,Light,Invent,Electricity,Science,Energy
+Famous People,famous_people,fam_virat_kohli,Virat Kohli,Bat,Blue,King,Run,Captain,Sport,Cricket,India,Star
+Famous People,famous_people,fam_shah_rukh_khan,Shah Rukh Khan,Arms,Love,King,Dance,Star,Cinema,Bollywood,India,Actor
+Famous People,famous_people,fam_tom_cruise,Tom Cruise,Run,Action,Stunt,Spy,Plane,Star,Movie,Hollywood,Actor
+Famous People,famous_people,fam_bts,BTS,Seven,Dance,Fans,Korea,Stage,Boys,Kpop,Music,Band
+Famous People,famous_people,fam_mark_zuckerberg,Mark Zuckerberg,Blue,College,Tech,Friends,App,Rich,Facebook,Social,Internet

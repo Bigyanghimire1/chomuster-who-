@@ -1,0 +1,526 @@
+Category,CategoryID,Word,WordID,Aliases,EntryType,HasHints,InDefaultCategories,SourceFile,SourceLocation
+Everyday Objects,everyday_objects,Umbrella,obj_umbrella,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Toothbrush,obj_toothbrush,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Backpack,obj_backpack,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Sunglasses,obj_sunglasses,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Headphones,obj_headphones,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Flashlight,obj_flashlight,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Mirror,obj_mirror,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Wallet,obj_wallet,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Alarm Clock,obj_alarm_clock,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Scissors,obj_scissors,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Pillow,obj_pillow,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Hammer,obj_hammer,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Candle,obj_candle,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Keys,obj_keys,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Coffee Mug,obj_coffee_mug,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Watch,obj_watch,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Water Bottle,obj_water_bottle,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Notebook,obj_notebook,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Blanket,obj_blanket,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Suitcase,obj_suitcase,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Towel,obj_towel,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Comb,obj_comb,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Passport,obj_passport,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Calendar,obj_calendar,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Camera,obj_camera,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Soap,obj_soap,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Perfume,obj_perfume,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Shoes,obj_shoes,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Jacket,obj_jacket,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Sponge,obj_sponge,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Calculator,obj_calculator,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Compass,obj_compass,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Lighter,obj_lighter,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Broom,obj_broom,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Everyday Objects,everyday_objects,Lock,obj_lock,,built_in,yes,yes,refined_global_v2,01_everyday_objects.csv
+Food & Drinks,food_drinks,Pizza,food_pizza,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Sushi,food_sushi,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Burger,food_burger,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Taco,food_taco,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Coffee,food_coffee,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Tea,food_tea,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Noodles,food_noodles,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Ice Cream,food_ice_cream,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Popcorn,food_popcorn,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Donut,food_donut,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Cake,food_cake,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Chocolate,food_chocolate,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,French Fries,food_french_fries,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Pancakes,food_pancakes,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Sandwich,food_sandwich,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Salad,food_salad,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Soup,food_soup,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Fried Rice,food_fried_rice,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Biryani,food_biryani,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Curry,food_curry,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Dumplings,food_dumplings,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Steak,food_steak,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Pasta,food_pasta,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Cookies,food_cookies,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Lemonade,food_lemonade,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Smoothie,food_smoothie,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Milkshake,food_milkshake,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Hot Chocolate,food_hot_chocolate,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Omelet,food_omelet,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Mango,food_mango,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Watermelon,food_watermelon,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Banana,food_banana,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Cheese,food_cheese,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Bread,food_bread,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Food & Drinks,food_drinks,Honey,food_honey,,built_in,yes,yes,refined_global_v2,02_food_drinks.csv
+Animals,animals,Penguin,anim_penguin,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Kangaroo,anim_kangaroo,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Dolphin,anim_dolphin,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Owl,anim_owl,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Giraffe,anim_giraffe,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Octopus,anim_octopus,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Elephant,anim_elephant,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Cheetah,anim_cheetah,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Panda,anim_panda,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Wolf,anim_wolf,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Chameleon,anim_chameleon,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Flamingo,anim_flamingo,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Koala,anim_koala,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Gorilla,anim_gorilla,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Sloth,anim_sloth,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Eagle,anim_eagle,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Tiger,anim_tiger,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Turtle,anim_turtle,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Zebra,anim_zebra,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Polar Bear,anim_polar_bear,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Parrot,anim_parrot,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Peacock,anim_peacock,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Lion,anim_lion,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Fox,anim_fox,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Shark,anim_shark,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Whale,anim_whale,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Camel,anim_camel,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Horse,anim_horse,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Monkey,anim_monkey,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Crocodile,anim_crocodile,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Snake,anim_snake,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Butterfly,anim_butterfly,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Frog,anim_frog,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Rabbit,anim_rabbit,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Animals,animals,Dog,anim_dog,,built_in,yes,yes,refined_global_v2,03_animals.csv
+Famous People,famous_people,Albert Einstein,fam_albert_einstein,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Leonardo da Vinci,fam_leonardo_da_vinci,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Michael Jackson,fam_michael_jackson,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Steve Jobs,fam_steve_jobs,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,William Shakespeare,fam_william_shakespeare,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Cleopatra,fam_cleopatra,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Neil Armstrong,fam_neil_armstrong,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Taylor Swift,fam_taylor_swift,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Elon Musk,fam_elon_musk,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Muhammad Ali,fam_muhammad_ali,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Nelson Mandela,fam_nelson_mandela,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Stephen Hawking,fam_stephen_hawking,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Walt Disney,fam_walt_disney,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Vincent van Gogh,fam_vincent_van_gogh,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Isaac Newton,fam_isaac_newton,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Bob Marley,fam_bob_marley,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Marie Curie,fam_marie_curie,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Lionel Messi,fam_lionel_messi,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Cristiano Ronaldo,fam_cristiano_ronaldo,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Beyonce,fam_beyonce,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Pablo Picasso,fam_pablo_picasso,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Usain Bolt,fam_usain_bolt,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Bill Gates,fam_bill_gates,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Michael Jordan,fam_michael_jordan,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Jackie Chan,fam_jackie_chan,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Bruce Lee,fam_bruce_lee,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Charlie Chaplin,fam_charlie_chaplin,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Mahatma Gandhi,fam_mahatma_gandhi,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Barack Obama,fam_barack_obama,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Nikola Tesla,fam_nikola_tesla,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Virat Kohli,fam_virat_kohli,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Shah Rukh Khan,fam_shah_rukh_khan,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Tom Cruise,fam_tom_cruise,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,BTS,fam_bts,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Famous People,famous_people,Mark Zuckerberg,fam_mark_zuckerberg,,built_in,yes,yes,refined_global_v2,04_famous_people.csv
+Movies & TV Shows,movies_tv,Titanic,mov_titanic,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Inception,mov_inception,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Harry Potter,mov_harry_potter,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Matrix,mov_the_matrix,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Star Wars,mov_star_wars,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Jurassic Park,mov_jurassic_park,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Shrek,mov_shrek,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Lion King,mov_the_lion_king,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Spider-Man,mov_spider_man,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Stranger Things,mov_stranger_things,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Finding Nemo,mov_finding_nemo,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Breaking Bad,mov_breaking_bad,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Avatar,mov_avatar,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Avengers,mov_the_avengers,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Game of Thrones,mov_game_of_thrones,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Interstellar,mov_interstellar,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Dark Knight,mov_the_dark_knight,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Office,mov_the_office,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Toy Story,mov_toy_story,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Home Alone,mov_home_alone,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Friends,mov_friends,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,The Lord of the Rings,mov_the_lord_of_the_rings,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Squid Game,mov_squid_game,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Pirates of the Caribbean,mov_pirates_of_the_caribbean,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Frozen,mov_frozen,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Up,mov_up,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Money Heist,mov_money_heist,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Kung Fu Panda,mov_kung_fu_panda,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Tom and Jerry,mov_tom_and_jerry,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Pokemon,mov_pokemon,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Naruto,mov_naruto,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,One Piece,mov_one_piece,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Wednesday,mov_wednesday,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Barbie,mov_barbie,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Movies & TV Shows,movies_tv,Oppenheimer,mov_oppenheimer,,built_in,yes,yes,refined_global_v2,05_movies_tv.csv
+Countries & Cities,geography,Japan,geo_japan,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,France,geo_france,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Egypt,geo_egypt,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Brazil,geo_brazil,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Australia,geo_australia,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Canada,geo_canada,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Italy,geo_italy,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,India,geo_india,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,China,geo_china,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,United States,geo_united_states,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,United Kingdom,geo_united_kingdom,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Germany,geo_germany,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Spain,geo_spain,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Mexico,geo_mexico,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,South Korea,geo_south_korea,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Thailand,geo_thailand,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Switzerland,geo_switzerland,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Turkey,geo_turkey,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Greece,geo_greece,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Nepal,geo_nepal,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Russia,geo_russia,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Argentina,geo_argentina,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Tokyo,geo_tokyo,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Paris,geo_paris,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,New York,geo_new_york,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,London,geo_london,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Dubai,geo_dubai,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Rome,geo_rome,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Singapore,geo_singapore,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Sydney,geo_sydney,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Bangkok,geo_bangkok,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Venice,geo_venice,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Amsterdam,geo_amsterdam,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Cairo,geo_cairo,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Countries & Cities,geography,Istanbul,geo_istanbul,,built_in,yes,yes,refined_global_v2,06_geography.csv
+Jobs & Professions,professions,Astronaut,prof_astronaut,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Detective,prof_detective,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Chef,prof_chef,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Firefighter,prof_firefighter,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Pilot,prof_pilot,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Doctor,prof_doctor,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Teacher,prof_teacher,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Police Officer,prof_police_officer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Photographer,prof_photographer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Dentist,prof_dentist,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Farmer,prof_farmer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Lawyer,prof_lawyer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Judge,prof_judge,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Nurse,prof_nurse,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Engineer,prof_engineer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Architect,prof_architect,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Plumber,prof_plumber,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Electrician,prof_electrician,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Mechanic,prof_mechanic,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Baker,prof_baker,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Barber,prof_barber,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Artist,prof_artist,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Singer,prof_singer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Actor,prof_actor,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Journalist,prof_journalist,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Veterinarian,prof_veterinarian,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Carpenter,prof_carpenter,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Scientist,prof_scientist,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Librarian,prof_librarian,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Lifeguard,prof_lifeguard,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Flight Attendant,prof_flight_attendant,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Coach,prof_coach,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Waiter,prof_waiter,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Driver,prof_driver,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Jobs & Professions,professions,Programmer,prof_programmer,,built_in,yes,yes,refined_global_v2,07_professions.csv
+Popular Brands,brands,Nike,brand_nike,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Apple,brand_apple,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Coca-Cola,brand_coca_cola,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Google,brand_google,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Disney,brand_disney,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Lego,brand_lego,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Spotify,brand_spotify,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Netflix,brand_netflix,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Nintendo,brand_nintendo,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Tesla,brand_tesla,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Starbucks,brand_starbucks,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Ikea,brand_ikea,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Adidas,brand_adidas,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,McDonalds,brand_mcdonalds,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Amazon,brand_amazon,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,PlayStation,brand_playstation,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Ferrari,brand_ferrari,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Samsung,brand_samsung,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Rolex,brand_rolex,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Gucci,brand_gucci,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Microsoft,brand_microsoft,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,YouTube,brand_youtube,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Instagram,brand_instagram,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,TikTok,brand_tiktok,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,WhatsApp,brand_whatsapp,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,KFC,brand_kfc,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Pepsi,brand_pepsi,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Toyota,brand_toyota,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,BMW,brand_bmw,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Mercedes,brand_mercedes,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Puma,brand_puma,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Sony,brand_sony,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Red Bull,brand_red_bull,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Subway,brand_subway,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Popular Brands,brands,Visa,brand_visa,,built_in,yes,yes,refined_global_v2,08_brands.csv
+Hobbies & Activities,hobbies,Gardening,hobby_gardening,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Photography,hobby_photography,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Cooking,hobby_cooking,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Baking,hobby_baking,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Hiking,hobby_hiking,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Painting,hobby_painting,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Drawing,hobby_drawing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Reading,hobby_reading,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Writing,hobby_writing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Yoga,hobby_yoga,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Camping,hobby_camping,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Fishing,hobby_fishing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Dancing,hobby_dancing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Singing,hobby_singing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Traveling,hobby_traveling,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Cycling,hobby_cycling,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Running,hobby_running,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Gaming,hobby_gaming,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Karaoke,hobby_karaoke,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Origami,hobby_origami,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Knitting,hobby_knitting,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Pottery,hobby_pottery,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Rock Climbing,hobby_rock_climbing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Magic Tricks,hobby_magic_tricks,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Kite Flying,hobby_kite_flying,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Shopping,hobby_shopping,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Meditation,hobby_meditation,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Board Games,hobby_board_games,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Juggling,hobby_juggling,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Snorkeling,hobby_snorkeling,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Bird Watching,hobby_bird_watching,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Roller Skating,hobby_roller_skating,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Woodworking,hobby_woodworking,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Sudoku,hobby_sudoku,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Hobbies & Activities,hobbies,Stargazing,hobby_stargazing,,built_in,yes,yes,refined_global_v2,09_hobbies.csv
+Music & Instruments,music,Guitar,mus_guitar,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Piano,mus_piano,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Drums,mus_drums,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Violin,mus_violin,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Microphone,mus_microphone,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Saxophone,mus_saxophone,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Trumpet,mus_trumpet,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Flute,mus_flute,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Harmonica,mus_harmonica,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Ukulele,mus_ukulele,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Harp,mus_harp,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Accordion,mus_accordion,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Cello,mus_cello,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Tambourine,mus_tambourine,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Xylophone,mus_xylophone,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Bongos,mus_bongos,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Bagpipes,mus_bagpipes,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Bell,mus_bell,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Whistle,mus_whistle,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Vinyl Record,mus_vinyl_record,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Speaker,mus_speaker,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Concert,mus_concert,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Orchestra,mus_orchestra,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Rock Music,mus_rock_music,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Jazz,mus_jazz,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Hip Hop,mus_hip_hop,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Pop Music,mus_pop_music,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Classical Music,mus_classical_music,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Reggae,mus_reggae,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,DJ,mus_dj,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Choir,mus_choir,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Opera,mus_opera,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Radio,mus_radio,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Headset,mus_headset,,built_in,yes,yes,refined_global_v2,10_music.csv
+Music & Instruments,music,Sheet Music,mus_sheet_music,,built_in,yes,yes,refined_global_v2,10_music.csv
+Sports & Games,sports,Football,sport_football,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Basketball,sport_basketball,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Tennis,sport_tennis,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Swimming,sport_swimming,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Cricket,sport_cricket,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Baseball,sport_baseball,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Volleyball,sport_volleyball,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Badminton,sport_badminton,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Table Tennis,sport_table_tennis,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Boxing,sport_boxing,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Golf,sport_golf,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Bowling,sport_bowling,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Chess,sport_chess,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Formula 1,sport_formula_1,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Rugby,sport_rugby,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Ice Hockey,sport_ice_hockey,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Gymnastics,sport_gymnastics,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Karate,sport_karate,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Wrestling,sport_wrestling,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Archery,sport_archery,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Surfing,sport_surfing,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Skateboarding,sport_skateboarding,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Snowboarding,sport_snowboarding,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Skiing,sport_skiing,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Marathon,sport_marathon,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Billiards,sport_billiards,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Darts,sport_darts,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Fencing,sport_fencing,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Weightlifting,sport_weightlifting,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Hide and Seek,sport_hide_and_seek,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Poker,sport_poker,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Ludo,sport_ludo,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Monopoly,sport_monopoly,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,Minecraft,sport_minecraft,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Sports & Games,sports,PUBG,sport_pubg,,built_in,yes,yes,refined_global_v2,11_sports.csv
+Technology & Science,technology,Smartphone,tech_smartphone,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Laptop,tech_laptop,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Internet,tech_internet,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Wi-Fi,tech_wi_fi,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Robot,tech_robot,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Artificial Intelligence,tech_artificial_intelligence,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Drone,tech_drone,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Satellite,tech_satellite,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Telescope,tech_telescope,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Microscope,tech_microscope,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Solar Panel,tech_solar_panel,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Battery,tech_battery,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Bluetooth,tech_bluetooth,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,GPS,tech_gps,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Virtual Reality,tech_virtual_reality,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Smartwatch,tech_smartwatch,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,3D Printer,tech_3d_printer,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Television,tech_television,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Keyboard,tech_keyboard,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Computer Mouse,tech_computer_mouse,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,USB Drive,tech_usb_drive,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Power Bank,tech_power_bank,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Projector,tech_projector,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Laser,tech_laser,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,QR Code,tech_qr_code,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Email,tech_email,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Social Media,tech_social_media,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Video Game,tech_video_game,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Electric Car,tech_electric_car,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Self-Driving Car,tech_self_driving_car,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Gravity,tech_gravity,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Magnet,tech_magnet,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Electricity,tech_electricity,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,DNA,tech_dna,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Technology & Science,technology,Vaccine,tech_vaccine,,built_in,yes,yes,refined_global_v2,12_technology.csv
+Nature & Wonders,nature,Volcano,nat_volcano,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Rainbow,nat_rainbow,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Earthquake,nat_earthquake,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Lightning,nat_lightning,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Waterfall,nat_waterfall,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Northern Lights,nat_northern_lights,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Glacier,nat_glacier,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Coral Reef,nat_coral_reef,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Desert,nat_desert,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Rainforest,nat_rainforest,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Tsunami,nat_tsunami,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Tornado,nat_tornado,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Avalanche,nat_avalanche,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Eclipse,nat_eclipse,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Meteor Shower,nat_meteor_shower,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Oasis,nat_oasis,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Iceberg,nat_iceberg,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Wildfire,nat_wildfire,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Cave,nat_cave,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Island,nat_island,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Ocean,nat_ocean,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Mountain,nat_mountain,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,River,nat_river,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Lake,nat_lake,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Forest,nat_forest,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Beach,nat_beach,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Canyon,nat_canyon,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Hot Spring,nat_hot_spring,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Fog,nat_fog,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Thunderstorm,nat_thunderstorm,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Sunrise,nat_sunrise,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Sunset,nat_sunset,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Full Moon,nat_full_moon,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Snow,nat_snow,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Nature & Wonders,nature,Wind,nat_wind,,built_in,yes,yes,refined_global_v2,13_nature.csv
+Vehicles & Transport,vehicles,Car,veh_car,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Bus,veh_bus,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Train,veh_train,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Airplane,veh_airplane,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Bicycle,veh_bicycle,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Motorcycle,veh_motorcycle,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Helicopter,veh_helicopter,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Submarine,veh_submarine,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Rocket,veh_rocket,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Ambulance,veh_ambulance,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Fire Truck,veh_fire_truck,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Police Car,veh_police_car,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Taxi,veh_taxi,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Truck,veh_truck,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Tractor,veh_tractor,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Scooter,veh_scooter,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Cruise Ship,veh_cruise_ship,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Sailboat,veh_sailboat,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Yacht,veh_yacht,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Jet Ski,veh_jet_ski,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Hot Air Balloon,veh_hot_air_balloon,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Metro Train,veh_metro_train,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Cable Car,veh_cable_car,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,School Bus,veh_school_bus,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Bulldozer,veh_bulldozer,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Forklift,veh_forklift,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Delivery Van,veh_delivery_van,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Double Decker Bus,veh_double_decker_bus,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Rickshaw,veh_rickshaw,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Kayak,veh_kayak,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Speedboat,veh_speedboat,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Tram,veh_tram,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Camper Van,veh_camper_van,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Go-Kart,veh_go_kart,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Vehicles & Transport,vehicles,Spaceship,veh_spaceship,,built_in,yes,yes,refined_global_v2,14_vehicles.csv
+Places & Landmarks,landmarks,Eiffel Tower,land_eiffel_tower,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Statue of Liberty,land_statue_of_liberty,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Great Wall of China,land_great_wall_of_china,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Taj Mahal,land_taj_mahal,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Pyramids of Giza,land_pyramids_of_giza,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Colosseum,land_colosseum,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Big Ben,land_big_ben,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Burj Khalifa,land_burj_khalifa,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Mount Everest,land_mount_everest,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Sydney Opera House,land_sydney_opera_house,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Machu Picchu,land_machu_picchu,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Leaning Tower of Pisa,land_leaning_tower_of_pisa,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Golden Gate Bridge,land_golden_gate_bridge,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Christ the Redeemer,land_christ_the_redeemer,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Niagara Falls,land_niagara_falls,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Mount Fuji,land_mount_fuji,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Times Square,land_times_square,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Hollywood Sign,land_hollywood_sign,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Louvre Museum,land_louvre_museum,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Stonehenge,land_stonehenge,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Grand Canyon,land_grand_canyon,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Disneyland,land_disneyland,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Vatican City,land_vatican_city,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Tower Bridge,land_tower_bridge,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Empire State Building,land_empire_state_building,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Sahara Desert,land_sahara_desert,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Amazon Rainforest,land_amazon_rainforest,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Great Barrier Reef,land_great_barrier_reef,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Petra,land_petra,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Angkor Wat,land_angkor_wat,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Notre Dame,land_notre_dame,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Sagrada Familia,land_sagrada_familia,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,White House,land_white_house,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Buckingham Palace,land_buckingham_palace,,built_in,yes,yes,refined_global_v2,15_landmarks.csv
+Places & Landmarks,landmarks,Santorini,land_santorini,,built_in,yes,yes,refined_global_v2,15_landmarks.csv

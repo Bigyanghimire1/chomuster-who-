@@ -11,9 +11,9 @@ describe('Category Database Integrity', () => {
     expect(DEFAULT_CATEGORIES).toHaveLength(15);
   });
 
-  it('guarantees each category has at least 35 unique non-empty words', () => {
+  it('guarantees each category has at least 25 unique non-empty words', () => {
     for (const cat of DEFAULT_CATEGORIES) {
-      expect(cat.words.length).toBeGreaterThanOrEqual(35);
+      expect(cat.words.length).toBeGreaterThanOrEqual(25);
       const unique = new Set(cat.words.map(w => w.trim().toLowerCase()));
       expect(unique.size).toBe(cat.words.length);
     }

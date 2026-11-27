@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Places & Landmarks,landmarks,land_eiffel_tower,Eiffel Tower,Love,Iron,Lights,Tall,Europe,View,Paris,France,Landmark
+Places & Landmarks,landmarks,land_statue_of_liberty,Statue of Liberty,Green,Island,Gift,Torch,Crown,Freedom,Newyork,America,Monument
+Places & Landmarks,landmarks,land_great_wall_of_china,Great Wall of China,Long,Old,Stone,Walk,History,Mountain,Asia,Border,Ancient
+Places & Landmarks,landmarks,land_taj_mahal,Taj Mahal,Love,White,Garden,Marble,Tomb,Wonder,India,Agra,Palace
+Places & Landmarks,landmarks,land_pyramids_of_giza,Pyramids of Giza,Old,Sand,Gold,Triangle,King,Desert,Egypt,Ancient,Wonder
+Places & Landmarks,landmarks,land_colosseum,Colosseum,Old,Stone,Round,Fight,History,Arena,Rome,Italy,Gladiator
+Places & Landmarks,landmarks,land_big_ben,Big Ben,Sound,Old,Tall,Hour,Bell,England,London,Clock,Tower
+Places & Landmarks,landmarks,land_burj_khalifa,Burj Khalifa,Modern,Glass,Rich,Sky,Highest,Building,Dubai,Tallest,Tower
+Places & Landmarks,landmarks,land_mount_everest,Mount Everest,Cold,Snow,Climb,Top,Hard,Asia,Highest,Nepal,Peak
+Places & Landmarks,landmarks,land_sydney_opera_house,Sydney Opera House,White,Water,Art,Music,Shells,Harbor,Australia,City,Stage
+Places & Landmarks,landmarks,land_machu_picchu,Machu Picchu,Old,Clouds,Stone,Mountain,Ruins,High,Peru,Inca,Ancient
+Places & Landmarks,landmarks,land_leaning_tower_of_pisa,Leaning Tower of Pisa,White,Old,Photo,Tilt,Fall,Side,Italy,Tall,Crooked
+Places & Landmarks,landmarks,land_golden_gate_bridge,Golden Gate Bridge,Fog,Water,Cars,Red,Long,Bay,Cross,California,America
+Places & Landmarks,landmarks,land_christ_the_redeemer,Christ the Redeemer,Hill,Arms,White,Open,View,Faith,Brazil,Rio,Statue
+Places & Landmarks,landmarks,land_niagara_falls,Niagara Falls,Loud,Wet,Boat,Big,Border,Mist,Waterfall,Canada,Water
+Places & Landmarks,landmarks,land_mount_fuji,Mount Fuji,Snow,White,Cone,Photo,Calm,Volcano,Japan,Peak,Icon
+Places & Landmarks,landmarks,land_times_square,Times Square,Night,Busy,Screens,Bright,Ads,Crowd,Newyork,Lights,City
+Places & Landmarks,landmarks,land_hollywood_sign,Hollywood Sign,Hill,White,Fame,Letters,Stars,California,Movies,Cinema,America
+Places & Landmarks,landmarks,land_louvre_museum,Louvre Museum,Art,Glass,Big,Smile,Painting,Famous,Paris,Gallery,Mona
+Places & Landmarks,landmarks,land_stonehenge,Stonehenge,Old,Grass,Mystery,Circle,Heavy,Ancient,Rocks,England,Stones
+Places & Landmarks,landmarks,land_grand_canyon,Grand Canyon,Red,Deep,Dry,Wide,River,View,America,Rock,Valley
+Places & Landmarks,landmarks,land_disneyland,Disneyland,Kids,Happy,Castle,Rides,Mouse,Fun,Park,Cartoon,Magic
+Places & Landmarks,landmarks,land_vatican_city,Vatican City,Small,Old,Art,Church,Faith,Rome,Pope,Country,Catholic
+Places & Landmarks,landmarks,land_tower_bridge,Tower Bridge,River,Blue,Open,Cars,Two,Tall,London,Cross,England
+Places & Landmarks,landmarks,land_empire_state_building,Empire State Building,Old,City,View,Tall,Lights,Kong,Newyork,Skyscraper,High
+Places & Landmarks,landmarks,land_sahara_desert,Sahara Desert,Hot,Dry,Huge,Sun,Camel,Empty,Africa,Sand,Dunes
+Places & Landmarks,landmarks,land_amazon_rainforest,Amazon Rainforest,Green,Wild,Wet,River,Animals,Huge,Jungle,Brazil,Trees
+Places & Landmarks,landmarks,land_great_barrier_reef,Great Barrier Reef,Blue,Dive,Colors,Fish,Sea,Coral,Australia,Ocean,Underwater
+Places & Landmarks,landmarks,land_petra,Petra,Pink,Old,Desert,Carved,Canyon,Ancient,Jordan,Rock,City
+Places & Landmarks,landmarks,land_angkor_wat,Angkor Wat,Old,Jungle,Stone,Sunrise,Ruins,Asia,Cambodia,Temple,Ancient
+Places & Landmarks,landmarks,land_notre_dame,Notre Dame,Old,Bell,River,Church,Fire,Gothic,Paris,France,Cathedral
+Places & Landmarks,landmarks,land_sagrada_familia,Sagrada Familia,Tall,Art,Unfinished,Church,Design,Spain,Barcelona,Cathedral,Gaudi
+Places & Landmarks,landmarks,land_white_house,White House,Clean,Guard,Power,Leader,Office,Home,America,President,Washington
+Places & Landmarks,landmarks,land_buckingham_palace,Buckingham Palace,Guards,Red,Gold,Royal,Crown,Queen,London,England,Castle
+Places & Landmarks,landmarks,land_santorini,Santorini,Blue,White,Sea,Sunset,Island,View,Greece,Vacation,Ocean

@@ -1,7 +1,117 @@
-import React from 'react';
-import { Mic, MicOff, Volume2, VolumeX, Video, VideoOff, X } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 import { useVoiceState, voiceManager, VoiceManager } from '../../services/voice/voiceManager';
 import { audioService } from '../../services/audioService';
+
+/** Custom Neo-Brutalist thick-black-stroke media icons */
+const MediaMicIcon: React.FC<{ off?: boolean; className?: string }> = ({
+  off = false,
+  className = 'w-5 h-5',
+}) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <rect
+      x="9"
+      y="3"
+      width="6"
+      height="11"
+      rx="3"
+      fill={off ? '#FFFFFF' : '#FFDF00'}
+      stroke="#050505"
+      strokeWidth="2.4"
+    />
+    <path
+      d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
+      stroke="#050505"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+    />
+    <path
+      d="M12 18V21M8.5 21H15.5"
+      stroke="#050505"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+    />
+    {off && (
+      <path
+        d="M4 20L20 4"
+        stroke="#050505"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+    )}
+  </svg>
+);
+
+const MediaCamIcon: React.FC<{ off?: boolean; className?: string }> = ({
+  off = false,
+  className = 'w-5 h-5',
+}) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <rect
+      x="3"
+      y="6.5"
+      width="13"
+      height="11"
+      rx="2.5"
+      fill={off ? '#FFFFFF' : '#A9E5F2'}
+      stroke="#050505"
+      strokeWidth="2.4"
+    />
+    <path
+      d="M16 10L21 7.2V16.8L16 14V10Z"
+      fill={off ? '#FFFFFF' : '#FFDF00'}
+      stroke="#050505"
+      strokeWidth="2.4"
+      strokeLinejoin="round"
+    />
+    {off && (
+      <path
+        d="M4 20L20 4"
+        stroke="#050505"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+    )}
+  </svg>
+);
+
+const MediaSpeakerIcon: React.FC<{ off?: boolean; className?: string }> = ({
+  off = false,
+  className = 'w-5 h-5',
+}) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path
+      d="M4 9.5H8L13 5V19L8 14.5H4V9.5Z"
+      fill={off ? '#FFFFFF' : '#FFDF00'}
+      stroke="#050505"
+      strokeWidth="2.4"
+      strokeLinejoin="round"
+    />
+    {!off ? (
+      <>
+        <path
+          d="M16.5 8.8C17.6 9.8 18.2 10.9 18.2 12C18.2 13.1 17.6 14.2 16.5 15.2"
+          stroke="#050505"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+        />
+        <path
+          d="M19.2 6.5C20.9 8.1 21.8 10 21.8 12C21.8 14 20.9 15.9 19.2 17.5"
+          stroke="#050505"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+        />
+      </>
+    ) : (
+      <path
+        d="M4 20L20 4"
+        stroke="#050505"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+    )}
+  </svg>
+);
 
 /**
  * Translate raw browser/WebKit media exceptions into concise, actionable
@@ -105,6 +215,37 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
   const shouldShowMeter =
     showLevelMeter ?? (variant === 'dock' || variant === 'floating' || variant === 'compact');
 
+  const dockRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (variant !== 'dock' || typeof document === 'undefined') return;
+    const el = dockRef.current;
+    if (!el) return;
+
+    const updateHeight = () => {
+      const rect = el.getBoundingClientRect();
+      document.documentElement.style.setProperty(
+        '--voice-dock-height',
+        `${Math.ceil(rect.height)}px`
+      );
+    };
+
+    updateHeight();
+
+    let observer: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(updateHeight);
+      observer.observe(el);
+    }
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateHeight);
+      document.documentElement.style.setProperty('--voice-dock-height', '0px');
+    };
+  }, [variant, playbackBlocked, error]);
+
   const handleMicClick = async () => {
     // Call startMicrophone immediately inside click gesture without prior AudioContext sound playback
     // so strict mobile engines (iOS Safari/Chrome WKWebView) preserve transient user activation.
@@ -164,29 +305,20 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
   // Header variant
   if (variant === 'header') {
     return (
-      <div className={`flex items-center gap-1 ${className}`}>
+      <div className={`flex items-center gap-1.5 ${className}`}>
         <button
           type="button"
           onClick={handleMicClick}
           disabled={isInitializing}
           aria-label={micLabel}
           title={micLabel}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[10px] transition-colors relative select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
-            !isMicActive
-              ? 'text-chomu-secondary hover:text-chomu-text hover:bg-chomu-surface'
-              : isMuted
-                ? 'text-chomu-coral bg-chomu-coral/10 hover:bg-chomu-coral/15'
-                : 'text-chomu-lime bg-chomu-lime/10 hover:bg-chomu-lime/15'
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border-2 border-[#050505] shadow-[0_2px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all select-none focus:outline-none ${
+            !isMicActive || isMuted
+              ? 'bg-[#FFF9CC] text-[#050505] hover:bg-[#FFDF00]'
+              : 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
           }`}
         >
-          {isMuted || !isMicActive ? (
-            <MicOff className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Mic className="w-4 h-4" strokeWidth={1.5} />
-          )}
-          {isMicActive && !isMuted && isLocalSpeaking && (
-            <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-chomu-lime pointer-events-none" />
-          )}
+          <MediaMicIcon off={isMuted || !isMicActive} className="w-4 h-4" />
         </button>
 
         <button
@@ -194,17 +326,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           onClick={handleCameraClick}
           aria-label={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
           title={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[10px] transition-colors relative select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border-2 border-[#050505] shadow-[0_2px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all select-none focus:outline-none ${
             isCameraOn
-              ? 'text-chomu-cyan bg-chomu-cyan/10 hover:bg-chomu-cyan/15'
-              : 'text-chomu-secondary hover:text-chomu-text hover:bg-chomu-surface'
+              ? 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
+              : 'bg-white text-[#050505] hover:bg-[#FFF9CC]'
           }`}
         >
-          {isCameraOn ? (
-            <Video className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <VideoOff className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaCamIcon off={!isCameraOn} className="w-4 h-4" />
         </button>
 
         <button
@@ -212,17 +340,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
           onClick={handleDeafenClick}
           aria-label={isDeafened ? 'Undeafen audio' : 'Deafen audio'}
           title={isDeafened ? 'Undeafen audio' : 'Deafen audio'}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[10px] transition-colors select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border-2 border-[#050505] shadow-[0_2px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all select-none focus:outline-none ${
             isDeafened
-              ? 'text-chomu-coral bg-chomu-coral/10 hover:bg-chomu-coral/15'
-              : 'text-chomu-secondary hover:text-chomu-text hover:bg-chomu-surface'
+              ? 'bg-[#FF5D73] text-[#050505]'
+              : 'bg-white text-[#050505] hover:bg-[#FFF9CC]'
           }`}
         >
-          {isDeafened ? (
-            <VolumeX className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Volume2 className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaSpeakerIcon off={isDeafened} className="w-4 h-4" />
         </button>
       </div>
     );
@@ -232,40 +356,32 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
   if (variant === 'compact') {
     return (
       <div
-        className={`inline-flex items-center gap-1 px-2 py-1 rounded-[10px] bg-chomu-surface border border-white/[0.08] text-xs font-medium text-chomu-text select-none ${className}`}
+        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-2xl bg-white border-2 border-[#050505] shadow-[0_3px_0_#050505] text-xs font-extrabold text-[#050505] select-none ${className}`}
       >
         <button
           type="button"
           onClick={handleMicClick}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
+          className={`min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl border-2 border-[#050505] transition-all focus:outline-none ${
             isMuted || !isMicActive
-              ? 'text-chomu-coral hover:bg-chomu-coral/15'
-              : 'text-chomu-lime hover:bg-chomu-lime/15'
+              ? 'bg-[#FFF9CC] hover:bg-[#FFDF00]'
+              : 'bg-[#64E987] hover:bg-[#52D975]'
           }`}
           title={micLabel}
           aria-label={micLabel}
         >
-          {isMuted || !isMicActive ? (
-            <MicOff className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Mic className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaMicIcon off={isMuted || !isMicActive} className="w-4 h-4" />
         </button>
 
         <button
           type="button"
           onClick={handleCameraClick}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
-            isCameraOn ? 'text-chomu-cyan hover:bg-chomu-cyan/15' : 'text-chomu-secondary hover:text-chomu-text'
+          className={`min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl border-2 border-[#050505] transition-all focus:outline-none ${
+            isCameraOn ? 'bg-[#64E987] hover:bg-[#52D975]' : 'bg-[#F5F6F8] hover:bg-[#FFF9CC]'
           }`}
           title={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
           aria-label={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
         >
-          {isCameraOn ? (
-            <Video className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <VideoOff className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaCamIcon off={!isCameraOn} className="w-4 h-4" />
         </button>
 
         {shouldShowMeter && isMicActive && !isMuted && (
@@ -275,8 +391,8 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               return (
                 <span
                   key={idx}
-                  className={`w-0.5 rounded-full transition-colors duration-75 ${
-                    active ? 'h-3 bg-chomu-lime' : 'h-1.5 bg-white/[0.12]'
+                  className={`w-1 rounded-full transition-colors duration-75 ${
+                    active ? 'h-3 bg-[#64E987] border border-[#050505]' : 'h-1.5 bg-[#C6C9D1]'
                   }`}
                 />
               );
@@ -287,17 +403,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         <button
           type="button"
           onClick={handleDeafenClick}
-          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-purple ${
-            isDeafened ? 'text-chomu-coral hover:bg-chomu-coral/15' : 'text-chomu-secondary hover:text-chomu-text'
+          className={`min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl border-2 border-[#050505] transition-all focus:outline-none ${
+            isDeafened ? 'bg-[#FF5D73]' : 'bg-[#F5F6F8] hover:bg-[#FFF9CC]'
           }`}
           title={isDeafened ? 'Undeafen' : 'Deafen'}
           aria-label={isDeafened ? 'Undeafen' : 'Deafen'}
         >
-          {isDeafened ? (
-            <VolumeX className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Volume2 className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaSpeakerIcon off={isDeafened} className="w-4 h-4" />
         </button>
       </div>
     );
@@ -310,51 +422,39 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         <button
           type="button"
           onClick={handleMicClick}
-          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-[10px] text-xs font-medium border transition-colors ${
+          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all ${
             isMuted || !isMicActive
-              ? 'bg-chomu-coral/10 text-chomu-coral border-chomu-coral/25 hover:bg-chomu-coral/15'
-              : 'bg-chomu-lime/10 text-chomu-lime border-chomu-lime/25 hover:bg-chomu-lime/15'
+              ? 'bg-[#FFF9CC] text-[#050505] hover:bg-[#FFDF00]'
+              : 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
           }`}
         >
-          {isMuted || !isMicActive ? (
-            <MicOff className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Mic className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaMicIcon off={isMuted || !isMicActive} className="w-4 h-4" />
           <span>{!isMicActive ? 'Start mic' : isMuted ? 'Unmute' : 'Mute'}</span>
         </button>
 
         <button
           type="button"
           onClick={handleCameraClick}
-          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-[10px] text-xs font-medium border transition-colors ${
+          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all ${
             isCameraOn
-              ? 'bg-chomu-cyan/10 text-chomu-cyan border-chomu-cyan/25 hover:bg-chomu-cyan/15'
-              : 'bg-chomu-surface text-chomu-secondary hover:text-chomu-text border-white/[0.08] hover:bg-chomu-elevated'
+              ? 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
+              : 'bg-white text-[#050505] hover:bg-[#FFF9CC]'
           }`}
         >
-          {isCameraOn ? (
-            <Video className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <VideoOff className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaCamIcon off={!isCameraOn} className="w-4 h-4" />
           <span>{isCameraOn ? 'Camera on' : 'Camera off'}</span>
         </button>
 
         <button
           type="button"
           onClick={handleDeafenClick}
-          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-[10px] text-xs font-medium border transition-colors ${
+          className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[1px] active:shadow-none transition-all ${
             isDeafened
-              ? 'bg-chomu-coral/10 text-chomu-coral border-chomu-coral/25 hover:bg-chomu-coral/15'
-              : 'bg-chomu-surface text-chomu-secondary hover:text-chomu-text border-white/[0.08] hover:bg-chomu-elevated'
+              ? 'bg-[#FF5D73] text-[#050505]'
+              : 'bg-white text-[#050505] hover:bg-[#FFF9CC]'
           }`}
         >
-          {isDeafened ? (
-            <VolumeX className="w-4 h-4" strokeWidth={1.5} />
-          ) : (
-            <Volume2 className="w-4 h-4" strokeWidth={1.5} />
-          )}
+          <MediaSpeakerIcon off={isDeafened} className="w-4 h-4" />
           <span>{isDeafened ? 'Undeafen' : 'Deafen'}</span>
         </button>
       </div>
@@ -366,10 +466,11 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
 
   return (
     <aside
+      ref={isDock ? dockRef : undefined}
       aria-label="Voice Controls HUD"
       className={
         isDock
-          ? `sticky bottom-0 z-40 w-full border-t border-white/[0.08] bg-chomu-bgSecondary select-none ${className}`
+          ? `sticky bottom-0 z-40 w-full border-t-[2.5px] border-[#050505] bg-white select-none ${className}`
           : `fixed bottom-4 left-1/2 -translate-x-1/2 z-50 select-none ${className}`
       }
       style={{
@@ -380,32 +481,21 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         className={
           isDock
             ? 'max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex flex-col gap-1.5'
-            : 'px-3 py-2 rounded-2xl bg-chomu-surface border border-white/[0.1] shadow-[0_8px_24px_rgba(0,0,0,0.45)] flex flex-col gap-1.5'
+            : 'px-3 py-2 rounded-2xl bg-white border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505] flex flex-col gap-1.5'
         }
       >
         <div className="flex items-center justify-between gap-3">
           {/* Left: Audio status & level meter */}
           {shouldShowMeter && (
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`w-2 h-2 rounded-full shrink-0 ${
-                    isDeafened || isMuted
-                      ? 'bg-chomu-coral'
-                      : isMicActive
-                        ? 'bg-chomu-lime'
-                        : 'bg-chomu-muted'
-                  }`}
-                />
-                <span className="text-xs font-medium text-chomu-secondary truncate">
-                  {statusText}
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#F5F6F8] border-2 border-[#050505] text-[11px] font-extrabold text-[#050505] truncate">
+                {statusText}
+              </span>
+              {isCameraOn && (
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#A9E5F2] text-[#050505] border-2 border-[#050505]">
+                  CAM
                 </span>
-                {isCameraOn && (
-                  <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-chomu-cyan/10 text-chomu-cyan border border-chomu-cyan/25">
-                    CAM
-                  </span>
-                )}
-              </div>
+              )}
 
               <div className="flex items-center gap-1 h-3 w-10 shrink-0" aria-hidden="true">
                 {[0.08, 0.2, 0.35, 0.55].map((threshold, idx) => {
@@ -415,7 +505,7 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
                     <span
                       key={idx}
                       className={`w-1 rounded-full transition-colors duration-75 ${
-                        active ? 'h-3 bg-chomu-lime' : 'h-1.5 bg-white/[0.12]'
+                        active ? 'h-3 bg-[#64E987] border border-[#050505]' : 'h-1.5 bg-[#C6C9D1]'
                       }`}
                     />
                   );
@@ -432,19 +522,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               disabled={isInitializing}
               aria-label={micLabel}
               title={micLabel}
-              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
-                !isMicActive
-                  ? 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
-                  : isMuted
-                    ? 'bg-chomu-coral/20 border-chomu-coral/40 border-b-chomu-coral/70 text-chomu-coral hover:bg-chomu-coral/25'
-                    : 'bg-chomu-lime/20 border-chomu-lime/40 border-b-chomu-lime/70 text-chomu-lime hover:bg-chomu-lime/25'
+              className={`min-w-[44px] min-h-[44px] px-3.5 rounded-full border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-all focus:outline-none ${
+                !isMicActive || isMuted
+                  ? 'bg-[#FFF9CC] text-[#050505] hover:bg-[#FFDF00]'
+                  : 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
               }`}
             >
-              {isMuted || !isMicActive ? (
-                <MicOff className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              ) : (
-                <Mic className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              )}
+              <MediaMicIcon off={isMuted || !isMicActive} className="w-4 h-4 shrink-0" />
               <span className="hidden sm:inline">
                 {!isMicActive ? 'Mic' : isMuted ? 'Muted' : 'Mic on'}
               </span>
@@ -455,17 +539,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               onClick={handleCameraClick}
               aria-label={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
               title={isCameraOn ? 'Turn off camera' : 'Turn on camera'}
-              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
+              className={`min-w-[44px] min-h-[44px] px-3.5 rounded-full border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-all focus:outline-none ${
                 isCameraOn
-                  ? 'bg-chomu-teal/20 border-chomu-teal/40 border-b-chomu-teal/70 text-chomu-teal hover:bg-chomu-teal/25'
-                  : 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
+                  ? 'bg-[#64E987] text-[#050505] hover:bg-[#52D975]'
+                  : 'bg-[#F5F6F8] text-[#050505] hover:bg-[#FFF9CC]'
               }`}
             >
-              {isCameraOn ? (
-                <Video className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              ) : (
-                <VideoOff className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              )}
+              <MediaCamIcon off={!isCameraOn} className="w-4 h-4 shrink-0" />
               <span className="hidden sm:inline">
                 {isCameraOn ? 'Cam on' : 'Camera'}
               </span>
@@ -476,17 +556,13 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
               onClick={handleDeafenClick}
               aria-label={isDeafened ? 'Undeafen audio' : 'Deafen audio'}
               title={isDeafened ? 'Undeafen voice audio' : 'Deafen voice audio'}
-              className={`min-w-[44px] min-h-[44px] px-4 rounded-full border border-b-[3px] active:translate-y-[1px] active:border-b-[1px] text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal ${
+              className={`min-w-[44px] min-h-[44px] px-3.5 rounded-full border-2 border-[#050505] shadow-[0_3px_0_#050505] active:translate-y-[2px] active:shadow-none text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-all focus:outline-none ${
                 isDeafened
-                  ? 'bg-chomu-coral/20 border-chomu-coral/40 border-b-chomu-coral/70 text-chomu-coral hover:bg-chomu-coral/25'
-                  : 'bg-chomu-elevated border-white/[0.12] border-b-[#0B111C] text-chomu-secondary hover:text-chomu-text hover:bg-[#202C40]'
+                  ? 'bg-[#FF5D73] text-[#050505]'
+                  : 'bg-[#F5F6F8] text-[#050505] hover:bg-[#FFF9CC]'
               }`}
             >
-              {isDeafened ? (
-                <VolumeX className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              ) : (
-                <Volume2 className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              )}
+              <MediaSpeakerIcon off={isDeafened} className="w-4 h-4 shrink-0" />
               <span className="hidden sm:inline">
                 {isDeafened ? 'Deafened' : 'Audio'}
               </span>
@@ -500,10 +576,10 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
             onClick={() => {
               resumeRemoteAudio().catch(() => {});
             }}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-chomu-yellow/15 hover:bg-chomu-yellow/20 border border-chomu-yellow/35 rounded-lg text-xs font-medium text-chomu-yellow transition-colors text-left"
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-[#FFDF00] hover:bg-[#F2D300] border-2 border-[#050505] rounded-xl text-xs font-extrabold text-[#050505] transition-colors text-left"
           >
             <span>Browser paused incoming voice audio — tap here to unmute teammates</span>
-            <Volume2 className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+            <MediaSpeakerIcon off={false} className="w-4 h-4 shrink-0" />
           </button>
         )}
 

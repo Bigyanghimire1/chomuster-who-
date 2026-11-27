@@ -4,24 +4,24 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
-    --chomu-bg-deep: #05080e;
-    --chomu-bg: #070b12;
-    --chomu-surface: #111824;
-    --chomu-elevated: #182233;
-    --chomu-hairline: rgba(245, 247, 250, 0.08);
-    --chomu-text: #f5f7fa;
-    --chomu-secondary: #9aa8be;
-    --chomu-muted: #6e7d96;
-    --chomu-accent: #1ce8c6;
+    color-scheme: light;
+    --chomu-bg-deep: #FFDF00;
+    --chomu-bg: #FFDF00;
+    --chomu-surface: #FFFFFF;
+    --chomu-elevated: #FFF6B3;
+    --chomu-hairline: #050505;
+    --chomu-text: #050505;
+    --chomu-secondary: #26282E;
+    --chomu-muted: #52555E;
+    --chomu-accent: #F28BCB;
     --chomu-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   body {
     background-color: var(--chomu-bg);
     color: var(--chomu-text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    font-weight: 400;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
@@ -67,8 +67,40 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+  .nb-card {
+    background-color: #FFFFFF;
+    border: 2.5px solid #050505;
+    border-radius: 1.25rem;
+    box-shadow: 0 6px 0 #050505;
+  }
+  .nb-card-sm {
+    background-color: #FFFFFF;
+    border: 2px solid #050505;
+    border-radius: 0.875rem;
+    box-shadow: 0 4px 0 #050505;
+  }
+  .nb-press {
+    transition: transform 100ms ease, box-shadow 100ms ease, background-color 120ms ease;
+  }
+  .nb-press:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #050505;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
   .dossier-hairline {
-    border-color: rgba(238, 240, 245, 0.08);
+    border-color: #050505;
   }
   .pt-safe {
     padding-top: env(safe-area-inset-top, 0px);
@@ -93,10 +125,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262b38;
+  background: #D6CEBC;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #363d50;
+  background: #BDB39C;
 }

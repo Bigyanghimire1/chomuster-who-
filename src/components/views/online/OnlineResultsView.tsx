@@ -62,8 +62,8 @@ export const OnlineResultsView: React.FC = () => {
         spread: 70,
         origin: { y: 0.55 },
         colors: isCivilianVictory
-          ? ['#A8D664', '#9275FF', '#5EB1C2', '#E0B45C']
-          : ['#E85D75', '#9275FF', '#E0B45C', '#1A1E28'],
+          ? ['#16A34A', '#7C3AED', '#0F9D8A', '#D97706']
+          : ['#E5484D', '#7C3AED', '#D97706', '#0F9D8A'],
       });
     } catch {}
   }, [isCivilianVictory]);
@@ -76,26 +76,26 @@ export const OnlineResultsView: React.FC = () => {
   return (
     <div className="flex flex-col items-center flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 py-6 select-none animate-fade-in text-center space-y-5">
       {/* Banner & Artwork */}
-      <div className="w-full space-y-2">
-        <FinalRevealArtwork className="mx-auto mb-2" />
+      <div className="w-full space-y-2.5">
+        <FinalRevealArtwork className="mx-auto mb-1" />
 
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-chomu-surface border border-white/[0.08] text-xs font-medium text-chomu-secondary">
-          <HelpCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border-2 border-[#050505] shadow-[0_2px_0_#050505] text-xs font-extrabold text-[#050505]">
+          <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.25} />
           <span>{categoryName}</span>
         </div>
 
         {isCivilianVictory ? (
           <div className="space-y-1.5">
             <div>
-              <Badge variant="lime" size="sm">
-                <Trophy className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <Badge variant="lime" size="md">
+                <Trophy className="w-3.5 h-3.5" strokeWidth={2.25} />
                 <span>Civilians win</span>
               </Badge>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-chomu-text tracking-[-0.025em]">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#050505] tracking-[-0.02em]">
               Chomu Caught!
             </h1>
-            <p className="text-sm text-chomu-secondary">
+            <p className="text-sm font-bold text-[#050505]/80">
               The group identified the Chomu and protected the secret
             </p>
           </div>
@@ -119,7 +119,7 @@ export const OnlineResultsView: React.FC = () => {
 
       {/* Side-by-side Word & Chomu Summary Cards */}
       <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-        <Card className="bg-chomu-surface border-chomu-teal/40 p-4 flex items-center gap-3">
+        <Card className="bg-white border-chomu-teal/40 p-4 flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-chomu-teal/15 text-chomu-teal flex items-center justify-center shrink-0">
             <Trophy className="w-4 h-4" strokeWidth={1.75} />
           </div>
@@ -133,7 +133,7 @@ export const OnlineResultsView: React.FC = () => {
           </div>
         </Card>
 
-        <Card className="bg-chomu-surface border-chomu-coral/40 p-4 flex items-center gap-3">
+        <Card className="bg-white border-chomu-coral/40 p-4 flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-chomu-coral/15 text-chomu-coral flex items-center justify-center shrink-0">
             <ShieldAlert className="w-4 h-4" strokeWidth={1.75} />
           </div>
@@ -167,7 +167,7 @@ export const OnlineResultsView: React.FC = () => {
           return (
             <Card
               key={p.id}
-              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between gap-3 text-left"
+              className="bg-white border-chomu-coral/50 p-4 flex items-center justify-between gap-3 text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 <PlayerAvatar id={p.avatar} size="lg" isImposterStyle={true} />
@@ -198,22 +198,22 @@ export const OnlineResultsView: React.FC = () => {
         })}
       </div>
 
-      {/* Secret Word Card */}
-      <Card className="w-full max-w-md bg-chomu-surface p-5 text-center space-y-1">
-        <span className="text-xs text-chomu-muted block">
+      {/* Secret Word Card (Neo-Brutalist Dark Stage) */}
+      <div className="w-full max-w-md rounded-2xl bg-[#050505] text-white p-5 text-center space-y-1.5 border-[3px] border-[#050505] shadow-[0_6px_0_#050505]">
+        <span className="text-xs font-bold text-stone-400 block">
           {categoryName}
         </span>
-        <span className="text-xs font-medium text-chomu-purple block">
+        <span className="text-xs font-extrabold text-[#FFDF00] uppercase tracking-wider block">
           Secret word
         </span>
-        <h2 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
+        <h2 className="text-3xl font-extrabold text-[#FFDF00] tracking-[-0.02em]">
           {secretWord || 'Mystery Word'}
         </h2>
-      </Card>
+      </div>
 
       {/* Vote Breakdown */}
-      <Card className="w-full max-w-md bg-chomu-surface p-4 text-left space-y-3">
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5">
+      <Card className="w-full max-w-md bg-white p-4 text-left space-y-3">
+        <div className="flex items-center justify-between border-b border-chomu-border pb-2.5">
           <span className="text-xs font-semibold text-chomu-text">
             Vote accusations breakdown
           </span>
@@ -231,7 +231,7 @@ export const OnlineResultsView: React.FC = () => {
             return (
               <div
                 key={voter.id}
-                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-white/[0.06]"
+                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-chomu-bgSecondary border border-chomu-border"
               >
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <PlayerAvatar id={voter.avatar} size="sm" />
@@ -259,7 +259,7 @@ export const OnlineResultsView: React.FC = () => {
       </Card>
 
       {/* Civilians Roster */}
-      <div className="w-full max-w-md bg-chomu-bgSecondary border border-white/[0.08] rounded-xl p-4">
+      <div className="w-full max-w-md bg-chomu-bgSecondary border border-chomu-border rounded-xl p-4">
         <div className="flex items-center gap-1.5 mb-2.5">
           <Users className="w-4 h-4 text-chomu-lime" strokeWidth={1.5} />
           <span className="text-xs font-medium text-chomu-lime tabular-nums">
@@ -271,7 +271,7 @@ export const OnlineResultsView: React.FC = () => {
           {civilianPlayers.map((p) => (
             <div
               key={p.id}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-chomu-surface border border-white/[0.08] text-xs text-chomu-text font-medium"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-chomu-border text-xs text-chomu-text font-medium"
             >
               <PlayerAvatar id={p.avatar} size="sm" />
               <span>{p.name}</span>

@@ -572,8 +572,9 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
       expect(withTurn.length).toBe(3);
       expect(withTurn[2].urls).toEqual(['turn:relay.example.com:3478']);
 
-      // Zero-Cost Architecture Verification: Confirm no paid SDK imports
-      const paidSdks = ['@agora/rtc', 'twilio', '@daily-co/daily-js', 'livekit-client'];
+      // Zero-Cost Architecture Verification: Confirm no paid commercial SDK imports
+      // Note: livekit-client is our approved $0/mo Build Free SFU SDK (Option B)
+      const paidSdks = ['@agora/rtc', 'twilio', '@daily-co/daily-js'];
       for (const sdk of paidSdks) {
         expect(() => require.resolve(sdk)).toThrow();
       }
@@ -772,7 +773,7 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
           audioLevel: 0.6,
         })
       );
-      expect(htmlSpeaking).toContain('border-chomu-lime');
+      expect(htmlSpeaking).toContain('ring-[#64E987]');
 
       // 3. Discussion round remains stable
       expect(host.getState()?.phase).toBe('ROUND');
@@ -873,7 +874,7 @@ describe('Chomu Who? Online Multiplayer E2E Verification Harness', () => {
         })
       );
       expect(charlieTile).not.toContain('Spotlight');
-      expect(charlieTile).toContain('border-chomu-lime');
+      expect(charlieTile).toContain('ring-[#64E987]');
 
       // Advance turn to Charlie
       state = handleNextTurn(state);

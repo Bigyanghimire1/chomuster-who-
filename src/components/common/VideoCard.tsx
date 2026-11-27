@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Crown, Mic, VideoOff } from 'lucide-react';
+import { Crown, Mic, MicOff, Video, VideoOff, WifiOff } from 'lucide-react';
 import { OnlinePlayer } from '../../types/multiplayer';
 import { PlayerAvatar } from '../illustrations/PlayerAvatar';
 import { Badge } from './Badge';
@@ -11,7 +11,10 @@ export interface VideoCardProps {
   compact?: boolean;
   isSpeaking?: boolean;
   isLocal?: boolean;
+  isMuted?: boolean;
+  hasCameraOn?: boolean;
   audioLevel?: number;
+  readinessStatus?: 'ready' | 'waiting' | null;
   className?: string;
   onClick?: () => void;
   actionSlot?: React.ReactNode;
@@ -19,6 +22,10 @@ export interface VideoCardProps {
 
 /**
  * VideoCard — Video or avatar tile for multiplayer rooms.
+ * Three-zone layout:
+ * - Top: Host & media/connection indicators
+ * - Center: Live video or expressive SVG character
+ * - Bottom: Player name & readiness / speaking state
  * Keeps a persistent <video> element to prevent flicker on layout/track changes.
  */
 export const VideoCard: React.FC<VideoCardProps> = ({
@@ -28,7 +35,10 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   compact = false,
   isSpeaking = false,
   isLocal = false,
+  isMuted,
+  hasCameraOn,
   audioLevel = 0,
+  readinessStatus = null,
   className = '',
   onClick,
   actionSlot,
@@ -111,33 +121,35 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   }, [stream, hasActiveVideo]);
 
   const borderStyles = isSpeaking
-    ? 'border-chomu-lime ring-2 ring-chomu-lime/40'
-    : isSpotlight
-      ? 'border-chomu-purple/50'
-      : 'border-white/[0.08] hover:border-white/[0.16]';
+    ? 'border-[#050505] ring-4 ring-[#64E987]'
+    : readinessStatus === 'ready'
+      ? 'border-[#050505] ring-2 ring-[#64E987]'
+      : isSpotlight
+        ? 'border-[#050505] ring-4 ring-[#FFDF00]'
+        : 'border-[#050505]';
 
   const sizeStyles = isSpotlight
-    ? 'w-full h-full min-h-[260px] sm:min-h-[320px] md:min-h-[360px]'
+    ? 'w-full aspect-[4/3] min-h-[260px] sm:min-h-[300px] md:min-h-[340px]'
     : compact
-      ? 'w-full h-full min-h-0'
-      : 'w-full h-full min-h-[140px] sm:min-h-[172px]';
+      ? 'w-full aspect-[4/3] min-h-[112px]'
+      : 'w-full aspect-[4/3] min-h-[140px] sm:min-h-[172px]';
 
   const avatarSize = isSpotlight ? 'xl' : compact ? 'md' : 'xl';
 
   return (
     <div
       onClick={onClick}
-      className={`relative overflow-hidden rounded-3xl bg-chomu-surface border-2 transition-[border-color,transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center select-none shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] ${borderStyles} ${sizeStyles} ${className} ${
+      className={`animate-scale-in relative overflow-hidden rounded-2xl bg-white border-[2.5px] transition-[border-color,transform,opacity,box-shadow] duration-150 flex items-center justify-center select-none shadow-[0_5px_0_#050505] ${borderStyles} ${sizeStyles} ${className} ${
         onClick ? 'cursor-pointer' : ''
       }`}
     >
-      {/* Persistent <video> Element (muted always; VoiceManager handles remote audio playback cleanly) */}
+      {/* Persistent <video> Element (contained strictly inside card with object-cover) */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted={true}
-        className={`absolute inset-0 w-full h-full object-cover rounded-3xl ${
+        className={`absolute inset-0 w-full h-full object-cover rounded-[13px] ${
           hasActiveVideo ? 'block' : 'hidden'
         } ${isLocal ? '-scale-x-100' : ''}`}
       />
@@ -145,70 +157,129 @@ export const VideoCard: React.FC<VideoCardProps> = ({
       {/* Avatar Fallback when camera is off — spaced cleanly away from top badges & bottom name bar */}
       {!hasActiveVideo && (
         <div
-          className={`absolute inset-0 flex flex-col items-center justify-center z-0 bg-chomu-surface ${
-            compact ? 'pt-6 pb-8 px-2' : 'pt-8 pb-11 px-4'
+          className={`absolute inset-0 flex flex-col items-center justify-center z-0 bg-[#F5F6F8] ${
+            compact ? 'pt-7 pb-8 px-2' : 'pt-9 pb-11 px-4'
           }`}
         >
           <PlayerAvatar id={player.avatar} size={avatarSize} />
-          {!compact && (
-            <span className="text-xs text-chomu-muted inline-flex items-center gap-1.5 mt-2">
-              <VideoOff className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
-              <span>Camera off</span>
-            </span>
-          )}
         </div>
       )}
 
-      {/* Top Overlay: Spotlight, Host & Action Slot */}
-      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none z-10">
-        <div className="flex items-center gap-1.5 min-w-0">
+      {/* Top Zone: Spotlight, Host, Media & Connection Indicators */}
+      <div className="absolute top-2 left-2 right-2 flex items-center justify-between gap-1.5 pointer-events-none z-10">
+        <div className="flex items-center gap-1 min-w-0">
           {isSpotlight && (
             <Badge variant="purple" size="sm">
               Spotlight
             </Badge>
           )}
-          {player.isHost && !compact && (
-            <Badge variant="yellow" size="sm">
-              <Crown className="w-3.5 h-3.5" strokeWidth={1.5} />
-              <span>Host</span>
-            </Badge>
+          {player.isHost && (
+            <span
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFDF00] border-2 border-[#050505] text-[10px] font-extrabold text-[#050505] shadow-[0_2px_0_#050505] shrink-0"
+              title="Room Host"
+            >
+              <Crown className="w-3 h-3" strokeWidth={2.25} />
+              {!compact && <span>Host</span>}
+            </span>
           )}
         </div>
 
-        {actionSlot && <div className="pointer-events-auto shrink-0">{actionSlot}</div>}
+        <div className="flex items-center gap-1 shrink-0">
+          {/* Connection status if offline */}
+          {!player.isConnected && (
+            <span
+              className="w-6 h-6 rounded-full bg-[#FF5D73] border-2 border-[#050505] flex items-center justify-center text-[#050505] shadow-[0_2px_0_#050505]"
+              title="Reconnecting"
+              aria-label="Reconnecting"
+            >
+              <WifiOff className="w-3 h-3" strokeWidth={2.25} />
+            </span>
+          )}
+
+          {/* Mic indicator */}
+          {(() => {
+            const derivedMuted =
+              typeof isMuted === 'boolean'
+                ? isMuted
+                : stream && typeof stream.getAudioTracks === 'function'
+                  ? !stream.getAudioTracks().some((t) => t.enabled && t.readyState === 'live')
+                  : undefined;
+            if (typeof derivedMuted !== 'boolean') return null;
+            return (
+              <span
+                className={`w-6 h-6 rounded-full border-2 border-[#050505] flex items-center justify-center shadow-[0_2px_0_#050505] ${
+                  derivedMuted
+                    ? 'bg-white text-[#52555E]'
+                    : 'bg-[#64E987] text-[#050505]'
+                }`}
+                title={derivedMuted ? 'Mic muted' : 'Mic active'}
+                aria-label={derivedMuted ? 'Mic muted' : 'Mic active'}
+              >
+                {derivedMuted ? (
+                  <MicOff className="w-3 h-3" strokeWidth={2.25} />
+                ) : (
+                  <Mic className="w-3 h-3" strokeWidth={2.25} />
+                )}
+              </span>
+            );
+          })()}
+
+          {/* Camera indicator */}
+          <span
+            className={`w-6 h-6 rounded-full border-2 border-[#050505] flex items-center justify-center shadow-[0_2px_0_#050505] ${
+              (hasCameraOn ?? hasActiveVideo)
+                ? 'bg-[#A9E5F2] text-[#050505]'
+                : 'bg-white text-[#52555E]'
+            }`}
+            title={(hasCameraOn ?? hasActiveVideo) ? 'Camera on' : 'Camera off'}
+            aria-label={(hasCameraOn ?? hasActiveVideo) ? 'Camera on' : 'Camera off'}
+          >
+            {(hasCameraOn ?? hasActiveVideo) ? (
+              <Video className="w-3 h-3" strokeWidth={2.25} />
+            ) : (
+              <VideoOff className="w-3 h-3" strokeWidth={2.25} />
+            )}
+          </span>
+
+          {actionSlot && <div className="pointer-events-auto shrink-0">{actionSlot}</div>}
+        </div>
       </div>
 
-      {/* Bottom Bar: Single Player Name & Live Audio */}
-      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none z-10">
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-chomu-bgSecondary/90 border border-white/[0.1] text-xs font-medium text-chomu-text min-w-0 max-w-full">
-          <span
-            className={`w-2 h-2 rounded-full shrink-0 ${
-              isSpeaking ? 'bg-chomu-lime' : 'bg-chomu-muted/50'
-            }`}
-          />
+      {/* Bottom Zone: Player Name & Readiness / Live Status */}
+      <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-1.5 pointer-events-none z-10">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border-2 border-[#050505] text-xs font-extrabold text-[#050505] shadow-[0_2px_0_#050505] min-w-0 max-w-full">
           <span className="truncate">{player.name}</span>
           {isLocal && (
-            <span className="text-xs text-chomu-purple font-medium shrink-0">
+            <span className="text-[11px] text-[#050505]/70 font-extrabold shrink-0">
               (You)
             </span>
           )}
-          {compact && !hasActiveVideo && (
-            <VideoOff className="w-3 h-3 text-chomu-muted shrink-0 ml-0.5" strokeWidth={1.5} aria-label="Camera off" />
-          )}
         </div>
 
-        {isSpeaking && (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-chomu-bgSecondary/90 border border-chomu-lime/30 text-chomu-lime text-xs font-medium shrink-0">
-            <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
-            {!compact && <span>Live</span>}
-            {audioLevel > 0 && (
-              <span
-                className="w-1 rounded-full bg-chomu-lime transition-[height] duration-75"
-                style={{ height: `${Math.max(6, Math.min(14, audioLevel * 18))}px` }}
-              />
-            )}
-          </div>
-        )}
+        <div className="flex items-center gap-1 shrink-0">
+          {readinessStatus === 'ready' && (
+            <span className="px-2.5 py-0.5 rounded-full bg-[#64E987] border-2 border-[#050505] text-[#050505] text-[11px] font-extrabold shadow-[0_2px_0_#050505]">
+              Ready
+            </span>
+          )}
+          {readinessStatus === 'waiting' && (
+            <span className="px-2.5 py-0.5 rounded-full bg-[#E2E4EA] border-2 border-[#050505] text-[#26282E] text-[11px] font-bold shadow-[0_2px_0_#050505]">
+              Not ready
+            </span>
+          )}
+          {isSpeaking && (
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#64E987] border-2 border-[#050505] text-[#050505] text-[11px] font-extrabold shadow-[0_2px_0_#050505] shrink-0">
+              <Mic className="w-3 h-3" strokeWidth={2.5} />
+              {!compact && <span>Live</span>}
+              {audioLevel > 0 && (
+                <span
+                  className="w-1 rounded-full bg-[#050505] transition-[height] duration-75"
+                  style={{ height: `${Math.max(6, Math.min(12, audioLevel * 16))}px` }}
+                />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

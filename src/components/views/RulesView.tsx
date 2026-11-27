@@ -38,7 +38,7 @@ export const RulesView: React.FC = () => {
       <div className="space-y-3">
         <Card className="p-5">
           <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-white/[0.08] text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
+            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-chomu-border text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
               1
             </span>
             <h2 className="text-sm font-semibold text-chomu-text">View secret cards</h2>
@@ -58,7 +58,7 @@ export const RulesView: React.FC = () => {
 
         <Card className="p-5">
           <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-white/[0.08] text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
+            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-chomu-border text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
               2
             </span>
             <h2 className="text-sm font-semibold text-chomu-text">Give clues in turns</h2>
@@ -76,7 +76,7 @@ export const RulesView: React.FC = () => {
 
         <Card className="p-5">
           <div className="flex items-center gap-2.5 mb-2">
-            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-white/[0.08] text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
+            <span className="w-6 h-6 rounded-md bg-chomu-elevated border border-chomu-border text-chomu-text flex items-center justify-center font-mono text-xs font-medium">
               3
             </span>
             <h2 className="text-sm font-semibold text-chomu-text">Discuss and vote</h2>

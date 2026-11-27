@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Countries & Cities,geography,geo_japan,Japan,Fast,Clean,Island,Train,Flowers,East,Tokyo,Sushi,Anime
+Countries & Cities,geography,geo_france,France,Art,Wine,Love,Bread,Tower,Europe,Paris,Cheese,Fashion
+Countries & Cities,geography,geo_egypt,Egypt,Old,Hot,River,Sand,King,Gold,Desert,Pyramids,Africa
+Countries & Cities,geography,geo_brazil,Brazil,Dance,Party,Green,Forest,Beach,Yellow,Football,Carnival,South
+Countries & Cities,geography,geo_australia,Australia,Sun,Beach,Far,Surf,Desert,Island,Kangaroo,Koala,Sydney
+Countries & Cities,geography,geo_canada,Canada,Cold,Forest,Polite,Snow,Leaf,North,Ice,Maple,Hockey
+Countries & Cities,geography,geo_italy,Italy,Art,Old,Boot,Wine,Cheese,Europe,Pizza,Pasta,Rome
+Countries & Cities,geography,geo_india,India,Color,Crowded,Big,Spicy,Tea,Cricket,Asia,Curry,Bollywood
+Countries & Cities,geography,geo_china,China,Big,Old,Red,Wall,Dragon,Tea,Asia,Panda,Beijing
+Countries & Cities,geography,geo_united_states,United States,Big,Movies,Flag,Stars,Burger,Rich,America,Newyork,Hollywood
+Countries & Cities,geography,geo_united_kingdom,United Kingdom,Rain,Tea,Royal,Queen,Bus,Island,London,England,Europe
+Countries & Cities,geography,geo_germany,Germany,Cars,Beer,Castle,Fast,Bread,Europe,Berlin,Football,Clean
+Countries & Cities,geography,geo_spain,Spain,Sun,Dance,Beach,Bull,Food,Europe,Madrid,Football,Warm
+Countries & Cities,geography,geo_mexico,Mexico,Spicy,Color,Hat,Music,Sun,Food,Taco,Spanish,Party
+Countries & Cities,geography,geo_south_korea,South Korea,Modern,Fast,Tech,Music,Food,Asia,Seoul,Kpop,Drama
+Countries & Cities,geography,geo_thailand,Thailand,Beach,Warm,Smile,Street,Spicy,Boat,Bangkok,Asia,Temples
+Countries & Cities,geography,geo_switzerland,Switzerland,Rich,Clean,Cold,Snow,Watch,Bank,Alps,Chocolate,Mountains
+Countries & Cities,geography,geo_turkey,Turkey,Bridge,Tea,Old,Market,Carpet,East,Istanbul,Europe,Asia
+Countries & Cities,geography,geo_greece,Greece,Blue,White,Sea,Old,Gods,Islands,Athens,Europe,History
+Countries & Cities,geography,geo_nepal,Nepal,High,Cold,Flag,Climb,Peace,Asia,Everest,Mountains,Himalayas
+Countries & Cities,geography,geo_russia,Russia,Huge,Cold,Snow,Winter,Bear,North,Moscow,Big,Europe
+Countries & Cities,geography,geo_argentina,Argentina,Dance,Meat,South,Blue,White,Passionate,Football,Messi,Tango
+Countries & Cities,geography,geo_tokyo,Tokyo,Lights,Crowded,Fast,Train,Neon,Modern,Japan,Capital,City
+Countries & Cities,geography,geo_paris,Paris,Love,Art,Cafe,Lights,Fashion,River,France,Tower,Capital
+Countries & Cities,geography,geo_new_york,New York,Tall,Busy,Yellow,Taxi,Bridge,Island,America,City,Statue
+Countries & Cities,geography,geo_london,London,Rain,Red,Clock,Bus,River,Royal,England,Capital,Bridge
+Countries & Cities,geography,geo_dubai,Dubai,Gold,Rich,Hot,Mall,Tall,Luxury,Desert,Tower,Modern
+Countries & Cities,geography,geo_rome,Rome,Old,Stone,Art,Fountain,Pizza,History,Italy,Capital,Ancient
+Countries & Cities,geography,geo_singapore,Singapore,Clean,Green,Small,Modern,Rich,Island,Asia,City,Garden
+Countries & Cities,geography,geo_sydney,Sydney,Beach,Sun,Water,Bridge,Boat,Harbor,Australia,Opera,City
+Countries & Cities,geography,geo_bangkok,Bangkok,Busy,Warm,Street,Food,Boat,Gold,Thailand,Capital,Temples
+Countries & Cities,geography,geo_venice,Venice,Water,Mask,Love,Boat,Bridge,Float,Italy,Canals,City
+Countries & Cities,geography,geo_amsterdam,Amsterdam,Water,Flat,Green,Bridge,Flowers,Europe,Bikes,Canals,Dutch
+Countries & Cities,geography,geo_cairo,Cairo,Hot,Old,Busy,River,Sand,History,Egypt,Pyramids,Capital
+Countries & Cities,geography,geo_istanbul,Istanbul,Bridge,Market,Old,Tea,Cats,Mosque,Turkey,Europe,Asia

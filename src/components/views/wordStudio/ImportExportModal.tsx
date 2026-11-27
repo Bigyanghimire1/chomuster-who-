@@ -183,8 +183,8 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-      <div className="bg-chomu-surface border border-chomu-border rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+      <div className="bg-white border border-chomu-border rounded-3xl max-w-2xl w-full p-6 shadow-xl space-y-5 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-chomu-border pb-3">
           <div>
@@ -208,7 +208,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             onClick={() => setActiveTab('export')}
             className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'export'
-                ? 'bg-chomu-purple text-chomu-bg shadow-md'
+                ? 'bg-chomu-purple text-white shadow-sm'
                 : 'text-chomu-muted hover:text-chomu-text'
             }`}
           >
@@ -220,7 +220,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             onClick={() => setActiveTab('import')}
             className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'import'
-                ? 'bg-chomu-purple text-chomu-bg shadow-md'
+                ? 'bg-chomu-purple text-white shadow-sm'
                 : 'text-chomu-muted hover:text-chomu-text'
             }`}
           >

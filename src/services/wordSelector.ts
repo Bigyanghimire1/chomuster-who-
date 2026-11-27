@@ -29,23 +29,23 @@ export function selectSecretWord(
       ? HINT_SUPPORTED_WORDS.filter(w => selectedCategoryIds.includes(w.categoryId))
       : [];
 
-  let pool: WordEntry[] = [];
+  const coveredByHints = new Set(hintCandidates.map(w => w.categoryId));
+  const pool: WordEntry[] = [...hintCandidates];
 
-  if (hintCandidates.length > 0) {
-    pool = hintCandidates;
-  } else {
-    // 2. Fallback to standard/custom category words
-    const activeCats = categories.filter(c => selectedCategoryIds.includes(c.id));
-    for (const cat of activeCats) {
-      for (const w of cat.words) {
-        if (typeof w === 'string' && w.trim()) {
-          pool.push({
-            id: `${cat.id}_${w.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-            word: w.trim(),
-            categoryId: cat.id,
-            categoryName: cat.name,
-          });
-        }
+  // 2. Include words from any selected categories not covered by HINT_SUPPORTED_WORDS
+  //    (e.g. custom categories, or all categories when hintDifficulty === 'none')
+  const activeCats = categories.filter(
+    c => selectedCategoryIds.includes(c.id) && (hintDifficulty === 'none' || !coveredByHints.has(c.id))
+  );
+  for (const cat of activeCats) {
+    for (const w of cat.words) {
+      if (typeof w === 'string' && w.trim()) {
+        pool.push({
+          id: `${cat.id}_${w.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+          word: w.trim(),
+          categoryId: cat.id,
+          categoryName: cat.name,
+        });
       }
     }
   }

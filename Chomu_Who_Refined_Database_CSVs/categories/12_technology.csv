@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Technology & Science,technology,tech_smartphone,Smartphone,Pocket,Daily,Touch,App,Battery,Call,Device,Screen,Mobile
+Technology & Science,technology,tech_laptop,Laptop,Desk,Work,Bag,Type,Fold,Battery,Computer,Screen,Keyboard
+Technology & Science,technology,tech_internet,Internet,Global,Fast,Daily,Connect,Web,Search,Online,Wifi,Network
+Technology & Science,technology,tech_wi_fi,Wi-Fi,Home,Cafe,Signal,Password,Fast,Connect,Wireless,Internet,Router
+Technology & Science,technology,tech_robot,Robot,Future,Metal,Smart,Move,Work,Code,Machine,AI,Auto
+Technology & Science,technology,tech_artificial_intelligence,Artificial Intelligence,Future,Smart,Fast,Learn,Chat,Brain,AI,Computer,Robot
+Technology & Science,technology,tech_drone,Drone,Sky,Camera,Remote,Small,Spin,Control,Fly,Air,Video
+Technology & Science,technology,tech_satellite,Satellite,High,Signal,Circle,Orbit,TV,GPS,Space,Earth,Sky
+Technology & Science,technology,tech_telescope,Telescope,Night,Dark,Look,Far,Lens,Moon,Stars,Space,Sky
+Technology & Science,technology,tech_microscope,Microscope,Lab,Science,Look,Lens,Tiny,Glass,Small,Cells,Zoom
+Technology & Science,technology,tech_solar_panel,Solar Panel,Roof,Green,Clean,Light,Blue,Power,Sun,Energy,Electric
+Technology & Science,technology,tech_battery,Battery,Inside,Small,Dead,Charge,Plus,Minus,Power,Energy,Phone
+Technology & Science,technology,tech_bluetooth,Bluetooth,Short,Signal,Pair,Audio,Phone,Connect,Wireless,Headphones,Speaker
+Technology & Science,technology,tech_gps,GPS,Car,Phone,Travel,Find,Road,Signal,Map,Location,Direction
+Technology & Science,technology,tech_virtual_reality,Virtual Reality,Future,Eyes,Fun,Headset,Game,3D,Fake,World,VR
+Technology & Science,technology,tech_smartwatch,Smartwatch,Hand,Fitness,Steps,Screen,Call,Band,Wrist,Time,Digital
+Technology & Science,technology,tech_3d_printer,3D Printer,Design,Plastic,Modern,Layer,Shape,Build,Copy,Object,Machine
+Technology & Science,technology,tech_television,Television,Living,Sofa,Remote,Channel,News,Movie,TV,Screen,Watch
+Technology & Science,technology,tech_keyboard,Keyboard,Desk,Work,Click,Letters,Buttons,Hands,Type,Computer,Keys
+Technology & Science,technology,tech_computer_mouse,Computer Mouse,Desk,Hand,Move,Scroll,Arrow,Pad,Click,Laptop,Cursor
+Technology & Science,technology,tech_usb_drive,USB Drive,Small,Pocket,Data,Plug,Save,Files,Memory,Flash,Computer
+Technology & Science,technology,tech_power_bank,Power Bank,Travel,Bag,Phone,Cable,Full,Juice,Charge,Battery,Portable
+Technology & Science,technology,tech_projector,Projector,Wall,Dark,Class,Light,Big,Movie,Screen,Show,Slide
+Technology & Science,technology,tech_laser,Laser,Light,Fast,Straight,Beam,Point,Cut,Red,Ray,Science
+Technology & Science,technology,tech_qr_code,QR Code,Black,White,Square,Menu,Pay,Camera,Scan,Phone,Link
+Technology & Science,technology,tech_email,Email,Work,Fast,Inbox,Send,Address,Reply,Letter,Message,Online
+Technology & Science,technology,tech_social_media,Social Media,Phone,Daily,Share,Like,Post,Follow,Apps,Friends,Online
+Technology & Science,technology,tech_video_game,Video Game,Fun,Screen,Night,Level,Play,Win,Console,Controller,Gaming
+Technology & Science,technology,tech_electric_car,Electric Car,Quiet,Modern,Clean,Plug,No,Gas,Battery,Drive,Tesla
+Technology & Science,technology,tech_self_driving_car,Self-Driving Car,Future,Smart,Road,Sensors,No,Hands,Auto,Drive,Robot
+Technology & Science,technology,tech_gravity,Gravity,Apple,Earth,Invisible,Heavy,Pull,Newton,Fall,Down,Force
+Technology & Science,technology,tech_magnet,Magnet,Metal,Fridge,Pull,North,South,Stick,Iron,Attract,Force
+Technology & Science,technology,tech_electricity,Electricity,Home,Fast,Danger,Wire,Light,Switch,Power,Energy,Shock
+Technology & Science,technology,tech_dna,DNA,Body,Science,Tiny,Family,Spiral,Code,Genes,Life,Biology
+Technology & Science,technology,tech_vaccine,Vaccine,Clinic,Safe,Health,Needle,Arm,Protect,Doctor,Medicine,Virus

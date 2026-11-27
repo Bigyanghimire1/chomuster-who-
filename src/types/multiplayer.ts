@@ -34,6 +34,8 @@ export type PlayerState = OnlinePlayer;
 export interface OnlineSettings {
   categoryIds: string[];
   roundDurationSeconds: number; // e.g. 180 (3 min)
+  turnDurationSeconds?: number; // 0 (Off), 15, 20, 30
+  discussionDurationSeconds?: number; // 30, 45, 60
   votingDurationSeconds: number; // e.g. 60 (1 min)
   hintDifficulty: HintDifficulty; // 'subtle' | 'balanced' | 'easy' | 'none'
   chomuCount: number; // 1, 2, or 3

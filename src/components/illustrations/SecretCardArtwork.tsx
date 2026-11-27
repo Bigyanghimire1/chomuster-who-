@@ -1,85 +1,129 @@
 import React from 'react';
 
-export const SecretCardBack: React.FC<{ isHolding?: boolean }> = ({ isHolding = false }) => {
+interface SecretCardBackProps {
+  isHolding?: boolean;
+  className?: string;
+}
+
+export const SecretCardBack: React.FC<SecretCardBackProps> = ({
+  isHolding = false,
+  className = '',
+}) => {
   return (
     <svg
-      viewBox="0 0 240 320"
+      viewBox="0 0 220 220"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-full max-w-[240px] select-none"
+      className={`w-full max-w-[176px] h-auto select-none transition-transform duration-300 ${
+        isHolding ? 'scale-105' : ''
+      } ${className}`}
     >
-      {/* Outer Border */}
-      <rect
-        x="6"
-        y="6"
-        width="228"
-        height="308"
-        rx="20"
-        fill="#111824"
-        stroke={isHolding ? '#1CE8C6' : '#233044'}
-        strokeWidth="2"
-        strokeDasharray={isHolding ? 'none' : '8 6'}
+      {/* Offset yellow doodle badge */}
+      <circle
+        cx="110"
+        cy="108"
+        r="74"
+        fill="#FFDF00"
+        stroke="#050505"
+        strokeWidth="4"
+      />
+      <circle
+        cx="110"
+        cy="108"
+        r="58"
+        fill="#FFFFFF"
+        stroke="#050505"
+        strokeWidth="3"
+        strokeDasharray="7 6"
       />
 
-      {/* Inner Frame */}
-      <rect
-        x="16"
-        y="16"
-        width="208"
-        height="288"
-        rx="14"
-        fill="#070B12"
-        stroke="#182233"
-        strokeWidth="1.5"
-      />
+      {/* Playful floating doodle marks */}
+      <g transform="translate(28, 34) rotate(-8)">
+        <rect
+          width="30"
+          height="30"
+          rx="9"
+          fill="#F28BCB"
+          stroke="#050505"
+          strokeWidth="3"
+        />
+        <text
+          x="15"
+          y="21"
+          fill="#050505"
+          fontSize="18"
+          fontWeight="900"
+          textAnchor="middle"
+        >
+          ?
+        </text>
+      </g>
 
-      {/* 4 Corner Dossier Brackets */}
-      <path d="M26 40 L 26 26 L 40 26" stroke="#1CE8C6" strokeWidth="2" strokeLinecap="round" />
-      <path d="M214 40 L 214 26 L 200 26" stroke="#1CE8C6" strokeWidth="2" strokeLinecap="round" />
-      <path d="M26 280 L 26 294 L 40 294" stroke="#1CE8C6" strokeWidth="2" strokeLinecap="round" />
-      <path d="M214 280 L 214 294 L 200 294" stroke="#1CE8C6" strokeWidth="2" strokeLinecap="round" />
+      <g transform="translate(162, 30) rotate(10)">
+        <rect
+          width="28"
+          height="28"
+          rx="9"
+          fill="#A9E5F2"
+          stroke="#050505"
+          strokeWidth="3"
+        />
+        <text
+          x="14"
+          y="20"
+          fill="#050505"
+          fontSize="16"
+          fontWeight="900"
+          textAnchor="middle"
+        >
+          !
+        </text>
+      </g>
 
-      {/* Concentric Center Rings */}
-      <circle cx="120" cy="150" r="64" stroke="#182233" strokeWidth="1.5" />
-      <circle cx="120" cy="150" r="48" stroke="#233044" strokeWidth="1.5" strokeDasharray="6 4" />
-      <circle cx="120" cy="150" r="34" fill="#111824" stroke="#1CE8C6" strokeWidth="1.5" />
-
-      {/* Keyhole Eye Medallion */}
-      <path
-        d="M102 150 C 102 138, 138 138, 138 150 C 138 162, 102 162, 102 150 Z"
-        stroke="#F5F7FA"
-        strokeWidth="2"
-        fill="none"
-      />
-      <circle cx="120" cy="150" r="7" fill="#1CE8C6" />
-      <circle cx="120" cy="150" r="2.5" fill="#070B12" />
-
-      {/* Top Case Label */}
-      <rect x="74" y="56" width="92" height="22" rx="6" fill="#182233" stroke="#233044" strokeWidth="1" />
-      <text
-        x="120"
-        y="71"
-        fill="#9AA8BE"
-        fontSize="10"
-        fontWeight="600"
-        letterSpacing="1"
-        textAnchor="middle"
-      >
-        TOP SECRET
-      </text>
-
-      {/* Bottom Instruction */}
-      <rect x="55" y="238" width="130" height="26" rx="8" fill="#182233" stroke="#233044" strokeWidth="1" />
-      <text
-        x="120"
-        y="255"
-        fill="#F5F7FA"
-        fontSize="11"
-        fontWeight="500"
-        textAnchor="middle"
-      >
-        Hold to reveal
-      </text>
+      {/* Central Magnifying Glass + Suspicious Eye */}
+      <g transform="translate(106, 104)">
+        {/* Handle */}
+        <path
+          d="M28 28L56 56"
+          stroke="#050505"
+          strokeWidth="12"
+          strokeLinecap="round"
+        />
+        <path
+          d="M28 28L56 56"
+          stroke="#64E987"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        {/* Lens ring */}
+        <circle
+          cx="0"
+          cy="0"
+          r="40"
+          fill="#FFFFFF"
+          stroke="#050505"
+          strokeWidth="4.5"
+        />
+        {/* Eye outline */}
+        <path
+          d="M-26 0C-18 -16 18 -16 26 0C18 16 -18 16 -26 0Z"
+          fill="#FFF9CC"
+          stroke="#050505"
+          strokeWidth="3.5"
+          strokeLinejoin="round"
+        />
+        {/* Iris & Pupil */}
+        <circle
+          cx="0"
+          cy="0"
+          r="11"
+          fill={isHolding ? '#64E987' : '#FF5D73'}
+          stroke="#050505"
+          strokeWidth="3"
+        />
+        <circle cx="0" cy="0" r="4.5" fill="#050505" />
+        <circle cx="-3" cy="-3" r="2.2" fill="#FFFFFF" />
+      </g>
     </svg>
   );
 };

@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Sports & Games,sports,sport_football,Football,Field,Grass,Team,Goal,World,Match,Kick,Round,Soccer
+Sports & Games,sports,sport_basketball,Basketball,Tall,Indoor,Team,Jump,Bounce,Orange,Hoop,Court,Dunk
+Sports & Games,sports,sport_tennis,Tennis,White,Sun,Match,Hit,Yellow,Serve,Racket,Net,Court
+Sports & Games,sports,sport_swimming,Swimming,Blue,Summer,Race,Fast,Breathe,Goggles,Pool,Water,Dive
+Sports & Games,sports,sport_cricket,Cricket,Field,Sun,Team,Run,Wicket,Match,Bat,Ball,India
+Sports & Games,sports,sport_baseball,Baseball,Field,Team,America,Hit,Run,Glove,Bat,Pitch,Home
+Sports & Games,sports,sport_volleyball,Volleyball,Sand,Team,Jump,Hit,Hands,High,Net,Beach,Spike
+Sports & Games,sports,sport_badminton,Badminton,Indoor,Fast,Light,Hit,Feathers,Jump,Racket,Net,Birdie
+Sports & Games,sports,sport_table_tennis,Table Tennis,Fast,Small,Indoor,Bounce,Hit,White,Pingpong,Net,Paddle
+Sports & Games,sports,sport_boxing,Boxing,Ring,Strong,Round,Hit,Fight,Bell,Gloves,Punch,Knockout
+Sports & Games,sports,sport_golf,Golf,Green,Quiet,Walk,Stick,Small,Hit,Hole,Club,Ball
+Sports & Games,sports,sport_bowling,Bowling,Indoor,Heavy,Shoes,Roll,Strike,Lane,Pins,Ball,Alley
+Sports & Games,sports,sport_chess,Chess,Quiet,Smart,Think,Black,White,Move,King,Queen,Board
+Sports & Games,sports,sport_formula_1,Formula 1,Loud,Fast,Track,Pit,Driver,Helmet,Race,Car,Speed
+Sports & Games,sports,sport_rugby,Rugby,Grass,Strong,Mud,Run,Carry,Tackle,Oval,Ball,Team
+Sports & Games,sports,sport_ice_hockey,Ice Hockey,Cold,Fast,Team,Stick,Skate,Goal,Frozen,Puck,Winter
+Sports & Games,sports,sport_gymnastics,Gymnastics,Jump,Spin,Strong,Flip,Balance,Mat,Olympic,Flexible,Body
+Sports & Games,sports,sport_karate,Karate,Belt,White,Respect,Japan,Chop,Kick,Martial,Fight,Punch
+Sports & Games,sports,sport_wrestling,Wrestling,Mat,Strong,Grip,Push,Hold,Ring,Fight,Pin,Body
+Sports & Games,sports,sport_archery,Archery,Focus,Quiet,Aim,Pull,Target,Wood,Bow,Arrow,Shoot
+Sports & Games,sports,sport_surfing,Surfing,Sun,Summer,Balance,Stand,Ride,Blue,Waves,Board,Ocean
+Sports & Games,sports,sport_skateboarding,Skateboarding,Street,Park,Tricks,Wheels,Jump,Balance,Deck,Ride,Roll
+Sports & Games,sports,sport_snowboarding,Snowboarding,Winter,Cold,Mountain,Slide,Fast,Goggles,White,Deck,Slope
+Sports & Games,sports,sport_skiing,Skiing,Winter,Cold,Mountain,Sticks,Fast,Slide,Snow,Two,Slope
+Sports & Games,sports,sport_marathon,Marathon,Long,Tired,Street,Water,Shoes,Finish,Run,Race,Runner
+Sports & Games,sports,sport_billiards,Billiards,Table,Green,Quiet,Stick,Hit,Hole,Pool,Balls,Pocket
+Sports & Games,sports,sport_darts,Darts,Wall,Aim,Pub,Throw,Point,Circle,Target,Sharp,Board
+Sports & Games,sports,sport_fencing,Fencing,White,Mask,Fast,Touch,Point,Duel,Sword,Fight,Olympic
+Sports & Games,sports,sport_weightlifting,Weightlifting,Gym,Strong,Heavy,Raise,Bar,Arms,Weights,Muscle,Power
+Sports & Games,sports,sport_hide_and_seek,Hide and Seek,Kids,Fun,Count,Quiet,Search,Behind,Cover,Find,Game
+Sports & Games,sports,sport_poker,Poker,Table,Night,Money,Bluff,Bet,Chips,Cards,Casino,Game
+Sports & Games,sports,sport_ludo,Ludo,Family,Classic,Colors,Move,Four,Home,Dice,Board,Game
+Sports & Games,sports,sport_monopoly,Monopoly,Family,Long,Rich,Buy,Houses,Jail,Money,Board,Game
+Sports & Games,sports,sport_minecraft,Minecraft,Screen,Kids,Build,Dig,Make,Square,Blocks,Game,Video
+Sports & Games,sports,sport_pubg,PUBG,Phone,Team,Zone,Drop,Loot,Survive,Shoot,Battle,Game

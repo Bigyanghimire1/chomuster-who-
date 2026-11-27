@@ -20,8 +20,8 @@ export default defineConfig({
         name: 'Chomu Who?',
         short_name: 'Chomu Who?',
         description: 'One word. Hidden identities. Zero trust. Offline pass-and-play party game for friends.',
-        theme_color: '#101225',
-        background_color: '#101225',
+        theme_color: '#FFDF00',
+        background_color: '#FFDF00',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
@@ -87,11 +87,20 @@ export default defineConfig({
           if (id.includes('node_modules/trystero')) {
             return 'vendor-trystero';
           }
+          if (id.includes('node_modules/@supabase')) {
+            return 'vendor-supabase';
+          }
+          if (id.includes('node_modules/livekit-client')) {
+            return 'vendor-livekit';
+          }
           if (id.includes('node_modules/qrcode') || id.includes('node_modules/canvas-confetti')) {
             return 'vendor-visuals';
           }
           if (id.includes('wordStudioBaseline')) {
             return 'word-studio-baseline';
+          }
+          if (id.includes('wordDatabase')) {
+            return 'word-database';
           }
         }
       }

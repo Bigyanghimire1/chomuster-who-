@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Food & Drinks,food_drinks,food_pizza,Pizza,Party,Box,Delivery,Round,Slice,Oven,Cheese,Tomato,Italian
+Food & Drinks,food_drinks,food_sushi,Sushi,Ocean,Small,Fresh,Seaweed,Soy,Roll,Rice,Fish,Japan
+Food & Drinks,food_drinks,food_burger,Burger,Lunch,Grill,Fast,Bread,Sauce,Cheese,Meat,Fries,Bun
+Food & Drinks,food_drinks,food_taco,Taco,Street,Spicy,Crunch,Fold,Meat,Salsa,Mexico,Shell,Corn
+Food & Drinks,food_drinks,food_coffee,Coffee,Morning,Wake,Office,Beans,Dark,Cup,Hot,Cafe,Drink
+Food & Drinks,food_drinks,food_tea,Tea,Afternoon,Warm,Relax,Leaves,Cup,Water,Hot,Green,Drink
+Food & Drinks,food_drinks,food_noodles,Noodles,Bowl,Long,Fast,Soup,Fork,Boil,Asia,Slurp,Pasta
+Food & Drinks,food_drinks,food_ice_cream,Ice Cream,Summer,Happy,Park,Cone,Scoop,Melt,Cold,Sweet,Vanilla
+Food & Drinks,food_drinks,food_popcorn,Popcorn,Night,Bucket,Noise,Butter,Salt,White,Movie,Cinema,Snack
+Food & Drinks,food_drinks,food_donut,Donut,Morning,Box,Bakery,Round,Hole,Sugar,Sweet,Fried,Ring
+Food & Drinks,food_drinks,food_cake,Cake,Party,Candle,Slice,Cream,Bake,Oven,Birthday,Sweet,Dessert
+Food & Drinks,food_drinks,food_chocolate,Chocolate,Gift,Love,Dark,Bar,Milk,Melt,Sweet,Brown,Candy
+Food & Drinks,food_drinks,food_french_fries,French Fries,Fast,Side,Gold,Salt,Oil,Crispy,Potato,Fried,Ketchup
+Food & Drinks,food_drinks,food_pancakes,Pancakes,Sunday,Morning,Stack,Flat,Butter,Pan,Breakfast,Syrup,Sweet
+Food & Drinks,food_drinks,food_sandwich,Sandwich,Lunch,Picnic,School,Slices,Cheese,Quick,Bread,Fill,Eat
+Food & Drinks,food_drinks,food_salad,Salad,Fresh,Light,Bowl,Leaves,Tomato,Fork,Green,Healthy,Vegetables
+Food & Drinks,food_drinks,food_soup,Soup,Winter,Sick,Warm,Bowl,Liquid,Cook,Spoon,Hot,Broth
+Food & Drinks,food_drinks,food_fried_rice,Fried Rice,Dinner,Pan,Asia,Egg,Oil,Bowl,White,Grain,Mix
+Food & Drinks,food_drinks,food_biryani,Biryani,Feast,Rich,Pot,Spicy,Yellow,Meat,Rice,India,Flavor
+Food & Drinks,food_drinks,food_curry,Curry,Dinner,Warm,Bowl,Sauce,Yellow,Rice,Spicy,India,Hot
+Food & Drinks,food_drinks,food_dumplings,Dumplings,Steam,Small,Fold,Dough,Meat,Sauce,Asia,Bite,Soft
+Food & Drinks,food_drinks,food_steak,Steak,Dinner,Grill,Knife,Juicy,Heavy,Pan,Beef,Meat,Cook
+Food & Drinks,food_drinks,food_pasta,Pasta,Dinner,Boil,Plate,Sauce,Fork,Cheese,Italy,Tomato,Wheat
+Food & Drinks,food_drinks,food_cookies,Cookies,Milk,Jar,Oven,Round,Chips,Crunch,Sweet,Bake,Snack
+Food & Drinks,food_drinks,food_lemonade,Lemonade,Summer,Glass,Ice,Yellow,Sugar,Fresh,Sour,Citrus,Drink
+Food & Drinks,food_drinks,food_smoothie,Smoothie,Gym,Morning,Thick,Blend,Cold,Straw,Fruit,Drink,Healthy
+Food & Drinks,food_drinks,food_milkshake,Milkshake,Cafe,Tall,Straw,Cream,Thick,Cold,Dairy,Sweet,Ice
+Food & Drinks,food_drinks,food_hot_chocolate,Hot Chocolate,Winter,Snow,Cozy,Mug,Warm,Milk,Sweet,Brown,Drink
+Food & Drinks,food_drinks,food_omelet,Omelet,Morning,Pan,Fold,Cheese,Salt,Cook,Egg,Breakfast,Yellow
+Food & Drinks,food_drinks,food_mango,Mango,Summer,Tree,Tropical,Yellow,Juicy,Seed,Fruit,Sweet,King
+Food & Drinks,food_drinks,food_watermelon,Watermelon,Summer,Picnic,Heavy,Green,Seeds,Slice,Red,Fruit,Juicy
+Food & Drinks,food_drinks,food_banana,Banana,Monkey,Snack,Soft,Peel,Long,Fruit,Yellow,Sweet,Curved
+Food & Drinks,food_drinks,food_cheese,Cheese,Mouse,Sandwich,Pizza,Yellow,Slice,Melt,Milk,Dairy,Soft
+Food & Drinks,food_drinks,food_bread,Bread,Bakery,Morning,Toast,Loaf,Slice,Soft,Wheat,Butter,Food
+Food & Drinks,food_drinks,food_honey,Honey,Nature,Gold,Jar,Sticky,Flower,Tea,Bee,Sweet,Yellow

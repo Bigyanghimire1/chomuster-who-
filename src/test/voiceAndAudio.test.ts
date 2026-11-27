@@ -427,8 +427,8 @@ describe('Voice & Audio System Unit Tests', () => {
       const filePath = path.resolve(process.cwd(), 'src/components/common/VoiceControls.tsx');
       const content = fs.readFileSync(filePath, 'utf8');
 
-      expect(content).toContain('Video');
-      expect(content).toContain('VideoOff');
+      expect(content).toContain('MediaCamIcon');
+      expect(content).toContain('Turn off camera');
       expect(content).toContain('toggleCamera');
       expect(content).toContain('handleCameraClick');
       expect(content).toContain('isCameraOn');

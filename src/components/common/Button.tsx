@@ -2,7 +2,19 @@ import React from 'react';
 import { audioService } from '../../services/audioService';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'teal' | 'accent' | 'coral' | 'crimson' | 'danger' | 'lime' | 'secondary' | 'outline' | 'ghost';
+  variant?:
+    | 'primary'
+    | 'pink'
+    | 'teal'
+    | 'accent'
+    | 'coral'
+    | 'crimson'
+    | 'danger'
+    | 'lime'
+    | 'dark'
+    | 'secondary'
+    | 'outline'
+    | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
@@ -29,36 +41,40 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const baseStyles =
-    'relative inline-flex items-center justify-center font-semibold rounded-full transition-[background-color,border-color,color,transform,box-shadow] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] select-none active:translate-y-[2px] disabled:opacity-40 disabled:pointer-events-none disabled:active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg min-h-[44px] min-w-[44px]';
+    'relative inline-flex items-center justify-center font-extrabold tracking-[-0.01em] rounded-2xl transition-[background-color,transform,box-shadow] duration-100 select-none active:translate-y-[3px] active:shadow-[0_1px_0_#050505] disabled:bg-[#C6C9D1] disabled:text-[#050505]/50 disabled:border-[#050505]/40 disabled:shadow-none disabled:pointer-events-none disabled:translate-y-[2px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#050505] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFDF00] min-h-[44px] min-w-[44px]';
 
   const variants = {
     primary:
-      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]',
+      'bg-[#64E987] hover:bg-[#4DDA73] active:bg-[#3BC962] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
+    pink:
+      'bg-[#F28BCB] hover:bg-[#EB74BD] active:bg-[#E05CAD] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     teal:
-      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]',
+      'bg-[#64E987] hover:bg-[#4DDA73] active:bg-[#3BC962] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     accent:
-      'bg-chomu-teal hover:bg-chomu-tealHover active:bg-chomu-tealActive text-chomu-bg font-bold border border-chomu-teal border-b-[4px] border-b-[#0E8F79] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]',
+      'bg-[#F28BCB] hover:bg-[#EB74BD] active:bg-[#E05CAD] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     coral:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
+      'bg-[#FF5D73] hover:bg-[#F5465F] active:bg-[#E3324B] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     crimson:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
+      'bg-[#FF5D73] hover:bg-[#F5465F] active:bg-[#E3324B] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     danger:
-      'bg-chomu-coral hover:bg-chomu-coralHover active:bg-chomu-coralActive text-white font-bold border border-chomu-coral border-b-[4px] border-b-[#B83237] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]',
+      'bg-[#FF5D73] hover:bg-[#F5465F] active:bg-[#E3324B] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     lime:
-      'bg-chomu-lime hover:bg-chomu-limeHover active:bg-chomu-limeActive text-chomu-bg font-bold border border-chomu-lime border-b-[4px] border-b-[#1F8A63] active:border-b-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.38)]',
+      'bg-[#64E987] hover:bg-[#4DDA73] active:bg-[#3BC962] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
+    dark:
+      'bg-[#050505] hover:bg-[#1E1E22] active:bg-[#2A2A30] text-white border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     secondary:
-      'bg-chomu-elevated hover:bg-[#202C40] text-chomu-text border border-white/[0.14] border-b-[4px] border-b-[#090F1A] active:border-b-[2px] font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+      'bg-white hover:bg-[#FFF9CC] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     outline:
-      'bg-chomu-surface/60 hover:bg-chomu-elevated text-chomu-text border border-white/[0.18] border-b-[4px] border-b-white/[0.1] active:border-b-[2px] font-semibold',
+      'bg-white hover:bg-[#FFF9CC] text-[#050505] border-[2.5px] border-[#050505] shadow-[0_4px_0_#050505]',
     ghost:
-      'bg-transparent hover:bg-chomu-surface text-chomu-secondary hover:text-chomu-text font-medium active:translate-y-0',
+      'bg-transparent hover:bg-black/10 text-[#050505] font-bold active:translate-y-0 active:shadow-none',
   };
 
   const sizes = {
     sm: 'text-[13px] px-3.5 py-2 gap-2 min-h-[44px]',
     md: 'text-sm px-4 py-2.5 gap-2 min-h-[44px]',
-    lg: 'text-sm px-5 py-3 gap-2.5 min-h-[44px]',
-    xl: 'text-[15px] px-5 py-3 gap-2.5 min-h-[48px]',
+    lg: 'text-base px-5 py-3 gap-2.5 min-h-[48px]',
+    xl: 'text-lg px-6 py-3.5 gap-2.5 min-h-[54px]',
   };
 
   return (

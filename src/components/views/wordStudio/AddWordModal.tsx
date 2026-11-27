@@ -223,8 +223,8 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-      <div className="bg-chomu-surface border border-chomu-border rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+      <div className="bg-white border border-chomu-border rounded-3xl max-w-2xl w-full p-6 shadow-xl space-y-5 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-chomu-border pb-3">
           <div>
@@ -248,7 +248,7 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
             onClick={() => setActiveTab('single')}
             className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'single'
-                ? 'bg-chomu-purple text-chomu-bg shadow-md'
+                ? 'bg-chomu-purple text-white shadow-sm'
                 : 'text-chomu-muted hover:text-chomu-text'
             }`}
           >
@@ -260,7 +260,7 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
             onClick={() => setActiveTab('bulk')}
             className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'bulk'
-                ? 'bg-chomu-purple text-chomu-bg shadow-md'
+                ? 'bg-chomu-purple text-white shadow-sm'
                 : 'text-chomu-muted hover:text-chomu-text'
             }`}
           >
@@ -272,7 +272,7 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
             onClick={() => setActiveTab('suggestions')}
             className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'suggestions'
-                ? 'bg-chomu-purple text-chomu-bg shadow-md'
+                ? 'bg-chomu-purple text-white shadow-sm'
                 : 'text-chomu-muted hover:text-chomu-text'
             }`}
           >
@@ -514,7 +514,7 @@ export const AddWordModal: React.FC<AddWordModalProps> = ({
                     <div
                       className={`w-5 h-5 rounded-md flex items-center justify-center border ${
                         isSelected
-                          ? 'bg-chomu-purple border-chomu-purple text-chomu-bg'
+                          ? 'bg-chomu-purple border-chomu-purple text-white'
                           : 'border-chomu-border'
                       }`}
                     >

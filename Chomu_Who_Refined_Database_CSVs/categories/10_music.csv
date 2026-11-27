@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Music & Instruments,music,mus_guitar,Guitar,Band,Campfire,Wood,Six,Play,Rock,Strings,Music,Strum
+Music & Instruments,music,mus_piano,Piano,Classic,Big,Room,Black,White,Play,Keys,Music,Keyboard
+Music & Instruments,music,mus_drums,Drums,Band,Loud,Back,Sticks,Hit,Noise,Beat,Rhythm,Music
+Music & Instruments,music,mus_violin,Violin,Classic,Wood,Small,Bow,Chin,Soft,Strings,Orchestra,Music
+Music & Instruments,music,mus_microphone,Microphone,Stage,Hold,Live,Loud,Sound,Talk,Sing,Voice,Music
+Music & Instruments,music,mus_saxophone,Saxophone,Gold,Club,Night,Blow,Smooth,Metal,Jazz,Horn,Music
+Music & Instruments,music,mus_trumpet,Trumpet,Gold,Loud,March,Blow,Metal,Buttons,Horn,Brass,Music
+Music & Instruments,music,mus_flute,Flute,Light,Soft,Thin,Silver,Holes,Air,Blow,Wind,Music
+Music & Instruments,music,mus_harmonica,Harmonica,Pocket,Small,Metal,Blues,Air,Play,Mouth,Blow,Music
+Music & Instruments,music,mus_ukulele,Ukulele,Beach,Small,Happy,Four,Wood,Island,Hawaii,Strings,Guitar
+Music & Instruments,music,mus_harp,Harp,Gold,Tall,Soft,Angel,Fingers,Play,Strings,Classic,Music
+Music & Instruments,music,mus_accordion,Accordion,Folk,Street,Hold,Push,Pull,Air,Squeeze,Buttons,Music
+Music & Instruments,music,mus_cello,Cello,Classic,Tall,Wood,Sit,Bow,Deep,Strings,Big,Orchestra
+Music & Instruments,music,mus_tambourine,Tambourine,Round,Hand,Fun,Shake,Hit,Metal,Ring,Beat,Rhythm
+Music & Instruments,music,mus_xylophone,Xylophone,Color,Kids,Wood,Sticks,Bars,Hit,Play,Notes,Music
+Music & Instruments,music,mus_bongos,Bongos,Beach,Two,Wood,Hands,Hit,Small,Drums,Beat,Rhythm
+Music & Instruments,music,mus_bagpipes,Bagpipes,Loud,Green,March,Blow,Air,Sound,Scotland,Bag,Music
+Music & Instruments,music,mus_bell,Bell,Metal,Church,School,Loud,Shake,Hit,Ring,Sound,Ding
+Music & Instruments,music,mus_whistle,Whistle,Small,Pocket,Loud,Sport,Air,Sound,Blow,Mouth,Referee
+Music & Instruments,music,mus_vinyl_record,Vinyl Record,Old,Round,Black,Spin,Needle,Retro,Album,Music,Disc
+Music & Instruments,music,mus_speaker,Speaker,Room,Party,Black,Loud,Box,Audio,Sound,Music,Volume
+Music & Instruments,music,mus_concert,Concert,Night,Lights,Fans,Ticket,Crowd,Live,Stage,Music,Show
+Music & Instruments,music,mus_orchestra,Orchestra,Hall,Suit,Classic,Group,Leader,Many,Violins,Instruments,Music
+Music & Instruments,music,mus_rock_music,Rock Music,Loud,Stage,Energy,Band,Drums,Fans,Guitar,Electric,Song
+Music & Instruments,music,mus_jazz,Jazz,Night,Club,Smooth,Trumpet,Slow,Cool,Saxophone,Music,Style
+Music & Instruments,music,mus_hip_hop,Hip Hop,Street,Dance,Cool,Rhyme,Fast,Beat,Rap,Music,Microphone
+Music & Instruments,music,mus_pop_music,Pop Music,Radio,Dance,Fans,Famous,Catchy,Chart,Singer,Hit,Song
+Music & Instruments,music,mus_classical_music,Classical Music,Old,Calm,Hall,Piano,Violin,Study,Mozart,Orchestra,Song
+Music & Instruments,music,mus_reggae,Reggae,Island,Chill,Sun,Peace,Slow,Beach,Jamaica,Marley,Music
+Music & Instruments,music,mus_dj,DJ,Club,Night,Party,Mix,Headphones,Lights,Music,Spin,Dance
+Music & Instruments,music,mus_choir,Choir,Church,Group,Calm,Voices,Together,Stage,Sing,Song,Music
+Music & Instruments,music,mus_opera,Opera,Hall,Dress,Classic,Drama,Stage,High,Sing,Voice,Theater
+Music & Instruments,music,mus_radio,Radio,Car,News,Home,Station,Signal,Listen,Music,Sound,Audio
+Music & Instruments,music,mus_headset,Headset,Desk,Work,Call,Ears,Talk,Game,Mic,Audio,Listen
+Music & Instruments,music,mus_sheet_music,Sheet Music,White,Lines,Read,Play,Paper,Stand,Notes,Song,Score

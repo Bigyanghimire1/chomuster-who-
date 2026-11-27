@@ -15,9 +15,9 @@ export const HeroIllustration: React.FC<{ className?: string }> = ({ className =
     >
       <defs>
         <radialGradient id="chomuStageGlow" cx="50%" cy="55%" r="50%">
-          <stop offset="0%" stopColor="#1CE8C6" stopOpacity="0.16" />
-          <stop offset="65%" stopColor="#182233" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#070B12" stopOpacity="0" />
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.16" />
+          <stop offset="60%" stopColor="#0F9D8A" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#FAF6EE" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="trenchCoatGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#D7A154" />
@@ -35,7 +35,7 @@ export const HeroIllustration: React.FC<{ className?: string }> = ({ className =
 
       {/* Soft stage backdrop */}
       <ellipse cx="164" cy="146" rx="134" ry="102" fill="url(#chomuStageGlow)" />
-      <ellipse cx="164" cy="242" rx="116" ry="11" fill="#05080E" opacity="0.85" />
+      <ellipse cx="164" cy="242" rx="116" ry="10" fill="#D5CBB3" opacity="0.65" />
 
       {/* Playful comic motion sparks */}
       <path d="M40 52 L48 40 M53 60 L64 54" stroke="#F5C542" strokeWidth="3.5" strokeLinecap="round" />

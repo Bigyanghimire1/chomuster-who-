@@ -101,7 +101,7 @@ export const SpeakingIndicator: React.FC<SpeakingIndicatorProps> = ({
       {/* Mini Equalizer Waveform */}
       {showWaveform && isSpeaking && (
         <div
-          className={`absolute ${getPositionClasses()} z-20 flex items-end gap-0.5 px-1 py-0.5 bg-chomu-surface border border-white/[0.12] rounded-md pointer-events-none select-none`}
+          className={`absolute ${getPositionClasses()} z-20 flex items-end gap-0.5 px-1 py-0.5 bg-white border border-chomu-border rounded-md shadow-sm pointer-events-none select-none`}
         >
           {[0.6, 1.0, 0.75].map((multiplier, idx) => {
             const barHeight = Math.max(4, Math.round(12 * Math.max(0.25, clampedLevel * multiplier)));

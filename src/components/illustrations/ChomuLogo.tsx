@@ -5,40 +5,34 @@ export const ChomuLogo: React.FC<{ size?: 'sm' | 'md' | 'lg'; className?: string
   className = '',
 }) => {
   const sizeMap = {
-    sm: 'w-7 h-7',
-    md: 'w-9 h-9',
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
     lg: 'w-14 h-14',
   };
 
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`${sizeMap[size]} shrink-0 select-none ${className}`}
+      aria-hidden="true"
     >
-      <rect width="100" height="100" rx="26" fill="#111824" stroke="#233044" strokeWidth="3" />
-      
-      {/* Detective Fedora */}
-      <path d="M26 38 C28 20, 72 20, 74 38 Z" fill="#D9A75A" stroke="#0B111C" strokeWidth="2" />
-      <ellipse cx="50" cy="38" rx="34" ry="7" fill="#E5B971" stroke="#0B111C" strokeWidth="2" />
-      <rect x="30" y="34" width="40" height="4" rx="2" fill="#FF5A5F" />
-
-      {/* Face / Mask */}
-      <circle cx="50" cy="54" r="19" fill="#182233" stroke="#233044" strokeWidth="2" />
-      
-      {/* Sunglasses */}
-      <rect x="36" y="47" width="12" height="9" rx="3" fill="#070B12" stroke="#1CE8C6" strokeWidth="1.5" />
-      <rect x="52" y="47" width="12" height="9" rx="3" fill="#070B12" stroke="#1CE8C6" strokeWidth="1.5" />
-      <line x1="47" y1="51" x2="53" y2="51" stroke="#1CE8C6" strokeWidth="1.5" />
-      
-      {/* Teal lens gleam */}
-      <line x1="38" y1="49" x2="42" y2="49" stroke="#1CE8C6" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="54" y1="49" x2="58" y2="49" stroke="#1CE8C6" strokeWidth="1.5" strokeLinecap="round" />
-
-      {/* Trench coat collar & Tie */}
-      <path d="M24 88 L 38 68 L 50 78 L 62 68 L 76 88 Z" fill="#182233" stroke="#233044" strokeWidth="2" />
-      <polygon points="50,74 53,84 50,88 47,84" fill="#FF5A5F" />
+      {/* Light doodle magnifying-eye badge */}
+      <circle cx="30" cy="30" r="22" fill="#FFFFFF" stroke="#050505" strokeWidth="4" />
+      <line x1="46" y1="46" x2="58" y2="58" stroke="#050505" strokeWidth="6" strokeLinecap="round" />
+      {/* Playful suspicious eye */}
+      <path
+        d="M16 30 C20 20, 40 20, 44 30 C40 40, 20 40, 16 30 Z"
+        fill="#FFDF00"
+        stroke="#050505"
+        strokeWidth="3.2"
+        strokeLinejoin="round"
+      />
+      <circle cx="32" cy="30" r="5.5" fill="#050505" />
+      <circle cx="33.5" cy="28" r="1.8" fill="#FFFFFF" />
+      {/* Tiny mischievous brow */}
+      <path d="M18 19 Q30 14 42 20" stroke="#FF5D73" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );
 };

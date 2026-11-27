@@ -27,7 +27,7 @@ export const FinalRevealView: React.FC = () => {
         particleCount: 70,
         spread: 65,
         origin: { y: 0.6 },
-        colors: ['#9275FF', '#E85D75', '#A8D664', '#5EB1C2'],
+        colors: ['#FFDF00', '#64E987', '#F28BCB', '#A9E5F2', '#FF5D73'],
       });
     } catch {}
   }, []);
@@ -43,12 +43,12 @@ export const FinalRevealView: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in text-center space-y-5">
       {/* Header */}
-      <div className="w-full space-y-1">
-        <FinalRevealArtwork className="mx-auto mb-3" />
-        <h1 className="text-2xl sm:text-3xl font-bold text-chomu-coral tracking-[-0.025em]">
+      <div className="w-full space-y-1.5">
+        <FinalRevealArtwork className="mx-auto mb-2" />
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#050505] tracking-[-0.02em]">
           {imposterPlayers.length === 1 ? 'The Chomu was' : 'The Chomas were'}
         </h1>
-        <p className="text-sm text-chomu-secondary">
+        <p className="text-sm font-bold text-[#050505]/80">
           Did your group spot who was bluffing?
         </p>
       </div>
@@ -60,7 +60,7 @@ export const FinalRevealView: React.FC = () => {
           return (
             <Card
               key={p.id}
-              className="bg-chomu-surface border-chomu-coral/50 p-4 flex items-center justify-between gap-3"
+              className="bg-white border-chomu-coral/50 p-4 flex items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3 text-left min-w-0 flex-1">
                 <PlayerAvatar id={p.avatar} size="md" isImposterStyle={true} />
@@ -87,21 +87,21 @@ export const FinalRevealView: React.FC = () => {
         })}
       </div>
 
-      {/* Secret Word Reveal Card */}
-      <Card className="w-full max-w-sm bg-chomu-surface p-5 text-center space-y-1">
-        <span className="text-xs text-chomu-muted block">
+      {/* Secret Word Reveal Card (Neo-Brutalist Dark Stage) */}
+      <div className="w-full max-w-sm rounded-2xl bg-[#050505] text-white p-5 text-center space-y-1.5 border-[3px] border-[#050505] shadow-[0_6px_0_#050505]">
+        <span className="text-xs font-bold text-stone-400 block">
           {secretCategory}
         </span>
-        <span className="text-xs font-medium text-chomu-purple block">
+        <span className="text-xs font-extrabold text-[#FFDF00] uppercase tracking-wider block">
           Secret word
         </span>
-        <h2 className="text-3xl font-semibold text-chomu-text tracking-[-0.02em]">
+        <h2 className="text-3xl font-extrabold text-[#FFDF00] tracking-[-0.02em]">
           {secretWord}
         </h2>
-      </Card>
+      </div>
 
       {/* Civilians Summary */}
-      <div className="w-full max-w-sm bg-chomu-bgSecondary border border-white/[0.08] rounded-xl p-3.5">
+      <div className="w-full max-w-sm bg-chomu-bgSecondary border border-chomu-border rounded-xl p-3.5">
         <span className="text-xs font-medium text-chomu-lime block mb-2">
           Civilians ({civilianPlayers.length})
         </span>
@@ -109,7 +109,7 @@ export const FinalRevealView: React.FC = () => {
           {civilianPlayers.map(p => (
             <div
               key={p.id}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-chomu-surface border border-white/[0.08] text-xs text-chomu-text font-medium"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-chomu-border text-xs text-chomu-text font-medium"
             >
               <PlayerAvatar id={p.avatar} size="sm" />
               <span>{p.name}</span>

@@ -455,9 +455,8 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
         })
       );
 
-      // Speaking border styles (clean ring without neon glow)
-      expect(htmlSpeaking).toContain('border-chomu-lime');
-      expect(htmlSpeaking).toContain('ring-2 ring-chomu-lime/40');
+      // Speaking border styles (Neo-Brutalist mint ring)
+      expect(htmlSpeaking).toContain('ring-4 ring-[#64E987]');
       expect(htmlSpeaking).toContain('Live');
 
       const htmlSilent = renderToStaticMarkup(
@@ -470,7 +469,7 @@ describe('WebRTC Video Streaming & Dynamic Layout Test Suite', () => {
       );
 
       // Default non-speaking hairline styles
-      expect(htmlSilent).toContain('border-white/[0.08]');
+      expect(htmlSilent).toContain('border-[#050505]');
       expect(htmlSilent).not.toContain('>Live<');
     });
 

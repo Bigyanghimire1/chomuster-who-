@@ -4,10 +4,10 @@ import { WORD_STUDIO_BASELINE } from '../data/wordStudioBaseline';
 import { ReviewableWordEntry } from '../types/wordStudio';
 
 describe('Word Bank Studio Service & Validation', () => {
-  it('loads 548 baseline entries across 15+ categories without silent omissions', () => {
-    expect(WORD_STUDIO_BASELINE.length).toBe(548);
+  it('loads 593 curated baseline entries across 15 categories without silent omissions', () => {
+    expect(WORD_STUDIO_BASELINE.length).toBe(593);
     const categories = new Set(WORD_STUDIO_BASELINE.map(e => e.categoryId));
-    expect(categories.size).toBeGreaterThanOrEqual(15);
+    expect(categories.size).toBe(15);
   });
 
   it('strictly validates single words and rejects multi-word phrases or punctuation', () => {
@@ -21,10 +21,10 @@ describe('Word Bank Studio Service & Validation', () => {
 
   it('accurately computes database statistics', () => {
     const stats = wordStudioService.getStats(WORD_STUDIO_BASELINE);
-    expect(stats.totalWords).toBe(548);
-    expect(stats.fullyHintSupported).toBe(121);
-    expect(stats.awaitingReview).toBeGreaterThanOrEqual(500);
-    expect(stats.duplicates).toBe(4);
+    expect(stats.totalWords).toBe(593);
+    expect(stats.fullyHintSupported).toBe(593);
+    expect(stats.approved).toBe(593);
+    expect(stats.duplicates).toBe(0);
   });
 
   it('prevents adding duplicate words and enforces single-word hints', () => {

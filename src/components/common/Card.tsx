@@ -28,9 +28,9 @@ export const Card: React.FC<CardProps> = ({
       tabIndex={isClickable ? 0 : undefined}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      className={`bg-chomu-surface border border-white/[0.1] rounded-3xl p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_28px_rgba(0,0,0,0.32)] transition-[background-color,border-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`bg-white border-[2.5px] border-[#050505] rounded-2xl p-5 shadow-[0_5px_0_#050505] transition-[background-color,transform,box-shadow] duration-100 ${
         isClickable
-          ? 'cursor-pointer border-b-[3px] border-b-[#080D16] hover:border-chomu-teal/40 hover:bg-chomu-elevated active:translate-y-[1px] focus:outline-none focus-visible:ring-2 focus-visible:ring-chomu-teal focus-visible:ring-offset-2 focus-visible:ring-offset-chomu-bg'
+          ? 'cursor-pointer hover:bg-[#FFF9CC] active:translate-y-[3px] active:shadow-[0_2px_0_#050505] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#050505] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFDF00]'
           : ''
       } ${className}`}
     >

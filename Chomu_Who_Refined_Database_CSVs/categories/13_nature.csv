@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Nature & Wonders,nature,nat_volcano,Volcano,Mountain,Danger,Smoke,Hot,Red,Erupt,Lava,Fire,Ash
+Nature & Wonders,nature,nat_rainbow,Rainbow,Sky,After,Sun,Arc,Bright,Wet,Colors,Seven,Beautiful
+Nature & Wonders,nature,nat_earthquake,Earthquake,Danger,Sudden,Loud,Move,Crack,Fear,Shake,Ground,Tremor
+Nature & Wonders,nature,nat_lightning,Lightning,Sky,Storm,Fast,Loud,Night,Zap,Flash,Electric,Thunder
+Nature & Wonders,nature,nat_waterfall,Waterfall,River,Loud,Wet,Drop,Cliff,Splash,Stream,Flow,Nature
+Nature & Wonders,nature,nat_northern_lights,Northern Lights,Night,Cold,Sky,Green,Arctic,Glow,Aurora,Colors,Stars
+Nature & Wonders,nature,nat_glacier,Glacier,Cold,White,Slow,Mountain,Melt,Big,Ice,Snow,Frozen
+Nature & Wonders,nature,nat_coral_reef,Coral Reef,Blue,Warm,Colors,Fish,Deep,Dive,Ocean,Sea,Underwater
+Nature & Wonders,nature,nat_desert,Desert,Hot,Dry,Empty,Sun,Camel,Gold,Sand,Dunes,Sahara
+Nature & Wonders,nature,nat_rainforest,Rainforest,Wet,Green,Wild,Trees,Animals,Warm,Jungle,Amazon,Drops
+Nature & Wonders,nature,nat_tsunami,Tsunami,Ocean,Danger,Fast,Sea,Flood,Huge,Wave,Water,Big
+Nature & Wonders,nature,nat_tornado,Tornado,Wind,Danger,Grey,Fast,Cloud,Twist,Spin,Storm,Funnel
+Nature & Wonders,nature,nat_avalanche,Avalanche,Mountain,Loud,Danger,Slide,Cold,Fast,Snow,Fall,White
+Nature & Wonders,nature,nat_eclipse,Eclipse,Sky,Rare,Look,Dark,Shadow,Circle,Sun,Moon,Cover
+Nature & Wonders,nature,nat_meteor_shower,Meteor Shower,Night,Wish,Fast,Light,Fall,Space,Shooting,Stars,Sky
+Nature & Wonders,nature,nat_oasis,Oasis,Hot,Rare,Trees,Palm,Green,Life,Desert,Water,Sand
+Nature & Wonders,nature,nat_iceberg,Iceberg,Cold,White,Ocean,Float,Ship,Big,Ice,Sea,Titanic
+Nature & Wonders,nature,nat_wildfire,Wildfire,Hot,Danger,Dry,Smoke,Red,Burn,Forest,Flames,Trees
+Nature & Wonders,nature,nat_cave,Cave,Dark,Cold,Quiet,Rock,Bat,Inside,Mountain,Underground,Hollow
+Nature & Wonders,nature,nat_island,Island,Blue,Vacation,Small,Beach,Palm,Boat,Water,Sand,Ocean
+Nature & Wonders,nature,nat_ocean,Ocean,Deep,Salt,Huge,Waves,Fish,Ship,Sea,Blue,Water
+Nature & Wonders,nature,nat_mountain,Mountain,High,Cold,Climb,Top,Rock,Snow,Peak,Tall,Hill
+Nature & Wonders,nature,nat_river,River,Long,Fish,Bridge,Flow,Fresh,Boat,Water,Stream,Bank
+Nature & Wonders,nature,nat_lake,Lake,Calm,Fresh,Fish,Boat,Swim,Still,Water,Pond,Blue
+Nature & Wonders,nature,nat_forest,Forest,Green,Quiet,Wild,Wood,Animals,Shade,Trees,Nature,Woods
+Nature & Wonders,nature,nat_beach,Beach,Summer,Fun,Warm,Waves,Sun,Swim,Sand,Ocean,Sea
+Nature & Wonders,nature,nat_canyon,Canyon,Red,Deep,Dry,Cliff,River,Wide,Rock,Valley,Grand
+Nature & Wonders,nature,nat_hot_spring,Hot Spring,Warm,Relax,Nature,Steam,Bath,Rock,Heat,Water,Pool
+Nature & Wonders,nature,nat_fog,Fog,Morning,Grey,Slow,Cloud,Low,Drive,Mist,White,Blurry
+Nature & Wonders,nature,nat_thunderstorm,Thunderstorm,Dark,Clouds,Wet,Loud,Wind,Flash,Rain,Boom,Weather
+Nature & Wonders,nature,nat_sunrise,Sunrise,Early,Orange,New,East,Light,Sky,Morning,Sun,Dawn
+Nature & Wonders,nature,nat_sunset,Sunset,Evening,Orange,Calm,West,Red,Sky,Night,Sun,Dusk
+Nature & Wonders,nature,nat_full_moon,Full Moon,Night,Bright,Sky,White,Wolf,Glow,Round,Space,Circle
+Nature & Wonders,nature,nat_snow,Snow,Winter,Quiet,Soft,Freeze,Flakes,Play,White,Cold,Ice
+Nature & Wonders,nature,nat_wind,Wind,Invisible,Cool,Move,Trees,Kite,Fast,Air,Blow,Breeze

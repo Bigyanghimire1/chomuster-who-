@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Jobs & Professions,professions,prof_astronaut,Astronaut,High,Float,White,Suit,Rocket,Stars,Space,Moon,Fly
+Jobs & Professions,professions,prof_detective,Detective,Quiet,Smart,Night,Clues,Mystery,Search,Police,Crime,Solve
+Jobs & Professions,professions,prof_chef,Chef,Hot,White,Hat,Knife,Taste,Menu,Cook,Kitchen,Food
+Jobs & Professions,professions,prof_firefighter,Firefighter,Brave,Red,Loud,Water,Truck,Ladder,Flames,Rescue,Smoke
+Jobs & Professions,professions,prof_pilot,Pilot,Uniform,Travel,High,Sky,Airport,Control,Plane,Fly,Captain
+Jobs & Professions,professions,prof_doctor,Doctor,White,Help,Care,Medicine,Sick,Check,Hospital,Health,Clinic
+Jobs & Professions,professions,prof_teacher,Teacher,Board,Books,Talk,Class,Homework,Test,School,Students,Learn
+Jobs & Professions,professions,prof_police_officer,Police Officer,Uniform,Car,Street,Badge,Safe,Catch,Law,Crime,Arrest
+Jobs & Professions,professions,prof_photographer,Photographer,Art,Memory,Light,Lens,Flash,Click,Camera,Image,Picture
+Jobs & Professions,professions,prof_dentist,Dentist,Chair,Clean,White,Brush,Pain,Check,Teeth,Smile,Mouth
+Jobs & Professions,professions,prof_farmer,Farmer,Early,Sun,Green,Land,Animals,Grow,Field,Food,Crops
+Jobs & Professions,professions,prof_lawyer,Lawyer,Suit,Talk,Books,Case,Argue,Rules,Court,Law,Judge
+Jobs & Professions,professions,prof_judge,Judge,Quiet,Power,Black,Robe,Hammer,Decide,Court,Law,Guilty
+Jobs & Professions,professions,prof_nurse,Nurse,Care,Help,Kind,Medicine,Needle,White,Hospital,Doctor,Patient
+Jobs & Professions,professions,prof_engineer,Engineer,Math,Plan,Smart,Build,Machine,Design,Bridge,Tech,Fix
+Jobs & Professions,professions,prof_architect,Architect,Draw,Plan,Art,Design,House,City,Building,Map,Structure
+Jobs & Professions,professions,prof_plumber,Plumber,Tools,House,Fix,Water,Sink,Leak,Pipes,Bathroom,Repair
+Jobs & Professions,professions,prof_electrician,Electrician,Tools,Careful,Fix,Light,Switch,Shock,Wires,Power,Electricity
+Jobs & Professions,professions,prof_mechanic,Mechanic,Dirty,Tools,Fix,Oil,Engine,Shop,Car,Garage,Repair
+Jobs & Professions,professions,prof_baker,Baker,Early,Warm,Smell,Flour,Oven,Dough,Bread,Cake,Shop
+Jobs & Professions,professions,prof_barber,Barber,Chair,Mirror,Talk,Sharp,Trim,Style,Hair,Cut,Scissors
+Jobs & Professions,professions,prof_artist,Artist,Color,Dream,Hands,Brush,Draw,Canvas,Paint,Art,Picture
+Jobs & Professions,professions,prof_singer,Singer,Stage,Lights,Fans,Voice,Loud,Concert,Song,Music,Microphone
+Jobs & Professions,professions,prof_actor,Actor,Stage,Lights,Fame,Camera,Role,Script,Movie,Film,Star
+Jobs & Professions,professions,prof_journalist,Journalist,Write,Fast,Ask,Story,Report,Interview,News,Newspaper,TV
+Jobs & Professions,professions,prof_veterinarian,Veterinarian,Care,Kind,Help,Clinic,Sick,Pets,Animals,Doctor,Dog
+Jobs & Professions,professions,prof_carpenter,Carpenter,Dust,Tools,Make,Hammer,Saw,Table,Wood,Build,Furniture
+Jobs & Professions,professions,prof_scientist,Scientist,Smart,Test,Glass,Research,Find,Data,Lab,Science,Experiment
+Jobs & Professions,professions,prof_librarian,Librarian,Quiet,Desk,Organize,Read,Shelves,Borrow,Books,Library,Study
+Jobs & Professions,professions,prof_lifeguard,Lifeguard,Sun,Watch,Chair,Whistle,Safe,Water,Beach,Pool,Swim
+Jobs & Professions,professions,prof_flight_attendant,Flight Attendant,Uniform,Smile,Travel,Food,Seat,Safety,Plane,Sky,Passengers
+Jobs & Professions,professions,prof_coach,Coach,Loud,Plan,Watch,Whistle,Practice,Win,Team,Sports,Train
+Jobs & Professions,professions,prof_waiter,Waiter,Tray,Smile,Walk,Order,Table,Menu,Food,Restaurant,Serve
+Jobs & Professions,professions,prof_driver,Driver,Road,Wheel,Seats,Map,Traffic,Trip,Car,Bus,Taxi
+Jobs & Professions,professions,prof_programmer,Programmer,Screen,Night,Coffee,Laptop,Logic,App,Code,Computer,Software

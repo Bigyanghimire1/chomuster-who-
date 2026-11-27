@@ -9,6 +9,7 @@ import {
   Radio,
   LayoutGrid,
   Minimize2,
+  ArrowRight,
 } from 'lucide-react';
 import { useMultiplayer } from '../../../context/MultiplayerContext';
 import { Button } from '../../common/Button';
@@ -31,9 +32,12 @@ export const OnlineRoundView: React.FC = () => {
     speakingPeers,
     endRound,
     startVoting,
+    nextTurn,
+    rawPhase,
     localStream,
     peerStreams,
   } = useMultiplayer();
+  const isDiscussion = rawPhase === 'DISCUSSION';
 
   const [isSecretPeekOpen, setIsSecretPeekOpen] = useState<boolean>(false);
   const [isGalleryView, setIsGalleryView] = useState<boolean>(false);
@@ -95,51 +99,56 @@ export const OnlineRoundView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-4">
-      {/* Header Bar */}
-      <Card className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-medium text-chomu-secondary mb-1">
-            <HelpCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span>Category: {categoryName}</span>
+    <div
+      className={`flex-1 w-full flex flex-col transition-colors duration-200 ${
+        isDiscussion ? 'bg-[#050505] text-white' : ''
+      }`}
+    >
+      <div className="flex flex-col flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 select-none animate-fade-in space-y-4">
+        {/* Header Bar */}
+        <Card className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isDiscussion ? 'bg-[#141418] text-white border-[#FFDF00]' : ''}`}>
+          <div>
+            <div className={`inline-flex items-center gap-1.5 text-xs font-extrabold mb-1 ${isDiscussion ? 'text-[#FFDF00]' : 'text-[#52555E]'}`}>
+              <HelpCircle className="w-3.5 h-3.5" strokeWidth={2.2} />
+              <span>Category: {categoryName}</span>
+            </div>
+            <h1 className={`text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] ${isDiscussion ? 'text-white' : 'text-[#050505]'}`}>
+              {isDiscussion ? 'Group Discussion' : 'Round in Progress'}
+            </h1>
           </div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-chomu-text tracking-[-0.02em]">
-            Round in progress
-          </h1>
-        </div>
 
-        <div className="flex items-center gap-2.5 self-start sm:self-auto">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setIsGalleryView(!isGalleryView)}
-            leftIcon={
-              isGalleryView ? (
-                <Minimize2 className="w-4 h-4" strokeWidth={1.5} />
-              ) : (
-                <LayoutGrid className="w-4 h-4" strokeWidth={1.5} />
-              )
-            }
-          >
-            {isGalleryView ? 'Spotlight View' : 'Gallery View'}
-          </Button>
+          <div className="flex items-center gap-2.5 self-start sm:self-auto">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setIsGalleryView(!isGalleryView)}
+              leftIcon={
+                isGalleryView ? (
+                  <Minimize2 className="w-4 h-4" strokeWidth={2} />
+                ) : (
+                  <LayoutGrid className="w-4 h-4" strokeWidth={2} />
+                )
+              }
+            >
+              {isGalleryView ? 'Spotlight View' : 'Gallery View'}
+            </Button>
 
-          <div
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-full border ${
-              isCriticalTime
-                ? 'bg-chomu-coral/15 border-chomu-coral text-chomu-coral'
-                : isLowTime
-                  ? 'bg-chomu-yellow/20 border-chomu-yellow text-chomu-yellow'
-                  : 'bg-chomu-yellow/10 border-chomu-yellow/40 text-chomu-yellow'
-            }`}
-          >
-            <Clock className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-            <span className="text-base font-mono font-bold tabular-nums leading-none">
-              {formattedTime}
-            </span>
+            <div
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-[#050505] shadow-[0_3px_0_#050505] ${
+                isCriticalTime
+                  ? 'bg-[#FF5D73] text-[#050505]'
+                  : isLowTime || isDiscussion
+                    ? 'bg-[#FFDF00] text-[#050505]'
+                    : 'bg-[#64E987] text-[#050505]'
+              }`}
+            >
+              <Clock className="w-4 h-4 shrink-0" strokeWidth={2.4} />
+              <span className="text-lg font-mono font-extrabold tabular-nums leading-none">
+                {formattedTime}
+              </span>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
 
       {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
         <div className="bg-chomu-yellow/10 border border-chomu-yellow/30 text-chomu-yellow px-4 py-2.5 rounded-[10px] text-xs font-medium text-center">
@@ -148,7 +157,7 @@ export const OnlineRoundView: React.FC = () => {
       )}
 
       {/* Active Audio & Turn Summary Strip */}
-      <div className="px-4 py-2.5 rounded-xl bg-chomu-surface border border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+      <div className="px-4 py-2.5 rounded-xl bg-white border border-chomu-border flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           {activeSpeakerNames.length > 0 ? (
             <Radio className="w-4 h-4 text-chomu-lime shrink-0" strokeWidth={1.5} />
@@ -188,14 +197,14 @@ export const OnlineRoundView: React.FC = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {players.map((p) => {
               const isMe = p.id === myPlayerId;
               const isPeerSpeaking = !!speakingPeers[p.id] || !!p.isSpeaking;
               const isTurn = p.id === spotlightPlayer?.id;
 
               return (
-                <div key={p.id} className="relative aspect-video min-h-[140px]">
+                <div key={p.id} className="relative aspect-video min-h-[140px] min-w-0">
                   <VideoCard
                     player={p}
                     stream={getPlayerStream(p.id)}
@@ -257,7 +266,7 @@ export const OnlineRoundView: React.FC = () => {
                           </span>
                         </div>
                       ) : (
-                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-white/[0.08]">
+                        <div className="p-3.5 rounded-[10px] bg-chomu-bgSecondary border border-chomu-border">
                           <p className="text-sm text-chomu-secondary">
                             No hint provided. Bluff with confidence
                           </p>
@@ -273,7 +282,7 @@ export const OnlineRoundView: React.FC = () => {
                         <span className="text-xs text-chomu-secondary block mb-2">
                           Give a hint for the word:
                         </span>
-                        <span className="inline-block px-5 py-1.5 rounded-full border-2 border-chomu-yellow bg-chomu-surface text-2xl sm:text-3xl font-bold text-chomu-text tracking-[-0.02em]">
+                        <span className="inline-block px-5 py-1.5 rounded-full border-2 border-chomu-yellow bg-white text-2xl sm:text-3xl font-bold text-chomu-text tracking-[-0.02em]">
                           {secretWord}
                         </span>
                       </div>
@@ -284,7 +293,7 @@ export const OnlineRoundView: React.FC = () => {
                   )}
                 </div>
 
-                <div className="pt-3 mt-4 border-t border-white/[0.08] flex items-center justify-between text-xs text-chomu-muted">
+                <div className="pt-3 mt-4 border-t border-chomu-border flex items-center justify-between text-xs text-chomu-muted">
                   <span>Visible only to you</span>
                   <span className="text-chomu-lime inline-flex items-center gap-1 font-medium">
                     <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -372,7 +381,7 @@ export const OnlineRoundView: React.FC = () => {
         </div>
 
         {isSecretPeekOpen && (
-          <div className="mt-3 pt-3 border-t border-white/[0.08] animate-fade-in text-center">
+          <div className="mt-3 pt-3 border-t border-chomu-border animate-fade-in text-center">
             {isChomu ? (
               <div className="p-3 rounded-[10px] bg-chomu-coral/10 border border-chomu-coral/25 space-y-1">
                 <Badge variant="coral" size="sm">
@@ -406,32 +415,74 @@ export const OnlineRoundView: React.FC = () => {
       <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-center sm:text-left">
           <span className="text-sm font-medium text-chomu-text block">
-            Give your clues and spot the Chomu
+            {isDiscussion
+              ? 'Group discussion — debate who sounded suspicious'
+              : isMyTurn
+                ? 'Your turn — give a one-word clue aloud'
+                : 'Give your clues and spot the Chomu'}
           </span>
           <p className="text-xs text-chomu-secondary mt-0.5">
             {isHost
-              ? 'Ready to accuse? End the round to start voting.'
-              : 'The host will open voting once everyone has spoken.'}
+              ? isDiscussion
+                ? 'Open voting when everyone is ready to accuse.'
+                : 'Advance turns or start voting once everyone has spoken.'
+              : isMyTurn && !isDiscussion
+                ? 'Tap Done speaking when you finish your clue.'
+                : 'The host will open voting once discussion wraps up.'}
           </p>
         </div>
 
         {isHost ? (
-          <Button
-            variant="coral"
-            size="lg"
-            fullWidth
-            className="sm:w-56"
-            onClick={handleEndRound}
-            leftIcon={<Vote className="w-4 h-4" strokeWidth={1.5} />}
-          >
-            Start voting
-          </Button>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
+            {!isDiscussion && nextTurn && (
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex-1 sm:flex-none sm:w-44"
+                onClick={() => {
+                  audioService.playButtonTap();
+                  nextTurn();
+                }}
+                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
+              >
+                {isMyTurn ? 'Done speaking' : 'Next turn'}
+              </Button>
+            )}
+            <Button
+              variant="pink"
+              size="lg"
+              className="flex-1 sm:flex-none sm:w-44"
+              onClick={handleEndRound}
+              leftIcon={<Vote className="w-4 h-4" strokeWidth={2.2} />}
+            >
+              Start Voting
+            </Button>
+          </div>
         ) : (
-          <span className="text-xs text-chomu-muted font-medium">
-            Awaiting host vote trigger
-          </span>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
+            {!isDiscussion && nextTurn && isMyTurn && (
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex-1 sm:flex-none sm:w-44"
+                onClick={() => {
+                  audioService.playButtonTap();
+                  nextTurn();
+                }}
+                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
+              >
+                Done speaking
+              </Button>
+            )}
+            {!isMyTurn && (
+              <span className="text-xs font-bold opacity-80">
+                Awaiting host vote trigger
+              </span>
+            )}
+          </div>
         )}
       </Card>
+      </div>
     </div>
   );
 };

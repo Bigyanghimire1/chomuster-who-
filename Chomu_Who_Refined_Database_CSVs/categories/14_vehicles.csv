@@ -1,0 +1,36 @@
+Category,CategoryID,WordID,Word,Subtle_1,Subtle_2,Subtle_3,Balanced_1,Balanced_2,Balanced_3,Easy_1,Easy_2,Easy_3
+Vehicles & Transport,vehicles,veh_car,Car,Road,Daily,Family,Drive,Four,Engine,Wheels,Traffic,Auto
+Vehicles & Transport,vehicles,veh_bus,Bus,City,Seats,Stop,Big,Ticket,Road,Public,Passengers,Drive
+Vehicles & Transport,vehicles,veh_train,Train,Long,Station,Fast,Ticket,Travel,Iron,Track,Rail,Wagons
+Vehicles & Transport,vehicles,veh_airplane,Airplane,Airport,Trip,High,Pilot,Ticket,Clouds,Fly,Wings,Sky
+Vehicles & Transport,vehicles,veh_bicycle,Bicycle,Park,Healthy,Chain,Two,Ride,Helmet,Pedal,Wheels,Bike
+Vehicles & Transport,vehicles,veh_motorcycle,Motorcycle,Fast,Loud,Helmet,Two,Engine,Road,Bike,Ride,Wheels
+Vehicles & Transport,vehicles,veh_helicopter,Helicopter,Rescue,Loud,High,Spin,Roof,Air,Fly,Blades,Chopper
+Vehicles & Transport,vehicles,veh_submarine,Submarine,Deep,Dark,Navy,Hidden,Sea,Metal,Underwater,Ocean,Dive
+Vehicles & Transport,vehicles,veh_rocket,Rocket,Loud,Fire,Fast,Launch,Stars,Astronaut,Space,Moon,Fly
+Vehicles & Transport,vehicles,veh_ambulance,Ambulance,Fast,White,Loud,Siren,Help,Sick,Hospital,Emergency,Medical
+Vehicles & Transport,vehicles,veh_fire_truck,Fire Truck,Loud,Big,Fast,Ladder,Water,Siren,Red,Flames,Rescue
+Vehicles & Transport,vehicles,veh_police_car,Police Car,City,Fast,Blue,Siren,Lights,Chase,Officer,Law,Patrol
+Vehicles & Transport,vehicles,veh_taxi,Taxi,City,Pay,Ride,Yellow,Meter,Driver,Cab,Car,Trip
+Vehicles & Transport,vehicles,veh_truck,Truck,Road,Big,Heavy,Goods,Carry,Long,Cargo,Drive,Large
+Vehicles & Transport,vehicles,veh_tractor,Tractor,Green,Slow,Dirt,Big,Wheels,Field,Farm,Farmer,Pull
+Vehicles & Transport,vehicles,veh_scooter,Scooter,City,Small,Easy,Two,Stand,Ride,Wheels,Electric,Fast
+Vehicles & Transport,vehicles,veh_cruise_ship,Cruise Ship,Vacation,Pool,Huge,Ocean,Rooms,Travel,Sea,Big,Boat
+Vehicles & Transport,vehicles,veh_sailboat,Sailboat,Calm,White,Sea,Wind,Cloth,Ocean,Mast,Ship,Water
+Vehicles & Transport,vehicles,veh_yacht,Yacht,Rich,White,Party,Luxury,Ocean,Big,Boat,Sea,Expensive
+Vehicles & Transport,vehicles,veh_jet_ski,Jet Ski,Summer,Fun,Fast,Splash,Ride,Beach,Water,Ocean,Bike
+Vehicles & Transport,vehicles,veh_hot_air_balloon,Hot Air Balloon,Calm,High,Colors,Basket,Fire,Float,Sky,Fly,Wind
+Vehicles & Transport,vehicles,veh_metro_train,Metro Train,City,Fast,Busy,Station,Ticket,Dark,Underground,Rail,Subway
+Vehicles & Transport,vehicles,veh_cable_car,Cable Car,High,View,Slow,Wire,Hang,Ride,Mountain,Rope,Air
+Vehicles & Transport,vehicles,veh_school_bus,School Bus,Morning,Kids,Stop,Seats,Driver,Ride,Yellow,Students,Class
+Vehicles & Transport,vehicles,veh_bulldozer,Bulldozer,Yellow,Loud,Heavy,Dirt,Build,Big,Push,Machine,Work
+Vehicles & Transport,vehicles,veh_forklift,Forklift,Shop,Heavy,Small,Box,Move,Warehouse,Raise,Carry,Load
+Vehicles & Transport,vehicles,veh_delivery_van,Delivery Van,Box,Door,Fast,Driver,Order,Road,Package,Truck,Send
+Vehicles & Transport,vehicles,veh_double_decker_bus,Double Decker Bus,City,Red,Tour,Two,Floors,High,London,Public,Tall
+Vehicles & Transport,vehicles,veh_rickshaw,Rickshaw,Street,Busy,Asia,Three,Ride,City,Auto,Wheels,Taxi
+Vehicles & Transport,vehicles,veh_kayak,Kayak,River,Narrow,Sport,Paddle,Sit,Water,Boat,Row,Lake
+Vehicles & Transport,vehicles,veh_speedboat,Speedboat,Fast,Loud,Splash,Engine,Lake,Ocean,Water,Ship,Race
+Vehicles & Transport,vehicles,veh_tram,Tram,City,Bell,Slow,Street,Electric,Rail,Track,Train,Public
+Vehicles & Transport,vehicles,veh_camper_van,Camper Van,Trip,Nature,Road,Sleep,Bed,Travel,Tent,Home,Truck
+Vehicles & Transport,vehicles,veh_go_kart,Go-Kart,Fun,Small,Low,Track,Helmet,Turn,Race,Car,Fast
+Vehicles & Transport,vehicles,veh_spaceship,Spaceship,Future,Movie,Stars,Alien,Fast,Galaxy,Rocket,Fly,SciFi

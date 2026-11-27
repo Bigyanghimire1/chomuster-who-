@@ -19,6 +19,9 @@ import {
 import { PlayerAvatarId } from '../types/game';
 import { p2pRealtimeService } from '../services/multiplayer/p2pRealtimeService';
 import { voiceManager } from '../services/voice/voiceManager';
+import { getActiveMultiplayerBackend } from '../services/backendConfig';
+import { supabaseRoomTransport } from '../services/supabase/SupabaseRoomTransport';
+import { livekitMediaService } from '../services/livekit/LiveKitMediaService';
 import { audioService } from '../services/audioService';
 import { sessionService } from '../services/storageService';
 
@@ -41,6 +44,9 @@ export interface MultiplayerContextValue {
   timerRemaining: number;
   chatMessages: ChatPayload[];
   speakingPeers: Record<string, boolean>;
+  rawPhase?: string | null;
+  runoffCandidateIds?: string[];
+  mediaQuotaExhausted?: boolean;
 
   // WebRTC Media & Streams
   localStream: MediaStream | null;
@@ -87,44 +93,49 @@ const MultiplayerContext = createContext<MultiplayerContextValue | null>(null);
 export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const backend = useMemo(() => getActiveMultiplayerBackend(), []);
+  const isSupabaseBackend = backend === 'supabase';
+  const activeTransport = isSupabaseBackend ? supabaseRoomTransport : p2pRealtimeService;
+
   const [roomState, setRoomState] = useState<RoomState | null>(() =>
-    p2pRealtimeService.getState()
+    activeTransport.getState()
   );
   const [mySecret, setMySecret] = useState<OnlineSecretState | null>(() =>
-    p2pRealtimeService.getSecret()
+    activeTransport.getSecret()
   );
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(() =>
-    p2pRealtimeService.isConnected()
+    activeTransport.isConnected()
   );
   const [error, setError] = useState<string | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatPayload[]>([]);
   const [timerRemaining, setTimerRemaining] = useState<number>(0);
   const [speakingPeers, setSpeakingPeers] = useState<Record<string, boolean>>({});
 
-  // WebRTC Camera & Video Streams
+  // WebRTC Camera & Video Streams (VoiceManager for Trystero, LiveKitMediaService for Supabase)
   const [localStream, setLocalStream] = useState<MediaStream | null>(() =>
-    voiceManager.getLocalStream()
+    isSupabaseBackend ? livekitMediaService.getState().localStream : voiceManager.getLocalStream()
   );
   const [peerStreams, setPeerStreams] = useState<Record<string, MediaStream>>(() =>
-    voiceManager.getPeerStreams()
+    isSupabaseBackend ? livekitMediaService.getState().peerStreams : voiceManager.getPeerStreams()
   );
   const [isCameraOn, setIsCameraOn] = useState<boolean>(() =>
-    voiceManager.isCameraOn
+    isSupabaseBackend ? livekitMediaService.getState().isCameraOn : voiceManager.isCameraOn
   );
   const [isMicOn, setIsMicOn] = useState<boolean>(() =>
-    voiceManager.isMicOn
+    isSupabaseBackend ? livekitMediaService.getState().isMicOn : voiceManager.isMicOn
   );
+  const [mediaQuotaExhausted, setMediaQuotaExhausted] = useState<boolean>(false);
 
   const previousPhaseRef = useRef<OnlinePhase | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
 
   // Subscribe to real-time service updates
   useEffect(() => {
-    const unsubState = p2pRealtimeService.subscribe((state, secret) => {
+    const unsubState = activeTransport.subscribe((state, secret) => {
       setRoomState(state);
       setMySecret(secret);
-      setIsConnected(p2pRealtimeService.isConnected());
+      setIsConnected(activeTransport.isConnected());
 
       // Audio alerts on phase transitions
       if (state && previousPhaseRef.current !== state.phase) {
@@ -139,11 +150,11 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
 
-    const unsubChat = p2pRealtimeService.onChat((chatMsg) => {
+    const unsubChat = activeTransport.onChat((chatMsg) => {
       setChatMessages((prev) => [...prev.slice(-49), chatMsg]);
     });
 
-    const unsubError = p2pRealtimeService.onError((err) => {
+    const unsubError = activeTransport.onError((err) => {
       console.error('[MultiplayerContext] Error:', err);
       setError(err.message || 'Connection or room error occurred');
       setIsConnecting(false);
@@ -154,10 +165,34 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       unsubChat();
       unsubError();
     };
-  }, []);
+  }, [activeTransport]);
 
   // Automatic session recovery across page refreshes
   useEffect(() => {
+    if (isSupabaseBackend) {
+      if (!supabaseRoomTransport.isConnected()) {
+        setIsConnecting(true);
+        supabaseRoomTransport
+          .tryRejoinRoom()
+          .then(async (rejoined) => {
+            if (rejoined) {
+              setIsConnected(true);
+              const roomId = supabaseRoomTransport.getRoomId();
+              if (roomId) {
+                await livekitMediaService.connect(roomId);
+              }
+            }
+          })
+          .catch((err) => {
+            console.warn('[MultiplayerContext] Supabase auto-recovery failed:', err);
+          })
+          .finally(() => {
+            setIsConnecting(false);
+          });
+      }
+      return;
+    }
+
     const savedSession = sessionService.loadSession();
     if (savedSession && !p2pRealtimeService.isConnected()) {
       setIsConnecting(true);
@@ -176,10 +211,27 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
           setIsConnecting(false);
         });
     }
-  }, []);
+  }, [isSupabaseBackend]);
 
-  // Sync with VoiceManager for speaking detection and media streams
+  // Sync with VoiceManager (Trystero) or LiveKitMediaService (Supabase)
   useEffect(() => {
+    if (isSupabaseBackend) {
+      const unsubLk = livekitMediaService.subscribe((lkState) => {
+        setLocalStream(lkState.localStream);
+        setPeerStreams(lkState.peerStreams);
+        setIsCameraOn(lkState.isCameraOn);
+        setIsMicOn(lkState.isMicOn);
+        setSpeakingPeers(lkState.speakingPeers);
+        setMediaQuotaExhausted(lkState.quotaExhausted);
+        if (lkState.error) {
+          setError(lkState.error);
+        }
+      });
+      return () => {
+        unsubLk();
+      };
+    }
+
     const unsubVoice = voiceManager.subscribe((vState) => {
       setLocalStream(voiceManager.getLocalStream());
       setPeerStreams(vState.peerStreams || {});
@@ -205,7 +257,7 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       unsubVoice();
     };
-  }, []);
+  }, [isSupabaseBackend]);
 
   // Timer countdown updater for ROUND and VOTING phases
   useEffect(() => {
@@ -221,6 +273,29 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const updateTimer = () => {
       const now = Date.now();
+
+      if (isSupabaseBackend) {
+        const deadlineIso = supabaseRoomTransport.getPhaseDeadlineAt();
+        if (!deadlineIso) {
+          setTimerRemaining(0);
+          return;
+        }
+        const remaining = Math.max(0, Math.ceil((Date.parse(deadlineIso) - now) / 1000));
+        setTimerRemaining(remaining);
+        if (remaining <= 5 && remaining > 0) {
+          audioService.playTick();
+        }
+        if (remaining === 0 && supabaseRoomTransport.isHost()) {
+          const rawPhase = supabaseRoomTransport.getRawPhase();
+          if (rawPhase === 'ROUND') {
+            void supabaseRoomTransport.nextTurn().catch(() => {});
+          } else if (rawPhase === 'DISCUSSION') {
+            void supabaseRoomTransport.startVoting().catch(() => {});
+          }
+        }
+        return;
+      }
+
       if (roomState.phase === 'ROUND' && roomState.roundStartTime) {
         const totalDuration = roomState.roundDurationSeconds || 180;
         const elapsed = Math.floor((now - roomState.roundStartTime) / 1000);
@@ -273,6 +348,7 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
   }, [
+    isSupabaseBackend,
     roomState?.phase,
     roomState?.roundStartTime,
     roomState?.roundDurationSeconds,
@@ -280,8 +356,8 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     roomState?.votingDurationSeconds,
   ]);
 
-  const myPlayerId = p2pRealtimeService.getMyPeerId();
-  const isHost = p2pRealtimeService.isHost();
+  const myPlayerId = activeTransport.getMyPeerId();
+  const isHost = activeTransport.isHost();
 
   const players = useMemo(() => {
     if (!roomState?.players) return [];
@@ -298,6 +374,15 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const results = roomState?.votingResult || null;
 
   // Actions
+  const runSupabaseAction = useCallback(async (fn: () => Promise<void>) => {
+    try {
+      await fn();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Action failed';
+      setError(msg);
+    }
+  }, []);
+
   const createRoom = useCallback(
     async (
       code: string,
@@ -308,9 +393,17 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsConnecting(true);
       setError(null);
       try {
-        await p2pRealtimeService.createRoom(code, playerName, avatar);
-        if (initialSettings) {
-          p2pRealtimeService.updateSettings(initialSettings);
+        if (isSupabaseBackend) {
+          await supabaseRoomTransport.createRoom(playerName, avatar, initialSettings);
+          const roomId = supabaseRoomTransport.getRoomId();
+          if (roomId) {
+            await livekitMediaService.connect(roomId);
+          }
+        } else {
+          await p2pRealtimeService.createRoom(code, playerName, avatar);
+          if (initialSettings) {
+            p2pRealtimeService.updateSettings(initialSettings);
+          }
         }
         setIsConnected(true);
       } catch (err: unknown) {
@@ -321,7 +414,7 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsConnecting(false);
       }
     },
-    []
+    [isSupabaseBackend]
   );
 
   const joinRoom = useCallback(
@@ -333,7 +426,15 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsConnecting(true);
       setError(null);
       try {
-        await p2pRealtimeService.joinRoom(code, playerName, avatar);
+        if (isSupabaseBackend) {
+          await supabaseRoomTransport.joinRoom(code, playerName, avatar);
+          const roomId = supabaseRoomTransport.getRoomId();
+          if (roomId) {
+            await livekitMediaService.connect(roomId);
+          }
+        } else {
+          await p2pRealtimeService.joinRoom(code, playerName, avatar);
+        }
         setIsConnected(true);
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : 'Failed to join room';
@@ -343,13 +444,18 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsConnecting(false);
       }
     },
-    []
+    [isSupabaseBackend]
   );
 
   const leaveRoom = useCallback(async () => {
     try {
-      voiceManager.disableCamera();
-      await p2pRealtimeService.leaveRoom();
+      if (isSupabaseBackend) {
+        await livekitMediaService.disconnect();
+        await supabaseRoomTransport.leaveRoom();
+      } else {
+        voiceManager.disableCamera();
+        await p2pRealtimeService.leaveRoom();
+      }
     } catch {
       // Ignore leave error
     } finally {
@@ -361,79 +467,163 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
       setChatMessages([]);
       setError(null);
     }
-  }, []);
+  }, [isSupabaseBackend]);
 
-  const setReady = useCallback((isReady: boolean) => {
-    p2pRealtimeService.setReady(isReady);
-    audioService.playButtonTap();
-  }, []);
+  const setReady = useCallback(
+    (isReady: boolean) => {
+      if (isSupabaseBackend) {
+        void runSupabaseAction(() => supabaseRoomTransport.setReady(isReady));
+      } else {
+        p2pRealtimeService.setReady(isReady);
+      }
+      audioService.playButtonTap();
+    },
+    [isSupabaseBackend, runSupabaseAction]
+  );
 
-  const updateSettings = useCallback((settings: Partial<OnlineSettings>) => {
-    p2pRealtimeService.updateSettings(settings);
-  }, []);
+  const updateSettings = useCallback(
+    (settings: Partial<OnlineSettings>) => {
+      if (isSupabaseBackend) {
+        void runSupabaseAction(() => supabaseRoomTransport.updateSettings(settings));
+      } else {
+        p2pRealtimeService.updateSettings(settings);
+      }
+    },
+    [isSupabaseBackend, runSupabaseAction]
+  );
 
   const startGame = useCallback(() => {
-    p2pRealtimeService.startGame();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.startGame());
+    } else {
+      p2pRealtimeService.startGame();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
   const confirmRole = useCallback(() => {
-    p2pRealtimeService.confirmRole();
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.confirmRole());
+    } else {
+      p2pRealtimeService.confirmRole();
+    }
     audioService.playButtonTap();
-  }, []);
+  }, [isSupabaseBackend, runSupabaseAction]);
 
   const startRound = useCallback(() => {
-    p2pRealtimeService.startRound();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.confirmRole());
+    } else {
+      p2pRealtimeService.startRound();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
   const nextTurn = useCallback(() => {
-    p2pRealtimeService.nextTurn();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.nextTurn());
+    } else {
+      p2pRealtimeService.nextTurn();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
   const endRound = useCallback(() => {
-    p2pRealtimeService.endRound();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.startVoting());
+    } else {
+      p2pRealtimeService.endRound();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
   const startVoting = useCallback(() => {
-    p2pRealtimeService.startVoting();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.startVoting());
+    } else {
+      p2pRealtimeService.startVoting();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
-  const vote = useCallback((targetPlayerId: string) => {
-    p2pRealtimeService.castVote(targetPlayerId);
-    audioService.playButtonTap();
-  }, []);
+  const vote = useCallback(
+    (targetPlayerId: string) => {
+      if (isSupabaseBackend) {
+        void runSupabaseAction(() => supabaseRoomTransport.castVote(targetPlayerId));
+      } else {
+        p2pRealtimeService.castVote(targetPlayerId);
+      }
+      audioService.playButtonTap();
+    },
+    [isSupabaseBackend, runSupabaseAction]
+  );
 
   const playAgain = useCallback(() => {
-    p2pRealtimeService.nextRound();
-  }, []);
+    if (isSupabaseBackend) {
+      void runSupabaseAction(() => supabaseRoomTransport.nextRound());
+    } else {
+      p2pRealtimeService.nextRound();
+    }
+  }, [isSupabaseBackend, runSupabaseAction]);
 
-  const kickPlayer = useCallback((targetPlayerId: string) => {
-    p2pRealtimeService.kickPlayer(targetPlayerId);
-  }, []);
+  const kickPlayer = useCallback(
+    (targetPlayerId: string) => {
+      if (isSupabaseBackend) {
+        void runSupabaseAction(() => supabaseRoomTransport.kickPlayer(targetPlayerId));
+      } else {
+        p2pRealtimeService.kickPlayer(targetPlayerId);
+      }
+    },
+    [isSupabaseBackend, runSupabaseAction]
+  );
 
-  const sendChat = useCallback((text: string) => {
-    if (!text.trim()) return;
-    p2pRealtimeService.sendChat(text.trim());
-  }, []);
+  const sendChat = useCallback(
+    (text: string) => {
+      if (!text.trim()) return;
+      if (isSupabaseBackend) {
+        void runSupabaseAction(() => supabaseRoomTransport.sendChat(text.trim()));
+      } else {
+        p2pRealtimeService.sendChat(text.trim());
+      }
+    },
+    [isSupabaseBackend, runSupabaseAction]
+  );
 
   const clearError = useCallback(() => {
     setError(null);
-  }, []);
+    if (isSupabaseBackend) {
+      livekitMediaService.clearError();
+    }
+  }, [isSupabaseBackend]);
 
   const toggleCamera = useCallback(async () => {
-    await voiceManager.toggleCamera();
-  }, []);
+    if (isSupabaseBackend) {
+      await livekitMediaService.toggleCamera();
+    } else {
+      await voiceManager.toggleCamera();
+    }
+  }, [isSupabaseBackend]);
 
-  const enableCamera = useCallback(async (constraints?: MediaTrackConstraints) => {
-    return await voiceManager.enableCamera(constraints);
-  }, []);
+  const enableCamera = useCallback(
+    async (constraints?: MediaTrackConstraints) => {
+      if (isSupabaseBackend) {
+        return await livekitMediaService.enableCamera(constraints);
+      }
+      return await voiceManager.enableCamera(constraints);
+    },
+    [isSupabaseBackend]
+  );
 
   const disableCamera = useCallback(() => {
-    voiceManager.disableCamera();
-  }, []);
+    if (isSupabaseBackend) {
+      livekitMediaService.disableCamera();
+    } else {
+      voiceManager.disableCamera();
+    }
+  }, [isSupabaseBackend]);
 
   const toggleMic = useCallback(async () => {
-    await voiceManager.toggleMute();
-  }, []);
+    if (isSupabaseBackend) {
+      await livekitMediaService.toggleMic();
+    } else {
+      await voiceManager.toggleMute();
+    }
+  }, [isSupabaseBackend]);
 
   const value: MultiplayerContextValue = {
     roomState,
@@ -451,6 +641,9 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
     timerRemaining,
     chatMessages,
     speakingPeers,
+    rawPhase: isSupabaseBackend ? supabaseRoomTransport.getRawPhase() : null,
+    runoffCandidateIds: isSupabaseBackend ? supabaseRoomTransport.getRunoffCandidateIds() : [],
+    mediaQuotaExhausted,
     localStream,
     peerStreams,
     isCameraOn,
