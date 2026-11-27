@@ -46,6 +46,7 @@ const DEFAULT_ONLINE_SETTINGS: OnlineSettings = {
   votingDurationSeconds: 60,
   hintDifficulty: 'subtle',
   chomuCount: 1,
+  clueRounds: 2,
 };
 
 export const OnlineJoinModal: React.FC<OnlineJoinModalProps> = ({

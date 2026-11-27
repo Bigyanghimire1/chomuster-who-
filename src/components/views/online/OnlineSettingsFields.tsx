@@ -19,6 +19,7 @@ export const OnlineSettingsFields: React.FC<OnlineSettingsFieldsProps> = ({
 }) => {
   const turnDurationSeconds = settings.turnDurationSeconds ?? 20;
   const discussionDurationSeconds = settings.discussionDurationSeconds ?? 45;
+  const clueRounds = settings.clueRounds ?? 2;
 
   const handleCategoryToggle = (catId: string) => {
     if (disabled) return;
@@ -60,6 +61,12 @@ export const OnlineSettingsFields: React.FC<OnlineSettingsFieldsProps> = ({
     if (disabled) return;
     audioService.playButtonTap();
     onChange({ ...settings, hintDifficulty });
+  };
+
+  const handleClueRounds = (count: number) => {
+    if (disabled) return;
+    audioService.playButtonTap();
+    onChange({ ...settings, clueRounds: Math.max(1, Math.min(3, count)) });
   };
 
   return (
@@ -185,6 +192,41 @@ export const OnlineSettingsFields: React.FC<OnlineSettingsFieldsProps> = ({
               );
             })}
           </div>
+        </div>
+      </div>
+
+      {/* Clue Rounds (uniform Pink selected state) */}
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-extrabold text-[#050505]">
+            Clue rounds
+          </label>
+          <span className="text-[11px] font-semibold text-[#52555E]">
+            Turns per player before discussion
+          </span>
+        </div>
+        <div role="radiogroup" aria-label="Select clue rounds" className="grid grid-cols-3 gap-1.5">
+          {[1, 2, 3].map((count) => {
+            const isSelected = clueRounds === count;
+            return (
+              <button
+                key={count}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                aria-label={`${count} clue ${count === 1 ? 'round' : 'rounds'}`}
+                disabled={disabled}
+                onClick={() => handleClueRounds(count)}
+                className={`min-h-[42px] rounded-xl text-xs font-extrabold border-2 border-[#050505] shadow-[0_2px_0_#050505] active:translate-y-[2px] active:shadow-none transition-all ${
+                  isSelected
+                    ? 'bg-[#F28BCB] text-[#050505]'
+                    : 'bg-white text-[#050505] hover:bg-[#FFF9CC]'
+                }`}
+              >
+                {count} {count === 1 ? 'Round' : 'Rounds'}
+              </button>
+            );
+          })}
         </div>
       </div>
 

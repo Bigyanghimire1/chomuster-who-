@@ -620,7 +620,19 @@ export function handleNextTurn(state: RoomState): RoomState {
     ? connectedTurnOrder.indexOf(state.currentTurnPlayerId)
     : -1;
 
+  const totalClueRounds = Math.max(1, Math.min(3, state.settings?.clueRounds ?? 1));
+  const currentClueRound = Math.max(1, state.currentClueRound ?? 1);
+
   if (currentIdx === -1 || currentIdx >= connectedTurnOrder.length - 1) {
+    if (currentClueRound < totalClueRounds) {
+      return {
+        ...state,
+        currentTurnPlayerId: connectedTurnOrder[0],
+        currentClueRound: currentClueRound + 1,
+        totalClueRounds,
+        turnStartTime: Date.now(),
+      };
+    }
     return handleStartVoting(state);
   }
 
@@ -628,6 +640,8 @@ export function handleNextTurn(state: RoomState): RoomState {
   return {
     ...state,
     currentTurnPlayerId: nextPlayerId,
+    currentClueRound,
+    totalClueRounds,
     turnStartTime: Date.now(),
   };
 }

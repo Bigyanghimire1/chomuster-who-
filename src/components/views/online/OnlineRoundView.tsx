@@ -38,13 +38,18 @@ export const OnlineRoundView: React.FC = () => {
     peerStreams,
   } = useMultiplayer();
   const isDiscussion = rawPhase === 'DISCUSSION';
+  const currentClueRound = roomState?.currentClueRound ?? 1;
+  const totalClueRounds =
+    roomState?.totalClueRounds ?? roomState?.settings?.clueRounds ?? 2;
 
   const [isSecretPeekOpen, setIsSecretPeekOpen] = useState<boolean>(false);
   const [isGalleryView, setIsGalleryView] = useState<boolean>(false);
-  const [introCountdown, setIntroCountdown] = useState<number>(() => (isDiscussion ? 0 : 3));
+  const [introCountdown, setIntroCountdown] = useState<number>(() =>
+    !isDiscussion && currentClueRound === 1 ? 3 : 0
+  );
 
   useEffect(() => {
-    if (isDiscussion) {
+    if (isDiscussion || currentClueRound > 1) {
       setIntroCountdown(0);
       return;
     }
@@ -70,7 +75,7 @@ export const OnlineRoundView: React.FC = () => {
     }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [isDiscussion, roomState?.roundStartTime]);
+  }, [isDiscussion, currentClueRound, roomState?.roundStartTime]);
 
   const categoryName =
     mySecret?.category || roomState?.secretCategory || 'Mystery';
@@ -143,7 +148,9 @@ export const OnlineRoundView: React.FC = () => {
               <span>Category: {categoryName}</span>
             </div>
             <h1 className={`text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] ${isDiscussion ? 'text-white' : 'text-[#050505]'}`}>
-              {isDiscussion ? 'Group Discussion' : 'Round in Progress'}
+              {isDiscussion
+                ? 'Group Discussion'
+                : `Clue Round ${currentClueRound} of ${totalClueRounds}`}
             </h1>
           </div>
 

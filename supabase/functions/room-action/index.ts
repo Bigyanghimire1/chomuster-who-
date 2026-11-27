@@ -567,9 +567,10 @@ export async function handleRoomAction(
         return errorResponse(409, 'INVALID_STATE', 'Can only advance turn in ROUND phase');
       }
 
-      const currentSpeakerId = Array.isArray(typedRoom.turn_order)
-        ? typedRoom.turn_order[typedRoom.current_turn_index]
-        : undefined;
+      const currentSpeakerId =
+        Array.isArray(typedRoom.turn_order) && typedRoom.turn_order.length > 0
+          ? typedRoom.turn_order[typedRoom.current_turn_index % typedRoom.turn_order.length]
+          : undefined;
       const isCurrentSpeaker = currentSpeakerId === user.id;
       const expired = isDeadlineExpired(typedRoom.phase_deadline_at);
 

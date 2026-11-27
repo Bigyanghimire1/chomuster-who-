@@ -58,10 +58,12 @@ export const OnlineLobbyView: React.FC = () => {
     votingDurationSeconds: 60,
     hintDifficulty: 'subtle',
     chomuCount: 1,
+    clueRounds: 2,
   };
 
   const turnDurationSeconds = currentSettings.turnDurationSeconds ?? 20;
   const discussionDurationSeconds = currentSettings.discussionDurationSeconds ?? 45;
+  const clueRounds = currentSettings.clueRounds ?? 2;
 
   const inviteUrl =
     typeof window !== 'undefined'
@@ -238,6 +240,9 @@ export const OnlineLobbyView: React.FC = () => {
             <span className="px-2.5 py-1 rounded-full bg-chomu-bgSecondary border border-chomu-border font-medium text-chomu-text">
               {currentSettings.chomuCount}{' '}
               {currentSettings.chomuCount === 1 ? 'Chomu' : 'Chomus'}
+            </span>
+            <span className="px-2.5 py-1 rounded-full bg-chomu-bgSecondary border border-chomu-border font-medium text-chomu-text">
+              {clueRounds} Clue {clueRounds === 1 ? 'Round' : 'Rounds'}
             </span>
             <span className="px-2.5 py-1 rounded-full bg-chomu-bgSecondary border border-chomu-border font-medium">
               {turnDurationSeconds === 0 ? 'Turns: Off' : `${turnDurationSeconds}s Turns`}

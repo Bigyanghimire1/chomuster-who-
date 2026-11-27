@@ -39,6 +39,7 @@ export interface OnlineSettings {
   votingDurationSeconds: number; // e.g. 60 (1 min)
   hintDifficulty: HintDifficulty; // 'subtle' | 'balanced' | 'easy' | 'none'
   chomuCount: number; // 1, 2, or 3
+  clueRounds?: number; // 1, 2, or 3 (default 2)
   soundEnabled?: boolean;
 }
 export type RoomSettings = OnlineSettings;
@@ -102,6 +103,8 @@ export interface RoomState {
 
   // Authoritative Spotlight & Turn Fields
   currentTurnPlayerId: string | null;
+  currentClueRound?: number;
+  totalClueRounds?: number;
   turnOrder: string[];
   turnStartTime: number | null;
   turnDurationSeconds: number;

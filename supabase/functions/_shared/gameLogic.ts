@@ -13,6 +13,7 @@ export interface RoomSettings {
   votingDurationSeconds: number;
   hintDifficulty: HintDifficulty;
   chomuCount: number;
+  clueRounds: number;
   soundEnabled: boolean;
   customWords?: CustomWordInput[];
 }
@@ -31,6 +32,7 @@ interface BankWord {
 const ROOM_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ';
 const ALLOWED_TURN_DURATIONS = [0, 15, 20, 30] as const;
 const ALLOWED_DISCUSSION_DURATIONS = [30, 45, 60] as const;
+const ALLOWED_CLUE_ROUNDS = [1, 2, 3] as const;
 const ALLOWED_HINT_DIFFICULTIES: readonly HintDifficulty[] = ['subtle', 'balanced', 'easy', 'none'];
 
 const BUILTIN_WORD_BANK: readonly BankWord[] = [
@@ -13207,6 +13209,17 @@ export function validateAndNormalizeSettings(raw: unknown): RoomSettings {
     chomuCount = Math.min(3, Math.max(1, Math.round(obj.chomuCount)));
   }
 
+  let clueRounds = 2;
+  if (obj.clueRounds !== undefined) {
+    if (
+      typeof obj.clueRounds !== 'number' ||
+      !ALLOWED_CLUE_ROUNDS.includes(obj.clueRounds as (typeof ALLOWED_CLUE_ROUNDS)[number])
+    ) {
+      throw new Error(`clueRounds must be one of ${ALLOWED_CLUE_ROUNDS.join(', ')}`);
+    }
+    clueRounds = obj.clueRounds;
+  }
+
   let soundEnabled = true;
   if (obj.soundEnabled !== undefined) {
     if (typeof obj.soundEnabled !== 'boolean') {
@@ -13246,6 +13259,7 @@ export function validateAndNormalizeSettings(raw: unknown): RoomSettings {
     votingDurationSeconds,
     hintDifficulty,
     chomuCount,
+    clueRounds,
     soundEnabled,
   };
   if (customWords !== undefined) {

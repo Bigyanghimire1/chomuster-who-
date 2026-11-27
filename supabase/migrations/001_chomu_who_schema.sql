@@ -44,6 +44,7 @@ CREATE TABLE public.rooms (
     'votingDurationSeconds', 60,
     'hintDifficulty', 'subtle',
     'chomuCount', 1,
+    'clueRounds', 2,
     'soundEnabled', true
   ),
   round_number integer NOT NULL DEFAULT 0 CHECK (round_number >= 0),
@@ -571,6 +572,7 @@ DECLARE
   v_current_speaker text;
   v_next_index integer;
   v_turn_count integer;
+  v_clue_rounds integer;
   v_turn_secs integer;
   v_discussion_secs integer;
 BEGIN
@@ -598,7 +600,8 @@ BEGIN
       RAISE EXCEPTION 'Not a member of this room' USING ERRCODE = '42501';
     END IF;
 
-    v_current_speaker := v_room.turn_order ->> v_room.current_turn_index;
+    v_turn_count := GREATEST(1, jsonb_array_length(v_room.turn_order));
+    v_current_speaker := v_room.turn_order ->> (v_room.current_turn_index % v_turn_count);
     IF v_caller <> v_room.host_user_id
        AND v_caller::text IS DISTINCT FROM v_current_speaker
        AND (v_room.phase_deadline_at IS NULL OR v_room.phase_deadline_at > now()) THEN
@@ -608,9 +611,10 @@ BEGIN
   END IF;
 
   v_turn_count := jsonb_array_length(v_room.turn_order);
+  v_clue_rounds := GREATEST(1, LEAST(3, COALESCE((v_room.settings->>'clueRounds')::integer, 2)));
   v_next_index := v_room.current_turn_index + 1;
 
-  IF v_next_index < v_turn_count THEN
+  IF v_next_index < (v_turn_count * v_clue_rounds) THEN
     v_turn_secs := GREATEST(5, COALESCE((v_room.settings->>'turnDurationSeconds')::integer, 20));
 
     UPDATE public.rooms

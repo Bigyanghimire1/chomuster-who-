@@ -140,6 +140,10 @@ function mapSettings(raw: Record<string, unknown> | null): OnlineSettings {
   const turnDurationSeconds = typeof s.turnDurationSeconds === 'number' ? s.turnDurationSeconds : 20;
   const discussionDurationSeconds =
     typeof s.discussionDurationSeconds === 'number' ? s.discussionDurationSeconds : 45;
+  const clueRounds =
+    typeof s.clueRounds === 'number' && s.clueRounds >= 1 && s.clueRounds <= 3
+      ? Math.round(s.clueRounds)
+      : 2;
   return {
     categoryIds: Array.isArray(s.categoryIds) ? (s.categoryIds as string[]) : [],
     roundDurationSeconds:
@@ -151,8 +155,21 @@ function mapSettings(raw: Record<string, unknown> | null): OnlineSettings {
     votingDurationSeconds: typeof s.votingDurationSeconds === 'number' ? s.votingDurationSeconds : 60,
     hintDifficulty: (s.hintDifficulty as OnlineSettings['hintDifficulty']) ?? 'subtle',
     chomuCount: typeof s.chomuCount === 'number' ? s.chomuCount : 1,
+    clueRounds,
     soundEnabled: typeof s.soundEnabled === 'boolean' ? s.soundEnabled : true,
   };
+}
+
+function resolveTurnProgress(turnOrder: string[], turnIdx: number, clueRounds: number) {
+  if (turnOrder.length === 0) {
+    return { currentTurnPlayerId: null, currentClueRound: 1, totalClueRounds: clueRounds };
+  }
+  const totalTurns = turnOrder.length * clueRounds;
+  const clampedIdx = Math.max(0, turnIdx);
+  const currentTurnPlayerId =
+    clampedIdx < totalTurns ? (turnOrder[clampedIdx % turnOrder.length] ?? null) : null;
+  const currentClueRound = Math.min(clueRounds, Math.floor(clampedIdx / turnOrder.length) + 1);
+  return { currentTurnPlayerId, currentClueRound, totalClueRounds: clueRounds };
 }
 
 function mapPlayers(rows: RawPlayerRow[]): Record<string, OnlinePlayer> {
@@ -675,7 +692,12 @@ export class SupabaseRoomTransport {
         const playerRows = playersData as RawPlayerRow[];
         const turnOrder = Array.isArray(roomRow.turn_order) ? roomRow.turn_order : [];
         const turnIdx = typeof roomRow.current_turn_index === 'number' ? roomRow.current_turn_index : 0;
-        const currentTurnPlayerId = turnOrder[turnIdx] ?? null;
+        const mappedSettings = mapSettings(roomRow.settings ?? {});
+        const { currentTurnPlayerId } = resolveTurnProgress(
+          turnOrder,
+          turnIdx,
+          mappedSettings.clueRounds ?? 2,
+        );
 
         const isSecretEligible =
           (roomRow.phase === 'ROLE_REVEAL' && currentTurnPlayerId === this.userId) ||
@@ -734,7 +756,11 @@ export class SupabaseRoomTransport {
     const mappedSettings = mapSettings(rawSettings);
     const turnOrder = Array.isArray(roomRow.turn_order) ? roomRow.turn_order : [];
     const turnIdx = typeof roomRow.current_turn_index === 'number' ? roomRow.current_turn_index : 0;
-    const currentTurnPlayerId = turnOrder[turnIdx] ?? null;
+    const { currentTurnPlayerId, currentClueRound, totalClueRounds } = resolveTurnProgress(
+      turnOrder,
+      turnIdx,
+      mappedSettings.clueRounds ?? 2,
+    );
 
     this.rawPhase = roomRow.phase;
     this.runoffCandidateIds = Array.isArray(roomRow.runoff_candidate_ids)
@@ -762,6 +788,8 @@ export class SupabaseRoomTransport {
       chomuIds: isResults ? (roomRow.chomu_ids ?? null) : null,
       secretWord: isResults ? (roomRow.secret_word ?? null) : null,
       currentTurnPlayerId,
+      currentClueRound,
+      totalClueRounds,
       turnOrder,
       turnStartTime: null,
       turnDurationSeconds:
