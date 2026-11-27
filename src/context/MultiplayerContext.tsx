@@ -399,7 +399,11 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
           await supabaseRoomTransport.createRoom(playerName, avatar, initialSettings);
           const roomId = supabaseRoomTransport.getRoomId();
           if (roomId) {
-            await livekitMediaService.connect(roomId);
+            try {
+              await livekitMediaService.connect(roomId);
+            } catch (mediaErr) {
+              console.warn('[MultiplayerContext] LiveKit connect failed, continuing without media:', mediaErr);
+            }
           }
         } else {
           await p2pRealtimeService.createRoom(code, playerName, avatar);
@@ -432,7 +436,11 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
           await supabaseRoomTransport.joinRoom(code, playerName, avatar);
           const roomId = supabaseRoomTransport.getRoomId();
           if (roomId) {
-            await livekitMediaService.connect(roomId);
+            try {
+              await livekitMediaService.connect(roomId);
+            } catch (mediaErr) {
+              console.warn('[MultiplayerContext] LiveKit connect failed, continuing without media:', mediaErr);
+            }
           }
         } else {
           await p2pRealtimeService.joinRoom(code, playerName, avatar);

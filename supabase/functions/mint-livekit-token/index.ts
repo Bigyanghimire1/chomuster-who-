@@ -63,9 +63,9 @@ export async function handleMintLiveKitToken(
     );
   }
 
-  const apiKey = getEnv('LIVEKIT_API_KEY', deps);
-  const apiSecret = getEnv('LIVEKIT_API_SECRET', deps);
-  const livekitUrl = getEnv('LIVEKIT_URL', deps);
+  const apiKey = getEnv('LIVEKIT_API_KEY', deps)?.trim();
+  const apiSecret = getEnv('LIVEKIT_API_SECRET', deps)?.trim();
+  const livekitUrl = getEnv('LIVEKIT_URL', deps)?.trim();
 
   if (!apiKey || !apiSecret || !livekitUrl) {
     return errorResponse(
