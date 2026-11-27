@@ -586,16 +586,16 @@ export const VoiceControls: React.FC<VoiceControlsProps> = ({
         {error && (
           <div
             role="alert"
-            className="flex items-start justify-between gap-2 px-3 py-2 bg-chomu-coral/10 border border-chomu-coral/25 rounded-lg text-xs text-chomu-coral leading-snug"
+            className="flex items-start justify-between gap-2 px-3 py-2 bg-[#FFE4E8] border-2 border-[#050505] rounded-xl text-xs font-bold text-chomu-errorText leading-snug"
           >
             <span>{formatMediaError(error)}</span>
             <button
               type="button"
               onClick={clearError}
               aria-label="Dismiss error"
-              className="shrink-0 p-0.5 rounded hover:bg-chomu-coral/15 text-chomu-coral/80 hover:text-chomu-coral transition-colors"
+              className="shrink-0 p-0.5 rounded hover:bg-[#FF5D73]/25 text-chomu-errorText transition-colors"
             >
-              <X className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <X className="w-3.5 h-3.5" strokeWidth={2.2} />
             </button>
           </div>
         )}

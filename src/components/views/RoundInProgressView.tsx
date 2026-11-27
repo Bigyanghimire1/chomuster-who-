@@ -19,8 +19,8 @@ export const RoundInProgressView: React.FC = () => {
     <div className="flex flex-col items-center justify-between flex-1 max-w-md mx-auto w-full px-4 py-6 select-none animate-fade-in text-center">
       {/* Header Banner */}
       <div className="w-full space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-chomu-border text-xs font-semibold text-chomu-secondary shadow-sm">
-          <HelpCircle className="w-3.5 h-3.5 text-chomu-teal" strokeWidth={1.75} />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border-2 border-[#050505] text-xs font-extrabold text-[#050505] shadow-[0_2px_0_#050505]">
+          <HelpCircle className="w-3.5 h-3.5 text-[#050505]" strokeWidth={2.2} />
           <span>{categoryName}</span>
         </div>
 

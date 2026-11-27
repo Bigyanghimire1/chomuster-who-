@@ -291,6 +291,8 @@ export const MultiplayerProvider: React.FC<{ children: React.ReactNode }> = ({
             void supabaseRoomTransport.nextTurn().catch(() => {});
           } else if (rawPhase === 'DISCUSSION') {
             void supabaseRoomTransport.startVoting().catch(() => {});
+          } else if (rawPhase === 'VOTING' || rawPhase === 'VOTING_RUNOFF') {
+            void supabaseRoomTransport.concludeVoting().catch(() => {});
           }
         }
         return;

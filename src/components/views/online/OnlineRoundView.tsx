@@ -151,25 +151,25 @@ export const OnlineRoundView: React.FC = () => {
         </Card>
 
       {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
-        <div className="bg-chomu-yellow/10 border border-chomu-yellow/30 text-chomu-yellow px-4 py-2.5 rounded-[10px] text-xs font-medium text-center">
+        <div className="bg-[#FFDF00] border-2 border-[#050505] text-[#050505] px-4 py-2.5 rounded-xl text-xs font-bold text-center shadow-[0_3px_0_#050505]">
           Host connection interrupted. Waiting for reconnection (10s grace period)
         </div>
       )}
 
       {/* Active Audio & Turn Summary Strip */}
-      <div className="px-4 py-2.5 rounded-xl bg-white border border-chomu-border flex flex-wrap items-center justify-between gap-3">
+      <div className="px-4 py-2.5 rounded-xl bg-white border-2 border-[#050505] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           {activeSpeakerNames.length > 0 ? (
-            <Radio className="w-4 h-4 text-chomu-lime shrink-0" strokeWidth={1.5} />
+            <Radio className="w-4 h-4 text-chomu-successText shrink-0" strokeWidth={2} />
           ) : (
-            <Mic className="w-4 h-4 text-chomu-secondary shrink-0" strokeWidth={1.5} />
+            <Mic className="w-4 h-4 text-chomu-secondary shrink-0" strokeWidth={2} />
           )}
           {activeSpeakerNames.length > 0 ? (
-            <span className="text-xs font-medium text-chomu-lime">
+            <span className="text-xs font-bold text-chomu-successText">
               {activeSpeakerNames.join(', ')} speaking
             </span>
           ) : (
-            <span className="text-xs text-chomu-secondary">
+            <span className="text-xs font-medium text-chomu-secondary">
               Listening for clues
             </span>
           )}
@@ -246,14 +246,14 @@ export const OnlineRoundView: React.FC = () => {
                     <Badge variant={isChomu ? 'coral' : 'lime'} size="md">
                       {isChomu ? 'Chomu clue' : 'Secret word'}
                     </Badge>
-                    <span className="text-xs font-medium text-chomu-lime">
+                    <span className="text-xs font-bold text-chomu-successText">
                       Your turn to speak
                     </span>
                   </div>
 
                   {isChomu ? (
                     <div className="space-y-3">
-                      <h2 className="text-2xl font-semibold text-chomu-coral tracking-[-0.02em]">
+                      <h2 className="text-2xl font-extrabold text-chomu-errorText tracking-[-0.02em]">
                         You are the Chomu
                       </h2>
                       {hint ? (
@@ -295,8 +295,8 @@ export const OnlineRoundView: React.FC = () => {
 
                 <div className="pt-3 mt-4 border-t border-chomu-border flex items-center justify-between text-xs text-chomu-muted">
                   <span>Visible only to you</span>
-                  <span className="text-chomu-lime inline-flex items-center gap-1 font-medium">
-                    <Mic className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  <span className="text-chomu-successText inline-flex items-center gap-1 font-bold">
+                    <Mic className="w-3.5 h-3.5" strokeWidth={2} />
                     <span>Mic ready</span>
                   </span>
                 </div>
@@ -389,7 +389,7 @@ export const OnlineRoundView: React.FC = () => {
                 </Badge>
                 {hint ? (
                   <p className="text-sm font-medium text-chomu-text">
-                    Your clue: <span className="text-chomu-coral">&ldquo;{hint}&rdquo;</span>
+                    Your clue: <span className="text-chomu-errorText font-bold">&ldquo;{hint}&rdquo;</span>
                   </p>
                 ) : (
                   <p className="text-xs text-chomu-secondary">
@@ -398,11 +398,11 @@ export const OnlineRoundView: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="p-3 rounded-[10px] bg-chomu-lime/10 border border-chomu-lime/25 space-y-1">
-                <span className="text-xs text-chomu-lime block">
+              <div className="p-3 rounded-[10px] bg-[#E8FCEF] border-2 border-[#050505] space-y-1">
+                <span className="text-xs font-bold text-chomu-successText block">
                   Secret word
                 </span>
-                <span className="text-xl font-semibold text-chomu-text block">
+                <span className="text-xl font-extrabold text-[#050505] block">
                   {secretWord}
                 </span>
               </div>
@@ -411,43 +411,59 @@ export const OnlineRoundView: React.FC = () => {
         )}
       </Card>
 
-      {/* Bottom Round Action Bar (natural flow, sits cleanly above VoiceControls dock) */}
+      {/* Bottom Round Action Bar (active player drives turns; host only steps in for discussion/recovery) */}
       <Card className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-center sm:text-left">
-          <span className="text-sm font-medium text-chomu-text block">
+          <span className="text-sm font-bold text-[#050505] block">
             {isDiscussion
               ? 'Group discussion — debate who sounded suspicious'
               : isMyTurn
                 ? 'Your turn — give a one-word clue aloud'
-                : 'Give your clues and spot the Chomu'}
+                : `${spotlightPlayer?.name || 'Player'}'s turn`}
           </span>
-          <p className="text-xs text-chomu-secondary mt-0.5">
-            {isHost
-              ? isDiscussion
+          <p className="text-xs font-medium text-chomu-secondary mt-0.5">
+            {isDiscussion
+              ? isHost
                 ? 'Open voting when everyone is ready to accuse.'
-                : 'Advance turns or start voting once everyone has spoken.'
-              : isMyTurn && !isDiscussion
-                ? 'Tap Done speaking when you finish your clue.'
-                : 'The host will open voting once discussion wraps up.'}
+                : 'Discussion ends automatically when the timer hits 00:00.'
+              : isMyTurn
+                ? 'Press Next when you finish your clue to pass the spotlight.'
+                : `Waiting for ${spotlightPlayer?.name || 'the active player'} to press Next.`}
           </p>
         </div>
 
-        {isHost ? (
-          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
-            {!isDiscussion && nextTurn && (
-              <Button
-                variant="primary"
-                size="lg"
-                className="flex-1 sm:flex-none sm:w-44"
-                onClick={() => {
-                  audioService.playButtonTap();
-                  nextTurn();
-                }}
-                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
-              >
-                {isMyTurn ? 'Done speaking' : 'Next turn'}
-              </Button>
-            )}
+        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
+          {!isDiscussion && nextTurn && isMyTurn && (
+            <Button
+              variant="primary"
+              size="lg"
+              className="flex-1 sm:flex-none sm:w-44"
+              onClick={() => {
+                audioService.playButtonTap();
+                nextTurn();
+              }}
+              rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.4} />}
+            >
+              Next
+            </Button>
+          )}
+
+          {/* Host recovery only when active player is disconnected or turn timer expired */}
+          {!isDiscussion && isHost && !isMyTurn && nextTurn && (!spotlightPlayer?.isConnected || timerRemaining === 0) && (
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => {
+                audioService.playButtonTap();
+                nextTurn();
+              }}
+              rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
+            >
+              Skip player
+            </Button>
+          )}
+
+          {isDiscussion && isHost && (
             <Button
               variant="pink"
               size="lg"
@@ -457,30 +473,8 @@ export const OnlineRoundView: React.FC = () => {
             >
               Start Voting
             </Button>
-          </div>
-        ) : (
-          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full sm:w-auto">
-            {!isDiscussion && nextTurn && isMyTurn && (
-              <Button
-                variant="primary"
-                size="lg"
-                className="flex-1 sm:flex-none sm:w-44"
-                onClick={() => {
-                  audioService.playButtonTap();
-                  nextTurn();
-                }}
-                rightIcon={<ArrowRight className="w-4 h-4" strokeWidth={2.2} />}
-              >
-                Done speaking
-              </Button>
-            )}
-            {!isMyTurn && (
-              <span className="text-xs font-bold opacity-80">
-                Awaiting host vote trigger
-              </span>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </Card>
       </div>
     </div>

@@ -107,10 +107,10 @@ export const OnlineResultsView: React.FC = () => {
                 <span>Chomu wins</span>
               </Badge>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-chomu-coral tracking-[-0.025em]">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-chomu-errorText tracking-[-0.02em]">
               The Chomu Escaped!
             </h1>
-            <p className="text-sm text-chomu-secondary">
+            <p className="text-sm font-medium text-chomu-secondary">
               The Chomu deceived the circle and avoided detection
             </p>
           </div>
@@ -119,29 +119,29 @@ export const OnlineResultsView: React.FC = () => {
 
       {/* Side-by-side Word & Chomu Summary Cards */}
       <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-        <Card className="bg-white border-chomu-teal/40 p-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-chomu-teal/15 text-chomu-teal flex items-center justify-center shrink-0">
-            <Trophy className="w-4 h-4" strokeWidth={1.75} />
+        <Card className="bg-white border-2 border-[#050505] p-4 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-[#E8FCEF] border-2 border-[#050505] text-chomu-successText flex items-center justify-center shrink-0">
+            <Trophy className="w-4 h-4" strokeWidth={2.2} />
           </div>
           <div className="min-w-0">
-            <span className="text-[11px] font-medium text-chomu-secondary block">
+            <span className="text-[11px] font-bold text-chomu-secondary block">
               Word Was
             </span>
-            <span className="text-base font-bold text-chomu-text truncate block">
+            <span className="text-base font-extrabold text-[#050505] truncate block">
               {secretWord || '—'}
             </span>
           </div>
         </Card>
 
-        <Card className="bg-white border-chomu-coral/40 p-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-chomu-coral/15 text-chomu-coral flex items-center justify-center shrink-0">
-            <ShieldAlert className="w-4 h-4" strokeWidth={1.75} />
+        <Card className="bg-white border-2 border-[#050505] p-4 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-[#FFE4E8] border-2 border-[#050505] text-chomu-errorText flex items-center justify-center shrink-0">
+            <ShieldAlert className="w-4 h-4" strokeWidth={2.2} />
           </div>
           <div className="min-w-0">
-            <span className="text-[11px] font-medium text-chomu-secondary block">
+            <span className="text-[11px] font-bold text-chomu-secondary block">
               {chomuPlayers.length === 1 ? 'The Chomu' : 'The Chomas'}
             </span>
-            <span className="text-base font-bold text-chomu-coral truncate block">
+            <span className="text-base font-extrabold text-chomu-errorText truncate block">
               {chomuPlayers.map((p) => p.name).join(', ') || '—'}
             </span>
           </div>
@@ -151,8 +151,8 @@ export const OnlineResultsView: React.FC = () => {
       {/* Chomu Reveal Cards */}
       <div className="w-full max-w-md space-y-2.5">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-semibold text-chomu-coral flex items-center gap-1.5">
-            <ShieldAlert className="w-4 h-4" strokeWidth={1.5} />
+          <span className="text-xs font-extrabold text-chomu-errorText flex items-center gap-1.5">
+            <ShieldAlert className="w-4 h-4" strokeWidth={2} />
             <span>{chomuPlayers.length === 1 ? 'The Chomu was' : 'The Chomas were'}</span>
           </span>
           <span className="text-xs font-mono text-chomu-muted tabular-nums">
@@ -177,14 +177,14 @@ export const OnlineResultsView: React.FC = () => {
                   </h2>
                   {hintText ? (
                     <span className="text-xs text-chomu-secondary block mt-0.5 truncate">
-                      Hint: <span className="text-chomu-coral font-medium">&ldquo;{hintText}&rdquo;</span>
+                      Hint: <span className="text-chomu-errorText font-bold">&ldquo;{hintText}&rdquo;</span>
                     </span>
                   ) : (
                     <span className="text-xs text-chomu-muted block mt-0.5">
                       No hint given
                     </span>
                   )}
-                  <span className="text-xs font-mono text-chomu-coral tabular-nums block mt-0.5">
+                  <span className="text-xs font-mono font-bold text-chomu-errorText tabular-nums block mt-0.5">
                     {receivedVotes} {receivedVotes === 1 ? 'vote' : 'votes'}
                   </span>
                 </div>
@@ -259,10 +259,10 @@ export const OnlineResultsView: React.FC = () => {
       </Card>
 
       {/* Civilians Roster */}
-      <div className="w-full max-w-md bg-chomu-bgSecondary border border-chomu-border rounded-xl p-4">
+      <div className="w-full max-w-md bg-white border-2 border-[#050505] rounded-2xl p-4 shadow-[0_4px_0_#050505]">
         <div className="flex items-center gap-1.5 mb-2.5">
-          <Users className="w-4 h-4 text-chomu-lime" strokeWidth={1.5} />
-          <span className="text-xs font-medium text-chomu-lime tabular-nums">
+          <Users className="w-4 h-4 text-chomu-successText" strokeWidth={2.2} />
+          <span className="text-xs font-extrabold text-chomu-successText tabular-nums">
             Civilians ({civilianPlayers.length})
           </span>
         </div>

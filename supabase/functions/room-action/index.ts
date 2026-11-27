@@ -604,6 +604,166 @@ export async function handleRoomAction(
       return jsonResponse(rpcData ?? { ok: true });
     }
 
+    case 'CONCLUDE_VOTING': {
+      if (typedRoom.phase !== 'VOTING' && typedRoom.phase !== 'VOTING_RUNOFF') {
+        return errorResponse(
+          409,
+          'INVALID_STATE',
+          'Voting can only be concluded during VOTING or VOTING_RUNOFF',
+        );
+      }
+
+      if (!isDeadlineExpired(typedRoom.phase_deadline_at)) {
+        return errorResponse(
+          409,
+          'INVALID_STATE',
+          'Voting deadline has not expired yet',
+        );
+      }
+
+      const isRunoff = typedRoom.phase === 'VOTING_RUNOFF';
+      const { data: voteRows, error: votesErr } = await adminClient
+        .from('votes')
+        .select('voter_user_id, target_user_id')
+        .eq('room_id', roomId)
+        .eq('round_number', typedRoom.round_number)
+        .eq('is_runoff', isRunoff);
+
+      if (votesErr) {
+        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to tally votes', votesErr.message);
+      }
+
+      const votesMap: Record<string, string> = {};
+      const voteCounts: Record<string, number> = {};
+      for (const row of voteRows ?? []) {
+        votesMap[row.voter_user_id] = row.target_user_id;
+        voteCounts[row.target_user_id] = (voteCounts[row.target_user_id] || 0) + 1;
+      }
+
+      let maxVotes = 0;
+      for (const count of Object.values(voteCounts)) {
+        if (count > maxVotes) maxVotes = count;
+      }
+
+      const mostVoted = Object.entries(voteCounts)
+        .filter(([, count]) => count === maxVotes && maxVotes > 0)
+        .map(([id]) => id)
+        .sort();
+
+      const nextVersion = typedRoom.state_version + 1;
+
+      if (!isRunoff && mostVoted.length > 1) {
+        const votingSecs = Math.max(15, Number(typedRoom.settings?.votingDurationSeconds ?? 60));
+        const nextDeadline = new Date(Date.now() + votingSecs * 1000).toISOString();
+
+        const { data: lockedRoom, error: runoffErr } = await adminClient
+          .from('rooms')
+          .update({
+            phase: 'VOTING_RUNOFF',
+            runoff_candidate_ids: mostVoted,
+            phase_deadline_at: nextDeadline,
+            state_version: nextVersion,
+          })
+          .eq('id', roomId)
+          .eq('state_version', typedRoom.state_version)
+          .select('id')
+          .maybeSingle();
+
+        if (runoffErr) {
+          return errorResponse(500, 'INTERNAL_ERROR', 'Failed to start runoff voting', runoffErr.message);
+        }
+        if (!lockedRoom) {
+          return jsonResponse({ ok: true, alreadyTransitioned: true });
+        }
+
+        await adminClient
+          .from('room_players')
+          .update({ has_voted: false })
+          .eq('room_id', roomId);
+
+        return jsonResponse({
+          ok: true,
+          phase: 'VOTING_RUNOFF',
+          runoffCandidateIds: mostVoted,
+          stateVersion: nextVersion,
+        });
+      }
+
+      const { data: secretRow, error: secretErr } = await adminClient
+        .from('room_round_secrets')
+        .select('secret_word, chomu_ids, hints')
+        .eq('room_id', roomId)
+        .eq('round_number', typedRoom.round_number)
+        .maybeSingle();
+
+      if (secretErr || !secretRow) {
+        return errorResponse(500, 'INTERNAL_ERROR', 'Missing round secrets', secretErr?.message);
+      }
+
+      const chomuIds: string[] = Array.isArray(secretRow.chomu_ids) ? secretRow.chomu_ids : [];
+      const chomusCaught = mostVoted.length === 1 && chomuIds.includes(mostVoted[0]);
+      const winner = chomusCaught ? 'civilians' : 'chomu';
+
+      const votingResult = {
+        chomuIds,
+        secretWord: secretRow.secret_word,
+        category: typedRoom.secret_category ?? '',
+        votes: votesMap,
+        voteCounts,
+        mostVotedPlayerIds: mostVoted,
+        chomusCaught,
+        hints: secretRow.hints ?? {},
+        timedOut: true,
+      };
+
+      const { data: finalizedRoom, error: resErr } = await adminClient
+        .from('rooms')
+        .update({
+          phase: 'RESULTS',
+          voting_result: votingResult,
+          winner,
+          secret_word: secretRow.secret_word,
+          chomu_ids: chomuIds,
+          phase_deadline_at: null,
+          state_version: nextVersion,
+        })
+        .eq('id', roomId)
+        .eq('state_version', typedRoom.state_version)
+        .select('id')
+        .maybeSingle();
+
+      if (resErr) {
+        return errorResponse(500, 'INTERNAL_ERROR', 'Failed to finalize voting results', resErr.message);
+      }
+      if (!finalizedRoom) {
+        return jsonResponse({ ok: true, alreadyTransitioned: true });
+      }
+
+      const { data: roomPlayers } = await adminClient
+        .from('room_players')
+        .select('id, user_id, score')
+        .eq('room_id', roomId);
+
+      for (const rp of roomPlayers ?? []) {
+        const isChomu = chomuIds.includes(rp.user_id);
+        const delta = chomusCaught ? (!isChomu ? 1 : 0) : (isChomu ? 1 : 0);
+        if (delta > 0) {
+          await adminClient
+            .from('room_players')
+            .update({ score: Number(rp.score ?? 0) + delta })
+            .eq('id', rp.id);
+        }
+      }
+
+      return jsonResponse({
+        ok: true,
+        phase: 'RESULTS',
+        winner,
+        chomusCaught,
+        stateVersion: nextVersion,
+      });
+    }
+
     case 'PLAY_AGAIN': {
       if (!isHost) {
         return errorResponse(403, 'FORBIDDEN', 'Only the host can start a new round');

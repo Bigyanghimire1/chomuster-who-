@@ -40,6 +40,10 @@ export default {
           text: '#050505',
           secondary: '#26282E',
           muted: '#52555E',
+          successText: '#157336',
+          warningText: '#92400E',
+          errorText: '#C81E38',
+          infoText: '#0E7490',
         },
       },
       fontFamily: {

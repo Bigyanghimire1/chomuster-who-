@@ -90,16 +90,22 @@ export const OnlineVotingView: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-chomu-bgSecondary border border-chomu-border text-chomu-text self-start sm:self-auto">
-          <Clock className="w-4 h-4 shrink-0 text-chomu-secondary" strokeWidth={1.5} />
-          <span className="text-lg font-mono font-semibold tabular-nums leading-none">
+        <div
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border-2 border-[#050505] shadow-[0_3px_0_#050505] self-start sm:self-auto ${
+            timerRemaining <= 10 && timerRemaining > 0
+              ? 'bg-[#FF5D73] text-[#050505]'
+              : 'bg-[#FFDF00] text-[#050505]'
+          }`}
+        >
+          <Clock className="w-4 h-4 shrink-0" strokeWidth={2.25} />
+          <span className="text-lg font-mono font-extrabold tabular-nums leading-none">
             {formattedTime}
           </span>
         </div>
       </Card>
 
       {roomState?.hostGracePeriodEnd && roomState.hostGracePeriodEnd > Date.now() && (
-        <div className="bg-chomu-yellow/10 border border-chomu-yellow/30 text-chomu-yellow px-4 py-2.5 rounded-[10px] text-xs font-medium text-center">
+        <div className="bg-[#FFDF00] border-2 border-[#050505] text-[#050505] px-4 py-2.5 rounded-xl text-xs font-bold text-center shadow-[0_3px_0_#050505]">
           Host connection interrupted. Waiting for reconnection (10s grace period)
         </div>
       )}
@@ -161,12 +167,15 @@ export const OnlineVotingView: React.FC = () => {
                     : 'bg-white border-[2.5px] border-[#050505] hover:bg-[#FFF9CC] cursor-pointer'
               }`}
             >
-              {isSelected && (
-                <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-[#050505] text-white text-[10px] font-extrabold flex items-center gap-1">
-                  <Check className="w-3 h-3" strokeWidth={2.5} />
-                  <span>Suspect</span>
-                </div>
-              )}
+              {/* Dedicated top row so Suspect badge never overlaps avatar */}
+              <div className="w-full flex items-center justify-end min-h-[24px] mb-1.5">
+                {isSelected && (
+                  <div className="px-2.5 py-0.5 rounded-full bg-[#050505] text-white text-[10px] font-extrabold inline-flex items-center gap-1 shadow-[0_2px_0_#050505]">
+                    <Check className="w-3 h-3" strokeWidth={2.5} />
+                    <span>Suspect</span>
+                  </div>
+                )}
+              </div>
 
               <div className="mb-2.5">
                 <SpeakingIndicator
@@ -180,18 +189,18 @@ export const OnlineVotingView: React.FC = () => {
               </div>
 
               <div className="space-y-1 w-full min-w-0 px-2">
-                <span className="text-sm font-semibold text-chomu-text truncate block">
+                <span className="text-sm font-bold text-[#050505] truncate block">
                   {p.name} {isMe && '(You)'}
                 </span>
 
                 <div className="flex items-center justify-center gap-1.5">
                   {hasThisPlayerVoted ? (
-                    <span className="text-xs text-chomu-lime inline-flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    <span className="text-xs font-bold text-chomu-successText inline-flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={2.2} />
                       <span>Voted</span>
                     </span>
                   ) : (
-                    <span className="text-xs text-chomu-muted">
+                    <span className="text-xs font-semibold text-chomu-muted">
                       Deciding
                     </span>
                   )}
@@ -216,11 +225,11 @@ export const OnlineVotingView: React.FC = () => {
         <div className="text-center sm:text-left">
           {hasLockedVote ? (
             <div>
-              <span className="text-sm font-medium text-chomu-lime block">
+              <span className="text-sm font-extrabold text-chomu-successText block">
                 Accusation confirmed
               </span>
-              <span className="text-xs text-chomu-secondary">
-                You voted for <strong className="text-chomu-text font-medium">{lockedVoteTarget?.name || 'Player'}</strong>
+              <span className="text-xs font-medium text-chomu-secondary">
+                You voted for <strong className="text-[#050505] font-extrabold">{lockedVoteTarget?.name || 'Player'}</strong>
               </span>
             </div>
           ) : selectedPlayer ? (

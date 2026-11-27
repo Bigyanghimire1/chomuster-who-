@@ -461,6 +461,10 @@ export class SupabaseRoomTransport {
     await this.invokeRoomAction('CAST_VOTE', { targetUserId: targetPlayerId });
   }
 
+  public async concludeVoting(): Promise<void> {
+    await this.invokeRoomAction('CONCLUDE_VOTING', {});
+  }
+
   public async nextRound(): Promise<void> {
     await this.invokeRoomAction('PLAY_AGAIN', {});
   }

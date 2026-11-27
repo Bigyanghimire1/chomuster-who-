@@ -70,7 +70,7 @@ export const FinalRevealView: React.FC = () => {
                   </h2>
                   {hint ? (
                     <span className="text-xs text-chomu-secondary block mt-0.5 truncate">
-                      Hint: <span className="text-chomu-coral font-medium">&ldquo;{hint}&rdquo;</span>
+                      Hint: <span className="text-chomu-errorText font-bold">&ldquo;{hint}&rdquo;</span>
                     </span>
                   ) : (
                     <span className="text-xs text-chomu-muted block mt-0.5">

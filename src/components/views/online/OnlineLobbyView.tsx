@@ -181,9 +181,9 @@ export const OnlineLobbyView: React.FC = () => {
               aria-label="Copy room code"
             >
               {copiedCode ? (
-                <Check className="w-4 h-4 text-chomu-lime" strokeWidth={1.75} />
+                <Check className="w-4 h-4 text-chomu-successText" strokeWidth={2.5} />
               ) : (
-                <Copy className="w-4 h-4" strokeWidth={1.5} />
+                <Copy className="w-4 h-4" strokeWidth={1.75} />
               )}
             </button>
           </div>
@@ -253,7 +253,7 @@ export const OnlineLobbyView: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handleOpenEditSettings}
-              leftIcon={<Sliders className="w-3.5 h-3.5 text-chomu-teal" strokeWidth={1.75} />}
+              leftIcon={<Sliders className="w-3.5 h-3.5 text-[#050505]" strokeWidth={2.2} />}
             >
               Edit game
             </Button>
