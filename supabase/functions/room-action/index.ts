@@ -567,10 +567,10 @@ export async function handleRoomAction(
         return errorResponse(409, 'INVALID_STATE', 'Can only advance turn in ROUND phase');
       }
 
+      const turnOrder = Array.isArray(typedRoom.turn_order) ? typedRoom.turn_order : [];
+      const turnCount = turnOrder.length;
       const currentSpeakerId =
-        Array.isArray(typedRoom.turn_order) && typedRoom.turn_order.length > 0
-          ? typedRoom.turn_order[typedRoom.current_turn_index % typedRoom.turn_order.length]
-          : undefined;
+        turnCount > 0 ? turnOrder[typedRoom.current_turn_index % turnCount] : undefined;
       const isCurrentSpeaker = currentSpeakerId === user.id;
       const expired = isDeadlineExpired(typedRoom.phase_deadline_at);
 
@@ -582,16 +582,86 @@ export async function handleRoomAction(
         );
       }
 
-      const { data: rpcData, error: rpcErr } = await adminClient.rpc('advance_turn_atomic', {
-        p_room_id: roomId,
-        p_actor_user_id: user.id,
-      });
+      const rawClueRounds = Number(typedRoom.settings?.clueRounds ?? 2);
+      const clueRounds = Number.isFinite(rawClueRounds)
+        ? Math.max(1, Math.min(3, Math.round(rawClueRounds)))
+        : 2;
+      const nextIndex = typedRoom.current_turn_index + 1;
+      const nextVersion = typedRoom.state_version + 1;
 
-      if (rpcErr) {
-        return mapRpcError(rpcErr);
+      if (turnCount > 0 && nextIndex < turnCount * clueRounds) {
+        const turnSecs = Number(typedRoom.settings?.turnDurationSeconds ?? 20);
+        const phaseDeadlineAt =
+          turnSecs > 0
+            ? new Date(Date.now() + Math.max(5, turnSecs) * 1000).toISOString()
+            : null;
+
+        const { data: updatedTurn, error: turnErr } = await adminClient
+          .from('rooms')
+          .update({
+            current_turn_index: nextIndex,
+            phase_deadline_at: phaseDeadlineAt,
+            state_version: nextVersion,
+          })
+          .eq('id', roomId)
+          .eq('state_version', typedRoom.state_version)
+          .select('id')
+          .maybeSingle();
+
+        if (turnErr) {
+          return errorResponse(500, 'INTERNAL_ERROR', 'Failed to advance turn', turnErr.message);
+        }
+        if (!updatedTurn) {
+          return jsonResponse({ ok: true, alreadyTransitioned: true });
+        }
+
+        return jsonResponse({
+          ok: true,
+          phase: 'ROUND',
+          currentTurnIndex: nextIndex,
+          phaseDeadlineAt,
+          stateVersion: nextVersion,
+        });
       }
 
-      return jsonResponse(rpcData ?? { ok: true });
+      const discussionSecs = Math.max(
+        10,
+        Number(typedRoom.settings?.discussionDurationSeconds ?? 45),
+      );
+      const discussionDeadlineAt = new Date(Date.now() + discussionSecs * 1000).toISOString();
+
+      const { data: updatedDiscussion, error: discussionErr } = await adminClient
+        .from('rooms')
+        .update({
+          phase: 'DISCUSSION',
+          current_turn_index: nextIndex,
+          phase_deadline_at: discussionDeadlineAt,
+          state_version: nextVersion,
+        })
+        .eq('id', roomId)
+        .eq('state_version', typedRoom.state_version)
+        .select('id')
+        .maybeSingle();
+
+      if (discussionErr) {
+        return errorResponse(
+          500,
+          'INTERNAL_ERROR',
+          'Failed to transition to DISCUSSION',
+          discussionErr.message,
+        );
+      }
+      if (!updatedDiscussion) {
+        return jsonResponse({ ok: true, alreadyTransitioned: true });
+      }
+
+      return jsonResponse({
+        ok: true,
+        phase: 'DISCUSSION',
+        currentTurnIndex: nextIndex,
+        phaseDeadlineAt: discussionDeadlineAt,
+        stateVersion: nextVersion,
+      });
     }
 
     case 'START_VOTING': {
